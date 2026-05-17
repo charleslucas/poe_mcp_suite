@@ -1,0 +1,13 @@
+[submodule "pob-mcp"]
+	path = pob-mcp
+	url = https://github.com/charleslucas/pob-mcp.git
+[submodule "poe-mcp-server"]
+	path = poe-mcp-server
+	url = https://github.com/charleslucas/poe-mcp-server.git
+[submodule "POEMCP"]
+	path = POEMCP
+	url = https://github.com/charleslucas/POEMCP.git
+[submodule "PathOfBuilding"]
+	path = PathOfBuilding
+	url = https://github.com/charleslucas/PathOfBuilding.git
+	branch = api-stdio
