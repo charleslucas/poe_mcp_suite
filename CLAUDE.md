@@ -98,18 +98,70 @@ poe-mcp-server has no `requirements.txt` or `pyproject.toml`. It needs:
 
 TCP mode connects Claude to a **running PoB GUI** — no LuaJIT installation needed, and changes appear live in the PoB window.
 
-1. Install [Path of Building Community](https://github.com/PathOfBuildingCommunity/PathOfBuilding/releases) normally.
-2. **Always launch PoB via `pob-mcp/LaunchPoBWithAPI.bat`** (Windows). This sets the TCP env vars and auto-patches `Modules/Main.lua` on every launch, even after PoB updates.
-3. Open a build in PoB, then Claude connects automatically on the first `lua_*` tool call.
+### 5a — Install Path of Building Community
 
-PoB prints API events to its in-game console (press `~`):
+Install [Path of Building Community](https://github.com/PathOfBuildingCommunity/PathOfBuilding/releases) normally. It installs to `%APPDATA%\Path of Building Community\` on Windows.
+
+### 5b — Run the API installer (first time only)
+
+`InstallTcpApi.ps1` does three things:
+1. Creates `%APPDATA%\Path of Building Community\API\`
+2. Copies `TcpServer.lua`, `Handlers.lua`, and `BuildOps.lua` from `PathOfBuilding/src/API/` (the submodule)
+3. Patches `Modules\Main.lua` to start the TCP server when PoB launches with `POB_API_TCP=1`
+
+```powershell
+# Run from the pob-mcp directory
+cd pob-mcp
+.\InstallTcpApi.ps1
+```
+
+**Directory layout the script expects:**
+```
+poe_mcp_suite/
+  pob-mcp/
+    InstallTcpApi.ps1   ← run this
+    LaunchPoBWithAPI.bat
+  PathOfBuilding/
+    src/
+      API/
+        TcpServer.lua   ← copied to PoB's AppData
+        Handlers.lua
+        BuildOps.lua
+```
+
+The script finds `PathOfBuilding/src/API/` by looking one level up from `pob-mcp/` — so the suite's submodule layout works automatically.
+
+You do **not** need to re-run this manually after PoB updates — the next step handles that.
+
+### 5c — Launch PoB via the batch file (every time)
+
+**Always** use `pob-mcp/LaunchPoBWithAPI.bat` to start PoB, not the normal shortcut. It:
+- Sets `POB_API_TCP=1` and `POB_API_TCP_PORT=31337` in the environment
+- Checks whether `Modules\Main.lua` still has the TCP patch; if PoB updated and overwrote it, automatically re-runs `InstallTcpApi.ps1` before launching
+- Starts `Path of Building.exe`
+
+```
+pob-mcp\LaunchPoBWithAPI.bat
+```
+
+On startup, PoB's in-game console (press `~`) shows:
 ```
 [PoB API] TCP server started on port 31337
 [PoB API] Background keepalive active (~60 fps)
-[PoB API] Claude connected (1 client(s) active)
 ```
 
-PoB can be minimised — a background keepalive keeps it responsive at ~60 fps.
+And on Claude connecting:
+```
+[PoB API] Claude connected (1 client(s) active)
+[PoB API] >> get_stats
+[PoB API] << get_stats ok
+```
+
+PoB can be minimised — a background keepalive posts `WM_NULL` every 16 ms to keep its frame loop running at ~60 fps even when it has lost focus.
+
+### PoB update behaviour
+
+PoB's built-in updater overwrites `Modules\Main.lua` and shows an integrity check warning. This is expected. Just close PoB and relaunch via `LaunchPoBWithAPI.bat` — it detects the missing patch and re-applies it automatically. The TCP server is already running in memory for that session, so the warning during the session is harmless.
 
 **Detailed docs:** [`PathOfBuilding/README.md`](PathOfBuilding/README.md) — [`PathOfBuilding/src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md)
 
