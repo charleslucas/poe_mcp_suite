@@ -1,0 +1,22 @@
+# Python dependencies for poe_mcp_suite
+#
+# Install all at once:
+#   pip install -r requirements.txt
+#
+# Then install POEMCP in editable mode:
+#   pip install -e POEMCP/
+#
+# Node.js (for pob-mcp) is installed separately — see CLAUDE.md.
+
+# ── poe-mcp-server ────────────────────────────────────────────────────────────
+mcp
+anyio
+
+# ── POEMCP ───────────────────────────────────────────────────────────────────
+httpx
+beautifulsoup4
+
+# ── RePoE (game data) — not on PyPI, install from GitHub ─────────────────────
+# PyPoE must be installed first as RePoE depends on it.
+git+https://github.com/brather1ng/PyPoE.git
+git+https://github.com/brather1ng/RePoE.git
