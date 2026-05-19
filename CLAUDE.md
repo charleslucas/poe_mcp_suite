@@ -200,7 +200,11 @@ cp .mcp.json.example .mcp.json
     },
     "poe": {
       "command": "python",
-      "args": ["/absolute/path/to/poe_mcp_suite/poe-mcp-server/poe_all.py"]
+      "args": ["/absolute/path/to/poe_mcp_suite/poe-mcp-server/poe_all.py"],
+      "env": {
+        "POE_SESSION_ID": "your-poesessid-cookie-here",
+        "POE_ACCOUNT_NAME": "YourAccount#1234"
+      }
     },
     "poemcp": {
       "command": "python",

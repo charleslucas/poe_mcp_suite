@@ -16,7 +16,11 @@
     },
     "poe": {
       "command": "python",
-      "args": ["/CHANGE_ME/poe_mcp_suite/poe-mcp-server/poe_all.py"]
+      "args": ["/CHANGE_ME/poe_mcp_suite/poe-mcp-server/poe_all.py"],
+      "env": {
+        "POE_SESSION_ID": "CHANGE_ME_your_POESESSID_cookie",
+        "POE_ACCOUNT_NAME": "CHANGE_ME_YourAccount#1234"
+      }
     },
     "poemcp": {
       "command": "python",
