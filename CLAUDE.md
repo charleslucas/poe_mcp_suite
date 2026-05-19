@@ -267,6 +267,7 @@ For poe-mcp-server: *"What's the current price of a Mirror of Kalandra?"* → Cl
 
 ## Notes for Claude
 
+- **Your built-in PoE knowledge is roughly current as of mid-2024.** Content, balance changes, and mechanics introduced after that point may be missing or wrong in your training data. When answering questions about game mechanics, items, or skills, proactively use the MCP tools to pull current data rather than relying solely on training: `fetch_wiki_page` for item/passive descriptions, `ninja_lookup`/`currency_overview` for prices, and the live PoB TCP connection for calc results. Tell the user when you're uncertain whether your training reflects the current patch, and always defer to live tool results over training intuition when they conflict.
 - **TCP mode is strongly preferred** over headless — it shows every change in the PoB GUI in real time, requires no LuaJIT install, and auto-reconnects when PoB is restarted.
 - **`POE_SESSION_ID` is sensitive** — treat it like a password. It enables importing private characters and running weighted trade queries. Never log or commit it.
 - **PoB must be launched via `pob-mcp/LaunchPoBWithAPI.bat`**, not the normal shortcut, for TCP mode to work.

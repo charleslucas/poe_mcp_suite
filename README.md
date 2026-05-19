@@ -57,6 +57,29 @@ The API additions live on the `api-stdio` branch and are designed to be non-dest
 
 ---
 
+## Prerequisites
+
+Before cloning, make sure the following are installed and on your system PATH:
+
+| Requirement | Version | Used by | Download |
+|-------------|---------|---------|----------|
+| **Node.js** | 18 LTS+ | pob-mcp | [nodejs.org](https://nodejs.org) |
+| **Python** | 3.10+ | poe-mcp-server, POEMCP | [python.org](https://python.org) |
+| **Git** | 2.x+ | submodule checkout | [git-scm.com](https://git-scm.com) |
+| **Path of Building Community** | latest | TCP live mode | [GitHub releases](https://github.com/PathOfBuildingCommunity/PathOfBuilding/releases) |
+
+> **Windows users:** after installing Node.js, restart any open terminals (and VS Code / Claude Code) so the updated PATH takes effect. If Claude Code can't start the `pob` MCP server, this is almost always the cause.
+
+---
+
+## A note on Claude's Path of Exile knowledge
+
+Claude's built-in PoE knowledge is roughly current as of mid-2024 — content, balance changes, and mechanics introduced after that point may be missing or wrong. **Before relying on Claude's game-mechanics advice, confirm it against current sources.**
+
+The MCP servers exist partly to bridge this gap: use `fetch_wiki_page` (POEMCP) for up-to-date item and passive descriptions, `ninja_lookup` / `currency_overview` for current prices, and `parse_pob` or the live PoB TCP connection for accurate calc results. When Claude's training intuition conflicts with a live tool result, trust the tool.
+
+---
+
 ## Quick Start
 
 ```bash
