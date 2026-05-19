@@ -82,13 +82,12 @@ Installs `mcp[cli]`, `httpx`, and `beautifulsoup4`. No API keys required — dat
 ## Step 4 — Install poe-mcp-server
 
 ```bash
-pip install mcp
+pip install -r poe-mcp-server/requirements.txt
 ```
 
-poe-mcp-server has no `requirements.txt` or `pyproject.toml`. It needs:
-- The `mcp` Python package (above)
-- External modules in a sibling `buildstuff/poe_monitor/` directory (user-specific paths hardcoded in the server — see the README for details)
-- A `config.json` with your PoE session ID and account details
+This installs `mcp`, `anyio`, and the GitHub-sourced PyPoE + RePoE packages. All required modules (`poe_lib`, `stash_cache`, `rare_scorer`) are included directly in the `poe-mcp-server/` directory — no external sibling repositories needed.
+
+Credentials are supplied via env vars in `.mcp.json` (`POE_SESSION_ID`, `POE_ACCOUNT_NAME`). A `poe-mcp-server/config.json` can be used as a fallback but is not required.
 
 **Detailed docs:** [`poe-mcp-server/README.md`](poe-mcp-server/README.md)
 

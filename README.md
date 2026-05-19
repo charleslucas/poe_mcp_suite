@@ -84,6 +84,7 @@ The MCP servers exist partly to bridge this gap: use `fetch_wiki_page` (POEMCP) 
 
 ```bash
 git clone --recurse-submodules https://github.com/charleslucas/poe_mcp_suite.git
+cd poe_mcp_suite
 ```
 
 Or if you already cloned without `--recurse-submodules`:
@@ -92,7 +93,18 @@ Or if you already cloned without `--recurse-submodules`:
 git submodule update --init --recursive
 ```
 
-Each server is configured independently — see the individual submodule READMEs for setup details, environment variables, and MCP client configuration.
+**Install Python dependencies** (covers poe-mcp-server, POEMCP, and RePoE):
+
+```bash
+pip install -r requirements.txt
+pip install -e POEMCP/
+```
+
+**Install pob-mcp** (Node.js):
+
+```bash
+cd pob-mcp && npm install && npm run build && cd ..
+```
 
 To use `pob-mcp` in live mode, launch Path of Building via `pob-mcp/LaunchPoBWithAPI.bat` rather than the normal shortcut. This sets the environment variables that activate the TCP API server inside PoB.
 
