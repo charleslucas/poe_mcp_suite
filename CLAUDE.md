@@ -204,7 +204,8 @@ cp .mcp.json.example .mcp.json
       "env": {
         "POE_SESSION_ID": "your-poesessid-cookie-here",
         "POE_ACCOUNT_NAME": "YourAccount#1234",
-        "POE_LEAGUE": "Mirage"
+        "POE_LEAGUE": "Mirage",
+        "POE_CONTACT_EMAIL": "your@email.com"
       }
     },
     "poemcp": {

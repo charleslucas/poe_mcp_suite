@@ -20,7 +20,8 @@
       "env": {
         "POE_SESSION_ID": "CHANGE_ME_your_POESESSID_cookie",
         "POE_ACCOUNT_NAME": "CHANGE_ME_YourAccount#1234",
-        "POE_LEAGUE": "Mirage"
+        "POE_LEAGUE": "Mirage",
+        "POE_CONTACT_EMAIL": "CHANGE_ME_your@email.com"
       }
     },
     "poemcp": {
