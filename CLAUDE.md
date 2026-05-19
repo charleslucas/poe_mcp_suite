@@ -203,7 +203,8 @@ cp .mcp.json.example .mcp.json
       "args": ["/absolute/path/to/poe_mcp_suite/poe-mcp-server/poe_all.py"],
       "env": {
         "POE_SESSION_ID": "your-poesessid-cookie-here",
-        "POE_ACCOUNT_NAME": "YourAccount#1234"
+        "POE_ACCOUNT_NAME": "YourAccount#1234",
+        "POE_LEAGUE": "Mirage"
       }
     },
     "poemcp": {
