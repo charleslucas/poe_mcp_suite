@@ -206,6 +206,8 @@ cp .mcp.json.example .mcp.json
         "POE_ACCOUNT_NAME": "YourAccount#1234",
         "POE_LEAGUE": "Mirage",
         "POE_CONTACT_EMAIL": "your@email.com"
+        // Optional — add POE_CLIENT_ID once you have a developer account:
+        // "POE_CLIENT_ID": "your-client-id-here"
       }
     },
     "poemcp": {
