@@ -1,0 +1,2 @@
+# Local MCP config — contains credentials, never commit
+.mcp.json

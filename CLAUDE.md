@@ -173,6 +173,13 @@ The PathOfBuilding submodule is already on the `api-stdio` branch. Point `POB_FO
 
 ## Step 6 — Configure your MCP client
 
+A ready-to-edit template is included at the repo root: copy `.mcp.json.example` to `.mcp.json` and replace the four `CHANGE_ME` placeholders (clone path ×3, PoB builds path, `POE_SESSION_ID`, `POE_ACCOUNT_NAME`). Do **not** commit `.mcp.json` — it contains your session cookie.
+
+```bash
+cp .mcp.json.example .mcp.json
+# then edit .mcp.json
+```
+
 ### Claude Code (`.mcp.json` in workspace root)
 
 ```json

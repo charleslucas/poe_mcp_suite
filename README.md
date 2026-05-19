@@ -75,6 +75,45 @@ To use `pob-mcp` in live mode, launch Path of Building via `pob-mcp/LaunchPoBWit
 
 ---
 
+## MCP Client Configuration
+
+### 1. Copy the template
+
+A `.mcp.json.example` is included at the repo root. Copy it to `.mcp.json` and fill in the four `CHANGE_ME` values:
+
+```bash
+cp .mcp.json.example .mcp.json
+# then open .mcp.json and edit it
+```
+
+The four things to change:
+
+| Placeholder | What to put |
+|-------------|-------------|
+| `/CHANGE_ME/poe_mcp_suite` (×3) | Absolute path to your clone, e.g. `C:/Users/you/tools/poe_mcp_suite` |
+| `C:/Users/CHANGE_ME/AppData/...` | Your PoB builds folder — the Windows default is shown; adjust username or path if needed |
+| `CHANGE_ME_your_POESESSID_cookie` | Your `POESESSID` session cookie (see below) |
+| `CHANGE_ME_YourAccount#1234` | Your PoE account name including the `#` discriminator |
+
+> **Security:** `.mcp.json` contains your session cookie — treat it like a password. It is listed in `.gitignore` and must never be committed.
+
+### 2. Get your POESESSID cookie
+
+`POE_SESSION_ID` is required for importing private characters and running weighted trade queries. To find it:
+
+1. Log in to [pathofexile.com](https://www.pathofexile.com)
+2. Open browser DevTools → Application (Chrome) or Storage (Firefox) → Cookies → `pathofexile.com`
+3. Copy the value of the `POESESSID` cookie
+
+### 3. Claude Desktop vs Claude Code
+
+- **Claude Code** — `.mcp.json` goes in the workspace root (already where you put it above)
+- **Claude Desktop** — paste the same `mcpServers` block into:
+  - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+  - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+---
+
 ## Tool Reference
 
 Each submodule includes a `TOOLS.md` with a full list of available tools:
