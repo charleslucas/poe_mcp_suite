@@ -3,3 +3,6 @@
 
 # Per-character analysis notes — kept local, may reference character names/build details
 character_analyses/
+
+# Cached game knowledge from wiki/external sources — kept local for fast lookup, regenerable
+reference_data/
