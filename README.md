@@ -4,7 +4,35 @@ A suite of [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) serv
 
 Each server runs independently and exposes a set of tools that Claude can call during conversation. Together they allow Claude to act as an informed PoE assistant: loading your actual build in Path of Building, simulating node choices, checking prices on poe.ninja, searching trade, scoring stash tab items, and more — all without leaving the chat.
 
+poe_mcp_suite is a master git repo that acts a wrapper for four independently developed MCP tools and some other useful utilities.
+
+Point your Claude instance, or other AI at the CLAUDE.md file, and it should find everything it needs to install, connect to Path of Exile and Path of Building, and use all the various API calls for the tools.
+
+If you have any issues or suggestions feel free to e-mail at zerosquaredio@gmail.com, or make changes in your own repos and create pull requests back to this one. 
+
 ---
+
+## Tool Reference
+
+Each submodule includes a `TOOLS.md` with a full list of available tools:
+
+- [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md)
+- [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md)
+- [POEMCP/TOOLS.md](POEMCP/TOOLS.md)
+- [PathOfBuilding/src/API/TOOLS.md](PathOfBuilding/src/API/TOOLS.md)
+
+---
+
+## Credits
+
+**Path of Building Community**
+The PathOfBuilding submodule is a fork of Path of Building Community, originally created by David Gowor and maintained by the PoB Community team.
+- Upstream repo: [PathOfBuildingCommunity/PathOfBuilding](https://github.com/PathOfBuildingCommunity/PathOfBuilding)
+
+**ianderse/pob-mcp**
+The pob-mcp server started as a fork of ianderse's pob-mcp project.
+- Original repo: [ianderse/pob-mcp](https://github.com/ianderse/pob-mcp)
+
 
 ## Servers
 
@@ -147,25 +175,3 @@ The four things to change:
   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
 
----
-
-## Tool Reference
-
-Each submodule includes a `TOOLS.md` with a full list of available tools:
-
-- [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md)
-- [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md)
-- [POEMCP/TOOLS.md](POEMCP/TOOLS.md)
-- [PathOfBuilding/src/API/TOOLS.md](PathOfBuilding/src/API/TOOLS.md)
-
----
-
-## Credits
-
-**Path of Building Community**
-The PathOfBuilding submodule is a fork of Path of Building Community, originally created by David Gowor and maintained by the PoB Community team.
-- Upstream repo: [PathOfBuildingCommunity/PathOfBuilding](https://github.com/PathOfBuildingCommunity/PathOfBuilding)
-
-**ianderse/pob-mcp**
-The pob-mcp server started as a fork of ianderse's pob-mcp project.
-- Original repo: [ianderse/pob-mcp](https://github.com/ianderse/pob-mcp)
