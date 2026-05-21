@@ -269,12 +269,14 @@ For poe-mcp-server: *"What's the current price of a Mirror of Kalandra?"* → Cl
 | PathOfBuilding API fork overview | [`PathOfBuilding/README.md`](PathOfBuilding/README.md) |
 | PathOfBuilding Lua TCP action reference | [`PathOfBuilding/src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md) |
 | Engineering decisions and bug history | [`pob-mcp/docs/DEVELOPMENT_HISTORY.md`](pob-mcp/docs/DEVELOPMENT_HISTORY.md) |
+| Task playbooks (workflow definitions) | [`playbooks/`](playbooks/) |
 
 ---
 
 ## Notes for Claude
 
 - **Your built-in PoE knowledge is roughly current as of mid-2024.** Content, balance changes, and mechanics introduced after that point may be missing or wrong in your training data. When answering questions about game mechanics, items, or skills, proactively use the MCP tools to pull current data rather than relying solely on training: `fetch_wiki_page` for item/passive descriptions, `ninja_lookup`/`currency_overview` for prices, and the live PoB TCP connection for calc results. Tell the user when you're uncertain whether your training reflects the current patch, and always defer to live tool results over training intuition when they conflict.
+- **Load the matching playbook from `playbooks/` at the start of recognizable task types.** Playbooks are workflow definitions for recurring task shapes (DPS analysis, atlas planning, etc.). Each playbook has a structured triage step to scope the work, a data-load matrix that gates which sources to fetch, an analysis pattern, an output shape, and a pitfalls section with concrete lessons from prior sessions. Loading the playbook BEFORE pulling data prevents context-wasteful broad sweeps. Playbooks are committed (workflow definitions, not personal data); start a new one whenever a task shape repeats enough to warrant the structure.
 - **Check `reference_data/` first for cached game knowledge.** Eldritch implicit pools, crafting mods, shrine details, GGG official tree exports, and other slowly-changing game data live there. Read the frontmatter (`fetched:` date and `league:`) to check staleness. If outdated or missing, fetch from source and update the cache. The directory itself is gitignored (data is regenerable), but `reference_data/README.md` IS committed — read it on first contact with a fresh clone to see what should be set up. New clones need to follow the setup steps in that README (clone GGG repos for `skilltree/` and `atlastree/`, fetch Eldritch wiki pages, etc.).
 - **Check `character_analyses/<CharName>.md` before starting work on a character.** Per-character analyses (build concept, current state, upgrade plans, decisions log) live there. Gitignored. Update the doc with new findings as you go.
 - **TCP mode is strongly preferred** over headless — it shows every change in the PoB GUI in real time, requires no LuaJIT install, and auto-reconnects when PoB is restarted.
