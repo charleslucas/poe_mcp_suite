@@ -33,6 +33,23 @@ The PathOfBuilding submodule is a fork of Path of Building Community, originally
 The pob-mcp server started as a fork of ianderse's pob-mcp project.
 - Original repo: [ianderse/pob-mcp](https://github.com/ianderse/pob-mcp)
 
+**boschzilla / poe-mcp-server**
+The poe-mcp-server started as a fork of boschzilla's poe-mcp-server project.
+- Original repo: [boschzilla on GitHub](https://github.com/boschzilla) · [@boschzilla on X](https://x.com/boschzilla)
+
+**shalayiding / POEMCP**
+The POEMCP server started as a fork of shalayiding's POEMCP project.
+- Original repo: [shalayiding/POEMCP](https://github.com/shalayiding/POEMCP)
+
+---
+
+## A note on Claude's Path of Exile knowledge
+
+Claude's built-in PoE knowledge is roughly current as of mid-2024 — content, balance changes, and mechanics introduced after that point may be missing or wrong. **Before relying on Claude's game-mechanics advice, confirm it against current sources.**
+
+The MCP servers exist partly to bridge this gap: use `fetch_wiki_page` (POEMCP) for up-to-date item and passive descriptions, `ninja_lookup` / `currency_overview` for current prices, and `parse_pob` or the live PoB TCP connection for accurate calc results. When Claude's training intuition conflicts with a live tool result, trust the tool.
+
+---
 
 ## Servers
 
@@ -59,7 +76,7 @@ Key capabilities:
 - **Market**: local price-history database with risers/fallers/movers tracking
 - **Stash**: read stash tabs via the PoE API, search across tabs, score and price rare items
 - **Trade**: search the official PoE trade site with full filter support, look up stat IDs, fetch listing details
-- **Character**: fetch live gear and passive tree from the PoE API, export as PoB XML
+- **Character**: fetch live gear including all flask slots, ring slots (Ring1–3), and weapon swap slots from the PoE API; export as PoB XML. All required modules (`poe_lib`, `stash_cache`, `rare_scorer`, `poe_oauth`) are bundled — no external sibling repositories needed.
 - **Pricer**: price individual or batch items using poe.ninja and a rare-item scorer
 - **Filter**: read and edit loot filter files in place — find blocks, add/remove/replace rules, set BaseType priorities
 
@@ -97,14 +114,6 @@ Before cloning, make sure the following are installed and on your system PATH:
 | **Path of Building Community** | latest | TCP live mode | [GitHub releases](https://github.com/PathOfBuildingCommunity/PathOfBuilding/releases) |
 
 > **Windows users:** after installing Node.js, restart any open terminals (and VS Code / Claude Code) so the updated PATH takes effect. If Claude Code can't start the `pob` MCP server, this is almost always the cause.
-
----
-
-## A note on Claude's Path of Exile knowledge
-
-Claude's built-in PoE knowledge is roughly current as of mid-2024 — content, balance changes, and mechanics introduced after that point may be missing or wrong. **Before relying on Claude's game-mechanics advice, confirm it against current sources.**
-
-The MCP servers exist partly to bridge this gap: use `fetch_wiki_page` (POEMCP) for up-to-date item and passive descriptions, `ninja_lookup` / `currency_overview` for current prices, and `parse_pob` or the live PoB TCP connection for accurate calc results. When Claude's training intuition conflicts with a live tool result, trust the tool.
 
 ---
 
