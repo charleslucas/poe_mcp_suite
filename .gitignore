@@ -1,2 +1,5 @@
 # Local MCP config — contains credentials, never commit
 .mcp.json
+
+# Per-character analysis notes — kept local, may reference character names/build details
+character_analyses/

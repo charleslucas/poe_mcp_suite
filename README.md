@@ -183,4 +183,3 @@ The four things to change:
 - **Claude Desktop** — paste the same `mcpServers` block into:
   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
-
