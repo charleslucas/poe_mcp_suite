@@ -66,6 +66,8 @@ When you start a recognizable task — "help me improve my DPS," "what map mods 
 
 Playbooks are committed to this repo; if a task shape recurs and a playbook doesn't exist yet, Claude can draft one mid-session.
 
+> **Sharing playbooks back:** if you or Claude draft a new playbook that works well for you, consider opening a pull request to this repo so others can use it. See [`playbooks/README.md`](playbooks/README.md) for format conventions and submission guidelines. Pitfalls discovered in one session can save hours for the next person who hits the same wall.
+
 ### Reference data cache
 
 Slowly-changing game data — the official GGG passive tree exports, atlas tree, Eldritch implicit pools, shrine mechanics — gets cached locally in [`reference_data/`](reference_data/) so Claude doesn't re-fetch it every session. The directory itself is gitignored (the data is regenerable and large), but `reference_data/README.md` is committed and tells a fresh clone how to populate it. Each cached file has a `fetched:` date and `league:` in its frontmatter so staleness is easy to spot.
