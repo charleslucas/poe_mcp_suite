@@ -51,6 +51,41 @@ The MCP servers exist partly to bridge this gap: use `fetch_wiki_page` (POEMCP) 
 
 ---
 
+## How Claude organizes the work (and how you help)
+
+Path of Exile is a *huge* game — thousands of items, modifiers, passive nodes, atlas mechanics, league-specific systems, all interacting in ways that change every patch. No single source — not Claude's training, not the wiki, not poe.ninja, not Path of Building — is correct about all of it all the time. To make this manageable, the suite uses a small workflow framework that you'll see Claude reference during sessions.
+
+### Playbooks
+
+When you start a recognizable task — "help me improve my DPS," "what map mods should I run," "is this rare worth keeping?" — Claude loads a matching **playbook** from [`playbooks/`](playbooks/). Each playbook contains:
+
+- A short **triage questionnaire** to scope the work (goal, budget, locked items, etc.) — answering 3-4 questions up front saves a lot of back-and-forth later
+- A **data-load matrix** that determines which sources Claude needs (skip the atlas tree if we're doing a gear-only analysis, etc.)
+- The **analysis pattern** to follow, in order
+- A **pitfalls section** with concrete lessons from previous sessions ("Diamond Shrine does NOT grant ailment immunity" / "Body armour Eldritch has no mana cost mod") — so prior mistakes don't get repeated
+
+Playbooks are committed to this repo; if a task shape recurs and a playbook doesn't exist yet, Claude can draft one mid-session.
+
+### Reference data cache
+
+Slowly-changing game data — the official GGG passive tree exports, atlas tree, Eldritch implicit pools, shrine mechanics — gets cached locally in [`reference_data/`](reference_data/) so Claude doesn't re-fetch it every session. The directory itself is gitignored (the data is regenerable and large), but `reference_data/README.md` is committed and tells a fresh clone how to populate it. Each cached file has a `fetched:` date and `league:` in its frontmatter so staleness is easy to spot.
+
+### Per-character analyses
+
+Detailed build analyses for each character live in [`character_analyses/<League>-<CharName>.md`](character_analyses/) — also gitignored, since they include playstyle notes and personal info. Claude reads the doc at the start of a session and appends new findings, decisions, and crafting outcomes as you work.
+
+### Your role as co-pilot on data hygiene
+
+Claude will narrate what it's doing so you can follow along — *"Pulling current Eldritch pool from poewiki — cached version is 14 days old," "Writing this to `reference_data/X.md` so we don't refetch next time."* When data is stale, missing, or possibly out of date for the current league, **Claude will ask you for help**:
+
+- *"Can you paste an Eldritch boots mod list from your stash so I have current data?"*
+- *"Has GGG changed how rage decay works recently? My training says X but I want to verify."*
+- *"What does your current Atlas tree look like? — I don't have an authoritative source for the current league."*
+
+Your in-game observations are the single most authoritative source for your specific situation, and your help refreshing the local cache compounds — better data this session means faster, more accurate analyses in every future session. The game is constantly changing; you're the freshest data source we have.
+
+---
+
 ## Servers
 
 ### pob-mcp
