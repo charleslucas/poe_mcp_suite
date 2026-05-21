@@ -5,4 +5,6 @@
 character_analyses/
 
 # Cached game knowledge from wiki/external sources — kept local for fast lookup, regenerable
-reference_data/
+# Ignore the cached data itself but keep the README so future setup instructions are preserved
+reference_data/*
+!reference_data/README.md
