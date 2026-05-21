@@ -4,6 +4,19 @@ For Claude sessions where the user wants to improve a character's damage output.
 
 ---
 
+## Step 0 — Frame the work for the user
+
+Open with one sentence telling the user what's happening: *"Using the DPS Analysis playbook — I'll run a 4-question triage to scope this, then pull only the data sources we actually need."* Continue narrating throughout:
+
+- **Before fetching live data:** "Pulling current X from [source] — cache is stale / I want to verify the league hasn't changed this."
+- **When caching new data:** "Writing this to `reference_data/...` so future sessions don't re-fetch."
+- **When data is stale or missing:** ask the user. In-game observation beats any cache. Example: *"I don't have current Eldritch pool data for boots in Mirage league. Can you paste an Eldritch boots mod list from your stash, or should I refetch from the wiki?"*
+- **Frame the partnership:** when you ask for user input, explain why their help compounds — fresher local data means faster, more accurate future analyses, and their in-game state is the most authoritative source for their specific situation.
+
+See CLAUDE.md → "Notes for Claude" → narration bullet for the full norm.
+
+---
+
 ## Step 1 — Triage (structured)
 
 Before loading any data, run this scoping questionnaire via `AskUserQuestion`. Skip a question if the answer is unambiguous from prior conversation context.
