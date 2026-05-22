@@ -110,7 +110,7 @@ For multi-slot rebalances or large budget sessions, append to `character_analyse
 ## Step 5 — Pitfalls (lessons from past sessions)
 
 ### Stash API
-- **PoE stash API requires the full account name WITH discriminator, URL-encoded.** `Memophage#4428` must be sent as `Memophage%234428`. Stripping the `#discriminator` (`account.split('#')[0]`) causes persistent HTTP 403 on all stash endpoints even with a valid POESESSID. Character-window endpoints for character data are more lenient and accept the base name.
+- **PoE stash API requires the full account name WITH discriminator, URL-encoded.** `AccountName#1234` must be sent as `AccountName%231234`. Stripping the `#discriminator` (`account.split('#')[0]`) causes persistent HTTP 403 on all stash endpoints even with a valid POESESSID. Character-window endpoints for character data are more lenient and accept the base name.
 - **POESESSID expires.** If stash calls return 403 and character imports still work, the session is likely still valid but the stash endpoint has changed. Check the discriminator first. If that's correct, the session may genuinely be expired — get a fresh cookie from browser DevTools.
 - **Special stash tabs (MapStash, FragmentStash, CurrencyStash) return items nested in sub-tabs**, not at the top-level `items` array. The legacy API uses a `stash` list key; the OAuth API uses `children`. `stash_cache.py` handles both — but if items are missing from a special tab, check that the normalization is unwrapping correctly.
 
@@ -136,7 +136,7 @@ For multi-slot rebalances or large budget sessions, append to `character_analyse
 - **Jewel dex is capped well below 35.** A single viridian jewel cannot roll 35+ dex — the max roll for a single `+# to Dexterity` mod is ~25. If you need 35 dex from a jewel, it must come from two mods (e.g., `+# to Dex` + `+# to Dex and Int`). If no listings exist at that threshold, lower to 25+ and look for a ring instead.
 
 ### Stash scanning
-- **Check the Char Stash tab too.** Valuable items accumulate in character stashes, not just dump tabs. In one session, a 19-divine item (Foulborn Shackles of the Wretched) was sitting in the Char Stash unnoticed.
+- **Check the Char Stash tab too.** Valuable items accumulate in character stashes, not just dump tabs. Scanning only numbered dump tabs misses items that can be worth many divines.
 - **`price_tab` min_price filter always returns 0 results for rares** because `rare_scorer.price_estimate` is intentionally set to 0. The scorer identifies items worth checking on trade via `should_trade_check`, but does not produce chaos estimates. Use `mcp__poe__search_trade` for actual rare pricing.
 - **Unique items need ninja lookup, not the rare scorer.** The scorer only handles magic/rare items. For uniques, call `mcp__poe__ninja_lookup` directly.
 - **Foulborn variants are priced separately from base versions.** `Foulborn Ventor's Gamble` (Foulborn prefix = reroll) has its own price tier. Check both the base and Foulborn entries in ninja results.

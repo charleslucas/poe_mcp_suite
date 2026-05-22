@@ -98,7 +98,7 @@ Optional follow-up if relevant:
 
 ## Step 4 — Output shape
 
-Write recommendations into `character_analyses/{League}-{CharacterName}.md` if it exists; otherwise propose creating one. Use the existing structure from `MirageSixFingeredMan.md`:
+Write recommendations into `character_analyses/{League}-{CharacterName}.md` if it exists; otherwise propose creating one. Structure:
 
 - **Current State** section (refreshed)
 - **Gap Analysis** vs guide / vs target
