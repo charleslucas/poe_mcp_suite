@@ -129,6 +129,7 @@ For multi-slot rebalances or large budget sessions, append to `character_analyse
 - **Screams of the Desiccated grants Diamond Shrine buff only while NO flasks are active.** Any flask with a duration effect (Quicksilver, Granite, Basalt, "during effect" suffixes) disables the buff for its entire run time. Only Seething (instant recovery) life and mana flasks are compatible — they consume instantly with no lingering effect.
 - **"Grants Immunity to X for N seconds if used while X" (conditional immunity) does NOT count as an active flask** — the immunity is granted as a separate buff, not a flask effect. This is why Seething conditional-immunity flasks preserve the Diamond Shrine buff.
 - **"Immunity to X during Effect" DOES count as an active flask** and kills the Diamond Shrine buff for the duration. Never recommend "during effect" suffixes for this belt.
+- **Tinctures do NOT count as flasks for Screams of the Desiccated.** Activating a tincture does not remove the Diamond Shrine buff. Tinctures are a free damage layer for this belt — particularly strong with high elemental damage tinctures like Sap of the Seasons (95% increased elemental damage, up to 200% penetration).
 
 ### Trade search
 - **poe.ninja prices are variant-specific.** Queen's Decree is priced at 287c for 6-linked. A 2-socket Queen's Decree in your stash is worth ~10c. Always check the `links` and `variant` fields in ninja results before reporting a price.
