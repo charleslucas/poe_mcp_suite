@@ -60,6 +60,7 @@ Maintainer notes when reviewing PRs:
 |---|---|---|
 | [`dps-analysis.md`](dps-analysis.md) | Damage upgrade analysis: gear, tree, gems | Stable |
 | [`verify-install.md`](verify-install.md) | Post-install / post-pull health check across all four MCP servers | Stable |
+| [`atlas-planning.md`](atlas-planning.md) | Atlas node allocation, map mod blacklist, mechanic × build synergy, best map layouts | Stable |
 
 ---
 
