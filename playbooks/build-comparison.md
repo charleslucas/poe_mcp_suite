@@ -12,6 +12,12 @@ Triggers: "compare my build to this guide", "how does my tree differ from X", "w
 
 One sentence: *"Using the Build Comparison playbook — I'll diff the two builds from their XML first to find what matters, then simulate the meaningful differences in PoB."*
 
+**Before touching any build data, always load:**
+1. `reference_data/leagues/{current-league}.md` — league mechanics change every 3 months and directly affect which builds are strong. The current league name is in `.mcp.json` as `POE_LEAGUE`.
+2. `character_data/{account}/{char}/meta.json` if comparing against the user's current character — know the starting point before evaluating alternatives.
+
+**Gem and mechanic verification:** Your training data has a cutoff. New league gems, reworked skills, and changed interactions need verification from live sources before being used in analysis. Default: verify any gem that sounds new or that a guide creator describes as "new this league" via `mcp__poemcp__get_gem_detail` or `mcp__poemcp__fetch_wiki_page` before reporting its mechanics. Don't trust transcript descriptions alone — Korbyn described Void Shockwave Support as "drops from Uber Elder" when it's actually an Exceptional Support Gem (levels 1-3) socketed normally; the price and effectiveness claims were accurate, the drop source was not.
+
 Key principle: **XML-first, PoB second.** Parse both builds structurally before touching PoB. This gives you the triage map cheaply, so PoB analysis is targeted at the 5-10 differences that actually matter rather than a blind full-build swap.
 
 ---
