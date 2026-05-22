@@ -64,6 +64,7 @@ Maintainer notes when reviewing PRs:
 | [`build-comparison.md`](build-comparison.md) | Compare two builds from pobb.in/poedb.tw URLs or local files — tree diff, item diff, targeted PoB simulation | Stub |
 | [`multi-stage-analysis.md`](multi-stage-analysis.md) | Framework for analyses too large for a single context window — checkpoint files, stage protocol, resume-after-compact | Stable |
 | [`gear-shopping.md`](gear-shopping.md) | Trade site workflows, resistance/attribute math, stash scanning, price-check pitfalls | Stable |
+| [`character-leveling.md`](character-leveling.md) | Milestone PoB builds (every 20 levels), gear schedule from stash, passive tree planning, Notes tab, progression.md | Stable |
 
 ---
 
