@@ -40,6 +40,18 @@ Establish what the two builds ARE before diffing. Skip `AskUserQuestion` if cont
 - `reference_data/skilltree/data.json` — for node name lookups (already local, fast)
 - `character_data/{account}/{char}/meta.json` if one build IS the current character
 
+### If the guide is a YouTube URL
+Use `mcp__poemcp__fetch_youtube_description` (or `yt-dlp --get-description` via Bash as fallback).
+Returns the video title, full description, and any pobb.in/poedb.tw/pastebin links extracted —
+no API key needed, no browser needed.
+
+```bash
+yt-dlp --get-description "https://www.youtube.com/watch?v=..." 2>/dev/null
+```
+
+Build guide channels typically put the pobb.in link in the description alongside a Mobalytics/
+written guide URL. Extract the pobb.in link and proceed to the XML fetch step below.
+
 ### Fetch pobb.in/poedb.tw XMLs
 ```python
 # pobb.in
