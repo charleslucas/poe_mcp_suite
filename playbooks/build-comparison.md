@@ -70,6 +70,23 @@ Both require `User-Agent: pob-mcp/1.0 (contact: github.com/charleslucas/poe_mcp_
 - `<Item>` text blocks — full item text per slot
 - `<PlayerStat stat="..." value="..."/>` — stored stat values (last PoB calculation)
 
+### Add if the guide source is a YouTube URL
+```python
+# Get description + pobb.in links:
+mcp__poemcp__fetch_youtube_description(url)
+
+# Get spoken build theory (gear choices, node rationale, playstyle tips):
+mcp__poemcp__fetch_youtube_transcript(url)
+# → Returns title, chapter list, full prose transcript (~30-40k chars typical)
+# → Use include_timestamps=True to get MM:SS markers for section navigation
+# → Chapter markers map to sections like "14:29 Passive Tree/Jewels" —
+#    fetch with timestamps and search for the relevant chapter offset
+#    to read only the section you care about rather than the full transcript
+```
+The transcript captures reasoning that isn't in the description: *why* specific notables were chosen,
+which items are mandatory vs optional, what the build struggles with, budget vs upgrade priorities.
+Load it when you need to understand the author's intent, not just the build's stats.
+
 ### Add if Q1 = stat simulation
 Load the current build's live state via `lua_get_tree`, `get_equipped_items`, `lua_get_stats`.
 
@@ -91,6 +108,21 @@ Rank differences by likely impact:
 - Jewel socket count differences → moderate (cluster jewel budget)
 - Item slot differences → check stored stat delta first; simulate if >10% stat change
 - Travel node differences → usually just path routing, low impact unless they reveal a cluster jewel access point
+
+### 3b.5 — Budget reality check (add when goal = "choose build to play" or "plan upgrade path")
+
+Many guides ship multiple pobb.in links labelled cheap/standard/aspirational or by investment tier.
+The Mobalytics page context around each link usually names the tier. Extract all links and their labels
+before picking which to compare — comparing a league-starter spec against an endgame spec produces
+a misleading diff (100+ node delta driven by gear, not build concept).
+
+If the goal is "can I realistically reach aspirational tier?":
+1. Identify the 2-3 most expensive unique items in the aspirational build's item diff
+2. `mcp__poe__ninja_lookup` each for current league price
+3. `mcp__poe__price_tab` or `mcp__poe__scan_stash_tabs` to estimate current stash value
+4. Report the gap: "Mageblood costs ~40 div; your stash has ~8 div — aspirational tier is ~5× away"
+
+This prevents recommending Mageblood-tier trees to someone who just league-started.
 
 ### 3c — Targeted PoB simulation
 Only for the high-impact differences identified in 3b. Do NOT load both full builds into PoB sequentially — that replaces the current build and loses context.
