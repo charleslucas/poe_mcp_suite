@@ -286,6 +286,7 @@ Quick smoke test (less thorough):
   - `build.md` — narrative: concept, gap analysis vs guide, upgrade plans, open questions.
   - `journal.md` — append-only chronological decisions/crafting log. New entries go to the bottom under a `## YYYY-MM-DD` heading.
   - `snapshots/` — dated raw PoB XML exports for diffing over time.
+  - `buffer/` — regenerable files kept for convenience (YouTube transcripts, raw API responses, build guide XMLs). Safe to delete if space is needed; filename convention is `{description}_{video_id_or_source}.txt`.
 
   Account dirs are named `<Name>_<Discriminator>` (e.g. `Memophage_4428` for `Memophage#4428`). If the junction is missing on a fresh machine, recreate it: `mklink /J "<repo>/character_data" "%APPDATA%/poe_claude_data"`. See `character_data/README.md` for full conventions and backup guidance.
 - **TCP mode is strongly preferred** over headless — it shows every change in the PoB GUI in real time, requires no LuaJIT install, and auto-reconnects when PoB is restarted.
