@@ -274,6 +274,24 @@ Quick smoke test (less thorough):
 
 ## Notes for Claude
 
+- **Distinguish cursory from detailed analyses, and ask before starting a detailed one.**
+
+  **Cursory** — proceed immediately, no user approval needed:
+  - Uses only: training data, already-cached character files (`meta.json`, `inventory.json`, `journal.md`), a single pobb.in/poedb.tw XML diff, or a ninja price lookup
+  - Produces: a quick answer, a one-question comparison, a price check, a brief mechanic explanation
+  - Expected new tokens: <5K; no heavy data fetches; no wiki pages, transcripts, or tree node lookups
+
+  **Detailed** — present a plan and wait for approval before loading data:
+  - Will touch: passive tree node descriptions, wiki pages, YouTube transcripts, multiple builds, multiple data sources in sequence
+  - Involves: multiple distinct analysis stages (tree → items → gems → Ascendancy → synthesis), or iterating across those dimensions more than once
+  - Expected new tokens: >10K; likely needs context management
+  - Trigger phrases: "comprehensive analysis", "optimize my build", "compare these guides", "full review", or any request where you can enumerate 4+ distinct data sources needed
+
+  When a request is **detailed**, respond with a brief plan before touching any data:
+  > "This looks like a detailed analysis. Here's what I'd cover and in what order: [stage list with expected data sources]. Want me to proceed, or should we narrow the scope first?"
+
+  The user can then confirm, trim the scope, or ask for a cursory take instead. Never start loading tree nodes, transcripts, or wiki pages without this gate for detailed work.
+
 - **Check context headroom before loading heavy data.** Call `mcp__pob__get_context_usage` at the start of any session that will load multiple large sources (transcripts, full character data, tree diffs, league reference + gem lookups together). The tool reads only the last 8KB of the session JSONL — it's fast. Rough token costs to keep in mind:
 
   | Source | Approx tokens |

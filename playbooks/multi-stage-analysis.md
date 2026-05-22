@@ -8,6 +8,28 @@ The checkpoint file is the thread that connects stages across context resets. Ra
 
 ---
 
+## Step 0 — Triage: is this cursory or detailed?
+
+Before loading any data, classify the request:
+
+| Cursory | Detailed |
+|---|---|
+| Uses cached files + training data only | Will load tree nodes, wiki pages, transcripts, or multiple builds |
+| <5K expected new tokens | >10K expected new tokens |
+| Single question or quick diff | Multi-stage, iterative, or cross-referencing |
+| Proceed immediately | **Present plan, wait for approval** |
+
+If **detailed**, respond before touching any data:
+> "This looks like a detailed analysis. Here's what I'd cover:
+> - Stage 1: [tree validation] — loads [node IDs + atlastree descriptions]
+> - Stage 2: [item review] — loads [inventory.json + 2-3 wiki pages]
+> - Stage 3: [synthesis] — checkpoint only, no new data
+> Want me to proceed, or narrow the scope?"
+
+Only load data once the user confirms. This prevents spending 20K tokens on an analysis the user wanted as a 2-sentence summary.
+
+---
+
 ## The Core Pattern
 
 ```
