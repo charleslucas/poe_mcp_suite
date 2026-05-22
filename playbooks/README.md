@@ -62,6 +62,7 @@ Maintainer notes when reviewing PRs:
 | [`verify-install.md`](verify-install.md) | Post-install / post-pull health check across all four MCP servers | Stable |
 | [`atlas-planning.md`](atlas-planning.md) | Atlas node allocation, map mod blacklist, mechanic × build synergy, best map layouts | Stable |
 | [`build-comparison.md`](build-comparison.md) | Compare two builds from pobb.in/poedb.tw URLs or local files — tree diff, item diff, targeted PoB simulation | Stub |
+| [`multi-stage-analysis.md`](multi-stage-analysis.md) | Framework for analyses too large for a single context window — checkpoint files, stage protocol, resume-after-compact | Stable |
 | [`gear-shopping.md`](gear-shopping.md) | Trade site workflows, resistance/attribute math, stash scanning, price-check pitfalls | Stable |
 
 ---
