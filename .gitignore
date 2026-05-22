@@ -1,8 +1,12 @@
 # Local MCP config — contains credentials, never commit
 .mcp.json
 
-# Per-character analysis notes — kept local, may reference character names/build details
-character_analyses/
+# Per-character analysis notes — kept local, may reference character names/build details.
+# The directory itself is a junction (Windows) / symlink (Unix) into an external dir
+# (%APPDATA%/poe_claude_data on Windows). The real data lives outside the repo so it
+# survives `rm -rf` of the suite and can be backed up / transferred independently.
+# See character_data/README.md (i.e. the README inside the junction target) for the layout.
+character_data
 
 # Cached game knowledge from wiki/external sources — kept local for fast lookup, regenerable
 # Ignore the cached data itself but keep the README so future setup instructions are preserved

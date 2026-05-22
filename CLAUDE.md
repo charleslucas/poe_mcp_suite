@@ -246,13 +246,12 @@ Same JSON block in:
 
 ## Verifying the installation
 
-With PoB running via `pob-mcp/LaunchPoBWithAPI.bat` and a build open, ask Claude:
-> "Use lua_start and tell me the current build's DPS and life."
+For a thorough, repeatable check after any fresh clone, `git pull`, submodule bump, or `.mcp.json` change, load [`playbooks/verify-install.md`](playbooks/verify-install.md) and run the four-tier suite. It exercises the filesystem layout, then each MCP server in turn, and ends with a single green/red summary table. Includes a regression test for the MapStash crash fix.
 
-Claude connects to PoB, loads stats, and responds with numbers matching what PoB shows. In PoB's console you should see `>> get_stats` / `<< get_stats ok`.
-
-For POEMCP: *"What does Headhunter do?"* → Claude calls `get_item_detail`.
-For poe-mcp-server: *"What's the current price of a Mirror of Kalandra?"* → Claude calls `ninja_lookup`.
+Quick smoke test (less thorough):
+- With PoB running via `pob-mcp/LaunchPoBWithAPI.bat` and a build open, ask Claude: *"Use lua_start and tell me the current build's DPS and life."* Console should show `>> get_stats` / `<< get_stats ok`.
+- For POEMCP: *"What does Headhunter do?"* → Claude calls `get_item_detail`.
+- For poe-mcp-server: *"What's the current price of a Mirror of Kalandra?"* → Claude calls `ninja_lookup`.
 
 ---
 
@@ -281,7 +280,14 @@ For poe-mcp-server: *"What's the current price of a Mirror of Kalandra?"* → Cl
 - **Narrate the process so the user becomes a co-pilot on data hygiene.** When you start a recognized task, say which playbook you're loading and why ("Using the DPS Analysis playbook — quick triage first, then I'll pull these data sources..."). When you fetch live data, say so ("Pulling current Eldritch pool from poewiki — the cached version is 14 days old"). When you cache new data, say so ("Writing this to `reference_data/X.md` so we don't refetch next time"). When data is stale, missing, or you suspect a league rule changed, **ask the user for help**: "I don't have current data for X. Quickest path is for you to check in-game and paste what you see — that's more authoritative than the wiki anyway." Frame their participation as a force multiplier ("Up-to-date local data lets me run faster, more accurate analyses next time"), not a chore. Game knowledge has a half-life; the user's in-game observations are always more current than any cache or wiki.
 - **Check `reference_data/` first for cached game knowledge.** Eldritch implicit pools, crafting mods, shrine details, GGG official tree exports, and other slowly-changing game data live there. Read the frontmatter (`fetched:` date and `league:`) to check staleness. If outdated or missing, fetch from source and update the cache. The directory itself is gitignored (data is regenerable), but `reference_data/README.md` IS committed — read it on first contact with a fresh clone to see what should be set up. New clones need to follow the setup steps in that README (clone GGG repos for `skilltree/` and `atlastree/`, fetch Eldritch wiki pages, etc.).
 - **At the start of any session involving current-league content, load `reference_data/leagues/{current-league}.md` if it exists.** Per-league mechanic summaries cover the league-specific drop tables, unique items, scarab/atlas-node availability, and strategic implications — things that change every 3 months and aren't in Claude's training. The current league name is set in `.mcp.json` as `POE_LEAGUE`. If the file doesn't exist for the current league, generate it from the poewiki page (`fetch_wiki_page` on `https://www.poewiki.net/wiki/{LeagueName}_league`) on first use and write it back as a cache.
-- **Check `character_analyses/<CharName>.md` before starting work on a character.** Per-character analyses (build concept, current state, upgrade plans, decisions log) live there. Gitignored. Update the doc with new findings as you go.
+- **Check `character_data/<Account>/<Character>/` before starting work on a character.** Per-character data lives in an external cache (real path: `%APPDATA%/poe_claude_data/` on Windows) exposed inside the repo via a directory junction at `character_data/`. The junction is gitignored; the data outlives the repo and can be backed up independently. Layout per character:
+  - `meta.json` — identity + current stats snapshot (class, level, league, life/ES/DPS, masteries, bandit). Read this first to scope any task.
+  - `inventory.json` — equipped items, flasks, jewels, eldritch implicits. Update structurally via Edit, not full rewrite.
+  - `build.md` — narrative: concept, gap analysis vs guide, upgrade plans, open questions.
+  - `journal.md` — append-only chronological decisions/crafting log. New entries go to the bottom under a `## YYYY-MM-DD` heading.
+  - `snapshots/` — dated raw PoB XML exports for diffing over time.
+
+  Account dirs are named `<Name>_<Discriminator>` (e.g. `Memophage_4428` for `Memophage#4428`). If the junction is missing on a fresh machine, recreate it: `mklink /J "<repo>/character_data" "%APPDATA%/poe_claude_data"`. See `character_data/README.md` for full conventions and backup guidance.
 - **TCP mode is strongly preferred** over headless — it shows every change in the PoB GUI in real time, requires no LuaJIT install, and auto-reconnects when PoB is restarted.
 - **`POE_SESSION_ID` is sensitive** — treat it like a password. It enables importing private characters and running weighted trade queries. Never log or commit it.
 - **PoB must be launched via `pob-mcp/LaunchPoBWithAPI.bat`**, not the normal shortcut, for TCP mode to work.

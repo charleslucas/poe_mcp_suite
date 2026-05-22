@@ -59,6 +59,7 @@ Maintainer notes when reviewing PRs:
 | Playbook | Covers | Status |
 |---|---|---|
 | [`dps-analysis.md`](dps-analysis.md) | Damage upgrade analysis: gear, tree, gems | Stable |
+| [`verify-install.md`](verify-install.md) | Post-install / post-pull health check across all four MCP servers | Stable |
 
 ---
 
