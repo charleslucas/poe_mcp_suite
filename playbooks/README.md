@@ -61,13 +61,13 @@ Maintainer notes when reviewing PRs:
 | [`dps-analysis.md`](dps-analysis.md) | Damage upgrade analysis: gear, tree, gems | Stable |
 | [`verify-install.md`](verify-install.md) | Post-install / post-pull health check across all four MCP servers | Stable |
 | [`atlas-planning.md`](atlas-planning.md) | Atlas node allocation, map mod blacklist, mechanic × build synergy, best map layouts | Stable |
+| [`gear-shopping.md`](gear-shopping.md) | Trade site workflows, resistance/attribute math, stash scanning, price-check pitfalls | Stable |
 
 ---
 
 ## Wishlist (playbooks worth writing)
 
 - **atlas-planning.md** — Atlas tree allocation, map mod priorities, league mechanic farming choices. Biggest current MCP gap (no tool covers atlas).
-- **gear-shopping.md** — Trade site workflows, stat ID lookups, weighted queries, price-check pitfalls.
 - **crafting-decisions.md** — Eldritch implicit choices, bench crafting, corruption gambling expected value.
 - **defense-audit.md** — EHP analysis, recovery sources, ailment immunity coverage, layered defenses.
 - **league-start-character-pick.md** — Annual workflow leaning on guides + class meta + early-league economy.
