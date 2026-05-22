@@ -48,7 +48,7 @@ Run via `AskUserQuestion`. Skip any question where the answer is already clear f
 ### Always load
 - Equipped items: `mcp__pob__get_equipped_items`
 - Current stats (resistances, attributes, life, DPS): `mcp__pob__lua_get_stats(category='all')`
-- Character analysis doc if it exists: `character_analyses/{League}-{CharacterName}.md`
+- Character analysis doc if it exists: `character_data/{Account}/{Character}/journal.md`
 
 ### Add if shopping for a resistance-critical slot (ring, belt, amulet, body, boots, gloves)
 - Map ALL resistance contributions before proposing any swap — know exactly what each piece provides so the math is correct before hitting trade. A ring might be contributing fire + cold + lightning + chaos simultaneously from implicit AND explicit mods.
@@ -101,7 +101,7 @@ For quick single-item swaps, a chat summary is enough:
 - What it fixes vs what it trades away
 - Any follow-up needed (craft the open suffix, check PoB for attribute issues, etc.)
 
-For multi-slot rebalances or large budget sessions, append to `character_analyses/{League}-{CharacterName}.md`:
+For multi-slot rebalances or large budget sessions, append to `character_data/{Account}/{Character}/journal.md`:
 - **Gear Swap Log** dated entry with: slot, old item, new item, cost, stat delta
 - Any identified follow-on gaps (e.g., "still 3% cold short — watching for a helm enchant")
 

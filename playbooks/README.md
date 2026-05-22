@@ -67,7 +67,6 @@ Maintainer notes when reviewing PRs:
 
 ## Wishlist (playbooks worth writing)
 
-- **atlas-planning.md** — Atlas tree allocation, map mod priorities, league mechanic farming choices. Biggest current MCP gap (no tool covers atlas).
 - **crafting-decisions.md** — Eldritch implicit choices, bench crafting, corruption gambling expected value.
 - **defense-audit.md** — EHP analysis, recovery sources, ailment immunity coverage, layered defenses.
 - **league-start-character-pick.md** — Annual workflow leaning on guides + class meta + early-league economy.
