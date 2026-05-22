@@ -178,6 +178,21 @@ Then delete the checkpoint file from buffer/ — the journal is the permanent re
 
 ---
 
+## Logging completed analyses
+
+Append an entry to `character_data/analysis_log.md` after any multi-stage or context-heavy analysis. This log accumulates empirical token cost data and helps future Claudes calibrate what fits in one session vs. what needs staging. The playbook estimates are rough — actual costs may differ and the log is how we find out.
+
+**Minimum to log:**
+- Intent + stages completed
+- Context % at start and at each checkpoint
+- Actual token cost for each data source loaded (check against calibration table)
+- Whether any data was lost to compaction
+- Final outcome
+
+**When to update the calibration table:** if any data source's actual cost differs from the estimate by more than 30%, update the `analysis_log.md` calibration table row. Over time this gives future Claudes accurate budgets instead of rough guesses.
+
+---
+
 ## Pitfalls
 
 - **Don't skip the checkpoint write.** If you load 8KB of tree data, analyze it, and then the user asks a follow-up question that pushes context over 90% before you write the findings — those findings are gone. Write immediately after analysis, before any user interaction that might trigger more data loads.
