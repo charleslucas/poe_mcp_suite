@@ -47,6 +47,8 @@ Optional follow-up if relevant:
 ## Step 2 — Data loads (driven by Q1–Q4 answers)
 
 ### Always load
+- **Pre-flight:** `mcp__pob__get_context_usage` — DPS sessions can stack up quickly (character data + league reference + eldritch pools + gem wikis + trade results). If already at 60%+, skip eldritch/wiki loads and work from cached `reference_data/` only. If 80%+, write the upgrade plan to `journal.md` before running trade searches.
+
 - Character live state via `mcp__pob__lua_get_stats` (in-memory if PoB-TCP active) OR `mcp__pob__get_build_stats` (disk file)
 - Equipped items via `mcp__pob__get_equipped_items`
 - Main skill setup via `mcp__pob__get_skill_setup`

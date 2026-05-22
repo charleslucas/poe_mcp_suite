@@ -41,6 +41,9 @@ Establish what the two builds ARE before diffing. Skip `AskUserQuestion` if cont
 
 ## Step 2 — Data loads
 
+### Pre-flight: check context headroom
+Call `mcp__pob__get_context_usage` before loading anything. Build comparison sessions are context-heavy: two XMLs, tree diffs, optional transcripts (10-12K tokens each), league reference, gem lookups. If already at 60%+, cut the transcript step and rely on the cached summaries in `character_data/guides/{archetype}/synthesis.md` instead.
+
 ### Always load
 - Both build XMLs (or XML + live PoB state for the current character)
 - `reference_data/skilltree/data.json` — for node name lookups (already local, fast)

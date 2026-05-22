@@ -274,6 +274,22 @@ Quick smoke test (less thorough):
 
 ## Notes for Claude
 
+- **Check context headroom before loading heavy data.** Call `mcp__pob__get_context_usage` at the start of any session that will load multiple large sources (transcripts, full character data, tree diffs, league reference + gem lookups together). The tool reads only the last 8KB of the session JSONL — it's fast. Rough token costs to keep in mind:
+
+  | Source | Approx tokens |
+  |---|---|
+  | `meta.json` | ~500 |
+  | `inventory.json` | ~2-3K |
+  | `build.md` + `journal.md` | ~8-12K combined |
+  | YouTube transcript (38K chars) | ~10-12K |
+  | `reference_data/leagues/{league}.md` | ~4-5K |
+  | `mcp__pob__lua_get_stats` result | ~500-1K |
+  | Python-processed output (tree diff, XML parse) | **only the output**, not the raw file — this is a key efficiency win |
+
+  **At 60%+:** prefer cached summaries over raw data; use compact tool outputs (category-specific stats, not `category='all'`); read `meta.json` + `journal.md` rather than every character file.
+  **At 80%+:** write key findings to `character_data/` before continuing; consider asking the user to `/compact`.
+  A PreToolUse hook in `.claude/settings.json` warns automatically at 70%+ (CLI sessions only; VS Code extension reads the hook config but env vars may not be available). The MCP tool works in both environments.
+
 - **Your built-in PoE knowledge is roughly current as of mid-2024.** Content, balance changes, and mechanics introduced after that point may be missing or wrong in your training data. When answering questions about game mechanics, items, or skills, proactively use the MCP tools to pull current data rather than relying solely on training: `fetch_wiki_page` for item/passive descriptions, `ninja_lookup`/`currency_overview` for prices, and the live PoB TCP connection for calc results. Tell the user when you're uncertain whether your training reflects the current patch, and always defer to live tool results over training intuition when they conflict.
 - **Load the matching playbook from `playbooks/` at the start of recognizable task types.** Playbooks are workflow definitions for recurring task shapes (DPS analysis, atlas planning, etc.). Each playbook has a structured triage step to scope the work, a data-load matrix that gates which sources to fetch, an analysis pattern, an output shape, and a pitfalls section with concrete lessons from prior sessions. Loading the playbook BEFORE pulling data prevents context-wasteful broad sweeps. Playbooks are committed (workflow definitions, not personal data); start a new one whenever a task shape repeats enough to warrant the structure. See [`playbooks/README.md`](playbooks/README.md) for the required format.
 - **When you draft a new playbook (or significantly extend an existing one with pitfalls), tell the user it would be valuable to PR back to the main repo.** A playbook that helped one session likely helps everyone else running similar work. Frame it as community contribution, not chore: *"This playbook captured some hard-won lessons from our session today — if you'd like to PR it back to [poe_mcp_suite](https://github.com/charleslucas/poe_mcp_suite), other users (and their Claudes) would benefit from the same shortcuts."* See `playbooks/README.md` for submission guidelines.

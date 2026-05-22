@@ -42,6 +42,7 @@ Deliver these via `AskUserQuestion` before loading any data. Skip questions answ
 ### Always load
 | Source | Tool | Why |
 |---|---|---|
+| **Pre-flight** | `mcp__pob__get_context_usage` | Atlas sessions load character data + league reference + atlastree queries. Check headroom first; if 60%+ skip the atlastree Python query and rely on cached node names from prior sessions. |
 | Character meta + build | `Read character_data/{account}/{char}/meta.json` + `mcp__pob__lua_get_stats` (category='all') | Core mechanic, damage type, leech reliance, resistances |
 | League reference | `Read reference_data/leagues/{league}.md` | Mirage (or current league) mechanic interactions, Mirage cluster gap status |
 | Atlas tree (permanent nodes) | `python3` script against `reference_data/atlastree/league.json` — filter by mechanic keywords | Exact node names and stat lines |
