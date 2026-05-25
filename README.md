@@ -25,6 +25,12 @@ Each submodule includes a `TOOLS.md` with a full list of available tools:
 
 ## Credits
 
+**Grinding Gear Games**
+This project would not exist without [Path of Exile](https://www.pathofexile.com) — the game itself, the ongoing development, and GGG's decision to publish official passive tree and atlas tree data as open repositories that the community can fork and build on.
+- Game: [pathofexile.com](https://www.pathofexile.com)
+- Official skill tree data: [grindinggear/skilltree-export](https://github.com/grindinggear/skilltree-export) (upstream of our [poe-skilltree-export](https://github.com/charleslucas/poe-skilltree-export) fork)
+- Official atlas tree data: [grindinggear/atlastree-export](https://github.com/grindinggear/atlastree-export) (upstream of our [poe-atlastree-export](https://github.com/charleslucas/poe-atlastree-export) fork)
+
 **Path of Building Community**
 The PathOfBuilding submodule is a fork of Path of Building Community, originally created by David Gowor and maintained by the PoB Community team.
 - Upstream repo: [PathOfBuildingCommunity/PathOfBuilding](https://github.com/PathOfBuildingCommunity/PathOfBuilding)
@@ -138,6 +144,24 @@ Key capabilities:
 A fork of Path of Building Community with a JSON-RPC API layer added (`src/API/`). This is the calculation backend that `pob-mcp` connects to. It exposes PoB's full calc engine — passive tree simulation, item stat computation, full DPS/EHP calculations — over a TCP socket (live GUI mode) or stdio (headless mode).
 
 The API additions live on the `api-stdio` branch and are designed to be non-destructive: the PoB GUI remains fully usable while Claude works with the same build through the API.
+
+---
+
+## Data Submodules
+
+In addition to the four MCP server submodules above, two data repositories live under [`reference_data/`](reference_data/) as submodules. These are community forks of GGG's official tree exports, augmented with patches overlay files for corrections that GGG hasn't yet published.
+
+### poe-skilltree-export *(community fork)*
+**Repo:** [charleslucas/poe-skilltree-export](https://github.com/charleslucas/poe-skilltree-export) · **Path:** `reference_data/skilltree/`
+
+Fork of GGG's official passive skill tree export. The upstream `data.json` is preserved verbatim; a sibling `data_patches.json` carries verified corrections with provenance metadata (who verified, when, against what source). Tools merge the two files at load time; on-disk, the GGG export stays pristine so `git merge upstream/master` works cleanly. See the fork's `PATCHES.md` for the protocol.
+
+### poe-atlastree-export *(community fork)*
+**Repo:** [charleslucas/poe-atlastree-export](https://github.com/charleslucas/poe-atlastree-export) · **Path:** `reference_data/atlastree/`
+
+Same convention applied to GGG's atlas tree export. Identical patch format and merge policy so a single tool can serve both.
+
+Both forks are real submodules and travel with the suite — `git clone --recurse-submodules` gets you everything. Each fork has `origin` pointing at the community fork and `upstream` pointing at GGG's repo, so pulling new GGG releases is a standard `git fetch upstream && git merge upstream/master` inside the submodule.
 
 ---
 
