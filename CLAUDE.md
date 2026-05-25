@@ -4,6 +4,14 @@
 
 **Before any analysis task:** Load [`playbooks/README.md`](playbooks/README.md) (meta-framework: cursory/detailed gate, context management, league pre-flight, narration norms, trust hierarchy) plus the matching specific playbook — **before** pulling any data. If no playbook exists for the task shape, note that and proceed; if the task recurs, write one.
 
+**Before extracting, modifying, or redistributing any Path of Exile game data — including writing to the `reference_data/skilltree/` or `reference_data/atlastree/` forks, or building any tooling that reads from a local PoE install — read [`legal_considerations.md`](legal_considerations.md).** It documents what the project deliberately does and does not redistribute, and why. Stay inside those boundaries:
+
+- **Safe to publish to the forks:** node IDs, positions, connections, group/orbit data, node names, integer stat values and stat-table references — i.e., the same kinds of fields GGG already publishes in their own `data.json`.
+- **Extract at runtime only — never commit to the forks or any public repo:** stat description templates (`passive_skill_stat_descriptions.txt`), Timeless Jewel transformation tables (`AlternatePassiveSkills`, `AlternatePassiveAdditions`), mod pools, item bases, gem descriptions, lore text, and any other creative/expressive content from the game.
+- **Never extract:** art, icons, sounds, or anything else from `Bundles2/Art/`, `Bundles2/Audio/`, etc.
+
+If you're unsure whether a particular extraction or redistribution falls inside the conservative boundary, **stop and ask the user before proceeding**. Don't infer; check.
+
 ---
 
 - **Your built-in PoE knowledge is roughly current as of mid-2024.** Content, balance changes, and mechanics introduced after that point may be missing or wrong in your training data. Proactively use MCP tools to pull current data: `fetch_wiki_page` for item/passive descriptions, `ninja_lookup`/`currency_overview` for prices, live PoB TCP for calc results. Always defer to live tool results over training intuition when they conflict.

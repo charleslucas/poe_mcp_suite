@@ -16,3 +16,13 @@ reference_data/*
 !reference_data/README.md
 !reference_data/skilltree
 !reference_data/atlastree
+
+# Local game-data extraction scratch space.
+# See legal_considerations.md — most output from pathofexile-dat / bundle extraction is
+# "extract at runtime, never republish" content (stat description templates, AlternatePassive
+# tables, mod pools, etc.). Keep these strictly local.
+data-extraction-poc/
+data-extraction-cache/
+*.bundle.bin
+*.datc64
+poe-schema.json

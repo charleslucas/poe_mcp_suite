@@ -23,6 +23,14 @@ Each submodule includes a `TOOLS.md` with a full list of available tools:
 
 ---
 
+## Legal & Attribution
+
+This suite uses, processes, and in some cases redistributes data that originated in Path of Exile (© Grinding Gear Games). Before contributing or publishing forks, please read [`legal_considerations.md`](legal_considerations.md) — it documents the architectural choices made to minimize redistribution, the community-tool precedent we rely on, and the compliance posture (we will take things down promptly if GGG objects).
+
+**Short version:** we follow GGG's lead by publishing only the kind of structural tree data they already publish themselves; anything richer (stat description templates, jewel transformation tables, mod pools) is extracted from the user's local install at runtime and never persisted to a public repo. The suite is unaffiliated with and not endorsed by Grinding Gear Games.
+
+---
+
 ## Credits
 
 **Grinding Gear Games**
