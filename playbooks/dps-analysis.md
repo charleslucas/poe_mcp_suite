@@ -6,14 +6,9 @@ For Claude sessions where the user wants to improve a character's damage output.
 
 ## Step 0 — Frame the work for the user
 
-Open with one sentence telling the user what's happening: *"Using the DPS Analysis playbook — I'll run a 4-question triage to scope this, then pull only the data sources we actually need."* Continue narrating throughout:
+*"Using the DPS Analysis playbook — I'll run a 4-question triage to scope this, then pull only the data sources we actually need."*
 
-- **Before fetching live data:** "Pulling current X from [source] — cache is stale / I want to verify the league hasn't changed this."
-- **When caching new data:** "Writing this to `reference_data/...` so future sessions don't re-fetch."
-- **When data is stale or missing:** ask the user. In-game observation beats any cache. Example: *"I don't have current Eldritch pool data for boots in Mirage league. Can you paste an Eldritch boots mod list from your stash, or should I refetch from the wiki?"*
-- **Frame the partnership:** when you ask for user input, explain why their help compounds — fresher local data means faster, more accurate future analyses, and their in-game state is the most authoritative source for their specific situation.
-
-See CLAUDE.md → "Notes for Claude" → narration bullet for the full norm.
+Task-specific narration: before searching trade, say which pseudo-stat IDs you're using and why (they match items regardless of which explicit line the stat rolls on). Before simulating a swap in PoB, say so — numbers on paper can hide attribute or resistance problems that only show up live.
 
 ---
 
@@ -47,12 +42,11 @@ Optional follow-up if relevant:
 ## Step 2 — Data loads (driven by Q1–Q4 answers)
 
 ### Always load
-- **Pre-flight:** `mcp__pob__get_context_usage` — DPS sessions can stack up quickly (character data + league reference + eldritch pools + gem wikis + trade results). If already at 60%+, skip eldritch/wiki loads and work from cached `reference_data/` only. If 80%+, write the upgrade plan to `journal.md` before running trade searches.
-
-- Character live state via `mcp__pob__lua_get_stats` (in-memory if PoB-TCP active) OR `mcp__pob__get_build_stats` (disk file)
-- Equipped items via `mcp__pob__get_equipped_items`
-- Main skill setup via `mcp__pob__get_skill_setup`
-- The character's analysis doc if one exists: `character_analyses/{League}-{CharacterName}.md`
+- Pre-flight: `mcp__pob__get_context_usage` + league reference + character snapshot (see [`README.md`](README.md) section 2)
+- Character live state: `mcp__pob__lua_get_stats` (TCP) or `mcp__pob__get_build_stats` (disk)
+- Equipped items: `mcp__pob__get_equipped_items`
+- Main skill setup: `mcp__pob__get_skill_setup`
+- Character journal if it exists: `character_data/{Account}/{Character}/journal.md`
 
 ### Add if Q1 = Gear or All
 - League context (current league name affects ninja prices, mod pool, league mechanics): `mcp__poemcp__currency_overview`
@@ -143,13 +137,6 @@ These are concrete wrong-turns Claude has made before. Check these before promis
 
 ---
 
-## Trust hierarchy (also in `reference_data/README.md`)
+## Trust hierarchy
 
-When sources conflict, prefer in this order:
-1. Live in-game observation by the user (item pastes, character API)
-2. GGG official exports (`reference_data/skilltree/`, `reference_data/atlastree/`)
-3. Live PoB TCP for the loaded build
-4. Live wiki fetch via `mcp__poemcp__fetch_wiki_page`
-5. Cached `reference_data/` (verify freshness if stale-looking)
-6. PoB's bundled tree data
-7. Claude's training (last resort, often outdated)
+See [`README.md`](README.md) section 5 for the standard ordering.

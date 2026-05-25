@@ -6,13 +6,9 @@ For Claude sessions where the user wants to find a replacement or upgrade for a 
 
 ## Step 0 — Frame the work for the user
 
-Open with one sentence: *"Using the Gear Shopping playbook — quick triage first, then I'll pull the current build state and check the market."*
+*"Using the Gear Shopping playbook — quick triage first, then I'll pull the current build state and check the market."*
 
-Narration norms:
-- Before reading the build: "Pulling current equipped items and stats to map what we'd be giving up."
-- Before searching trade: "Searching trade with pseudo stat filters — these match items regardless of which explicit mod line the stat comes from."
-- When a result looks good: "Let me simulate this in PoB before recommending it — numbers on paper can hide attribute or resistance problems."
-- When trade returns nothing: lower the requirements incrementally and explain which stat was dropped and why.
+Task-specific narration: before searching trade, note that pseudo-stat filters are used (they match items regardless of which explicit line the stat rolls on). When a result looks good, simulate it in PoB before recommending — numbers on paper can hide attribute or resistance problems. When trade returns nothing, lower requirements incrementally and explain which stat was dropped and why.
 
 ---
 
@@ -146,10 +142,4 @@ For multi-slot rebalances or large budget sessions, append to `character_data/{A
 
 ## Trust hierarchy
 
-When sources conflict, prefer in this order:
-1. Live in-game observation by the user (item pastes, character API data)
-2. Live PoB TCP stats after simulating the swap
-3. Live trade API results (actual current listings)
-4. poe.ninja live lookup (cached 15 min in the MCP server)
-5. Cached `reference_data/` (check freshness)
-6. Claude's training (last resort — often outdated on prices, mod availability, and league mechanics)
+See [`README.md`](README.md) section 5. For gear shopping specifically: live trade API results and poe.ninja lookups (both current) rank above cached `reference_data/` for prices, since prices change daily.

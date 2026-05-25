@@ -10,7 +10,7 @@ For sessions where the user wants a structured leveling plan — gear schedule, 
 
 *"Using the Character Leveling playbook — I'll import the character, scan the stash for pre-farmed gear, check the build concept, then create milestone PoB builds (every 20 levels) with gear schedule, passive tree, and gem setup at each checkpoint."*
 
-Confirm upfront: this is a **detailed analysis** (multiple data loads, PoB tree planning, file creation). Present the stage list and wait for approval before loading data.
+This is always a **detailed analysis** — apply the cursory/detailed gate from [`README.md`](README.md) section 1: present the stage list and wait for approval before loading data.
 
 ---
 
