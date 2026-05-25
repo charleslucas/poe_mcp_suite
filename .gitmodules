@@ -11,3 +11,9 @@
 	path = PathOfBuilding
 	url = https://github.com/charleslucas/PathOfBuilding.git
 	branch = api-stdio
+[submodule "reference_data/skilltree"]
+	path = reference_data/skilltree
+	url = https://github.com/charleslucas/poe-skilltree-export.git
+[submodule "reference_data/atlastree"]
+	path = reference_data/atlastree
+	url = https://github.com/charleslucas/poe-atlastree-export.git

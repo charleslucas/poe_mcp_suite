@@ -59,7 +59,7 @@ Adapt and dispatch:
 >
 > Both pobb.in and poedb.tw require `User-Agent: pob-mcp/1.0`.
 >
-> Look up node names from `reference_data/skilltree/data.json`. If `reference_data/skilltree/data_patches.json` exists, apply it as an overlay before reading stats (see `reference_data/SKILLTREE_PATCHES.md`).
+> Look up node names from `reference_data/skilltree/data.json`. If `reference_data/skilltree/data_patches.json` exists, apply it as an overlay before reading stats (see `reference_data/skilltree/PATCHES.md`).
 >
 > **Return a compact digest (under 1.5K tokens) in this exact format:**
 >
@@ -203,14 +203,14 @@ This keeps comparison records discoverable in the journal alongside other decisi
 - Both platforms require a browser-like `User-Agent`; they return 403 without it.
 
 ### Unknown node IDs
-- Node IDs not present in `reference_data/skilltree/data.json` are likely new nodes from a patch the GGG export hasn't been re-tagged for. The sub-agent should flag them as "unknown ID {N}" in the Notes section, not silently drop them. If the discrepancy becomes load-bearing for a recommendation, follow the protocol in `reference_data/SKILLTREE_PATCHES.md` to log a patch entry once the in-game stats are confirmed.
+- Node IDs not present in `reference_data/skilltree/data.json` are likely new nodes from a patch the GGG export hasn't been re-tagged for. The sub-agent should flag them as "unknown ID {N}" in the Notes section, not silently drop them. If the discrepancy becomes load-bearing for a recommendation, follow the protocol in `reference_data/skilltree/PATCHES.md` to log a patch entry once the in-game stats are confirmed.
 
 ### PoB simulation pitfalls
 - **The two builds must NOT both be loaded into PoB.** Loading build B replaces build A. Always do the digest diff first; load only the build you'll simulate against.
 - **`lua_set_tree` drops cluster jewel internal passives** on builds with Large Cluster Jewels. Use `update_tree_delta` for tree edits in any cluster-jewel build.
 - **`lua_set_tree` wipes mastery effect selections.** `lua_import_character` preserves them.
 - **Mastery nodes are terminal in the tree graph.** You can allocate them but cannot route through them — neighbors that only connect via a mastery will be silently dropped on tree edits. See `tree-analysis.md` pitfall #1 for the full pattern.
-- **GGG export staleness.** When a notable's stats are load-bearing for a decision, cross-verify against in-game tooltip or `mcp__pob__search_tree_nodes`. See `tree-analysis.md`'s pitfall on this and `reference_data/SKILLTREE_PATCHES.md` for the correction workflow.
+- **GGG export staleness.** When a notable's stats are load-bearing for a decision, cross-verify against in-game tooltip or `mcp__pob__search_tree_nodes`. See `tree-analysis.md`'s pitfall on this and `reference_data/skilltree/PATCHES.md` for the correction workflow.
 - **`lua_reload_build` discards unsaved PoB GUI changes.** Confirm save state before reloading.
 
 ### Sub-agent pitfalls

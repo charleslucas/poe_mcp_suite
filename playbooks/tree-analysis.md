@@ -155,4 +155,4 @@ GGG's published skilltree export lags real game state — sometimes by months. A
 2. PoB's bundled tree data via `mcp__pob__search_tree_nodes` or `mcp__poemcp__get_passive_detail`
 3. The wiki (`fetch_wiki_page` on the node's individual page)
 
-If you find a discrepancy, log a patch entry in `reference_data/skilltree/data_patches.json` (see `reference_data/SKILLTREE_PATCHES.md` for format). Future sessions inherit the corrected data automatically. This is especially important for notable removals, where missing a stat line can cost real defensive value (life leech, max res, charge generation) without showing up in your analysis.
+If you find a discrepancy, log a patch entry in `reference_data/skilltree/data_patches.json` (see `reference_data/skilltree/PATCHES.md` for format). Future sessions inherit the corrected data automatically. This is especially important for notable removals, where missing a stat line can cost real defensive value (life leech, max res, charge generation) without showing up in your analysis.
