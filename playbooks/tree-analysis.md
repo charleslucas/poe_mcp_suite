@@ -46,8 +46,10 @@ Ask before loading anything. Many of these answers may already be in the journal
 
 ### Add if there are socketed jewels
 - `mcp__pob__find_jewel_affected_nodes` — identifies which allocated nodes are being TRANSFORMED by Timeless Jewels (Lethal Pride, Glorious Vanity, etc.). **Call this BEFORE filing a `report_tree_node_discrepancy` patch** — a tooltip discrepancy on a transformed node is the jewel doing its job, not a stale data source.
+- `mcp__pob__get_tree_node_with_timeless_jewels` — returns a single node's stats *with* the Timeless Jewel transformation applied (reads PoB's already-computed post-transformation state). Use this when you need the actual rendered transformed stats — replaces the manual tooltip-paste flow.
 - `mcp__pob__list_cluster_jewel_nodes` — summarizes what each socketed Cluster Jewel contributes (notables, smalls, sockets, small-passive bonuses). Cluster differences are often the biggest build-shape divergences.
 - `mcp__pob__evaluate_threshold_jewels` — checks each "With at least N <Attribute> in Radius, …" threshold against the current allocation. Useful when adding/removing nodes near a threshold-jewel socket (the threshold may turn on/off mid-edit).
+- `mcp__pob__list_radius_effect_jewels` — catches the long tail of "in Radius" uniques (Energy From Within, Healthy Mind, Fertile Mind, Might of the Meek, Brute Force Solution, etc.) that aren't Timeless or threshold jewels. Categorizes each (transform / grant / multiplier / other) and lists the allocated nodes in radius.
 
 ### Add if intent = DPS increase
 - `mcp__pob__lua_get_stats` to establish the DPS baseline before any changes
@@ -159,7 +161,7 @@ When the in-game tooltip on a node doesn't match what `mcp__pob__get_tree_node` 
 2. **GGG's data is stale.** Real but rare. Stats change between patches without the export being re-tagged.
 
 **Protocol:**
-1. **Call `mcp__pob__find_jewel_affected_nodes` first.** If the node appears in the result, the discrepancy is a jewel transformation — do NOT patch. Mention it to the user and (if needed) use the controlled-removal test in `reference_data/skilltree/PATCHES.md` to confirm.
-2. **If the node is NOT in `find_jewel_affected_nodes`** AND the discrepancy persists with the jewel unsocketed (per the blank-line tooltip test), then it's a genuine data gap. Use `mcp__pob__report_tree_node_discrepancy` to log a patch entry. The fork's `PATCHES.md` documents the verification protocol.
+1. **Call `mcp__pob__find_jewel_affected_nodes` first.** If the node appears in the result, the discrepancy is a jewel transformation — do NOT patch. Mention it to the user. Use `mcp__pob__get_tree_node_with_timeless_jewels` to retrieve the actual transformed stats (no tooltip paste needed — PoB has already computed them).
+2. **If the node is NOT in `find_jewel_affected_nodes`** AND the discrepancy persists with the jewel unsocketed (per the blank-line tooltip test in `reference_data/skilltree/PATCHES.md`), then it's a genuine data gap. Use `mcp__pob__report_tree_node_discrepancy` to log a patch entry. The fork's `PATCHES.md` documents the verification protocol.
 
 **Historical example (2026-05-25):** node 11730 "Endurance" appeared to have "+0.4% Attack Damage Leeched as Life" in-game beyond its base "+1 to Maximum Endurance Charges". We initially treated it as a stale-export miss and filed a patch. The controlled-removal test (jewel socketed vs unsocketed) revealed it was a Lethal Pride Karui transformation. The patch was retracted. The new `find_jewel_affected_nodes` tool turns that 5-minute manual verification into a one-call check.

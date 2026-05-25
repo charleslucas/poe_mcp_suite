@@ -14,11 +14,14 @@ If you have any issues or suggestions feel free to e-mail at zerosquaredio@gmail
 
 ## Tool Reference
 
-Each submodule includes a `TOOLS.md` with a full list of available tools:
+**[`TOOLS.md`](TOOLS.md)** — top-level index of all ~155 tools organized by category, with cross-server views (build management, passive tree, jewel awareness, trade, economy, etc.).
 
-- [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md)
-- [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md)
-- [POEMCP/TOOLS.md](POEMCP/TOOLS.md)
+For per-server detail (descriptions, arguments), see each submodule's own doc:
+
+- [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) — 111 tools, Path of Building integration
+- [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) — 31 tools, trade/stash/market/character API
+- [POEMCP/TOOLS.md](POEMCP/TOOLS.md) — 13 tools, wiki/economy lookups
+- [PathOfBuilding/src/API/TOOLS.md](PathOfBuilding/src/API/TOOLS.md) — internal Lua API actions wrapped by pob-mcp
 - [PathOfBuilding/src/API/TOOLS.md](PathOfBuilding/src/API/TOOLS.md)
 
 ---

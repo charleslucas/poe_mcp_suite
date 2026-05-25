@@ -135,7 +135,8 @@ Rank differences by likely impact:
 - **Notable differences in the core damage/defense cluster** → high impact.
 - **Unique item swaps with mechanic-changing effects** (conversion, +max res, charge generation, forced crit, etc.) → high impact.
 - **Cluster Jewel differences** → usually high impact (whole-build-shape changes — different added notables, different jewel sockets, different small-passive bonuses). Use `mcp__pob__list_cluster_jewel_nodes` on each build (loaded one at a time) to get a clean per-cluster summary.
-- **Timeless Jewel differences** → check both builds for Timeless Jewels via `mcp__pob__find_jewel_affected_nodes`. Different seeds → different transformations on the same allocated nodes. Different jewels socketed → entirely different transformed-node sets.
+- **Timeless Jewel differences** → check both builds for Timeless Jewels via `mcp__pob__find_jewel_affected_nodes`. Different seeds → different transformations on the same allocated nodes. Different jewels socketed → entirely different transformed-node sets. Use `mcp__pob__get_tree_node_with_timeless_jewels` on key affected nodes to compare what the actual transformed stats look like in each build.
+- **Radius-effect-unique differences** (Energy From Within, Healthy Mind, Might of the Meek, etc.) → run `mcp__pob__list_radius_effect_jewels` on each build. A swap from "no Energy From Within" to "Energy From Within with N Life passives in radius" is a meaningful effective-stat change that PoB applies internally but isn't visible in a node diff.
 - **Stat delta >10%** for any major stat → worth simulating.
 - **Mastery effect differences** → can be load-bearing (e.g., +1% max ele res); don't dismiss.
 - **Threshold Jewel state differences** → if one build has a Brawn/Lethal Assault/etc. triggered and the other doesn't, that's a real effective-stat divergence. Use `mcp__pob__evaluate_threshold_jewels` to check.

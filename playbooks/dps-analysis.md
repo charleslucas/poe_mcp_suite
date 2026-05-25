@@ -61,8 +61,10 @@ Optional follow-up if relevant:
 - `mcp__pob__get_tree_node` for "what does this node give me?" lookups (replaces ad-hoc Python BFS on `data.json` for single-node questions; always-current via PoB's `tree.lua`)
 - **If any jewels are socketed:**
   - `mcp__pob__find_jewel_affected_nodes` — surfaces which allocated nodes are transformed by Timeless Jewels. Run this before assuming a node's tooltip stats; the in-game tooltip may differ.
+  - `mcp__pob__get_tree_node_with_timeless_jewels` — returns the actual transformed stats for a specific affected node. Use this when a Karui-flavored Strength addition or a Vaal-flavored Crit Multi addition might be juicing a node beyond its base data.
   - `mcp__pob__list_cluster_jewel_nodes` — surfaces what each Cluster Jewel contributes (notables, sockets, small-passive bonuses). Cluster notables are often the highest-leverage DPS stats in the build.
   - `mcp__pob__evaluate_threshold_jewels` — checks "With at least N <Attr> in Radius" triggers. If a tree change moves the build above/below a threshold, the effective DPS shifts even though tooltip stats don't.
+  - `mcp__pob__list_radius_effect_jewels` — catches the long tail of "in Radius" uniques (Energy From Within → Life-to-ES conversion in radius, Healthy Mind → Life-to-Mana in radius, Might of the Meek → multiplied notable effect in radius, etc.). Important because the numeric effect is rolled into `lua_get_stats` totals but isn't visible per-node; if a tree edit removes a node from radius, the total shifts.
 
 ### Add if Q1 = Gems or All
 - Gem level/quality for all gems in main socket group
