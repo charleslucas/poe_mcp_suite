@@ -48,7 +48,11 @@ Rough token costs (calibrated from real sessions — see `character_data/analysi
 | YouTube transcript (38K chars) | ~10–12K |
 | `reference_data/leagues/{league}.md` | ~4–5K |
 | `lua_get_stats` result | ~500–1K |
-| Python-processed output (tree diff, XML parse) | **only the output** — key efficiency win |
+| `get_tree_node` single-node lookup | ~300–500 tokens — **prefer this over Python BFS** for single-node "what does this give me?" questions |
+| `find_jewel_affected_nodes` (full build scan) | ~1–2K — call before assuming any tooltip discrepancy is stale data |
+| `list_cluster_jewel_nodes` | ~1–2K — fast structured view of all socketed clusters |
+| `evaluate_threshold_jewels` | ~500 tokens — empty result for builds without threshold jewels |
+| Python-processed output (tree diff, XML parse) | **only the output** — key efficiency win for bulk topology analysis |
 
 For analyses that won't fit in one session, use the staged checkpoint pattern from [`multi-stage-analysis.md`](multi-stage-analysis.md).
 

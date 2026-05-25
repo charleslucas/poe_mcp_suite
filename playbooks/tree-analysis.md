@@ -42,7 +42,12 @@ Ask before loading anything. Many of these answers may already be in the journal
 |--------|------|-------|
 | Pre-flight | See [`README.md`](README.md) section 2 | Context check, league reference, character snapshot |
 | Current tree + node IDs | `mcp__pob__lua_get_tree` with `include_node_ids: true` | Need full ID list for Python classification |
-| Node reference data | `reference_data/skilltree/data.json` (Python) | Names, stats, adjacency (`in`/`out` edges), type flags |
+| Node reference data | `reference_data/skilltree/data.json` (Python) **or** `mcp__pob__get_tree_node` for single-node lookups | The MCP tool reads PoB's `tree.lua` directly — always current, no patches overlay needed. Prefer it for single-node "what does this give me?" queries. Use Python BFS on `data.json` for bulk classification or topology analysis. |
+
+### Add if there are socketed jewels
+- `mcp__pob__find_jewel_affected_nodes` — identifies which allocated nodes are being TRANSFORMED by Timeless Jewels (Lethal Pride, Glorious Vanity, etc.). **Call this BEFORE filing a `report_tree_node_discrepancy` patch** — a tooltip discrepancy on a transformed node is the jewel doing its job, not a stale data source.
+- `mcp__pob__list_cluster_jewel_nodes` — summarizes what each socketed Cluster Jewel contributes (notables, smalls, sockets, small-passive bonuses). Cluster differences are often the biggest build-shape divergences.
+- `mcp__pob__evaluate_threshold_jewels` — checks each "With at least N <Attribute> in Radius, …" threshold against the current allocation. Useful when adding/removing nodes near a threshold-jewel socket (the threshold may turn on/off mid-edit).
 
 ### Add if intent = DPS increase
 - `mcp__pob__lua_get_stats` to establish the DPS baseline before any changes
@@ -147,12 +152,14 @@ Any Large, Medium, or Basic Jewel Socket node that has only one allocated neighb
 ### Connectivity is not obvious
 Even with the adjacency data, it's not always obvious which nodes are safely removable. The "find all leaf nodes" approach often returns zero results at endgame because nodes form dense loops around the Duelist/Witch starting areas. Use the pendant-chain analysis (Step 3b) instead of trying to find pure graph leaves.
 
-### `reference_data/skilltree/data.json` can be stale
-GGG's published skilltree export lags real game state — sometimes by months. A node's stat line can change in a patch without the export being re-tagged. Example from 2026-05-25: node 11730 "Endurance" shows only `+1 to Maximum Endurance Charges` in the 3.28.0 export, but the in-game tooltip also has `0.4% of Attack Damage Leeched as Life`. Recommending the node for removal based on the JSON alone undervalued its real defensive contribution.
+### Tooltip discrepancies — Timeless Jewel FIRST, stale data second
+When the in-game tooltip on a node doesn't match what `mcp__pob__get_tree_node` returns (or what `data.json` says), there are two possible explanations, and **you must rule out the first before treating it as the second**:
 
-**Before recommending a notable for removal, cross-verify its stats against:**
-1. The user's in-game tooltip (ask them to paste it — fastest and most authoritative)
-2. PoB's bundled tree data via `mcp__pob__search_tree_nodes` or `mcp__poemcp__get_passive_detail`
-3. The wiki (`fetch_wiki_page` on the node's individual page)
+1. **A Timeless Jewel is transforming the node.** Lethal Pride / Glorious Vanity / Militant Faith / Brutal Restraint / Elegant Hubris all REPLACE or ADD stats on nodes in their radius. The in-game tooltip shows the transformed stats; PoB's tree data and GGG's `data.json` show the BASE stats. This is the most common cause of "the tooltip doesn't match" — and it's NOT a data bug.
+2. **GGG's data is stale.** Real but rare. Stats change between patches without the export being re-tagged.
 
-If you find a discrepancy, log a patch entry in `reference_data/skilltree/data_patches.json` (see `reference_data/skilltree/PATCHES.md` for format). Future sessions inherit the corrected data automatically. This is especially important for notable removals, where missing a stat line can cost real defensive value (life leech, max res, charge generation) without showing up in your analysis.
+**Protocol:**
+1. **Call `mcp__pob__find_jewel_affected_nodes` first.** If the node appears in the result, the discrepancy is a jewel transformation — do NOT patch. Mention it to the user and (if needed) use the controlled-removal test in `reference_data/skilltree/PATCHES.md` to confirm.
+2. **If the node is NOT in `find_jewel_affected_nodes`** AND the discrepancy persists with the jewel unsocketed (per the blank-line tooltip test), then it's a genuine data gap. Use `mcp__pob__report_tree_node_discrepancy` to log a patch entry. The fork's `PATCHES.md` documents the verification protocol.
+
+**Historical example (2026-05-25):** node 11730 "Endurance" appeared to have "+0.4% Attack Damage Leeched as Life" in-game beyond its base "+1 to Maximum Endurance Charges". We initially treated it as a stale-export miss and filed a patch. The controlled-removal test (jewel socketed vs unsocketed) revealed it was a Lethal Pride Karui transformation. The patch was retracted. The new `find_jewel_affected_nodes` tool turns that 5-minute manual verification into a one-call check.
