@@ -67,7 +67,7 @@ If the account has no MapStash tab, skip 3.2 and note it — but flag that the r
 
 ## Step 4 — Tier 4: pob-mcp (needs PoB GUI running)
 
-**Prerequisite:** PoB must be running via `pob-mcp\LaunchPoBWithAPI.bat` (not the normal shortcut). If `Test-Connection 127.0.0.1 -Port 31337` fails or the next test errors with `ECONNREFUSED`, ask the user to launch PoB before continuing.
+**Prerequisite:** PoB must be running via `pob-mcp\LaunchPoBWithAPI.bat` (not the normal shortcut). If `Test-Connection 127.0.0.1 -Port 59166` fails or the next test errors with `ECONNREFUSED`, ask the user to launch PoB before continuing.
 
 | # | Test | Tool call | Pass criteria |
 |---|---|---|---|

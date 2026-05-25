@@ -135,7 +135,7 @@ You do **not** need to re-run this manually after PoB updates — the next step 
 ### 5c — Launch PoB via the batch file (every time)
 
 **Always** use `pob-mcp/LaunchPoBWithAPI.bat` to start PoB, not the normal shortcut. It:
-- Sets `POB_API_TCP=1` and `POB_API_TCP_PORT=31337` in the environment
+- Sets `POB_API_TCP=1` and `POB_API_TCP_PORT=59166` in the environment
 - Checks whether `Modules\Main.lua` still has the TCP patch; if PoB updated and overwrote it, automatically re-runs `InstallTcpApi.ps1` before launching
 - Starts `Path of Building.exe`
 
@@ -145,7 +145,7 @@ pob-mcp\LaunchPoBWithAPI.bat
 
 On startup, PoB's in-game console (press `~`) shows:
 ```
-[PoB API] TCP server started on port 31337
+[PoB API] TCP server started on port 59166
 [PoB API] Background keepalive active (~60 fps)
 ```
 
@@ -191,7 +191,7 @@ cp .mcp.json.example .mcp.json
         "POB_DIRECTORY": "/path/to/Path of Building/Builds",
         "POB_LUA_ENABLED": "true",
         "POB_API_TCP": "true",
-        "POB_API_TCP_PORT": "31337",
+        "POB_API_TCP_PORT": "59166",
         "POB_RECONNECT_TIMEOUT_MS": "300000",
         "POE_TRADE_ENABLED": "true",
         "POE_SESSION_ID": "your-poesessid-cookie-here",
@@ -233,7 +233,7 @@ Same JSON block in:
 | `POB_DIRECTORY` | Yes | Path to your PoB builds folder |
 | `POB_LUA_ENABLED` | Yes | `"true"` to enable any Lua bridge features |
 | `POB_API_TCP` | TCP mode | `"true"` to connect to running PoB GUI |
-| `POB_API_TCP_PORT` | No | Port PoB listens on (default `31337`) |
+| `POB_API_TCP_PORT` | No | Port PoB listens on (default `59166`) |
 | `POB_FORK_PATH` | Headless only | Path to `PathOfBuilding/src/` |
 | `POB_CMD` | Headless only | Path to LuaJIT binary |
 | `POB_TIMEOUT_MS` | No | Per-request timeout ms (default `10000`) |
