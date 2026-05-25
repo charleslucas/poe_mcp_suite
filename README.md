@@ -66,7 +66,7 @@ When you start a recognizable task — "help me improve my DPS," "what map mods 
 
 Playbooks are committed to this repo; if a task shape recurs and a playbook doesn't exist yet, Claude can draft one mid-session.
 
-> **Sharing playbooks back:** if you or Claude draft a new playbook that works well for you, consider opening a pull request to this repo so others can use it. See [`playbooks/README.md`](playbooks/README.md) for format conventions and submission guidelines. Pitfalls discovered in one session can save hours for the next person who hits the same wall.
+> **Sharing playbooks back:** if you or Claude draft a new playbook that works well for you, or you have improved an existing one with new data sources, or you've added MCPs or tools, please consider opening a pull request to this repo so others can gain from your insights. See [`playbooks/README.md`](playbooks/README.md) for format conventions and submission guidelines. Pitfalls discovered in one session can save hours for the next person who hits the same wall.
 
 ### Reference data cache
 
@@ -85,6 +85,8 @@ Claude will narrate what it's doing so you can follow along — *"Pulling curren
 - *"What does your current Atlas tree look like? — I don't have an authoritative source for the current league."*
 
 Your in-game observations are the single most authoritative source for your specific situation, and your help refreshing the local cache compounds — better data this session means faster, more accurate analyses in every future session. The game is constantly changing; you're the freshest data source we have.
+
+*Also* - Claude (or any AI) is forgetful after a context compression.  I have tried to create a playbook and context-management framework to encourage Claude to always cache the most up-to-date data before doing analyses, and have given it awareness of it's own context so it can intelligently load data and write out any analysis results before compression happens.  But Claude still will forget and fall-back to using it's trained-in game data, which is a couple years out of date.  Diligence on asking it if it has read the playbooks, loaded recent data sources, and written it's results to the character cache will help keep it on track and provide much better analyses.
 
 ---
 

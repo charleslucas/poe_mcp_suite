@@ -1,190 +1,225 @@
 # Playbook: Build Comparison
 
-For Claude sessions where the user wants to compare two builds — e.g. their current character vs a guide build, or two theory-craft variants. Builds can come from pobb.in/poedb.tw URLs, locally saved PoB files, or the currently loaded PoB build.
+For sessions where the user wants to compare two builds — e.g. their current character vs a guide build, or two theory-craft variants. Builds can come from pobb.in/poedb.tw URLs, locally saved PoB files, or the currently loaded PoB build.
 
-**Status: STUB** — workflow and pitfalls are established but this playbook has not yet been validated against a full real-session comparison. Flesh out Step 3, Step 4 output shape, and Step 5 pitfalls after the first complete comparison session.
+This playbook is **sub-agent-first**: each build is parsed and digested in its own sub-agent context, so main context only sees compact summaries (~1.5K tokens per build) instead of raw XML (~50-100K per build). See [`README.md`](README.md) section 6 for the meta-criteria on when sub-agents earn their cost.
 
-Triggers: "compare my build to this guide", "how does my tree differ from X", "what would I need to change to match this build", two pobb.in URLs in the same message.
+**Triggers:** "compare my build to this guide", "how does my tree differ from X", "what would I need to change to match this build", two pobb.in URLs in the same message.
 
 ---
 
 ## Step 0 — Frame the work for the user
 
-One sentence: *"Using the Build Comparison playbook — I'll diff the two builds from their XML first to find what matters, then simulate the meaningful differences in PoB."*
+One sentence: *"Using the Build Comparison playbook — I'll dispatch a sub-agent per build to fetch and digest each one in parallel, then diff the summaries here. This keeps main context light."*
 
 **Before touching any build data:** run the standard pre-flight from [`README.md`](README.md) section 2 — context check, league reference, character snapshot if comparing against the user's current character.
 
-**Gem and mechanic verification:** Your training data has a cutoff. New league gems, reworked skills, and changed interactions need verification from live sources before being used in analysis. Default: verify any gem that sounds new or that a guide creator describes as "new this league" via `mcp__poemcp__get_gem_detail` or `mcp__poemcp__fetch_wiki_page` before reporting its mechanics. Don't trust transcript descriptions alone — Korbyn described Void Shockwave Support as "drops from Uber Elder" when it's actually an Exceptional Support Gem (levels 1-3) socketed normally; the price and effectiveness claims were accurate, the drop source was not.
+**Gem and mechanic verification:** Your training data has a cutoff. New league gems, reworked skills, and changed interactions need verification from live sources before being used in analysis. Default: verify any gem that sounds new or that a guide creator describes as "new this league" via `mcp__poemcp__get_gem_detail` or `mcp__poemcp__fetch_wiki_page` before reporting its mechanics. Don't trust transcript descriptions alone — a past session learned that a creator described Void Shockwave Support as "drops from Uber Elder" when it's actually an Exceptional Support Gem (levels 1-3) socketed normally; the price and effectiveness claims were accurate, the drop source was not.
 
-Key principle: **XML-first, PoB second.** Parse both builds structurally before touching PoB. This gives you the triage map cheaply, so PoB analysis is targeted at the 5-10 differences that actually matter rather than a blind full-build swap.
+**Key principle:** sub-agents do the parsing, main context does the diffing. The agents are bounded I/O (fetch + parse + summarize); the insight work — what differs and why it matters — happens in main context where I can see both digests at once.
 
 ---
 
 ## Step 1 — Triage
 
-Establish what the two builds ARE before diffing. Skip `AskUserQuestion` if context is already clear.
+Establish what the two builds ARE before dispatching agents. Skip `AskUserQuestion` if context is already clear.
 
 **Q1 — What's the comparison goal?**
-- "Would build B's tree work better for my character?" → tree diff + stat simulation
+- "Would build B's tree work better for my character?" → tree-focused digest + stat simulation
 - "Should I swap to build B's item in slot X?" → item diff + PoB slot simulation
 - "How far is my build from this guide?" → full diff, then prioritize upgrades by impact
-- "Academic curiosity / understanding a mechanic" → XML-only, no PoB simulation needed
+- "Academic curiosity / understanding a mechanic" → digest-only, no PoB simulation needed
 
 **Q2 — Source of each build?**
-- pobb.in or poedb.tw URL → fetch XML directly
-- Currently loaded PoB build → `lua_get_tree` + `get_equipped_items`
-- Local build file → `lua_load_build` then read state
+- pobb.in or poedb.tw URL → sub-agent fetches XML directly
+- Currently loaded PoB build → sub-agent uses live `lua_get_*` calls
+- Local build file → sub-agent uses `lua_load_build` then reads state
+
+**Q3 — Guide tier (if applicable)**
+Many guides ship multiple pobb.in links (cheap/standard/aspirational/league-starter/endgame). Comparing tiers misleadingly inflates the diff. If the user gave one URL from a multi-tier guide, ask which tier — or have the build sub-agent fetch the Mobalytics/written-guide page for the tier label.
 
 ---
 
-## Step 2 — Data loads
+## Step 2 — Data loads (sub-agent first)
+
+Dispatch one sub-agent per build in a **single message with parallel tool calls**. Total wall time is one agent's runtime, not N.
 
 ### Pre-flight
-See [`README.md`](README.md) section 2. Build comparison sessions are context-heavy (two XMLs + tree diffs + optional transcripts = 20-30K tokens). If already at 60%+, cut the transcript step and rely on cached summaries in `character_data/guides/{archetype}/synthesis.md` instead.
+See [`README.md`](README.md) section 2. Two-build comparison via sub-agents typically costs 4-6K tokens in main context (two digests + diff work), down from 30-40K if you loaded raw XMLs and any transcripts inline.
 
-### Always load
-- Both build XMLs (or XML + live PoB state for the current character)
-- `reference_data/skilltree/data.json` — for node name lookups (already local, fast)
-- `character_data/{account}/{char}/meta.json` if one build IS the current character
+### Sub-agent prompt template (use one per build)
 
-### If the guide is a YouTube URL
-Use `mcp__poemcp__fetch_youtube_description` (or `yt-dlp --get-description` via Bash as fallback).
-Returns the video title, full description, and any pobb.in/poedb.tw/pastebin links extracted —
-no API key needed, no browser needed.
+Adapt and dispatch:
 
-```bash
-yt-dlp --get-description "https://www.youtube.com/watch?v=..." 2>/dev/null
-```
+> Fetch and digest the Path of Exile build at `{source}`. `{source}` is one of:
+> - A pobb.in URL (`https://pobb.in/{id}` — append `/xml` to get the XML, also fetch `/json` in parallel for metadata)
+> - A poedb.tw URL (`https://poedb.tw/pob/{id}/xml` — no `/json` endpoint, use the build XML's `<Build className=...>` attribute for class info)
+> - A local `.xml` path (read directly)
+> - The literal string `CURRENT` (use `lua_get_tree(include_node_ids=true)`, `get_equipped_items`, `lua_get_stats(category='all')` on the currently loaded PoB build)
+>
+> Both pobb.in and poedb.tw require `User-Agent: pob-mcp/1.0`.
+>
+> Look up node names from `reference_data/skilltree/data.json`. If `reference_data/skilltree/data_patches.json` exists, apply it as an overlay before reading stats (see `reference_data/SKILLTREE_PATCHES.md`).
+>
+> **Return a compact digest (under 1.5K tokens) in this exact format:**
+>
+> ```markdown
+> ## Build: {name from pobb.in /json title, or filename}
+> Source: {URL or path}
+> Tier: {if multi-tier guide and tier is identifiable, otherwise omit}
+> Class: {class} / {ascendancy}
+> Level: {level from <Build level=...>}
+>
+> ### Tree — signal nodes only (no travel smalls)
+> - Notables: {comma-separated list of names}
+> - Keystones: {comma-separated list of names}
+> - Jewel sockets allocated: {count, with large/medium/basic breakdown}
+> - Masteries: {list, each as "Mastery Group: selected effect"}
+> - Total allocated: {N}
+>
+> ### Main skill
+> {skill name} — {N}-link in {slot}
+> Supports: {comma-separated}
+>
+> ### Other socket groups (one line each)
+> - {slot}: {gem list}
+>
+> ### Aura / reservation setup
+> {list of skills with mana/life reservation, mark which is reserved}
+>
+> ### Equipped items by slot
+> - Helmet: {unique name OR "rare: key mods: X, Y, Z"}
+> - Body: ...
+> - (one line per slot, including flasks and jewels)
+>
+> ### Stored stats (from <PlayerStat> elements — last PoB calc)
+> Life: X | ES: Y | Mana: Z | Armour: A | Evasion: E
+> Resists: Fire/Cold/Lightning/Chaos = F/C/L/Ch
+> DPS: {CombinedDPS or whatever the build's main DPS stat is}
+> Block: {attack/spell}
+>
+> ### Notes
+> {anything unusual: tattoos in <Override>, hashOverrides, timeless jewels socketed, league-specific tech, items with cluster jewel internal passives, etc.}
+> ```
+>
+> Do NOT load the full transcript, individual wiki pages for each unique, or any analysis beyond what fits the digest. The parent will request deeper dives on specific items if needed.
 
-Build guide channels typically put the pobb.in link in the description alongside a Mobalytics/
-written guide URL. Extract the pobb.in link and proceed to the XML fetch step below.
+### Special case: if the guide source is a YouTube URL
 
-### Fetch pobb.in/poedb.tw XMLs
-```python
-# pobb.in
-GET https://pobb.in/{id}/xml        # also try /json for metadata
-# poedb.tw
-GET https://poedb.tw/pob/{id}/xml
-```
-Both require `User-Agent: pob-mcp/1.0 (contact: github.com/charleslucas/poe_mcp_suite)`.
+Spawn a SEPARATE sub-agent (not the build digest agent) to extract author intent from the transcript. The build digest agent only needs the pobb.in link from the description; the transcript agent reads the prose.
 
-### What the XML contains (no PoB needed)
-- `<Spec nodes="1234,5678,...">` — comma-separated allocated node IDs
-- `masteryEffects="{nodeId,effectId},..."` — mastery selections
-- `<Sockets><Socket nodeId="..." itemId="..."/>` — jewel socket assignments
-- `<Override>` elements — tattoo/node overrides (hashOverrides)
-- `<Skill>` elements — gem groups with levels/quality
-- `<Item>` text blocks — full item text per slot
-- `<PlayerStat stat="..." value="..."/>` — stored stat values (last PoB calculation)
+> Fetch the YouTube transcript at `{URL}` via `mcp__poemcp__fetch_youtube_transcript`. The build is `{archetype}` ({class}/{ascendancy}). Extract and return, in under 800 tokens: (1) why specific notables were chosen, (2) mandatory vs optional items, (3) known build weaknesses or gotchas the author flagged, (4) playstyle notes (mapping vs bossing). Skip filler, sponsor reads, and gameplay commentary that doesn't inform build choices. If a Mobalytics or written guide URL is in the description, mention which tier(s) it documents.
 
-### Add if the guide source is a YouTube URL
-```python
-# Get description + pobb.in links:
-mcp__poemcp__fetch_youtube_description(url)
-
-# Get spoken build theory (gear choices, node rationale, playstyle tips):
-mcp__poemcp__fetch_youtube_transcript(url)
-# → Returns title, chapter list, full prose transcript (~30-40k chars typical)
-# → Use include_timestamps=True to get MM:SS markers for section navigation
-# → Chapter markers map to sections like "14:29 Passive Tree/Jewels" —
-#    fetch with timestamps and search for the relevant chapter offset
-#    to read only the section you care about rather than the full transcript
-```
-The transcript captures reasoning that isn't in the description: *why* specific notables were chosen,
-which items are mandatory vs optional, what the build struggles with, budget vs upgrade priorities.
-Load it when you need to understand the author's intent, not just the build's stats.
-
-### Add if Q1 = stat simulation
-Load the current build's live state via `lua_get_tree`, `get_equipped_items`, `lua_get_stats`.
+### What you DON'T need in main context
+- Raw XML strings of either build
+- Full YouTube transcripts (delegated above)
+- Wiki pages for each unique item — load only if a specific item becomes a decision point, via a single targeted `fetch_wiki_page`
 
 ---
 
-## Step 3 — Analysis pattern (STUB — validate with first real session)
+## Step 3 — Analysis pattern
 
-### 3a — Structural diff (Python, no PoB)
-1. Parse `nodes=` from both XMLs → two sets of integers
-2. Compute: `only_in_A`, `only_in_B`, `shared`
-3. Look up node names/types from `reference_data/skilltree/data.json`
-4. **Filter to signal nodes first** — notables, keystones, jewel sockets, masteries. Travel smalls (`+10 Str`, `5% Life`, etc.) tell you about pathing, not build intent. Show them separately or on request.
-5. Repeat for items (per-slot diff), gems (per-socket-group diff), stored stats delta
+By the time Step 3 starts, you have two compact digests in main context. Diff happens here, where insight needs both readable at once.
+
+### 3a — Structural diff
+1. **Notables and keystones:** compute `only_in_A`, `only_in_B`, `shared`. Each digest already filtered to signal-only, so this is straightforward.
+2. **Items per slot:** simple line-by-line comparison from the digests.
+3. **Stored stats:** identify the largest deltas (DPS, life, EHP, resist caps).
+4. **Aura/reservation:** different aura sets usually drive item differences (e.g., one build runs Determination, the other doesn't — that explains different armour values and different resist requirements).
+5. **Masteries:** different mastery effects can be a hidden source of stat differences. The Reservation Mastery `+1% to all max ele res while life+mana reserved` is a common "secret defensive notable" worth flagging.
 
 ### 3b — Triage: what actually matters
 Rank differences by likely impact:
-- Keystone differences → always high impact (binary mechanic switches)
-- Notable differences in the core damage/defense cluster → high impact
-- Jewel socket count differences → moderate (cluster jewel budget)
-- Item slot differences → check stored stat delta first; simulate if >10% stat change
-- Travel node differences → usually just path routing, low impact unless they reveal a cluster jewel access point
+- **Different main skill or support gem priority** → may invalidate the whole comparison. Flag and re-scope before continuing.
+- **Keystone differences** → always high impact (binary mechanic switches).
+- **Notable differences in the core damage/defense cluster** → high impact.
+- **Unique item swaps with mechanic-changing effects** (conversion, +max res, charge generation, forced crit, etc.) → high impact.
+- **Stat delta >10%** for any major stat → worth simulating.
+- **Mastery effect differences** → can be load-bearing (e.g., +1% max ele res); don't dismiss.
+- **Jewel socket count differences** → moderate (cluster jewel budget changes).
+- **Travel node count differences alone** → usually low impact (pathing artifact unless it reveals a cluster jewel access point).
 
-### 3b.5 — Budget reality check (add when goal = "choose build to play" or "plan upgrade path")
+### 3b.5 — Budget reality check (when goal = "should I switch builds")
+If the target build uses 2-3 expensive uniques (Mageblood, Headhunter, Forbidden Flame/Flesh, multi-divine rares), price-check them against current stash value before recommending the switch:
+1. `mcp__poe__ninja_lookup` each expensive unique from the target digest
+2. `mcp__poe__price_tab` or `mcp__poe__scan_stash_tabs` to estimate current stash value
+3. Report the gap concretely: *"Mageblood costs ~40 div; your stash is ~8 div — aspirational tier is ~5× away."*
 
-Many guides ship multiple pobb.in links labelled cheap/standard/aspirational or by investment tier.
-The Mobalytics page context around each link usually names the tier. Extract all links and their labels
-before picking which to compare — comparing a league-starter spec against an endgame spec produces
-a misleading diff (100+ node delta driven by gear, not build concept).
+This prevents recommending Mageblood-tier builds to someone who just league-started.
 
-If the goal is "can I realistically reach aspirational tier?":
-1. Identify the 2-3 most expensive unique items in the aspirational build's item diff
-2. `mcp__poe__ninja_lookup` each for current league price
-3. `mcp__poe__price_tab` or `mcp__poe__scan_stash_tabs` to estimate current stash value
-4. Report the gap: "Mageblood costs ~40 div; your stash has ~8 div — aspirational tier is ~5× away"
+### 3c — Targeted PoB simulation (only for high-impact differences)
+Operate on the currently loaded PoB build. Do NOT load both full builds into PoB sequentially — loading build B replaces build A in the GUI and loses simulation state.
 
-This prevents recommending Mageblood-tier trees to someone who just league-started.
+For each high-impact difference identified in 3b, simulate one at a time on the current build:
+- **Tree differences:** `update_tree_delta` to add/remove specific notables → read stat delta. Use `update_tree_delta` (incremental, safer) over `lua_set_tree` for any build with Large Cluster Jewels.
+- **Item differences:** `add_item` in the target slot → read stat delta → revert.
+- **Gem differences:** swap individual gems with `add_gem`/`remove_gem` → read DPS delta.
 
-### 3c — Targeted PoB simulation
-Only for the high-impact differences identified in 3b. Do NOT load both full builds into PoB sequentially — that replaces the current build and loses context.
-
-Instead, operate on the currently loaded build:
-- **Tree differences**: `update_tree_delta` to add/remove specific notables → read stat delta
-- **Item differences**: `add_item` in the target slot → read stat delta → revert with `clear_item_slot`
-- **Gem differences**: swap individual gems with `add_gem`/`remove_gem` → read DPS delta
-
-⚠️ **STUB**: the revert-after-simulation pattern (`clear_item_slot` + reload original) has not been validated end-to-end. First real session should establish whether it works cleanly or if `lua_reload_build` is needed to restore state.
+**Revert pattern:** before each simulation, snapshot the slot/tree state. After reading the delta, restore. For tree deltas this means tracking what was added/removed and applying the reverse. `lua_reload_build` works as a nuclear revert if state gets tangled, but it discards any unsaved PoB GUI changes.
 
 ---
 
-## Step 4 — Output shape (STUB)
+## Step 4 — Output shape
 
 For quick comparisons (one specific question), a chat response is enough:
 - What differs, ranked by impact
 - Stat delta for the 2-3 most important differences (if simulated)
-- Bottom line: "Build B's tree would give you X more life but costs Y DPS"
+- Bottom line: *"Build B's tree would give you X more life but costs Y DPS."*
 
-For full "how far am I from this guide" comparisons, append to `character_data/{account}/{char}/build.md` under a new section:
+For full "how far am I from this guide" comparisons, append to `character_data/{Account}/{Character}/journal.md` (the chronological log) rather than `build.md` (the narrative doc). Entry structure:
 
 ```markdown
-## Comparison vs [guide name/URL] — YYYY-MM-DD
-[summary of key differences and what they'd cost/gain]
+## YYYY-MM-DD — Comparison vs [guide name/URL]
+
+### Builds compared
+- A: {short name} ({source})
+- B: {short name} ({source})
+
+### High-impact differences
+{ranked list with simulated stat deltas where applicable}
+
+### Recommendation
+{what to change, in priority order, with cost estimates}
+
+### Notes
+{anything notable about the comparison itself — e.g., tier mismatch caveats, mechanics that need verification}
 ```
 
-⚠️ **STUB**: output format not yet validated. First session should establish whether appending to build.md is the right place or whether a separate comparison log is cleaner.
+This keeps comparison records discoverable in the journal alongside other decisions, with a consistent date prefix.
 
 ---
 
-## Step 5 — Pitfalls (known so far — add more after first real session)
+## Step 5 — Pitfalls
 
-**Passive tree pitfalls**
-- **Travel nodes bury the signal.** A diff of two Slayer builds can show 70+ node differences, but 60 of them are `+10 Str`, `6% Life` smalls. Always filter to notables/keystones/jewel sockets first; show smalls only on request.
-- **Unknown node IDs** (e.g. 65568, 65570, 65578 in 3.28 builds) are new nodes not yet in the `reference_data/skilltree` preview export. Flag them as unknown, don't silently drop them — they could be significant new 3.28 nodes. Check back when GGG publishes the full release export.
-- **`masteryEffects` is separate from `nodes=`** — both must be diffed. A build can have the same mastery node allocated but different effect selected.
-- **Tattoo/override nodes** appear in `<Override>` elements, not in `nodes=`. A build with tattoos will show matching node IDs in `nodes=` but different stats when you look up those IDs. Compare `<Override>` sections separately.
-- **The two builds must NOT both be loaded into PoB** — loading build B replaces build A in the GUI. Do the XML diff first, then load only what you need to simulate.
+### Comparison setup pitfalls
+- **Tier mismatch inflates diffs.** Guides ship multiple pobb.in links labeled cheap/standard/aspirational. Comparing a league-starter spec against an endgame spec produces a misleading 100+ node delta driven by gear, not build concept. Always identify which tier each build represents; ask the user if unclear.
+- **Travel nodes bury the signal.** Two builds in the same archetype can show 70+ node differences where 60 are `+10 Str` / `6% Life` smalls. The sub-agent digest format filters these out by design — if you find yourself looking at raw `nodes=` lists for diffs, something went wrong with the digest.
+- **`masteryEffects` is separate from `nodes=`.** Two builds can share a mastery node but have different effects selected — this is often the source of "why is build A tankier" surprises. The digest's Masteries section captures this.
+- **Tattoo / override nodes** appear in `<Override>` elements, not in `nodes=`. The digest's Notes section should mention any overrides present.
 
-**XML fetch pitfalls**
-- pobb.in `/json` has metadata (title, class, main skill) — fetch it alongside `/xml` in parallel for context.
-- poedb.tw has `/xml` and `/raw` but no `/json` metadata endpoint (404). Use the HTML page title or the build XML's `<Build className=...>` attribute for context instead.
-- Both platforms require a browser-like `User-Agent` — 403 without it.
+### XML fetch pitfalls
+- pobb.in `/json` has metadata (title, class, main skill) — sub-agent should fetch alongside `/xml` for context.
+- poedb.tw has `/xml` and `/raw` but no `/json` endpoint (returns 404). Use the build XML's `<Build className=...>` attribute or the HTML page title for context instead.
+- Both platforms require a browser-like `User-Agent`; they return 403 without it.
 
-**PoB simulation pitfalls**
-- ⚠️ STUB: `clear_item_slot` + re-add original item as a revert mechanism has not been tested end-to-end. Validate this before relying on it.
-- `update_tree_delta` with cluster jewel builds can drop cluster jewel internal passives (known bug, workaround: use PoB GUI for tree edits then `lua_import_character` to sync). Avoid `lua_set_tree` for builds with Large Cluster Jewels.
+### Unknown node IDs
+- Node IDs not present in `reference_data/skilltree/data.json` are likely new nodes from a patch the GGG export hasn't been re-tagged for. The sub-agent should flag them as "unknown ID {N}" in the Notes section, not silently drop them. If the discrepancy becomes load-bearing for a recommendation, follow the protocol in `reference_data/SKILLTREE_PATCHES.md` to log a patch entry once the in-game stats are confirmed.
+
+### PoB simulation pitfalls
+- **The two builds must NOT both be loaded into PoB.** Loading build B replaces build A. Always do the digest diff first; load only the build you'll simulate against.
+- **`lua_set_tree` drops cluster jewel internal passives** on builds with Large Cluster Jewels. Use `update_tree_delta` for tree edits in any cluster-jewel build.
+- **`lua_set_tree` wipes mastery effect selections.** `lua_import_character` preserves them.
+- **Mastery nodes are terminal in the tree graph.** You can allocate them but cannot route through them — neighbors that only connect via a mastery will be silently dropped on tree edits. See `tree-analysis.md` pitfall #1 for the full pattern.
+- **GGG export staleness.** When a notable's stats are load-bearing for a decision, cross-verify against in-game tooltip or `mcp__pob__search_tree_nodes`. See `tree-analysis.md`'s pitfall on this and `reference_data/SKILLTREE_PATCHES.md` for the correction workflow.
+- **`lua_reload_build` discards unsaved PoB GUI changes.** Confirm save state before reloading.
+
+### Sub-agent pitfalls
+- **Don't dispatch sub-agents for trivial parses.** A single short pobb.in build that's only being skimmed for an item name doesn't need an agent — just fetch the `/xml` inline.
+- **Don't ask sub-agents to do the synthesis.** Each agent digests its own build; comparison and recommendation happen in main context where I can see both at once and apply user-specific constraints (locked items, budget, playstyle).
+- **Dispatch in parallel.** Multiple sub-agent calls in a single message run concurrently. Sequential dispatch defeats half the benefit.
 
 ---
 
-## When to extend this playbook
+## Trust hierarchy
 
-After the first full real-world comparison session, fill in:
-- Step 3c: confirm the revert-after-simulation pattern works (or document the correct workaround)
-- Step 4: validate the output shape — does appending to build.md make sense or is a separate file better?
-- Step 5: add any new pitfalls discovered
-- Remove all **STUB** markers from validated sections
+See [`README.md`](README.md) section 5 for the standard ordering.

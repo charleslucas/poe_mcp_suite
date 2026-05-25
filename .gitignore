@@ -9,6 +9,8 @@
 character_data
 
 # Cached game knowledge from wiki/external sources — kept local for fast lookup, regenerable
-# Ignore the cached data itself but keep the README so future setup instructions are preserved
+# Ignore the cached data itself but keep the README so future setup instructions are preserved.
+# Also keep SKILLTREE_PATCHES.md (overlay protocol doc — see file itself for purpose).
 reference_data/*
 !reference_data/README.md
+!reference_data/SKILLTREE_PATCHES.md

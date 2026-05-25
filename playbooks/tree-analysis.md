@@ -146,3 +146,13 @@ Any Large, Medium, or Basic Jewel Socket node that has only one allocated neighb
 
 ### Connectivity is not obvious
 Even with the adjacency data, it's not always obvious which nodes are safely removable. The "find all leaf nodes" approach often returns zero results at endgame because nodes form dense loops around the Duelist/Witch starting areas. Use the pendant-chain analysis (Step 3b) instead of trying to find pure graph leaves.
+
+### `reference_data/skilltree/data.json` can be stale
+GGG's published skilltree export lags real game state — sometimes by months. A node's stat line can change in a patch without the export being re-tagged. Example from 2026-05-25: node 11730 "Endurance" shows only `+1 to Maximum Endurance Charges` in the 3.28.0 export, but the in-game tooltip also has `0.4% of Attack Damage Leeched as Life`. Recommending the node for removal based on the JSON alone undervalued its real defensive contribution.
+
+**Before recommending a notable for removal, cross-verify its stats against:**
+1. The user's in-game tooltip (ask them to paste it — fastest and most authoritative)
+2. PoB's bundled tree data via `mcp__pob__search_tree_nodes` or `mcp__poemcp__get_passive_detail`
+3. The wiki (`fetch_wiki_page` on the node's individual page)
+
+If you find a discrepancy, log a patch entry in `reference_data/skilltree/data_patches.json` (see `reference_data/SKILLTREE_PATCHES.md` for format). Future sessions inherit the corrected data automatically. This is especially important for notable removals, where missing a stat line can cost real defensive value (life leech, max res, charge generation) without showing up in your analysis.

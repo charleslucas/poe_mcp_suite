@@ -57,7 +57,7 @@ After any multi-stage or context-heavy analysis, append an entry to `character_d
 ### 2b — League reference
 Load `reference_data/leagues/{current-league}.md` at the start of any session involving current-league content. Per-league summaries cover drop tables, unique items, scarab/atlas-node availability, and strategic implications — things that change every 3 months and aren't in Claude's training. The current league name is set in `.mcp.json` as `POE_LEAGUE`.
 
-If the file doesn't exist for the current league, generate it from the poewiki page (`fetch_wiki_page` on `https://www.poewiki.net/wiki/{LeagueName}_league`) and write it back as a cache.
+If the file doesn't exist for the current league, generate it via a sub-agent (see section 6) so the raw wiki page never enters main context. The agent fetches `https://www.poewiki.net/wiki/{LeagueName}_league`, summarizes, writes the cache file, and returns only a brief confirmation. For per-mechanic deep dives during the same session, additional sub-agents per mechanic also work well.
 
 ### 2c — Character snapshot
 If the task involves a specific character, read `character_data/{Account}/{Character}/meta.json` and `journal.md` before loading any live data. The journal records hard-won decisions (crafting results, build pivots, known pitfalls) that directly affect what to recommend — skipping it leads to re-solving problems already solved.
@@ -103,14 +103,39 @@ When sources conflict:
 
 ---
 
-## 6. Current playbooks
+## 6. Sub-agents
+
+When a task can be decomposed into bounded, independent queries, prefer spawning sub-agents over running them in main context. Each sub-agent runs in its own context window — raw inputs and intermediate work never enter mine. I only see the final summary the agent returns.
+
+**Sub-agents earn their cost when:**
+- Input or output would be >5K tokens (raw transcripts, wiki pages, full build XMLs)
+- Multiple independent queries can run in parallel
+- The scope is self-contained: the agent has everything it needs in its prompt
+
+**Sub-agents are wasted when:**
+- The lookup is a single tool call (price check, fetch one wiki page for a single fact)
+- The work requires back-and-forth iteration (live build tuning, interactive simulation, tree-delta cycles)
+- The synthesis can't happen without seeing the raw data (rare — usually the agent can extract enough)
+
+**Decision rule:** if I'd be loading >5K tokens of raw content to extract <1K tokens of insight, delegate. The sub-agent reads the raw; I receive the digest.
+
+**Common patterns (specifics live in the relevant playbooks):**
+- One sub-agent per build for `build-comparison.md` (parses XML, returns structured digest)
+- One sub-agent per guide for multi-guide synthesis (reads transcript, returns build extraction)
+- One sub-agent for league reference cache generation (fetches wiki, writes cache file)
+
+When spawning multiple sub-agents whose queries don't depend on each other, dispatch them in **a single message with parallel tool calls** rather than sequentially. This is the right pattern when (for example) you want to fetch and digest three guides simultaneously — total wall time is one agent's runtime, not three.
+
+---
+
+## 7. Current playbooks
 
 | Playbook | Covers | Status |
 |---|---|---|
 | [`dps-analysis.md`](dps-analysis.md) | Damage upgrade analysis: gear, tree, gems | Stable |
 | [`verify-install.md`](verify-install.md) | Post-install / post-pull health check across all four MCP servers | Stable |
 | [`atlas-planning.md`](atlas-planning.md) | Atlas node allocation, map mod blacklist, mechanic × build synergy, best map layouts | Stable |
-| [`build-comparison.md`](build-comparison.md) | Compare two builds from pobb.in/poedb.tw URLs or local files — tree diff, item diff, targeted PoB simulation | Stub |
+| [`build-comparison.md`](build-comparison.md) | Compare two builds from pobb.in/poedb.tw URLs or local files — sub-agent-first digest, then tree/item/gem diff and targeted PoB simulation | Stable (sub-agent-first; not yet session-validated) |
 | [`multi-stage-analysis.md`](multi-stage-analysis.md) | Framework for analyses too large for a single context window — checkpoint files, stage protocol, resume-after-compact | Stable |
 | [`gear-shopping.md`](gear-shopping.md) | Trade site workflows, resistance/attribute math, stash scanning, price-check pitfalls | Stable |
 | [`character-leveling.md`](character-leveling.md) | Milestone PoB builds (every 20 levels), gear schedule from stash, passive tree planning, Notes tab, progression.md | Stable |
@@ -123,7 +148,7 @@ When sources conflict:
 
 ---
 
-## 7. Playbook format
+## 8. Playbook format
 
 Every playbook must have these sections in this order:
 
@@ -149,7 +174,7 @@ Every playbook must have these sections in this order:
 
 ---
 
-## 8. Contributing a playbook
+## 9. Contributing a playbook
 
 Playbooks that helped one session likely help everyone running similar work. If a recurring task in your sessions doesn't have a playbook, or an existing one is missing a pitfall you discovered, please PR it back:
 

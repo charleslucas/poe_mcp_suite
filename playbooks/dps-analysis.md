@@ -73,6 +73,15 @@ Optional follow-up if relevant:
 - Atlas tree if accessible (currently no MCP coverage — read from `reference_data/atlastree/` directly)
 - Map mod interactions (especially for ele-reflect / no-leech / no-regen)
 
+### Delegate to sub-agents (see [`README.md`](README.md) section 6)
+
+If the analysis pulls **3+ guide transcripts** (synthesizing recommendations from multiple build guides), or **3+ wiki pages for non-trivial mechanic verification**, delegate each to a sub-agent rather than loading inline. A single transcript is ~10-12K tokens; three of them in main context can blow the budget before analysis starts.
+
+Sub-agent prompt template for transcript extraction:
+> "Fetch the YouTube transcript at `{URL}` via `mcp__poemcp__fetch_youtube_transcript`. The build is `{archetype}` ({class}/{ascendancy}). Extract and return, in under 800 tokens: (1) skill links and support gem priority, (2) key passive notables and ascendancy choices, (3) gear: must-have uniques + key rare mods per slot, (4) playstyle notes (mapping vs bossing, defenses), (5) anything the author flagged as a known weakness or gotcha. Skip filler, jokes, sponsor reads, and gameplay commentary that doesn't inform the build."
+
+Dispatch multiple transcripts in a **single message with parallel sub-agent calls** so they run concurrently — total wall time is one transcript's, not N.
+
 ---
 
 ## Step 3 — Analysis pattern
