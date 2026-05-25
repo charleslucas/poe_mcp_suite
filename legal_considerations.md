@@ -1,5 +1,7 @@
 # Legal Considerations
 
+> **This document is the canonical copy of three identical files.** Synced copies live in the [`poe-skilltree-export`](https://github.com/charleslucas/poe-skilltree-export/blob/master/legal_considerations.md) and [`poe-atlastree-export`](https://github.com/charleslucas/poe-atlastree-export/blob/master/legal_considerations.md) forks so anyone who lands in those repos directly can see the reasoning without having to navigate elsewhere. **If you update this file, sync the change to both forks** (they're submodules under `reference_data/`).
+
 This document captures the reasoning behind how `poe_mcp_suite` uses Path of Exile game data — what we extract, what we redistribute, what we deliberately don't. It exists so that anyone (Grinding Gear Games, a curious contributor, an opportunistic lawyer, future maintainers) can see we thought about it.
 
 **This is not legal advice.** The maintainers are not lawyers. This document is good-faith reasoning by software developers about a gray area in copyright law. If you have authoritative legal guidance that contradicts anything here, please open an issue.
