@@ -144,6 +144,7 @@ When spawning multiple sub-agents whose queries don't depend on each other, disp
 | [`gear-shopping.md`](gear-shopping.md) | Trade site workflows, resistance/attribute math, stash scanning, price-check pitfalls | Stable |
 | [`character-leveling.md`](character-leveling.md) | Milestone PoB builds (every 20 levels), gear schedule from stash, passive tree planning, Notes tab, progression.md | Stable |
 | [`tree-analysis.md`](tree-analysis.md) | Passive tree audit and reallocation: intent triage, node classification, connectivity/chain analysis, jewel socket safety, mastery node topology | Stable |
+| [`league-transition.md`](league-transition.md) | End-of-league migration checklist: env var, character `meta.json` updates, new-league cache bootstrap; trigger when `get_active_leagues` shows ⚠ | Stable |
 
 **Wishlist** (playbooks worth writing):
 - `crafting-decisions.md` — Eldritch implicit choices, bench crafting, corruption gambling expected value

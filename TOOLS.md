@@ -4,10 +4,10 @@ A unified index of every MCP tool exposed by the suite. The suite bundles **thre
 
 | Server | Prefix | Tools | Detailed doc |
 |--------|--------|------:|--------------|
-| **pob-mcp** | `mcp__pob__` | 116 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
+| **pob-mcp** | `mcp__pob__` | 117 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
 | **poe-mcp-server** | `mcp__poe__` | 31 | [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) |
 | **POEMCP** | `mcp__poemcp__` | 13 | [POEMCP/TOOLS.md](POEMCP/TOOLS.md) |
-| **Total** | — | **~160** | — |
+| **Total** | — | **~161** | — |
 
 PathOfBuilding's [`src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md) documents the *Lua-side* actions that pob-mcp wraps. Those are not Claude-callable directly — they're the underlying API.
 
@@ -168,6 +168,7 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 | `compare_trade_items` | pob |
 | `get_item_price` | pob |
 | `get_leagues` | pob |
+| `get_active_leagues` | pob ⭐ new |
 | `search_stats` | pob |
 | `search_trade` / `search_by_item_mods` | poe |
 | `fetch_listing` | poe |
