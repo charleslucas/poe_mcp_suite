@@ -4,10 +4,10 @@ A unified index of every MCP tool exposed by the suite. The suite bundles **thre
 
 | Server | Prefix | Tools | Detailed doc |
 |--------|--------|------:|--------------|
-| **pob-mcp** | `mcp__pob__` | 111 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
+| **pob-mcp** | `mcp__pob__` | 114 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
 | **poe-mcp-server** | `mcp__poe__` | 31 | [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) |
 | **POEMCP** | `mcp__poemcp__` | 13 | [POEMCP/TOOLS.md](POEMCP/TOOLS.md) |
-| **Total** | — | **~155** | — |
+| **Total** | — | **~158** | — |
 
 PathOfBuilding's [`src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md) documents the *Lua-side* actions that pob-mcp wraps. Those are not Claude-callable directly — they're the underlying API.
 
@@ -91,6 +91,18 @@ For correcting GGG export staleness when it shows up; see [`reference_data/skill
 | `get_tree_node_patch` | pob ⭐ new |
 | `list_tree_patches` | pob ⭐ new |
 | `report_tree_node_discrepancy` | pob ⭐ new |
+
+## 🗺 Atlas Tree
+
+Read-only access to atlas tree data via `reference_data/atlastree/` (our fork of GGG's atlas-export). Minimal parity — atlas allocation isn't API-visible, so no "from build frontier" pathing; atlas has no jewel-affects-nodes mechanic, so no jewel-awareness analogs.
+
+| Tool | Server | Notes |
+|------|--------|-------|
+| `get_atlas_node` | pob ⭐ new | Single-node lookup; supports default/league/ruthless variants |
+| `search_atlas_nodes` | pob ⭐ new | Keyword + node-type search across atlas nodes |
+| `find_atlas_path_to_node` | pob ⭐ new | BFS shortest path between two atlas nodes (requires explicit `from_node_id`) |
+
+---
 
 ## 💎 Passive Tree — Jewel Awareness
 
