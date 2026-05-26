@@ -160,7 +160,17 @@ PoB can be minimised — a background keepalive posts `WM_NULL` every 16 ms to k
 
 ### PoB update behaviour
 
-PoB's built-in updater overwrites `Modules\Main.lua` and shows an integrity check warning. This is expected. Just close PoB and relaunch via `LaunchPoBWithAPI.bat` — it detects the missing patch and re-applies it automatically. The TCP server is already running in memory for that session, so the warning during the session is harmless.
+**Auto-updates are suppressed while the TCP API is active.** The "Update Ready" button is hidden and the "Update Available" toast notification is muted — both would, if triggered, replace `Modules\Main.lua` mid-session and break Claude's connection. PoB's startup console banner (`~` key) re-states this every launch.
+
+**To check for updates manually**, do it occasionally (say every couple of weeks):
+
+1. Close PoB.
+2. Relaunch PoB via the **normal shortcut** (not `LaunchPoBWithAPI.bat`).
+3. Click *Check for Update* — apply if one's available.
+4. Close PoB again.
+5. Relaunch via `LaunchPoBWithAPI.bat`. It detects that the update wiped the patch and re-applies it (you may see an integrity check warning during launch — dismiss it; the patch is already back in memory).
+
+**If you accidentally update mid-session via some other path**, you'll see an integrity check warning and the API will stop working. Same fix: close PoB and relaunch via the batch file; it self-heals.
 
 **Detailed docs:** [`PathOfBuilding/README.md`](PathOfBuilding/README.md) — [`PathOfBuilding/src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md)
 
