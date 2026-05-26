@@ -4,10 +4,10 @@ A unified index of every MCP tool exposed by the suite. The suite bundles **thre
 
 | Server | Prefix | Tools | Detailed doc |
 |--------|--------|------:|--------------|
-| **pob-mcp** | `mcp__pob__` | 114 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
+| **pob-mcp** | `mcp__pob__` | 115 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
 | **poe-mcp-server** | `mcp__poe__` | 31 | [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) |
 | **POEMCP** | `mcp__poemcp__` | 13 | [POEMCP/TOOLS.md](POEMCP/TOOLS.md) |
-| **Total** | — | **~158** | — |
+| **Total** | — | **~159** | — |
 
 PathOfBuilding's [`src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md) documents the *Lua-side* actions that pob-mcp wraps. Those are not Claude-callable directly — they're the underlying API.
 
@@ -154,6 +154,7 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 | `find_best_anointment` | pob |
 | `suggest_watchers_eye` | pob |
 | `suggest_crafting` | pob |
+| `search_crafting_mods` | pob ⭐ new |
 | `search_item` / `get_item_detail` | poemcp |
 | `search_mods` | poemcp |
 
