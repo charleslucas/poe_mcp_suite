@@ -4,10 +4,10 @@ A unified index of every MCP tool exposed by the suite. The suite bundles **thre
 
 | Server | Prefix | Tools | Detailed doc |
 |--------|--------|------:|--------------|
-| **pob-mcp** | `mcp__pob__` | 120 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
+| **pob-mcp** | `mcp__pob__` | 121 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
 | **poe-mcp-server** | `mcp__poe__` | 31 | [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) |
 | **POEMCP** | `mcp__poemcp__` | 13 | [POEMCP/TOOLS.md](POEMCP/TOOLS.md) |
-| **Total** | — | **~164** | — |
+| **Total** | — | **~165** | — |
 
 PathOfBuilding's [`src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md) documents the *Lua-side* actions that pob-mcp wraps. Those are not Claude-callable directly — they're the underlying API.
 
@@ -57,6 +57,7 @@ Connecting to a running PoB GUI in TCP mode, or spawning headless LuaJIT.
 | Tool | Server |
 |------|--------|
 | `lua_get_stats` | pob |
+| `get_stat_breakdown` | pob ⭐ new |
 | `get_config` / `set_config` | pob |
 | `set_enemy_stats` | pob |
 | `set_character_level` | pob |
