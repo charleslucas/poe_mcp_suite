@@ -1,0 +1,71 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'u=${CLAUDE_CONTEXT_TOKEN_COUNT:-0}; m=${CLAUDE_CONTEXT_MAX_TOKENS:-0}; [ \"$m\" -gt 0 ] && [ \"$u\" -gt 0 ] && p=$((u*100/m)) && [ \"$p\" -ge 70 ] && printf \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"PreToolUse\\\",\\\"additionalContext\\\":\\\"[CONTEXT: %d%% full (%s/%s tokens). Call get_context_usage for breakdown or /compact to reclaim space.]\\\"}}\" \"$p\" \"$u\" \"$m\" || true'",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run build*)",
+      "Bash(npm test*)",
+      "Bash(node test_*.mjs)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git merge*)",
+      "Bash(git push*)",
+      "WebSearch",
+      "WebFetch(domain:www.pathofexile.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:poe.ninja)",
+      "Bash(netstat -ano)",
+      "Bash(grep -n \"pob-mcp TCP API patch\\\\|onFrameFuncs\\\\['TcpServer'\\\\]\\\\|function main:DetectUnicodeSupport\" \"C:/Users/charl/AppData/Roaming/Path of Building Community/Modules/Main.lua\")",
+      "Read(//c/Users/charl/AppData/Roaming/Path of Building Community/Modules/**)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File UninstallTcpApi.ps1)",
+      "PowerShell(powershell.exe -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\charl\\\\tools\\\\pob-mcp\\\\InstallTcpApi.ps1\" 2>&1)",
+      "Bash(findstr \":59166\")",
+      "Bash(findstr /n \"pob-mcp TCP API patch\" \"C:\\\\Users\\\\charl\\\\AppData\\\\Roaming\\\\Path of Building Community\\\\Modules\\\\Main.lua\")",
+      "Bash(findstr /n \"pob-mcp\" \"C:\\\\Users\\\\charl\\\\AppData\\\\Roaming\\\\Path of Building Community\\\\Modules\\\\Main.lua\")",
+      "Bash(findstr /n \"TCP\" \"C:\\\\Users\\\\charl\\\\AppData\\\\Roaming\\\\Path of Building Community\\\\Modules\\\\Main.lua\")",
+      "Read(//c/Users/charl/AppData/Roaming/Path of Building Community/**)",
+      "PowerShell(Get-Process)",
+      "PowerShell($proc = Get-WmiObject Win32_Process -Filter \"ProcessId=30516\"; $proc.CommandLine)",
+      "Read(//c/Users/charl/**)",
+      "PowerShell(Get-Content \"$env:APPDATA\\\\Code\\\\User\\\\settings.json\" 2>$null | Select-String -Pattern \"pob|POB_API\" | Select-Object -First 20)",
+      "PowerShell(\\(Get-Process -Id 36364\\).StartTime)",
+      "PowerShell(Stop-Process -Id 36364 -Force)",
+      "Bash(POB_DIRECTORY=\"C:\\\\\\\\Users\\\\\\\\charl\\\\\\\\OneDrive\\\\\\\\Documents\\\\\\\\Path of Building\\\\\\\\Builds\" POB_LUA_ENABLED=true POB_API_TCP=true POB_API_TCP_PORT=59166 POB_FORK_PATH=\"C:\\\\\\\\Users\\\\\\\\charl\\\\\\\\tools\\\\\\\\PathOfBuilding\\\\\\\\src\" POB_CMD=\"C:\\\\\\\\Users\\\\\\\\charl\\\\\\\\scoop\\\\\\\\shims\\\\\\\\luajit.exe\" node build/index.js)",
+      "Bash(jobs)",
+      "Bash(POB_LUA_ENABLED=true POB_API_TCP=true POB_API_TCP_PORT=59166 POB_DIRECTORY=\"C:\\\\\\\\Users\\\\\\\\charl\\\\\\\\OneDrive\\\\\\\\Documents\\\\\\\\Path of Building\\\\\\\\Builds\" POB_FORK_PATH=\"C:\\\\\\\\Users\\\\\\\\charl\\\\\\\\tools\\\\\\\\PathOfBuilding\\\\\\\\src\" POB_CMD=\"C:\\\\\\\\Users\\\\\\\\charl\\\\\\\\scoop\\\\\\\\shims\\\\\\\\luajit.exe\" node build/index.js)",
+      "Bash(kill %1)",
+      "PowerShell(Get-Process | Where-Object { $_.Name -eq \"node\" } | ForEach-Object { $id = $_.Id; $wmi = \\(Get-WmiObject Win32_Process -Filter \"ProcessId=$id\"\\); Write-Host \"PID ${id}: $\\($wmi.CommandLine\\)\" })",
+      "PowerShell(Get-ChildItem \"$env:APPDATA\\\\Code\\\\User\\\\globalStorage\" -Directory | Select-Object Name | Select-Object -First 20)",
+      "PowerShell(ls \"$env:APPDATA\\\\Code\\\\User\\\\globalStorage\")",
+      "Bash(claude mcp *)",
+      "PowerShell(claude mcp list 2>&1)",
+      "PowerShell(Test-Path \"C:\\\\Program Files\\\\nodejs\\\\node.exe\"; \\(Get-Item \"C:\\\\Program Files\\\\nodejs\\\\node.exe\" -ErrorAction SilentlyContinue\\).VersionInfo.FileVersion)",
+      "PowerShell(Get-Process -Name \"Code\" | ForEach-Object { $id = $_.Id; Get-WmiObject Win32_Process | Where-Object { $_.ParentProcessId -eq $id -and $_.Name -eq \"node.exe\" } | Select-Object ProcessId, CommandLine })",
+      "PowerShell(Get-Process -Id 44748 -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-WmiObject Win32_Process | Where-Object { $_.ProcessId -eq 44748 } | Select-Object Name, CommandLine)",
+      "Read(//c/cygwin64/home/charl/poe/**)",
+      "PowerShell(Get-WmiObject Win32_Process | Where-Object { $_.ProcessId -eq 48068 } | Select-Object Name, CommandLine; Get-WmiObject Win32_Process | Where-Object { $_.ParentProcessId -eq 48068 } | Select-Object ProcessId, Name, CommandLine)",
+      "PowerShell(Get-WmiObject Win32_Process | Where-Object { $_.ProcessId -eq 44748 -or $_.ProcessId -eq 48068 -or $_.ParentProcessId -eq 44748 -or $_.ParentProcessId -eq 48068 } | Select-Object ProcessId, ParentProcessId, Name, CommandLine)",
+      "PowerShell(Get-WmiObject Win32_Process -Filter \"ProcessId=46780\")",
+      "PowerShell(netstat -ano)",
+      "PowerShell(Get-Process -Id 46780 -ErrorAction SilentlyContinue)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\charl\\AppData\\Roaming\\Path of Building Community\\Modules",
+      "C:\\Users\\charl\\.claude",
+      "C:\\Users\\charl\\AppData\\Roaming\\Path of Building Community\\API"
+    ]
+  }
+}

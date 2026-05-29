@@ -1,6 +1,11 @@
 # Local MCP config — contains credentials, never commit
 .mcp.json
 
+# Claude Code local settings — contains POE_SESSION_ID in permission command
+# strings, never commit. Shareable .claude content (skills/, agents/, commands/,
+# settings.json) IS tracked; only the .local file is ignored.
+.claude/settings.local.json
+
 # Per-character analysis notes — kept local, may reference character names/build details.
 # The directory itself is a junction (Windows) / symlink (Unix) into an external dir
 # (%APPDATA%/poe_claude_data on Windows). The real data lives outside the repo so it

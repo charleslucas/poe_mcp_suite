@@ -134,6 +134,8 @@ When spawning multiple sub-agents whose queries don't depend on each other, disp
 
 ## 7. Current playbooks
 
+Each domain playbook below has a thin wrapper **skill** in `.claude/skills/<name>/` that auto-triggers on matching detailed-scope requests and points back here — the playbooks remain the single source of truth. `verify-install` is wrapped as a manual `/verify-install` skill (no auto-trigger). The cursory-vs-detailed gate (section 1) stays cross-cutting in `CLAUDE.md`, not in the skills.
+
 | Playbook | Covers | Status |
 |---|---|---|
 | [`dps-analysis.md`](dps-analysis.md) | Damage upgrade analysis: gear, tree, gems | Stable |

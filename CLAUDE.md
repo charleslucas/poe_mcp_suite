@@ -2,7 +2,9 @@
 
 **Setup / post-pull:** If this is a fresh clone or you just ran `git pull`, read [`CLAUDE_INSTALL.md`](CLAUDE_INSTALL.md) to check for new installation steps or tools that need running.
 
-**Before any analysis task:** Load [`playbooks/README.md`](playbooks/README.md) (meta-framework: cursory/detailed gate, context management, league pre-flight, narration norms, trust hierarchy) plus the matching specific playbook — **before** pulling any data. If no playbook exists for the task shape, note that and proceed; if the task recurs, write one.
+**Cursory-vs-detailed gate (cross-cutting — applies to EVERY task):** Before doing anything, decide whether the request is *cursory* (a quick lookup/answer — proceed directly, no playbook) or *detailed* (multi-source, multi-stage, or >10K expected tokens — engage the matching playbook and pause for approval before pulling data). This triage is domain-independent and lives here on purpose; the per-domain skills assume it has already happened. Full criteria in [`playbooks/README.md`](playbooks/README.md) section 1.
+
+**Playbooks & skills:** Detailed analysis procedures live in `playbooks/` (the single source of truth). Thin wrapper **skills** in `.claude/skills/` auto-trigger on matching detailed-scope requests and tell you to read `playbooks/README.md` (shared meta-framework: context management, league pre-flight, narration norms, trust hierarchy) plus the relevant specific playbook. If a skill fires for what is actually a cursory task, honor the gate above and answer directly instead. If no playbook exists for a recurring detailed task shape, note that and write one (then add a wrapper skill).
 
 **Before extracting, modifying, or redistributing any Path of Exile game data — including writing to the `reference_data/skilltree/` or `reference_data/atlastree/` forks, or building any tooling that reads from a local PoE install — read [`legal_considerations.md`](legal_considerations.md).** It documents what the project deliberately does and does not redistribute, and why. Stay inside those boundaries:
 
