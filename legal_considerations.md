@@ -12,45 +12,70 @@ This document captures the reasoning behind how `poe_mcp_suite` uses Path of Exi
 
 > **This section covers a separate concern from copyright.** The sections below address *data redistribution* — what we publish. This section covers *API automation* — what we request at runtime. They are independent issues with independent risk profiles.
 
-GGG's Terms of Use ([section 7](https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy)) prohibit:
+> **This analysis is current as of 2026-05-31. If GGG publishes clearer API policies, or if community understanding shifts, update this section and revise tool behavior accordingly. Primary sources are linked below.**
+
+### Primary sources
+
+- **GGG Terms of Use:** https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy
+- **GGG Developer API docs:** https://www.pathofexile.com/developer/docs
+- **Reddit thread — developer confirms TOS concern (Novynn, r/PathOfExile2, 2025):** https://www.reddit.com/r/PathOfExile2/comments/1ja5kwv/i_made_an_app_to_price_check_my_dump_tab/
+
+### What the ToS actually says
+
+**Section 7 — Restrictions** (prohibitions relevant to API usage):
 
 > **7c.** "Utilise any automated software or 'bots' in relation to your access or use of the Website, Materials or Services."
-> **7f.** "Use any data gathering and extraction tools or software to extract information from the Website."
 
-A GGG developer (Novynn) confirmed on Reddit (r/PathOfExile2, 2025) that they specifically **do not want "scheduled, chained, or automated requests"** to the trade API. They allow tools like ExileExchange because they emulate a user on the trade website — one search at a time, user-triggered. They do allow the official OAuth stash/character API gateway (used by tools like WealthyExile), which requires authentication and respects the intended access pattern.
+> **7f.** "Use any data gathering and extraction tools or software to extract information from the Website or utilize framing techniques to enclose any of the contents of the Website."
 
-### What this suite does that is clearly fine
+**Section 22 — Website APIs** (important counterbalance to Section 7):
 
-- **All `pob-mcp` non-trade tools** — talk only to a local PoB process via TCP. Zero GGG server traffic.
-- **Stash/character OAuth API** (`poe_auth`, `list_tabs`, `get_tab`, `get_character`) — uses GGG's official OAuth gateway, the explicitly approved path.
-- **`price_tab`, `price_items`, `scan_stash_tabs`** — these use a *local* algorithmic scorer for rares and poe.ninja (a third-party service) for named items. They do **not** chain GGG trade API requests.
-- **`ninja_lookup`, `currency_overview`** — hit poe.ninja, not GGG directly.
+> "You must comply with Grinding Gear Games' technical documentation and policies (as published and as updated on the Website from time to time or as otherwise notified to you by Grinding Gear Games) regarding use of the Website APIs ('API Policies'). Without limiting the foregoing, you must comply with the Website API call limits set out in the API Policies or as otherwise notified to you..."
 
-### What this suite does that is in the gray zone
+Section 22 is significant: it **explicitly contemplates third-party API usage** as permissible, subject to compliance with GGG's published API Policies and rate limits. The prohibition in Section 7c on "automated software" must be read in light of Section 22 — the two together suggest that *compliant* automated API access is allowed, while *non-compliant* (ignoring rate limits, no User-Agent, scraping outside the API) is not.
 
-The following tools hit `https://www.pathofexile.com/api/trade` directly:
+### What the developer docs say
 
-| Tool | Server | Risk | Notes |
-|---|---|---|---|
-| `search_trade_items` | pob-mcp | Low | 2 requests per call (search + fetch). Emulates a user's single trade site search. Has Bottleneck rate limiting (≤4/sec). |
-| `get_item_price`, `compare_trade_items` | pob-mcp | Low | Same pattern as above. |
-| `find_weighted_trade_items` | pob-mcp | **Medium** | Makes *multiple* chained trade searches automatically to build a weighted ranking. Closest to the "automated" pattern GGG objects to. |
-| `search_trade`, `search_by_item_mods` | poe-mcp-server | Low-medium | Single searches, but **no rate limiting** in `poe_trade.py` as of 2026-05-31. |
-| `fetch_listing` | poe-mcp-server | Low | Fetches a known listing by ID. No rate limiting. |
+GGG's developer documentation (https://www.pathofexile.com/developer/docs) requires:
 
-### Mitigating factors
+- **User-Agent header:** `OAuth {$clientId}/{$version} (contact: {$contact})` — `poe_trade.py` already complies: `"OAuth BoschAIMaster/1.0 (contact: buildtool@localhost)"`
+- **Rate limit compliance:** parse `X-Rate-Limit-*` response headers and back off when told to. pob-mcp's Bottleneck client handles this. poe-mcp-server uses retry-on-429 only.
+- **Non-affiliation notice:** "This product isn't affiliated with or endorsed by Grinding Gear Games" — not currently in tool outputs, should be added.
+- **Consequence for frequent overages:** "Exceeding these limits frequently will result in your application access being revoked."
 
-- All calls are **user-initiated** through a conversation — nothing runs on a schedule or in the background.
-- pob-mcp trade tools use **Bottleneck rate limiting** (≤4 req/sec, 300s cache, maxConcurrent 1), which respects GGG's observed rate limits.
-- The `POE_SESSION_ID` is optional — unsigned requests have stricter GGG rate limits but no account association.
+### Community precedent — ExileExchange
+
+GGG allows **ExileExchange** (Ctrl+D in PoB — opens the trade site in a browser with the search pre-filled). A GGG developer (Novynn) confirmed this is fine because it "emulates the trade website." ExileExchange makes a single POST to the trade search API to get a `searchId`, then opens the browser URL — it does **not** programmatically fetch the listings.
+
+> **Important caveat:** This is an inference from the ExileExchange precedent, not an explicit GGG statement that "URL-only = always OK." Novynn said ExileExchange is allowed because it emulates the trade website; we're interpreting that the URL-only pattern is what makes it acceptable. If GGG clarifies otherwise, we will update tool behavior.
+
+### What this suite does — current posture
+
+**Clearly fine:**
+- All `pob-mcp` non-trade tools — talk only to a local PoB process via TCP. Zero GGG server traffic.
+- Stash/character OAuth API (`poe_auth`, `list_tabs`, `get_tab`, `get_character`) — GGG's official OAuth gateway.
+- `price_tab`, `price_items`, `scan_stash_tabs` — local algorithmic scorer + poe.ninja. No GGG trade API calls.
+- `ninja_lookup`, `currency_overview` — poe.ninja only.
+
+**Adopted ExileExchange pattern (URL-return, no listing fetch):**
+Following the ExileExchange precedent, trade search tools now return a clickable trade URL rather than programmatically fetching listings:
+
+| Tool | API calls | Behavior |
+|---|---|---|
+| `search_trade_items` | 1 (search POST → searchId) | Returns URL + total count. User clicks to see results. |
+| `find_weighted_trade_items` | 1 (search POST → searchId) | Returns URL + total count + warning if any. User clicks to see results. |
+| `get_item_price` for named items | 0 (poe.ninja) | Redirected to poe.ninja for uniques/currency/gems. |
+| `search_trade`, `search_by_item_mods` | 1 per call | Returns URL. Rate limited to 1.5s min interval. |
+
+**Still fetching listings (lowest risk, single-call):**
+- `get_item_price` for rare/unknown items — falls back to URL-only if poe.ninja has no data.
 
 ### Risk and posture
 
-The realistic risk is an account ban if GGG notices an unusual request pattern from your session ID. This is an **account-level consequence**, not a legal one. The risk is low for occasional single-search use and higher for `find_weighted_trade_items` making many automated requests.
-
-**Adopted posture:**
-- Claude warns the user and requires explicit confirmation before calling any tool that hits `pathofexile.com/api/trade` (see `CLAUDE.md` rule). The warning is once per session — after confirmed, Claude proceeds without re-prompting until the session ends.
-- Rate limiting exists in pob-mcp trade tools; poe-mcp-server trade tools have retry-on-429 but no proactive throttle (tracked in ISSUES.md for a future fix).
+- Claude warns the user and requires explicit confirmation before calling any tool that hits `pathofexile.com/api/trade` (see `CLAUDE.md` rule). Warning is once per session.
+- All tools that hit the trade API send the required User-Agent header.
+- Rate limiting: pob-mcp uses Bottleneck (≤4/sec, 300s cache); poe-mcp-server has 1.5s floor + retry-on-429.
+- The non-affiliation notice is not yet added to tool outputs — tracked in ISSUES.md.
 - If GGG ever objects, we stop immediately. Contact: **zerosquaredio@gmail.com**.
 
 ---

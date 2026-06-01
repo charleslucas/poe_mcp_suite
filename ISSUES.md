@@ -77,6 +77,14 @@ Both kinds of content are human/Claude-authored *analysis*, not cache data. They
 
 ---
 
+### Non-affiliation notice missing from trade tool outputs
+
+GGG's developer API documentation requires all third-party tools to include: "This product isn't affiliated with or endorsed by Grinding Gear Games." The trade search tools in pob-mcp (`search_trade_items`, `find_weighted_trade_items`, `get_item_price`) now append this notice to their output text (added 2026-05-31), but the poe-mcp-server tools (`search_trade`, `search_by_item_mods`, `fetch_listing`) do not. Should be added to those tool outputs as well.
+
+**Affects:** `mcp__poe__search_trade`, `mcp__poe__search_by_item_mods`, `mcp__poe__fetch_listing`.
+
+---
+
 ### `poe-mcp-server` trade tools lack Bottleneck-style rate limiting
 
 `poe_trade.py` (`search_trade`, `search_by_item_mods`, `fetch_listing`) previously had no proactive rate limiting — only reactive retry-on-429. A minimum 1.5s inter-request floor (`_rate_limit_trade`) was added 2026-05-31, but this is a simple time.sleep shim, not a proper token-bucket limiter like the pob-mcp Bottleneck client.
