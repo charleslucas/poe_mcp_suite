@@ -8,6 +8,53 @@ This document captures the reasoning behind how `poe_mcp_suite` uses Path of Exi
 
 ---
 
+## GGG Terms of Service — automated API access (account ban risk)
+
+> **This section covers a separate concern from copyright.** The sections below address *data redistribution* — what we publish. This section covers *API automation* — what we request at runtime. They are independent issues with independent risk profiles.
+
+GGG's Terms of Use ([section 7](https://www.pathofexile.com/legal/terms-of-use-and-privacy-policy)) prohibit:
+
+> **7c.** "Utilise any automated software or 'bots' in relation to your access or use of the Website, Materials or Services."
+> **7f.** "Use any data gathering and extraction tools or software to extract information from the Website."
+
+A GGG developer (Novynn) confirmed on Reddit (r/PathOfExile2, 2025) that they specifically **do not want "scheduled, chained, or automated requests"** to the trade API. They allow tools like ExileExchange because they emulate a user on the trade website — one search at a time, user-triggered. They do allow the official OAuth stash/character API gateway (used by tools like WealthyExile), which requires authentication and respects the intended access pattern.
+
+### What this suite does that is clearly fine
+
+- **All `pob-mcp` non-trade tools** — talk only to a local PoB process via TCP. Zero GGG server traffic.
+- **Stash/character OAuth API** (`poe_auth`, `list_tabs`, `get_tab`, `get_character`) — uses GGG's official OAuth gateway, the explicitly approved path.
+- **`price_tab`, `price_items`, `scan_stash_tabs`** — these use a *local* algorithmic scorer for rares and poe.ninja (a third-party service) for named items. They do **not** chain GGG trade API requests.
+- **`ninja_lookup`, `currency_overview`** — hit poe.ninja, not GGG directly.
+
+### What this suite does that is in the gray zone
+
+The following tools hit `https://www.pathofexile.com/api/trade` directly:
+
+| Tool | Server | Risk | Notes |
+|---|---|---|---|
+| `search_trade_items` | pob-mcp | Low | 2 requests per call (search + fetch). Emulates a user's single trade site search. Has Bottleneck rate limiting (≤4/sec). |
+| `get_item_price`, `compare_trade_items` | pob-mcp | Low | Same pattern as above. |
+| `find_weighted_trade_items` | pob-mcp | **Medium** | Makes *multiple* chained trade searches automatically to build a weighted ranking. Closest to the "automated" pattern GGG objects to. |
+| `search_trade`, `search_by_item_mods` | poe-mcp-server | Low-medium | Single searches, but **no rate limiting** in `poe_trade.py` as of 2026-05-31. |
+| `fetch_listing` | poe-mcp-server | Low | Fetches a known listing by ID. No rate limiting. |
+
+### Mitigating factors
+
+- All calls are **user-initiated** through a conversation — nothing runs on a schedule or in the background.
+- pob-mcp trade tools use **Bottleneck rate limiting** (≤4 req/sec, 300s cache, maxConcurrent 1), which respects GGG's observed rate limits.
+- The `POE_SESSION_ID` is optional — unsigned requests have stricter GGG rate limits but no account association.
+
+### Risk and posture
+
+The realistic risk is an account ban if GGG notices an unusual request pattern from your session ID. This is an **account-level consequence**, not a legal one. The risk is low for occasional single-search use and higher for `find_weighted_trade_items` making many automated requests.
+
+**Adopted posture:**
+- Claude warns the user and requires explicit confirmation before calling any tool that hits `pathofexile.com/api/trade` (see `CLAUDE.md` rule). The warning is once per session — after confirmed, Claude proceeds without re-prompting until the session ends.
+- Rate limiting exists in pob-mcp trade tools; poe-mcp-server trade tools have retry-on-429 but no proactive throttle (tracked in ISSUES.md for a future fix).
+- If GGG ever objects, we stop immediately. Contact: **zerosquaredio@gmail.com**.
+
+---
+
 ## The question
 
 The suite reads, processes, and in some cases redistributes data that originated in Path of Exile, a copyrighted commercial product. Specifically:

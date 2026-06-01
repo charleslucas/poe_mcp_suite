@@ -77,6 +77,16 @@ Both kinds of content are human/Claude-authored *analysis*, not cache data. They
 
 ---
 
+### `poe-mcp-server` trade tools lack Bottleneck-style rate limiting
+
+`poe_trade.py` (`search_trade`, `search_by_item_mods`, `fetch_listing`) previously had no proactive rate limiting — only reactive retry-on-429. A minimum 1.5s inter-request floor (`_rate_limit_trade`) was added 2026-05-31, but this is a simple time.sleep shim, not a proper token-bucket limiter like the pob-mcp Bottleneck client.
+
+Follow-up: consider porting to a proper rate-limiter or shared limiter if poe-mcp-server and pob-mcp trade tools can be called in the same session and would interleave requests. Current fix reduces the single-process footprint but does not coordinate across MCP server processes.
+
+**Affects:** `mcp__poe__search_trade`, `mcp__poe__search_by_item_mods`, `mcp__poe__fetch_listing`.
+
+---
+
 ## Open — PoB calc behavior
 
 ### Trinity Support resonance not modeled in default calc

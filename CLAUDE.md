@@ -18,6 +18,20 @@
 
 If you're unsure whether a particular extraction or redistribution falls inside the conservative boundary, **stop and ask the user before proceeding**. Don't infer; check.
 
+**GGG trade API — warn + get explicit permission before first use each session:** The following tools hit `https://www.pathofexile.com/api/trade` directly, which GGG's ToS (section 7c) restricts and which a GGG developer has confirmed they don't want automated. Account bans are a real consequence. **The first time in any session you would call one of these tools, stop, warn the user clearly (ToS section 7c, account ban risk, which tool you're about to use and why it's risky), and require their explicit "yes, proceed" before continuing.** After the user confirms once in a session, you may call trade API tools freely for the rest of that session without re-prompting.
+
+Tools that require this warning:
+- `mcp__pob__search_trade_items`, `mcp__pob__find_weighted_trade_items` (⚠️ highest risk — multiple automated searches), `mcp__pob__compare_trade_items`, `mcp__pob__get_item_price`
+- `mcp__poe__search_trade`, `mcp__poe__search_by_item_mods`, `mcp__poe__fetch_listing`
+
+Tools that do NOT require this warning (they do not hit GGG's trade API):
+- `price_item`, `price_items`, `price_tab`, `scan_stash_tabs` — local algo + poe.ninja only
+- All other `mcp__pob__` tools — talk to local PoB only
+- `ninja_lookup`, `currency_overview` — poe.ninja only
+- `list_tabs`, `get_tab`, `get_character` — GGG's official OAuth gateway (approved path)
+
+Full reasoning in [`legal_considerations.md`](legal_considerations.md) → "GGG Terms of Service" section.
+
 ---
 
 - **Your built-in PoE knowledge is roughly current as of mid-2024.** Content, balance changes, and mechanics introduced after that point may be missing or wrong in your training data. Proactively use MCP tools to pull current data: `fetch_wiki_page` for item/passive descriptions, `ninja_lookup`/`currency_overview` for prices, live PoB TCP for calc results. Always defer to live tool results over training intuition when they conflict.
