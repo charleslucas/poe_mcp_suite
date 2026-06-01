@@ -82,6 +82,8 @@ Check every gem in the main link:
 - Quality 0%? (See quality sim below — not all quality matters)
 - Is the gem's effect actually active for this build? (e.g. Trinity requires multi-element hits to build Resonance; PoB may not model this — see PoB calc limitations below)
 
+**Before flagging a low-level gem as "needs leveling":** check if it's *intentionally* under-leveled for mana cost reasons. Higher gem levels increase mana cost. For gems that fire frequently — especially **marks/curses on a Mark on Hit Support with a channeling skill** (e.g. Poacher's Mark + Cyclone: fires every hit, mana cost compounds continuously) — keeping a gem at level 10–15 instead of 20 can be the correct call for builds with tight mana. Check free mana (`ManaUnreserved` from `lua_get_stats`) before recommending a level-up.
+
 ### 2b — Support gem choice sims
 
 For each support gem that looks questionable, sim the swap one at a time:
@@ -168,6 +170,8 @@ After all sims and reads, rank findings by **DPS-per-div** and **risk**:
 
 Gems and quality almost always win on DPS-per-div. Jewels stack but are modest per-swap. Gear upgrades (rings, amulets) require careful mod analysis to confirm they don't break other things (attribute requirements, resistance caps, unique-item mechanics).
 
+**The in-game character sheet DPS is unreliable for complex builds.** Conversion builds (phys→ele), trigger setups (General's Cry warriors, Void Shockwave procs), and multi-element damage pipelines are all systematically under-reported by the character sheet. It doesn't model the full conversion chain, proc rates, or warcry interactions. **Trust PoB's TotalDPS number, not the character sheet.** For real-world confirmation, compare hit numbers on a map boss or tankier rare before/after the change — there is no player-accessible training dummy in PoE.
+
 **Before recommending a gear swap, check:**
 - Does swapping break attribute requirements? (Check `get_build_issues` after simming)
 - Does it displace a mod that's load-bearing for the build mechanic (e.g. a unique that enables a crit engine)?
@@ -206,3 +210,4 @@ These produce 0 DPS change even when the real-world effect is real. Note them ra
 - Awakened gem tier comparison (Standard vs. Awakened vs. Exceptional)
 - Accuracy audit path (HitChance < 95% → which slot to fix)
 - Resistance rebalancing (overcapped → offensive mod swap)
+- Pantheon analysis belongs in the planned `defense-audit.md` playbook (not here) — it reads defensive gaps and recommends major/minor gods to fill them. Key inputs: `lua_get_stats(defense)`, `get_calc_breakdown(StunAvoidChance)`, keystone awareness (e.g. Unwavering Stance = unconditional stun immunity, making Brine King redundant).
