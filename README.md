@@ -1,5 +1,7 @@
 # poe_mcp_suite
 
+> **This product is not affiliated with or endorsed by Grinding Gear Games in any way.**
+
 A suite of [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) servers that give Claude deep, live integration with Path of Exile — from build theory-crafting and passive tree simulation to trade, stash management, loot filters, and wiki lookups.
 
 Each server runs independently and exposes a set of tools that Claude can call during conversation. Together they allow Claude to act as an informed PoE assistant: loading your actual build in Path of Building, simulating node choices, checking prices on poe.ninja, searching trade, scoring stash tab items, and more — all without leaving the chat.
