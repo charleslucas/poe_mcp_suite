@@ -77,21 +77,15 @@ Both kinds of content are human/Claude-authored *analysis*, not cache data. They
 
 ---
 
-### Non-affiliation notice missing from trade tool outputs
+### ~~Non-affiliation notice missing from trade tool outputs~~ ✅ Fixed 2026-05-31
 
-GGG's developer API documentation requires all third-party tools to include: "This product isn't affiliated with or endorsed by Grinding Gear Games." The trade search tools in pob-mcp (`search_trade_items`, `find_weighted_trade_items`, `get_item_price`) now append this notice to their output text (added 2026-05-31), but the poe-mcp-server tools (`search_trade`, `search_by_item_mods`, `fetch_listing`) do not. Should be added to those tool outputs as well.
-
-**Affects:** `mcp__poe__search_trade`, `mcp__poe__search_by_item_mods`, `mcp__poe__fetch_listing`.
+Added `NON_AFFILIATION_NOTICE` constant to `poe_trade.py`; included in JSON output of `search_trade`, `search_by_item_mods`, and `fetch_listing`. pob-mcp tools already had it added earlier the same day.
 
 ---
 
-### `poe-mcp-server` trade tools lack Bottleneck-style rate limiting
+### ~~`poe-mcp-server` trade tools lack Bottleneck-style rate limiting~~ ✅ Improved 2026-05-31
 
-`poe_trade.py` (`search_trade`, `search_by_item_mods`, `fetch_listing`) previously had no proactive rate limiting — only reactive retry-on-429. A minimum 1.5s inter-request floor (`_rate_limit_trade`) was added 2026-05-31, but this is a simple time.sleep shim, not a proper token-bucket limiter like the pob-mcp Bottleneck client.
-
-Follow-up: consider porting to a proper rate-limiter or shared limiter if poe-mcp-server and pob-mcp trade tools can be called in the same session and would interleave requests. Current fix reduces the single-process footprint but does not coordinate across MCP server processes.
-
-**Affects:** `mcp__poe__search_trade`, `mcp__poe__search_by_item_mods`, `mcp__poe__fetch_listing`.
+`poe_trade.py` now parses `X-Rate-Limit-Ip`/`X-Rate-Limit-Account`/`X-Rate-Limit-Client` response headers and dynamically adjusts the inter-request interval (with 25% safety margin). Also uses `Retry-After` header value on 429 responses instead of fixed wait times. Floor remains 1.5s. Cross-process coordination with pob-mcp's Bottleneck limiter is still not possible (separate processes), but the header-driven approach means each process self-tunes to GGG's actual observed limits.
 
 ---
 
