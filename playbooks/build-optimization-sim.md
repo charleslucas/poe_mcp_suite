@@ -196,7 +196,7 @@ These produce 0 DPS change even when the real-world effect is real. Note them ra
 | Energy Leech quality ("while Leeching") | Leeching state not active in static calc |
 | Any "while you have X buff" | Buff state must be enabled in PoB Config tab manually |
 
-**Rule of thumb:** if leveling a gem 1→20 produces exactly 0 change, check whether its primary effect requires a runtime state or PoB Config toggle. Verify in-game on a training dummy before concluding it's worthless.
+**Rule of thumb:** if leveling a gem 1→20 produces exactly 0 change, check whether its primary effect requires a runtime state or PoB Config toggle. Verify in actual play before concluding it's worthless. **Note: there is no player-accessible training dummy in PoE** — GGG has intentionally not added one (a dev-only version exists in the game code). For real-world DPS verification, compare hit numbers on a map boss or tankier rare between before/after states.
 
 ---
 
