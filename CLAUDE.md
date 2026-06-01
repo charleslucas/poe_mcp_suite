@@ -18,13 +18,15 @@
 
 If you're unsure whether a particular extraction or redistribution falls inside the conservative boundary, **stop and ask the user before proceeding**. Don't infer; check.
 
-**GGG trade API — warn + get explicit permission before first use each session:** The following tools hit `https://www.pathofexile.com/api/trade` directly, which GGG's ToS (section 7c) restricts and which a GGG developer has confirmed they don't want automated. Account bans are a real consequence. **The first time in any session you would call one of these tools, stop, warn the user clearly (ToS section 7c, account ban risk, which tool you're about to use and why it's risky), and require their explicit "yes, proceed" before continuing.** After the user confirms once in a session, you may call trade API tools freely for the rest of that session without re-prompting.
+**GGG trade API — one-time informed consent (not per session):** The following tools hit `https://www.pathofexile.com/api/trade`. GGG's ToS (section 7c) restricts automated access, and account bans are a real consequence. The goal is for the user to be aware of this *once*, not to create ongoing friction.
 
-Tools that require this warning:
-- `mcp__pob__search_trade_items`, `mcp__pob__find_weighted_trade_items` (⚠️ highest risk — multiple automated searches), `mcp__pob__compare_trade_items`, `mcp__pob__get_item_price`
+**Before calling any of these tools, check memory for a note that the user has already been informed (look for `trade_api_tos_acknowledged` in memory).** If no such memory exists, pause and explain: (1) these tools make direct requests to GGG's trade API, (2) GGG's ToS section 7c restricts automated API access, (3) account bans are possible if GGG detects unusual patterns, (4) this suite follows the API guidelines (rate limits, User-Agent, URL-return pattern) to stay within acceptable personal-use behavior, and (5) full reasoning is in `legal_considerations.md`. Once the user acknowledges, **save a memory** (`trade_api_tos_acknowledged`) so this never interrupts them again.
+
+Tools that require this one-time check:
+- `mcp__pob__search_trade_items`, `mcp__pob__find_weighted_trade_items`, `mcp__pob__compare_trade_items`, `mcp__pob__get_item_price`
 - `mcp__poe__search_trade`, `mcp__poe__search_by_item_mods`, `mcp__poe__fetch_listing`
 
-Tools that do NOT require this warning (they do not hit GGG's trade API):
+Tools that do NOT require this check (they do not hit GGG's trade API):
 - `price_item`, `price_items`, `price_tab`, `scan_stash_tabs` — local algo + poe.ninja only
 - All other `mcp__pob__` tools — talk to local PoB only
 - `ninja_lookup`, `currency_overview` — poe.ninja only
