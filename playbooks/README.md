@@ -147,6 +147,7 @@ Each domain playbook below has a thin wrapper **skill** in `.claude/skills/<name
 | [`character-leveling.md`](character-leveling.md) | Milestone PoB builds (every 20 levels), gear schedule from stash, passive tree planning, Notes tab, progression.md | Stable |
 | [`tree-analysis.md`](tree-analysis.md) | Passive tree audit and reallocation: intent triage, node classification, connectivity/chain analysis, jewel socket safety, mastery node topology | Stable |
 | [`league-transition.md`](league-transition.md) | End-of-league migration checklist: env var, character `meta.json` updates, new-league cache bootstrap; trigger when `get_active_leagues` shows ⚠ | Stable |
+| [`build-optimization-sim.md`](build-optimization-sim.md) | Systematic gem/link/jewel optimization via live PoB sim — snapshot, sim each candidate, restore, rank by DPS-per-div. Full audit surface: support gem choice, gem quality, jewel dead-mod re-rolls, stat layer (reservation, HitChance, overcapped resists) | Stable (session-validated 2026-05-31) |
 
 **Wishlist** (playbooks worth writing):
 - `crafting-decisions.md` — Eldritch implicit choices, bench crafting, corruption gambling expected value
