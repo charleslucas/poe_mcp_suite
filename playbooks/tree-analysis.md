@@ -130,6 +130,14 @@ Update `meta.json`:
 
 ## Step 5 — Pitfalls
 
+### `get_passive_upgrades` ignores path cost — always follow up with `find_path_to_node`
+
+`get_passive_upgrades` ranks unallocated notables by their **stat impact** (DPS delta, EHP delta). It does **not** factor in how many passive points it costs to reach them. A notable ranked #2 with +113k DPS may require 6 points (5 travel nodes + the notable); a notable ranked #7 with +81k DPS may require only 2 points (1 travel + notable). The latter is almost always the better 1-point spend.
+
+**Rule:** never recommend a node from `get_passive_upgrades` without checking its real path cost via `find_path_to_node` first. Always verify for the top 4–5 candidates, not just the top pick — the ranking often inverts once travel cost is factored in.
+
+**Example (2026-06-01):** `get_passive_upgrades` ranked Finesse #4 (+113k DPS). Actual path: 6 nodes (5 travel). Destroyer ranked #7 (+81k DPS). Actual path: 2 nodes (1 travel). Real recommendation: Destroyer, not Finesse.
+
 ### Mastery nodes are terminal
 In the passive tree graph, mastery nodes (the large central node of a cluster) appear as neighbours to regular notables and smalls in the JSON. **You can path TO a mastery node, but you cannot path THROUGH it.** A node that is adjacent to a mastery in the JSON cannot be reached via the mastery — you must find the non-mastery path.
 
