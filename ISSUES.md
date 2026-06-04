@@ -52,6 +52,29 @@ Between two sims in the same socket group, Speed jumped 1.49 → 1.70 attacks/se
 
 ---
 
+## Open — stash API access
+
+### Stash scanning blocked: GGG disabled legacy character-window stash endpoint
+
+`list_tabs`, `get_tab`, and `scan_stash_tabs` use `poe_lib.py`'s two-path design:
+1. **OAuth** (if `client_id` + tokens): hits `api.pathofexile.com/stash/{league}` — requires developer app registration
+2. **POESESSID fallback**: hits `character-window/get-stash-items` — returns **HTTP 403 Forbidden (code 6)**
+
+GGG has shut down the legacy `character-window/get-stash-items` endpoint for stash access while keeping `character-window/get-items` (character equipment) alive. The fallback code is correct but the endpoint it targets is no longer accepting requests.
+
+**The only working path** is OAuth registration at `pathofexile.com/developer`, which is designed for public-facing applications and is onerous for a personal tool (full review process, requires justification for each scope).
+
+**Impact:** `price_tab` and `scan_stash_tabs` are blocked — these are cache-read-only tools (no GGG calls during pricing) but can't populate their cache without a working `get_tab`. The stash scanning workflow cannot be used or playbookeduntil this is resolved.
+
+**Possible directions:**
+- Accept the limitation: stash scanning requires developer OAuth registration
+- Investigate if GGG's public stash stream (`/api/public-stash-tabs`) offers an alternative path (public listings only, not your own stash)
+- Document the stash scanning workflow anyway (what it would do) so it's ready when OAuth is eventually set up
+
+**Repro (2026-06-04):** `list_tabs` → `HTTP 403: {"error":{"code":6,"message":"Forbidden"}}` despite valid POESESSID in env. Character endpoints (`get-items`) work fine with the same POESESSID.
+
+---
+
 ## Open — data persistence
 
 ### Hand-curated knowledge in gitignored caches doesn't survive a fresh clone
