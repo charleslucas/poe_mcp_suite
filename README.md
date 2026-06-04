@@ -2,9 +2,9 @@
 
 > **This product is not affiliated with or endorsed by Grinding Gear Games in any way.**
 
-A suite of [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) servers that give Claude deep, live integration with Path of Exile — from build theory-crafting and passive tree simulation to trade, stash management, loot filters, and wiki lookups.
+A suite of [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) servers that give Claude deep, live integration with Path of Exile — from build theory-crafting and passive tree simulation to trade, loot filters, and wiki lookups.
 
-Each server runs independently and exposes a set of tools that Claude can call during conversation. Together they allow Claude to act as an informed PoE assistant: loading your actual build in Path of Building, simulating node choices, checking prices on poe.ninja, searching trade, scoring stash tab items, and more — all without leaving the chat.
+Each server runs independently and exposes a set of tools that Claude can call during conversation. Together they allow Claude to act as an informed PoE assistant: loading your actual build in Path of Building, simulating node choices, checking prices on poe.ninja, searching trade, scoring individual items, and more — all without leaving the chat.
 
 poe_mcp_suite is a master git repo that acts a wrapper for four independently developed MCP tools and some other useful utilities.
 
@@ -16,7 +16,7 @@ If you have any issues or suggestions feel free to e-mail at zerosquaredio@gmail
 
 ## Tool Reference
 
-**[`TOOLS.md`](TOOLS.md)** — top-level index of all ~155 tools organized by category, with cross-server views (build management, passive tree, jewel awareness, trade, economy, etc.).
+**[`TOOLS.md`](TOOLS.md)** — top-level index of all ~172 tools organized by category, with cross-server views (build management, passive tree, jewel awareness, trade, economy, etc.).
 
 For per-server detail (descriptions, arguments), see each submodule's own doc:
 
