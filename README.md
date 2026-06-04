@@ -20,7 +20,7 @@ If you have any issues or suggestions feel free to e-mail at zerosquaredio@gmail
 
 For per-server detail (descriptions, arguments), see each submodule's own doc:
 
-- [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) — 111 tools, Path of Building integration
+- [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) — ~123 tools, Path of Building integration
 - [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) — 31 tools, trade/stash/market/character API
 - [POEMCP/TOOLS.md](POEMCP/TOOLS.md) — 13 tools, wiki/economy lookups
 - [PathOfBuilding/src/API/TOOLS.md](PathOfBuilding/src/API/TOOLS.md) — internal Lua API actions wrapped by pob-mcp
@@ -93,7 +93,7 @@ Slowly-changing game data — the official GGG passive tree exports, atlas tree,
 
 ### Per-character analyses
 
-Detailed build analyses for each character live in [`character_analyses/<League>-<CharName>.md`](character_analyses/) — also gitignored, since they include playstyle notes and personal info. Claude reads the doc at the start of a session and appends new findings, decisions, and crafting outcomes as you work.
+Detailed build analyses for each character live in [`character_data/<Account>/<Character>/`](character_data/) — also gitignored (junction to `%APPDATA%/poe_claude_data/` on Windows), since they include playstyle notes and personal info. Claude reads the doc at the start of a session and appends new findings, decisions, and crafting outcomes as you work.
 
 ### Your role as co-pilot on data hygiene
 
@@ -112,7 +112,7 @@ Your in-game observations are the single most authoritative source for your spec
 ## Servers
 
 ### pob-mcp
-**Repo:** [charleslucas/pob-mcp](https://github.com/charleslucas/pob-mcp) · **~96 tools**
+**Repo:** [charleslucas/pob-mcp](https://github.com/charleslucas/pob-mcp) · **~123 tools**
 
 The core build-analysis server. Connects Claude to [Path of Building](https://github.com/PathOfBuildingCommunity/PathOfBuilding) — either headless (for batch work) or live via a TCP socket to the running PoB GUI. When connected live, every change Claude makes (adding a gem, allocating a passive, swapping an item) appears in the PoB window in real time.
 
@@ -123,16 +123,16 @@ Key capabilities:
 - Validate builds against endgame boss thresholds, check resistances, identify flask immunity gaps
 - Find best anointments, suggest Watcher's Eye mods, rank cluster jewel notables
 - Import characters directly from the PoE API
-- Search trade for upgrades, generate weighted trade queries, check poe.ninja prices
+- Search trade for upgrades — returns a clickable trade URL (ExileExchange pattern, no automated listing fetches), generate weighted trade queries, check poe.ninja prices
 
 ### poe-mcp-server
-**Repo:** [charleslucas/poe-mcp-server](https://github.com/charleslucas/poe-mcp-server) · **~30 tools**
+**Repo:** [charleslucas/poe-mcp-server](https://github.com/charleslucas/poe-mcp-server) · **~33 tools**
 
 A multi-server bundle covering the player-facing side of the economy and account data.
 
 Key capabilities:
 - **Market**: local price-history database with risers/fallers/movers tracking
-- **Stash**: read stash tabs via the PoE API, search across tabs, score and price rare items
+- **Stash**: ⚠️ *bulk stash scanning currently blocked* — GGG disabled the legacy stash endpoint; OAuth developer registration required for full access. `score_rare` (individual item scoring) works without auth. See [`playbooks/stash-scanning.md`](playbooks/stash-scanning.md)
 - **Trade**: search the official PoE trade site with full filter support, look up stat IDs, fetch listing details
 - **Character**: fetch live gear including all flask slots, ring slots (Ring1–3), and weapon swap slots from the PoE API; export as PoB XML. All required modules (`poe_lib`, `stash_cache`, `rare_scorer`, `poe_oauth`) are bundled — no external sibling repositories needed.
 - **Pricer**: price individual or batch items using poe.ninja and a rare-item scorer

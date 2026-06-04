@@ -7,7 +7,7 @@ This repo is a git submodule container for four MCP servers used together with C
 | Submodule | Language | What it does |
 |-----------|----------|--------------|
 | `pob-mcp/` | TypeScript / Node.js | Connects Claude to Path of Building — build analysis, passive tree simulation, gem/item management, trade |
-| `poe-mcp-server/` | Python | Trade site search, stash tab management, item pricing, loot filter editing |
+| `poe-mcp-server/` | Python | Trade site search (returns URLs), item pricing, loot filter editing; stash scanning ⚠️ blocked (see [`playbooks/stash-scanning.md`](playbooks/stash-scanning.md)) |
 | `POEMCP/` | Python | Wiki lookups, game data (gems, items, passives, maps), poe.ninja economy |
 | `PathOfBuilding/` | Lua | Fork of PoB with a TCP/stdio JSON-RPC API — the calc backend for pob-mcp |
 
@@ -270,7 +270,7 @@ Quick smoke test (less thorough):
 | Topic | File |
 |-------|------|
 | pob-mcp full setup, all env vars, troubleshooting | [`pob-mcp/README.md`](pob-mcp/README.md) |
-| pob-mcp tool list (96 tools, 11 categories) | [`pob-mcp/docs/TOOLS.md`](pob-mcp/docs/TOOLS.md) |
+| pob-mcp tool list (~123 tools) | [`pob-mcp/docs/TOOLS.md`](pob-mcp/docs/TOOLS.md) |
 | poe-mcp-server setup and module architecture | [`poe-mcp-server/README.md`](poe-mcp-server/README.md) |
 | poe-mcp-server tool list (~30 tools) | [`poe-mcp-server/TOOLS.md`](poe-mcp-server/TOOLS.md) |
 | POEMCP setup | [`POEMCP/README.md`](POEMCP/README.md) |

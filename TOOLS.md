@@ -5,9 +5,9 @@ A unified index of every MCP tool exposed by the suite. The suite bundles **thre
 | Server | Prefix | Tools | Detailed doc |
 |--------|--------|------:|--------------|
 | **pob-mcp** | `mcp__pob__` | 123 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
-| **poe-mcp-server** | `mcp__poe__` | 31 | [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) |
-| **POEMCP** | `mcp__poemcp__` | 13 | [POEMCP/TOOLS.md](POEMCP/TOOLS.md) |
-| **Total** | — | **~167** | — |
+| **poe-mcp-server** | `mcp__poe__` | 33 | [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) |
+| **POEMCP** | `mcp__poemcp__` | 16 | [POEMCP/TOOLS.md](POEMCP/TOOLS.md) |
+| **Total** | — | **~172** | — |
 
 PathOfBuilding's [`src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md) documents the *Lua-side* actions that pob-mcp wraps. Those are not Claude-callable directly — they're the underlying API.
 
@@ -167,6 +167,8 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 
 ## 🛒 Trade Search & Pricing
 
+> ℹ️ Trade search tools return a **clickable trade URL + total count** (ExileExchange pattern) — they do not fetch listing details. User opens the URL in their browser. `price_item`, `price_items`, `price_tab`, `ninja_lookup`, `currency_overview` do not hit GGG's trade API and are unaffected.
+
 | Tool | Server |
 |------|--------|
 | `search_trade_items` | pob |
@@ -193,10 +195,14 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 
 ## 📜 Stash & Character API
 
+> ⚠️ **`list_tabs`, `get_tab`, `scan_stash_tabs`, `find_items` are currently blocked** — GGG disabled the legacy character-window stash endpoint. `score_rare` and `price_tab` (cache-read-only) still work. See [`playbooks/stash-scanning.md`](playbooks/stash-scanning.md) for alternatives including WealthyExile.
+
 | Tool | Server |
 |------|--------|
-| `list_tabs` / `get_tab` / `scan_stash_tabs` | poe |
+| `list_tabs` / `get_tab` / `scan_stash_tabs` | poe ⛔ blocked |
+| `find_items` | poe ⛔ blocked |
 | `score_rare` | poe |
+| `price_tab` | poe (cache-only — populate cache with `get_tab` first) |
 | `poe_auth` / `poe_auth_status` / `kf_check` | poe |
 | `cache_status` | poe |
 
