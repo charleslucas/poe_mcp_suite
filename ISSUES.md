@@ -52,6 +52,30 @@ Between two sims in the same socket group, Speed jumped 1.49 → 1.70 attacks/se
 
 ---
 
+## Open — Claude.ai web integration
+
+### HTTP/SSE transport not implemented — servers are stdio-only
+
+All three MCP servers (pob-mcp, poe-mcp-server, POEMCP) currently use stdio transport, which works for Claude Code (subprocess model) but not Claude.ai web (which requires HTTP/SSE transport + a publicly accessible URL).
+
+**Remaining work per server:**
+
+- **POEMCP** (easiest): Uses `FastMCP` which already supports `mcp.run(transport="sse", port=...)`. Change `server.py` to accept a `--transport sse --port N` flag. ~10 lines.
+- **poe-mcp-server**: `mcp_server_utils.py` shim hardcodes `stdio_server()` and ignores the port arg. Replace with SSE transport when a `--http` flag is passed. ~20 lines. Each sub-server or `poe_all.py` needs to accept the flag.
+- **pob-mcp** (most work): Node.js MCP SDK has `SSEServerTransport` available but it's not wired in. Need a `--http --port N` startup mode that starts `SSEServerTransport` instead of `StdioServerTransport`. ~50 lines.
+
+**Intended user experience once done:**
+1. Start servers in HTTP mode
+2. Run `cloudflared tunnel --url http://localhost:PORT` for each server (free, no account)
+3. Add the tunnel URLs to Claude.ai Settings → Integrations
+4. Full tool access from Claude.ai web, with credentials staying local
+
+See `CLAUDE_INSTALL.md` → "Step 6 (optional)" for the full intended setup guide.
+
+**Note:** This preserves the git/PR contribution model. Each user runs their own instance; no shared server is needed. The playbooks and CLAUDE.md remain in the repo as before.
+
+---
+
 ## Open — stash API access
 
 ### Stash scanning blocked: GGG disabled legacy character-window stash endpoint

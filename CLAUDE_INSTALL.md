@@ -180,6 +180,68 @@ The PathOfBuilding submodule is already on the `api-stdio` branch. Point `POB_FO
 
 ---
 
+## Step 6 (optional) — Use with Claude.ai web instead of Claude Code
+
+Claude Code connects to MCP servers via **stdio** (subprocess). Claude.ai web uses **HTTP/SSE** (network). The three servers in this suite currently support stdio only, so using them from Claude.ai web requires two things:
+
+1. **HTTP transport mode** — each server needs to serve over HTTP/SSE instead of stdin/stdout
+2. **Public URL** — Claude.ai's servers can't reach `localhost`; a tunnel makes your local servers accessible
+
+> ⚠️ **HTTP transport is not yet implemented.** This section documents the intended path. See `ISSUES.md` → "HTTP/SSE transport for Claude.ai integration" for the remaining work. Once that's done, the tunnel setup below is how you'd connect.
+
+### Why bother? The git/PR model is preserved
+
+Each user runs their own instance locally and connects their own credentials. Nobody shares a server. The playbooks, skills, and CLAUDE.md stay in the repo — improving them via PR works exactly the same as with Claude Code.
+
+### The intended setup (once HTTP transport is implemented)
+
+**1. Run servers in HTTP mode**
+
+Each server will need to be started with an HTTP/SSE flag instead of (or alongside) stdio mode:
+
+```bash
+# poe-mcp-server — once HTTP mode is added
+python poe-mcp-server/poe_all.py --http --port 8481
+
+# POEMCP — FastMCP already supports this, likely just:
+python POEMCP/server.py --transport sse --port 8484
+
+# pob-mcp — once SSEServerTransport is wired in
+node pob-mcp/build/index.js --http --port 8480
+```
+
+The exact flags will be documented here once implemented.
+
+**2. Expose servers via Cloudflare Tunnel (free, no account needed)**
+
+```bash
+# Install cloudflared
+# Windows: winget install Cloudflare.cloudflared
+# macOS:   brew install cloudflare/cloudflare/cloudflared
+
+# Run a tunnel for each server (each gets a random HTTPS URL)
+cloudflared tunnel --url http://localhost:8480   # pob-mcp
+cloudflared tunnel --url http://localhost:8481   # poe-mcp-server
+cloudflared tunnel --url http://localhost:8484   # POEMCP
+```
+
+Each tunnel prints something like `https://random-name.trycloudflare.com`. Save those URLs.
+
+**3. Add to Claude.ai**
+
+1. Open Claude.ai → Settings → Integrations → Add custom integration
+2. Paste each tunnel URL as an MCP server endpoint
+3. Claude.ai connects and the tools are available in web sessions
+
+### Limitations to be aware of
+
+- **PoB must run locally.** The pob-mcp tools talk to a running Path of Building GUI via TCP. Even with a tunnel, PoB has to be on your local machine — the tunnel just makes Claude.ai's requests reach your local pob-mcp server, which then talks to local PoB. This works fine as long as you're at your computer.
+- **Credentials stay local.** `POE_SESSION_ID` and `POE_ACCOUNT_NAME` live in your environment; they never leave your machine. The tunnel only forwards MCP protocol messages.
+- **Tunnels are ephemeral.** Free Cloudflare tunnels get a new random URL on each restart. For persistent URLs, use a named tunnel (requires a free Cloudflare account) or ngrok.
+- **No stash scanning yet.** Stash tools are blocked regardless of transport (GGG API issue, not a transport issue).
+
+---
+
 ## Step 6 — Configure your MCP client
 
 A ready-to-edit template is included at the repo root: copy `.mcp.json.example` to `.mcp.json` and replace the four `CHANGE_ME` placeholders (clone path ×3, PoB builds path, `POE_SESSION_ID`, `POE_ACCOUNT_NAME`). Do **not** commit `.mcp.json` — it contains your session cookie.
