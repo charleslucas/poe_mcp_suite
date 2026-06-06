@@ -6,8 +6,8 @@ A unified index of every MCP tool exposed by the suite. The suite bundles **thre
 |--------|--------|------:|--------------|
 | **pob-mcp** | `mcp__pob__` | 123 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
 | **poe-mcp-server** | `mcp__poe__` | 33 | [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) |
-| **POEMCP** | `mcp__poemcp__` | 16 | [POEMCP/TOOLS.md](POEMCP/TOOLS.md) |
-| **Total** | — | **~172** | — |
+| **POEMCP** | `mcp__poemcp__` | 19 | [POEMCP/TOOLS.md](POEMCP/TOOLS.md) |
+| **Total** | — | **~175** | — |
 
 PathOfBuilding's [`src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md) documents the *Lua-side* actions that pob-mcp wraps. Those are not Claude-callable directly — they're the underlying API.
 
@@ -164,6 +164,20 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 | `calculate_mod_odds` | pob ⭐ new |
 | `search_item` / `get_item_detail` | poemcp |
 | `search_mods` | poemcp |
+
+## 🧪 Crafting Research (Craft of Exile)
+
+Live data downloaded from craftofexile.com and cached locally. Tools return current mod pools, tier ranges, spawn weights, and fossil/essence interactions. Run `update_craftofexile_cache` first if cache is empty.
+
+| Tool | Server |
+|------|--------|
+| `craftofexile_cache_status` | poemcp |
+| `update_craftofexile_cache` | poemcp |
+| `search_craft_mods` | poemcp |
+| `get_craft_base_items` | poemcp |
+| `get_craft_tiers` | poemcp |
+| `get_fossil_info` | poemcp |
+| `get_essence_mods` | poemcp |
 
 ## 🛒 Trade Search & Pricing
 

@@ -23,18 +23,28 @@ Call `craftofexile_cache_status()`. If any files are listed as MISSING, call `up
 - Narrow with `item_class` param if the user specifies a slot (e.g. "helmet", "ring", "bow").
 - For base-specific lookup, use `get_craft_base_items(query)` to confirm the exact base name first.
 
-**Fossil / essence affinities:**
-- The affinity data is in `reference_data/craftofexile/poec_affinities.json` (loaded by the cache).
-- Currently no dedicated tool surfaces this — note the gap and use `search_craft_mods` to cross-reference fossil-specific mods by keyword (e.g. "aberrant" for chaos resistance mods).
+**Tier ranges and spawn weights:**
+- Use `get_craft_tiers(base_type, query)` to get every tier's min iLvl, value range, and spawn weight for a mod on a specific item class (e.g. `get_craft_tiers("staff", "increased physical damage")`).
+- Weight numbers are relative pool weights — higher = more common. Divide a tier's weight by the sum of all tier weights for that mod to get its raw probability share.
+- Only tiers with non-zero weight are returned; zero-weight entries are unrollable variants.
+
+**Fossil affinities:**
+- Use `get_fossil_info(fossil_name)` to see which mod type categories a fossil boosts, reduces, or blocks.
+- Returns `more_list` (boosted), `less_list` (reduced), `block_list` (blocked), plus raw affinity weights from `mod_data`.
+- Cross-reference: confirm a target mod's type category from `search_craft_mods` or `get_craft_tiers` output (the `modgroup` field), then check `get_fossil_info` to see if that category is boosted.
+
+**Essence guaranteed mods:**
+- Use `get_essence_mods(essence_name, item_type="")` to see what mod an essence guarantees on each slot.
+- Filter by slot with `item_type` (e.g. `get_essence_mods("dread", "staff")` to see only staff mods).
+- If an essence guarantees one of the target mods, the crafting plan simplifies: use the essence to lock that mod, then alt-orb or fossil-craft the remaining mods.
 
 **Crafting bench recipes:**
 - Bench cost data is in `poec_common.json` (`benchcosts` key).
 - No dedicated tool yet — pull via `search_craft_mods` with the target stat as keyword and note results come from the full mod pool, not bench-only.
 
-**Mod weights / odds:**
-- craftofexile data does not directly expose raw numeric weights in the lang/data files at this level of access.
-- For odds, direct the user to the craftofexile website's Calculator UI — it has the full simulation engine client-side.
-- For weight comparisons (which fossil is better), use affinity data if accessible, or note it requires the Calculator UI.
+**Probability / expected cost:**
+- The data from `get_craft_tiers` (weights) gives you the raw ingredients for probability math, but the full simulation (prefix/suffix slot interaction, expected orb cost for a mod combination) lives in the craftofexile Calculator UI.
+- For rough estimates: if a target mod has weight W out of total pool weight T, the probability of hitting it on any given roll is approximately W/T. For two mods simultaneously it's roughly (W1/T) × (W2/T) × (prefix_slots × suffix_slots adjustment). Use the Calculator for precise numbers.
 
 ---
 
