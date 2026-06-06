@@ -60,6 +60,10 @@ The poe-mcp-server started as a fork of boschzilla's poe-mcp-server project.
 The POEMCP server started as a fork of shalayiding's POEMCP project.
 - Original repo: [shalayiding/POEMCP](https://github.com/shalayiding/POEMCP)
 
+**Craft of Exile**
+The crafting mod lookup tools use data from [craftofexile.com](https://www.craftofexile.com), a community crafting calculator maintained independently of GGG. Craft of Exile is the most comprehensive source of mod pool, fossil affinity, and crafting odds data available to the community. Each user fetches their own copy of the data directly from the site; nothing is redistributed by this project.
+- Site: [craftofexile.com](https://www.craftofexile.com)
+
 ---
 
 ## A note on Claude's Path of Exile knowledge
@@ -139,9 +143,9 @@ Key capabilities:
 - **Filter**: read and edit loot filter files in place — find blocks, add/remove/replace rules, set BaseType priorities
 
 ### POEMCP
-**Repo:** [charleslucas/POEMCP](https://github.com/charleslucas/POEMCP) · **13 tools**
+**Repo:** [charleslucas/POEMCP](https://github.com/charleslucas/POEMCP) · **17 tools**
 
-A knowledge and economy lookup server backed by the PoE wiki and poe.ninja.
+A knowledge and economy lookup server backed by the PoE wiki, poe.ninja, and Craft of Exile.
 
 Key capabilities:
 - Search and retrieve detailed data for gems, unique items, and passive nodes (keystones, notables, masteries, ascendancy)
@@ -150,6 +154,7 @@ Key capabilities:
 - Current poe.ninja prices and currency exchange rates
 - Fetch cleaned content from any poewiki.net page
 - Parse a Path of Building export code or share URL into a readable build summary
+- **Crafting mod lookup** via [Craft of Exile](https://www.craftofexile.com) — search what mods can roll on a base, check fossil/essence affinities, look up base item drop levels. Used as a cross-reference when evaluating whether to craft or buy an upgrade.
 
 ### PathOfBuilding *(api-stdio branch)*
 **Repo:** [charleslucas/PathOfBuilding](https://github.com/charleslucas/PathOfBuilding/tree/api-stdio)

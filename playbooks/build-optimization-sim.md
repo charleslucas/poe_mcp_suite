@@ -176,6 +176,7 @@ Gems and quality almost always win on DPS-per-div. Jewels stack but are modest p
 - Does swapping break attribute requirements? (Check `get_build_issues` after simming)
 - Does it displace a mod that's load-bearing for the build mechanic (e.g. a unique that enables a crit engine)?
 - Does it push any resistance overcapped (wasted) or undercapped (dangerous)?
+- **Craft vs. buy:** use `search_craft_mods(target_mod)` to confirm the target mods are in the craftable pool. If trade listings are thin or overpriced, flag crafting as an alternative — especially when the item needs only 1–2 key mods. Direct the user to the craftofexile Calculator for actual odds and expected cost.
 
 ---
 

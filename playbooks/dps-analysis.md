@@ -102,6 +102,7 @@ Dispatch multiple transcripts in a **single message with parallel sub-agent call
    - Estimated DPS delta (use `mcp__pob__find_item_upgrades` or `compare_builds` when possible; estimate from mod math otherwise)
    - Dependencies (e.g., "needs +50 Strength elsewhere first")
    - Risk (corruption gamble, market volatility, requires respec, etc.)
+   - **Craft vs. buy signal**: for any gear fix, run `search_craft_mods(target_mod)` to check if the target mod is in the craftable pool. If so, note whether crafting is likely cheaper or more accessible than the market at the user's budget. Crafting is worth flagging when the item needs only 1–2 mods (low expected cost) or when trade listings are thin/overpriced. Direct the user to the craftofexile Calculator for actual odds.
 3. **Prioritize by ROI** — DPS delta per chaos spent, within the locked-item constraints from Q4.
 4. **Identify phase ordering** — group into Phase 1 (immediate, cheap), Phase 2 (moderate), Phase 3 (aspirational). The user can stop at any phase.
 

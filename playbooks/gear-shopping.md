@@ -84,9 +84,16 @@ Run via `AskUserQuestion`. Skip any question where the answer is already clear f
    - Are there open affixes for crafting? (ilvl 82+ base usually needed for best crafts)
    - Does the base type matter? (Two-Stone Ring has dual-res implicit; Sapphire Ring has cold; Ruby has fire, etc.)
 
-5. **Simulate in PoB before recommending** — use `mcp__pob__add_item` with the item text, then re-read stats to confirm resistances, attributes, and DPS all land correctly. Save the build file after if changes are good.
+5. **Evaluate crafting as an alternative to buying** — before finalising a trade recommendation, run a quick crafting feasibility check:
+   - Use `search_craft_mods(target_mod)` to confirm the target mods are in the craftable pool.
+   - Use `get_craft_base_items(base_name)` to confirm the base exists and its drop level.
+   - Signal "crafting is worth considering" when: trade has few or no good listings at budget, the target item needs only 1–2 key mods, or the user already has relevant fossils/essences in stash (check with `mcp__poe__scan_stash_tabs` if unsure).
+   - Signal "just buy it" when: the item needs 3+ specific mods simultaneously (crafting cost becomes exponential), budget is tight and the user needs a guaranteed result, or a good trade listing already exists within budget.
+   - For actual odds and cost estimates, direct the user to the craftofexile Calculator — our tools confirm what can roll and which fossils have affinity, but the probability math lives in their client-side engine.
 
-6. **Provide the trade link** — always include the `trade_url` from the search result so the user can verify availability themselves.
+6. **Simulate in PoB before recommending** — use `mcp__pob__add_item` with the item text, then re-read stats to confirm resistances, attributes, and DPS all land correctly. Save the build file after if changes are good.
+
+7. **Provide the trade link** — always include the `trade_url` from the search result so the user can verify availability themselves.
 
 ---
 
