@@ -4,10 +4,10 @@ A unified index of every MCP tool exposed by the suite. The suite bundles **thre
 
 | Server | Prefix | Tools | Detailed doc |
 |--------|--------|------:|--------------|
-| **pob-mcp** | `mcp__pob__` | 123 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
+| **pob-mcp** | `mcp__pob__` | 124 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
 | **poe-mcp-server** | `mcp__poe__` | 33 | [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) |
 | **POEMCP** | `mcp__poemcp__` | 19 | [POEMCP/TOOLS.md](POEMCP/TOOLS.md) |
-| **Total** | — | **~175** | — |
+| **Total** | — | **~176** | — |
 
 PathOfBuilding's [`src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md) documents the *Lua-side* actions that pob-mcp wraps. Those are not Claude-callable directly — they're the underlying API.
 
@@ -130,7 +130,7 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 | Tool | Server |
 |------|--------|
 | `list_specs` / `select_spec` / `create_spec` / `delete_spec` / `rename_spec` | pob |
-| `list_item_sets` / `select_item_set` | pob |
+| `list_item_sets` / `select_item_set` / `create_item_set` | pob |
 
 ## ⚔️ Gems & Skill Links
 
