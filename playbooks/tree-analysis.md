@@ -51,6 +51,11 @@ Ask before loading anything. Many of these answers may already be in the journal
 - `mcp__pob__evaluate_threshold_jewels` — checks each "With at least N <Attribute> in Radius, …" threshold against the current allocation. Useful when adding/removing nodes near a threshold-jewel socket (the threshold may turn on/off mid-edit).
 - `mcp__pob__list_radius_effect_jewels` — catches the long tail of "in Radius" uniques (Energy From Within, Healthy Mind, Fertile Mind, Might of the Meek, Brute Force Solution, etc.) that aren't Timeless or threshold jewels. Categorizes each (transform / grant / multiplier / other) and lists the allocated nodes in radius.
 
+### Add if intent = find best unallocated nodes (open-ended or "what should I take next")
+- `mcp__pob__get_node_power` — returns PoB's built-in node power heat map data, ranked by offence/defence/combined impact. Use `filter: "unallocated"` to get unallocated nodes only, `max_depth: N` to restrict to nodes within N hops of the current tree, `recalculate: true` to force a fresh power computation. **This is the fastest first-pass for "what's the best node to take" questions** — it uses the same data PoB shows in its own "Show Node Power" heat map. Always follow up with `find_path_to_node` to get the real path cost before recommending (power score ignores travel cost, same pitfall as `get_passive_upgrades`).
+  - Example: `get_node_power(mode: "combined", filter: "unallocated", max_depth: 3, limit: 10)` returns the top 10 unallocated nodes within 3 hops ranked by combined offence + defence impact.
+  - **Requires PoB's power data to have been computed.** Set `recalculate: true` if `has_data: false` is returned (PoB hasn't run the coroutine yet this session).
+
 ### Add if intent = DPS increase
 - `mcp__pob__lua_get_stats` to establish the DPS baseline before any changes
 - Load [`dps-analysis.md`](dps-analysis.md) alongside this playbook
