@@ -122,7 +122,7 @@ For surgical reallocations (reach a specific notable), a chat response is suffic
 - Table: M nodes to add | stats gained | entry point
 - Net stat delta (DPS %, life Δ, armour Δ, resistance Δ)
 
-For open-ended tune-ups, append to `character_data/{Account}/{Character}/journal.md` under `## YYYY-MM-DD — Passive Tree Analysis`:
+For open-ended tune-ups, append to `character_data/{Account}/{League}/{Character}/journal.md` under `## YYYY-MM-DD — Passive Tree Analysis`:
 - Methodology note (intent, constraints)
 - Removed nodes table
 - Added nodes table

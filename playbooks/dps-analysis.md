@@ -46,7 +46,7 @@ Optional follow-up if relevant:
 - Character live state: `mcp__pob__lua_get_stats` (TCP) or `mcp__pob__get_build_stats` (disk)
 - Equipped items: `mcp__pob__get_equipped_items`
 - Main skill setup: `mcp__pob__get_skill_setup`
-- Character journal if it exists: `character_data/{Account}/{Character}/journal.md`
+- Character journal if it exists: `character_data/{Account}/{League}/{Character}/journal.md`
 
 ### Add if Q1 = Gear or All
 - League context (current league name affects ninja prices, mod pool, league mechanics): `mcp__poemcp__currency_overview`

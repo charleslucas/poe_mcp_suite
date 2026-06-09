@@ -28,7 +28,7 @@ mcp__pob__lua_get_stats(all)         # full stat snapshot — Life, DPS, EHP, re
 mcp__pob__get_equipped_items         # full gear read — note every slot's mods
 ```
 
-Read `character_data/<Account>/<Character>/build.md` and `meta.json` — prior analysis, open questions, upgrade path phases.
+Read `character_data/<Account>/<League>/<Character>/build.md` and `meta.json` — prior analysis, open questions, upgrade path phases.
 
 **Read the league freshness checklist:** `reference_data/leagues/<league>.md` → "Rule / mechanic changes" section. Confirm no mechanic assumption is stale before proceeding.
 
@@ -182,7 +182,7 @@ Gems and quality almost always win on DPS-per-div. Jewels stack but are modest p
 
 ## Stage 6 — Record findings and close
 
-Update `character_data/<Account>/<Character>/build.md`:
+Update `character_data/<Account>/<League>/<Character>/build.md`:
 - Add a dated "Gem/Link Audit" or "Optimization Audit" section
 - Record: current link setup with per-gem level/quality, findings per sim (delta and verdict), recommended actions in priority order
 - Add undone items to the "Open Questions / Follow-ups" section

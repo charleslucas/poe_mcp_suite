@@ -152,7 +152,7 @@ Three dimensions classify every piece of knowledge in the system.
 | Game mechanics | `reference_data/` | Yes |
 | Archetype consensus | `character_data/guides/{archetype}/` | Yes |
 | Design attempt | **No formal home yet** | — |
-| Character-specific | `character_data/{Account}/{Character}/` | No (junction) |
+| Character-specific | `character_data/{Account}/{League}/{Character}/` | No (junction) |
 | Session output | Conversation context + journal | Partially |
 
 The gap is **design attempt knowledge**. Needs a home. See section 6.
@@ -218,7 +218,7 @@ The system is designed so that accumulated knowledge can be contributed back via
 - Build profile templates
 
 **Not shareable** (stays in the external junction, never committed):
-- `character_data/{Account}/{Character}/` — specific character data, journal, snapshots
+- `character_data/{Account}/{League}/{Character}/` — specific character data, journal, snapshots
 - Any file containing account names, session IDs, or personal economy data
 
 **Contribution metadata requirements** (every shared file must have):

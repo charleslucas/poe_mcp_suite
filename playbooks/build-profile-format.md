@@ -8,7 +8,7 @@ The build profile is the handoff artifact between design mode and analysis mode.
 - Ages well — stale sections are clearly marked, not silently wrong
 - Doubles as community contribution format when anonymized
 
-**Location:** `character_data/{Account}/{Character}/build-profile.md`  
+**Location:** `character_data/{Account}/{League}/{Character}/build-profile.md`  
 For shared archetypes: `character_data/guides/{archetype}/build-profile.md`
 
 ---

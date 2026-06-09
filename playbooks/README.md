@@ -64,7 +64,7 @@ Load `reference_data/leagues/{current-league}.md` at the start of any session in
 If the file doesn't exist for the current league, generate it via a sub-agent (see section 6) so the raw wiki page never enters main context. The agent fetches `https://www.poewiki.net/wiki/{LeagueName}_league`, summarizes, writes the cache file, and returns only a brief confirmation. For per-mechanic deep dives during the same session, additional sub-agents per mechanic also work well.
 
 ### 2c — Character snapshot
-If the task involves a specific character, read `character_data/{Account}/{Character}/meta.json` and `journal.md` before loading any live data. The journal records hard-won decisions (crafting results, build pivots, known pitfalls) that directly affect what to recommend — skipping it leads to re-solving problems already solved.
+If the task involves a specific character, read `character_data/{Account}/{League}/{Character}/meta.json` and `journal.md` before loading any live data. The journal records hard-won decisions (crafting results, build pivots, known pitfalls) that directly affect what to recommend — skipping it leads to re-solving problems already solved.
 
 ---
 
@@ -175,7 +175,7 @@ Every playbook must have these sections in this order:
    The actual work in order: identify bottlenecks → candidate fixes → cost/impact estimates → prioritized phases.
 
 5. **Step 4 — Output shape**
-   Where results go (typically `character_data/{Account}/{Character}/journal.md` or `build.md`) and what structure they take.
+   Where results go (typically `character_data/{Account}/{League}/{Character}/journal.md` or `build.md`) and what structure they take.
 
 6. **Step 5 — Pitfalls**
    Concrete lessons from real sessions. Each entry must be a specific, falsifiable assertion — "Diamond Shrine does NOT grant ailment immunity" not "be careful with shrines." This section is the highest-value part of the playbook over time.

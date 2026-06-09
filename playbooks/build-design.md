@@ -262,7 +262,7 @@ The build profile is NOT a narrative — it is structured data. Keep it compact.
 
 ### Output 2: Build Plan document
 
-The narrative milestone breakdown. Lives at `character_data/{Account}/{Character}/build.md` or, for a design that hasn't started play yet, at `character_data/guides/{archetype}/build-plan.md`.
+The narrative milestone breakdown. Lives at `character_data/{Account}/{League}/{Character}/build.md` or, for a design that hasn't started play yet, at `character_data/guides/{archetype}/build-plan.md`.
 
 Contents:
 - One-paragraph concept summary (why this build, what makes it interesting)

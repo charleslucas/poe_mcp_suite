@@ -97,7 +97,7 @@ Slowly-changing game data — the official GGG passive tree exports, atlas tree,
 
 ### Per-character analyses
 
-Detailed build analyses for each character live in [`character_data/<Account>/<Character>/`](character_data/) — also gitignored (junction to `%APPDATA%/poe_claude_data/` on Windows), since they include playstyle notes and personal info. Claude reads the doc at the start of a session and appends new findings, decisions, and crafting outcomes as you work.
+Detailed build analyses for each character live in [`character_data/<Account>/<League>/<Character>/`](character_data/) — also gitignored (junction to `%APPDATA%/poe_claude_data/` on Windows), since they include playstyle notes and personal info. Claude reads the doc at the start of a session and appends new findings, decisions, and crafting outcomes as you work.
 
 ### Your role as co-pilot on data hygiene
 

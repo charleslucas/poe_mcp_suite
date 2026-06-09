@@ -170,7 +170,7 @@ For quick comparisons (one specific question), a chat response is enough:
 - Stat delta for the 2-3 most important differences (if simulated)
 - Bottom line: *"Build B's tree would give you X more life but costs Y DPS."*
 
-For full "how far am I from this guide" comparisons, append to `character_data/{Account}/{Character}/journal.md` (the chronological log) rather than `build.md` (the narrative doc). Entry structure:
+For full "how far am I from this guide" comparisons, append to `character_data/{Account}/{League}/{Character}/journal.md` (the chronological log) rather than `build.md` (the narrative doc). Entry structure:
 
 ```markdown
 ## YYYY-MM-DD — Comparison vs [guide name/URL]

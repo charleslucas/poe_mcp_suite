@@ -13,7 +13,7 @@ A thin discovery hub pointing to the work-tracking files scattered across the su
 
 ## Tracked per character (local cache)
 
-- `character_data/<Account>/<Character>/build.md` — each active character has an **Open Questions / Follow-ups** section at the bottom for deferred upgrades, alt-archetype explorations, gap-analysis follow-ups, etc.
+- `character_data/<Account>/<League>/<Character>/build.md` — each active character has an **Open Questions / Follow-ups** section at the bottom for deferred upgrades, alt-archetype explorations, gap-analysis follow-ups, etc.
 - `character_data/` is a junction to `%APPDATA%/poe_claude_data/` on Windows (see `character_data/README.md`). The directory itself is gitignored — per-character notes don't travel with a fresh clone (tracked in [ISSUES.md](ISSUES.md) → *Open — data persistence*).
 
 ## Tracked per league (local cache)

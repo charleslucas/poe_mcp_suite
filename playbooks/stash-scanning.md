@@ -96,7 +96,7 @@ mcp__poe__ninja_lookup(name="Divine Orb")
 
 ### Stage 4 — Record and act
 
-For high-value finds, update `character_data/<Account>/<Character>/journal.md` with discovery and decision. For currency investments, check `currency_overview` to find the best conversion path.
+For high-value finds, update `character_data/<Account>/<League>/<Character>/journal.md` with discovery and decision. For currency investments, check `currency_overview` to find the best conversion path.
 
 ---
 

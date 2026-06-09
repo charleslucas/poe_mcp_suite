@@ -111,7 +111,7 @@ GGG has shut down the legacy `character-window/get-stash-items` endpoint for sta
 Two kinds of content have crept into these dirs that **are not regenerable** from any wiki fetch or import:
 
 1. **FRESHNESS CHECKLIST entries in `reference_data/leagues/<league>.md`** — hand-curated "this patch's mechanic diverges from Claude's pre-2024 knowledge" notes. Example added 2026-05-29: *The Unseen Hand (Nameless bloodline) grants a 3rd ring slot in 3.28 Mirage.* A regen from poewiki re-fetches the league mechanic content but loses these curated divergences. The whole point of the checklist is durable freshness support across sessions, so losing it on reclone defeats the design.
-2. **`character_data/<Account>/<Character>/build.md`** — per-character upgrade plans, gap analyses, decision rationale, deferred follow-ups. Built up across multiple sessions. Exists only in the user's `%APPDATA%`. A fresh clone, a different machine, or a wiped junction has zero of it. Same for the per-character journal entries.
+2. **`character_data/<Account>/<League>/<Character>/build.md`** — per-character upgrade plans, gap analyses, decision rationale, deferred follow-ups. Built up across multiple sessions. Exists only in the user's `%APPDATA%`. A fresh clone, a different machine, or a wiped junction has zero of it. Same for the per-character journal entries.
 
 Both kinds of content are human/Claude-authored *analysis*, not cache data. They survive only as long as the local `%APPDATA%` and the local `reference_data/` survive — not across reclones, machine swaps, or repo sharing.
 

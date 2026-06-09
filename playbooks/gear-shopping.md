@@ -6,7 +6,7 @@ For Claude sessions where the user wants to find a replacement or upgrade for a 
 
 ## Prerequisites (always run before anything else)
 
-**1. Load the build profile** — `character_data/{Account}/{Character}/build-profile.md`. If it doesn't exist, create a minimal one from the current PoB state before proceeding. Gear analysis without build-specific mod value overrides (Section 4) and hard constraints (Section 5) misses the most important signal: whether a mod actually matters to *this* build. A T6 mod the build doesn't scale is worse than a T2 mod on a core stat.
+**1. Load the build profile** — `character_data/{Account}/{League}/{Character}/build-profile.md`. If it doesn't exist, create a minimal one from the current PoB state before proceeding. Gear analysis without build-specific mod value overrides (Section 4) and hard constraints (Section 5) misses the most important signal: whether a mod actually matters to *this* build. A T6 mod the build doesn't scale is worse than a T2 mod on a core stat.
 
 **2. Compute the constraint margin table** — call `mcp__pob__lua_get_stats(category='all')` and fill in the Current and Margin columns for every row in the build profile's Section 6 (Constraint Status). This is the baseline for cascade analysis. A margin is spendable budget; zero margin means any loss requires compensation before the change is valid.
 
@@ -85,7 +85,7 @@ Present this list to the user and confirm which slot to target before proceeding
 ### Always load (build profile is already loaded from prerequisites)
 - Equipped items: `mcp__pob__get_equipped_items`
 - Current stats: `mcp__pob__lua_get_stats(category='all')` — already computed for constraint margins; re-use that call
-- Character journal if it exists: `character_data/{Account}/{Character}/journal.md`
+- Character journal if it exists: `character_data/{Account}/{League}/{Character}/journal.md`
 
 ### Add if shopping for a resistance-critical slot (ring, belt, amulet, body, boots, gloves)
 - Map ALL resistance contributions before proposing any swap — know exactly what each piece provides so the math is correct before hitting trade. A ring might be contributing fire + cold + lightning + chaos simultaneously from implicit AND explicit mods.
@@ -153,7 +153,7 @@ For quick single-item swaps, a chat summary is enough:
 - What it fixes vs what it trades away
 - Any follow-up needed (craft the open suffix, check PoB for attribute issues, etc.)
 
-For multi-slot rebalances or large budget sessions, append to `character_data/{Account}/{Character}/journal.md`:
+For multi-slot rebalances or large budget sessions, append to `character_data/{Account}/{League}/{Character}/journal.md`:
 - **Gear Swap Log** dated entry with: slot, old item, new item, cost, stat delta
 - Any identified follow-on gaps (e.g., "still 3% cold short — watching for a helm enchant")
 

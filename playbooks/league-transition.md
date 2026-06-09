@@ -74,7 +74,7 @@ Sanity-check by re-running `mcp__pob__get_active_leagues` — the warning should
 
 ## Step 3 — Update character meta files
 
-Every character in `character_data/{Account}/{Character}/meta.json` whose `league` field matches the old temp league needs updating. Reading the file first is fine; use `Edit` to change just the league field rather than rewriting the whole JSON.
+Every character in `character_data/{Account}/{League}/{Character}/meta.json` whose `league` field matches the old temp league needs updating. Reading the file first is fine; use `Edit` to change just the league field rather than rewriting the whole JSON.
 
 ```bash
 # Find affected characters

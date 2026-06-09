@@ -44,7 +44,7 @@ Full reasoning in [`legal_considerations.md`](legal_considerations.md) → "GGG 
 
 - **Check `character_data/guides/` for accumulated build guide research before analyzing a build archetype.** The global guide library lives at `character_data/guides/{archetype}/`. Each archetype has a `README.md` (consensus notes, current best guide by tier), JSON entries per guide, `synthesis.md`, and a `buffer/` for raw transcripts. Read the archetype README first; add a new entry when a new guide is analyzed.
 
-- **Check `character_data/<Account>/<Character>/` before starting work on a character.** Per-character data lives in an external cache (`%APPDATA%/poe_claude_data/` on Windows) exposed via a directory junction at `character_data/`. Layout:
+- **Check `character_data/<Account>/<League>/<Character>/` before starting work on a character.** Per-character data lives in an external cache (`%APPDATA%/poe_claude_data/` on Windows) exposed via a directory junction at `character_data/`. Layout:
   - `meta.json` — identity + current stats snapshot. Read this first.
   - `inventory.json` — equipped items, flasks, jewels, eldritch implicits. Update via Edit, not full rewrite.
   - `build.md` — narrative: concept, gap analysis vs guide, upgrade plans, open questions.
