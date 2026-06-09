@@ -187,7 +187,7 @@ Add or remove rows to match the build. Tiers and thresholds are stable (set duri
 
 ---
 
-## Section 8: Known Weak Points
+## Section 7: Known Weak Points
 
 Identified vulnerabilities that aren't constraints to be fixed, but risks to be aware of. Informs which content to avoid and which defensive upgrades have the highest marginal value.
 
@@ -195,7 +195,7 @@ Format: state the weak point, its practical consequence, and current mitigation 
 
 ---
 
-## Section 9: Design Attempt Log
+## Section 8: Design Attempt Log
 
 Record of design paths explored and eliminated for this character or archetype. Prevents repeating failed explorations in future sessions.
 
@@ -211,12 +211,12 @@ Format per entry:
 ### For a new design (design mode)
 - Sections 1–5 and 9 are filled during the build design playbook
 - Section 6 (Constraint Status): fill in Tier and Threshold during design; leave Current and Margin as "—" until the character exists in-game
-- Section 7 is initially populated from known archetype weaknesses; updated from play experience
+- Section 7 (Known Weak Points) is initially populated from known archetype weaknesses; updated from play experience
 
 ### For an existing character (analysis mode)
 - Sections 1–5 should be stable once established; update only when the build concept changes
 - Section 6 (Constraint Status): Tier and Threshold are stable; recompute Current and Margin from live PoB (`lua_get_stats`) at the start of each analysis session
-- Section 7 grows as the player discovers weaknesses in practice
+- Section 7 (Known Weak Points) grows as the player discovers weaknesses in practice
 
 ### Staleness
-If the patch version in the frontmatter is more than one major patch behind the current game version, treat Sections 1, 3, and 4 as potentially stale. Revalidate against current game data before relying on them for analysis.
+If the patch version in the frontmatter is more than one major patch behind the current game version, treat Sections 1, 3, and 4 as potentially stale. Section numbers: 1 Core Mechanics, 2 Anchor Items, 3 Stat Priority, 4 Mod Value Overrides, 5 Hard Constraints, 6 Constraint Status, 7 Known Weak Points, 8 Design Attempt Log. Revalidate against current game data before relying on them for analysis.
