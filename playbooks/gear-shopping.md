@@ -1,50 +1,91 @@
 # Playbook: Gear Shopping
 
-For Claude sessions where the user wants to find a replacement or upgrade for a specific gear slot. Load this playbook in full at the start of the task; it gates which data sources you need to fetch and saves context.
+For Claude sessions where the user wants to find a replacement or upgrade for a specific gear slot, identify the best upgrade opportunity across all slots, or evaluate a specific found item. Load this playbook in full at the start of the task.
+
+---
+
+## Prerequisites (always run before anything else)
+
+**1. Load the build profile** — `character_data/{Account}/{Character}/build-profile.md`. If it doesn't exist, create a minimal one from the current PoB state before proceeding. Gear analysis without build-specific mod value overrides (Section 4) and hard constraints (Section 5) misses the most important signal: whether a mod actually matters to *this* build. A T6 mod the build doesn't scale is worse than a T2 mod on a core stat.
+
+**2. Compute the constraint margin table** — call `mcp__pob__lua_get_stats(category='all')` and fill in the Current and Margin columns for every row in the build profile's Section 6 (Constraint Status). This is the baseline for cascade analysis. A margin is spendable budget; zero margin means any loss requires compensation before the change is valid.
 
 ---
 
 ## Step 0 — Frame the work for the user
 
-*"Using the Gear Shopping playbook — quick triage first, then I'll pull the current build state and check the market."*
+*"Using the Gear Shopping playbook — loading build profile and computing constraint margins, then quick triage before I pull market data."*
 
 Task-specific narration: before searching trade, note that pseudo-stat filters are used (they match items regardless of which explicit line the stat rolls on). When a result looks good, simulate it in PoB before recommending — numbers on paper can hide attribute or resistance problems. When trade returns nothing, lower requirements incrementally and explain which stat was dropped and why.
 
 ---
 
-## Step 1 — Triage (structured)
+## Step 1 — Session prerequisites (triage)
 
 Run via `AskUserQuestion`. Skip any question where the answer is already clear from context.
 
-**Q1 — What's driving the search?**
-- Upgrade (strictly better version of what's there)
-- Constraint fix (attribute shortage, resistance gap, flask limitation)
+**Q1 — Session goal**
+- Upgrade a specific slot (user knows which one)
+- Find the best upgrade across all slots ("where should I spend my div?")
+- Fix a specific constraint violation (resistance gap, attribute shortage, mana pressure)
+- Evaluate a found or dropped item ("is this worth equipping?")
 - Budget reallocation (sell a valuable piece, replace cheaper)
-- Slot is empty / item dropped
 
-**Q2 — Which slot(s)?**
+**Q2 — Which slot(s)?** (skip if Q1 is "find best upgrade" or "fix constraint" — gear audit in Step 2 determines this)
 - Single slot (user names it)
 - Multiple slots (e.g., "rebalance resistances across rings + belt")
-- Open — "find the weakest piece"
 
-**Q3 — Hard constraints to preserve**
+**Q3 — Optimization objective**
+- Cheapest valid path — satisfy all constraints, minimize cost
+- Sweet spot — willing to spend more for meaningful threshold gains
+- Threshold — trying to hit a specific target ("4000 life", "100% hit chance", "Uber-ready")
+- Budget allocation — "X div to spend, where does it go furthest?"
+
+**Q4 — Hard constraints to preserve** (skip if fully established in build profile Section 5)
 - Any resistance caps that must be maintained
 - Minimum attributes (Str / Dex / Int) required for gems or other gear
 - Flask constraints (e.g., Screams of the Desiccated — only Seething instant flasks allowed)
 - Unique item locked in an adjacent slot that cannot move
 
-**Q4 — Budget**
+**Q5 — Budget**
 - Read from stash first via `mcp__poe__list_tabs` + ninja lookups on notable items before asking. Present the estimate for confirmation.
 - If budget is clear from prior conversation, skip.
 
 ---
 
-## Step 2 — Data loads
+## Step 2 — Gear audit (when Q1 = "find best upgrade" or slot is unknown)
 
-### Always load
+Run `mcp__pob__analyze_item_mods` on all equipped slots. For each mod, apply a two-axis classification:
+
+**Axis 1 — Tier** (as reported by the tool)
+**Axis 2 — Build relevance** (cross-reference build profile Section 4, Mod Value Overrides):
+
+| Classification | Meaning |
+|---|---|
+| **Load-bearing** | Enables a hard constraint (leech source, hit chance, flask type) or is required by an anchor item dependency |
+| **High-value** | In the "worth more than tier suggests" list — scales with the build's primary damage chain |
+| **Resistance / attribute budget** | Provides needed res or attributes — necessary but not build-specific |
+| **Weak and relevant** | Low-tier mod of a stat the build cares about; upgrading it would translate to DPS or defense |
+| **Weak and irrelevant** | Low-tier mod of a stat in the "worth less" or "irrelevant" list — marginal value |
+| **Wasted** | Explicitly "irrelevant or detrimental" per Section 4 — affix slot exists but does nothing for this build |
+
+Aggregate per slot: slots with wasted or weak-and-irrelevant affixes are upgrade candidates even if their overall tier looks acceptable.
+
+**Output: ranked upgrade candidate list**, sorted by:
+1. Wasted affix count (slots with explicit irrelevant mods are highest priority)
+2. Weak-but-relevant mod count (slots where tier upgrades would translate to build DPS or defense)
+3. Constraint margin proximity (slots contributing to stats where margin is near zero are risky to change — treat with caution)
+
+Present this list to the user and confirm which slot to target before proceeding.
+
+---
+
+## Step 3 — Data loads
+
+### Always load (build profile is already loaded from prerequisites)
 - Equipped items: `mcp__pob__get_equipped_items`
-- Current stats (resistances, attributes, life, DPS): `mcp__pob__lua_get_stats(category='all')`
-- Character analysis doc if it exists: `character_data/{Account}/{Character}/journal.md`
+- Current stats: `mcp__pob__lua_get_stats(category='all')` — already computed for constraint margins; re-use that call
+- Character journal if it exists: `character_data/{Account}/{Character}/journal.md`
 
 ### Add if shopping for a resistance-critical slot (ring, belt, amulet, body, boots, gloves)
 - Map ALL resistance contributions before proposing any swap — know exactly what each piece provides so the math is correct before hitting trade. A ring might be contributing fire + cold + lightning + chaos simultaneously from implicit AND explicit mods.
@@ -64,7 +105,7 @@ Run via `AskUserQuestion`. Skip any question where the answer is already clear f
 
 ---
 
-## Step 3 — Analysis pattern
+## Step 4 — Analysis pattern
 
 1. **Map what the current item contributes** — list every stat it provides that matters: resistances (each element separately), attributes, life, DPS mods, flask mods, utility. This is what the replacement must cover.
 
@@ -74,30 +115,38 @@ Run via `AskUserQuestion`. Skip any question where the answer is already clear f
    - = Minimum resistance the new item needs
    - Same math for attributes
 
-3. **Search trade with pseudo stat IDs** — pseudo stats (`pseudo.pseudo_total_*`) match the total regardless of where it rolls, making them far more effective than explicit stat filters:
+3. **Cascade analysis** — before searching trade, compute what replacing the current item costs across all constraints:
+   - For each stat the current item contributes, subtract from the corresponding constraint margin (from the table computed in Prerequisites)
+   - Identify which margins go negative
+   - For each negative margin: what is the cheapest compensation path? (other gear, tree node, gem swap)
+   - Sum total cost: target item + all compensations
+   - **"Don't make this change" is a valid output.** If the cascade cost exceeds the budget or no viable compensation exists, record the finding in build profile Section 8 (Design Attempt Log) and stop. Knowing what not to do is as useful as finding what to buy.
+
+4. **Search trade with pseudo stat IDs** — pseudo stats (`pseudo.pseudo_total_*`) match the total regardless of where it rolls, making them far more effective than explicit stat filters:
    - `pseudo.pseudo_total_life`, `pseudo.pseudo_total_dexterity`, `pseudo.pseudo_total_cold_resistance`, etc.
    - Use `mcp__poe__get_stat_ids` to find the right IDs before building the filter
 
-4. **Evaluate results by shape, not just headline number** — check:
+5. **Evaluate results by shape, not just headline number** — check:
    - Does it cover fire AND cold, or just one? (overcapping one element is wasted budget)
    - Is it corrupted? (no further crafting possible)
    - Are there open affixes for crafting? (ilvl 82+ base usually needed for best crafts)
    - Does the base type matter? (Two-Stone Ring has dual-res implicit; Sapphire Ring has cold; Ruby has fire, etc.)
+   - **Apply build profile mod value overrides**: a T4 mod that the build scales is worth more than a T2 mod it doesn't. Shape > tier.
 
-5. **Evaluate crafting as an alternative to buying** — before finalising a trade recommendation, run a quick crafting feasibility check:
-   - Use `search_craft_mods(target_mod)` to confirm the target mods are in the craftable pool.
-   - Use `get_craft_base_items(base_name)` to confirm the base exists and its drop level.
+6. **Evaluate crafting as an alternative to buying** — before finalising a trade recommendation, run a quick crafting feasibility check:
+   - Use `mcp__poemcp__search_craft_mods(target_mod)` to confirm the target mods are in the craftable pool.
+   - Use `mcp__poemcp__get_craft_base_items(base_name)` to confirm the base exists and its drop level.
    - Signal "crafting is worth considering" when: trade has few or no good listings at budget, the target item needs only 1–2 key mods, or the user already has relevant fossils/essences in stash (check with `mcp__poe__scan_stash_tabs` if unsure).
    - Signal "just buy it" when: the item needs 3+ specific mods simultaneously (crafting cost becomes exponential), budget is tight and the user needs a guaranteed result, or a good trade listing already exists within budget.
    - For actual odds and cost estimates, direct the user to the craftofexile Calculator — our tools confirm what can roll and which fossils have affinity, but the probability math lives in their client-side engine.
 
-6. **Simulate in PoB before recommending** — use `mcp__pob__add_item` with the item text, then re-read stats to confirm resistances, attributes, and DPS all land correctly. Save the build file after if changes are good.
+7. **Simulate in PoB before recommending** — use `mcp__pob__add_item` with the item text, then re-read stats to confirm resistances, attributes, and DPS all land correctly. Save the build file after if changes are good.
 
-7. **Provide the trade link** — always include the `trade_url` from the search result so the user can verify availability themselves.
+8. **Provide the trade link** — always include the `trade_url` from the search result so the user can verify availability themselves.
 
 ---
 
-## Step 4 — Output shape
+## Step 5 — Output shape
 
 For quick single-item swaps, a chat summary is enough:
 - Best option found, price, key stats, trade link
@@ -108,9 +157,20 @@ For multi-slot rebalances or large budget sessions, append to `character_data/{A
 - **Gear Swap Log** dated entry with: slot, old item, new item, cost, stat delta
 - Any identified follow-on gaps (e.g., "still 3% cold short — watching for a helm enchant")
 
+If cascade analysis found a change infeasible, record in build profile Section 8 (Design Attempt Log): what was tried, what it cost in constraint margin, why it failed. This prevents repeating the same analysis in future sessions.
+
 ---
 
-## Step 5 — Pitfalls (lessons from past sessions)
+## Step 6 — Pitfalls (lessons from past sessions)
+
+### Build profile required
+- **Do not evaluate gear without loading the build profile first.** Tier analysis alone misses build-specific mod value. A T6 mod the build doesn't scale is worse than a T1 mod on a core stat. On a phys-conversion build with Winds of Fate, flat physical damage is nearly irrelevant — but a generic tier analysis ranks it highly.
+- **Apply mod value overrides before ranking trade results.** The best listing on trade may have high-tier mods that the build profile marks as "worth less than tier suggests." Always apply the override lens before reporting a recommendation.
+
+### Cascade analysis
+- **Compute cascade before searching trade, not after.** Discovering that a ring upgrade drops cold resistance below cap after you've already recommended it wastes a step. Run the constraint delta first.
+- **"Don't make this change" is a first-class output.** The cascade analysis for Determination (cost: ~50% mana reservation on a build with no mana budget) took 10 seconds to run and saved a guaranteed regression. Knowing what to skip is as useful as finding what to buy.
+- **Record infeasible changes in Section 8 of the build profile.** If you don't, the same change will be re-analyzed in the next session.
 
 ### Stash API
 - **PoE stash API requires the full account name WITH discriminator, URL-encoded.** `AccountName#1234` must be sent as `AccountName%231234`. Stripping the `#discriminator` (`account.split('#')[0]`) causes persistent HTTP 403 on all stash endpoints even with a valid POESESSID. Character-window endpoints for character data are more lenient and accept the base name.
@@ -149,4 +209,4 @@ For multi-slot rebalances or large budget sessions, append to `character_data/{A
 
 ## Trust hierarchy
 
-See [`README.md`](README.md) section 5. For gear shopping specifically: live trade API results and poe.ninja lookups (both current) rank above cached `reference_data/` for prices, since prices change daily.
+See [`README.md`](README.md) section 5. For gear shopping specifically: live trade API results and poe.ninja lookups (both current) rank above cached `reference_data/` for prices, since prices change daily. Build profile mod value overrides rank above generic tier evaluation for build-specific recommendations — a live PoB simulation of the proposed item is the final arbiter.
