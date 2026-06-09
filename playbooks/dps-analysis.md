@@ -43,6 +43,7 @@ Optional follow-up if relevant:
 
 ### Always load
 - Pre-flight: `mcp__pob__get_context_usage` + league reference + character snapshot (see [`README.md`](README.md) section 2)
+- Build profile + constraint margins: see [`README.md`](README.md) §2d. Sections 3+4 define which stats are the actual DPS levers for this build — critical for identifying the right bottlenecks in Step 3 rather than chasing generically-good mods that don't move this build's damage.
 - Character live state: `mcp__pob__lua_get_stats` (TCP) or `mcp__pob__get_build_stats` (disk)
 - Equipped items: `mcp__pob__get_equipped_items`
 - Main skill setup: `mcp__pob__get_skill_setup`

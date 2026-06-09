@@ -41,6 +41,7 @@ Ask before loading anything. Many of these answers may already be in the journal
 | Source | Tool | Notes |
 |--------|------|-------|
 | Pre-flight | See [`README.md`](README.md) section 2 | Context check, league reference, character snapshot |
+| Build profile + constraint margins | See [`README.md`](README.md) §2d | Sections 3+4 define the scoring function for Step 3c: which nodes are valuable for *this* build, not any build. Without it, value-per-point ranking defaults to generic stats that are wrong for any build with non-standard scaling. |
 | Current tree + node IDs | `mcp__pob__lua_get_tree` with `include_node_ids: true` | Need full ID list for Python classification |
 | Node reference data | `reference_data/skilltree/data.json` (Python) **or** `mcp__pob__get_tree_node` for single-node lookups | The MCP tool reads PoB's `tree.lua` directly — always current, no patches overlay needed. Prefer it for single-node "what does this give me?" queries. Use Python BFS on `data.json` for bulk classification or topology analysis. |
 

@@ -12,7 +12,7 @@ This playbook is **sub-agent-first**: each build is parsed and digested in its o
 
 One sentence: *"Using the Build Comparison playbook — I'll dispatch a sub-agent per build to fetch and digest each one in parallel, then diff the summaries here. This keeps main context light."*
 
-**Before touching any build data:** run the standard pre-flight from [`README.md`](README.md) section 2 — context check, league reference, character snapshot if comparing against the user's current character.
+**Before touching any build data:** run the standard pre-flight from [`README.md`](README.md) section 2 — context check, league reference, character snapshot if comparing against the user's current character. If one of the builds is the current character, also run the build profile pre-flight (README.md §2d) — the profile's Sections 3+4 become the filter for which differences matter; a delta in a mod the build doesn't scale is noise, a delta in a core scaling stat is signal.
 
 **Gem and mechanic verification:** Your training data has a cutoff. New league gems, reworked skills, and changed interactions need verification from live sources before being used in analysis. Default: verify any gem that sounds new or that a guide creator describes as "new this league" via `mcp__poemcp__get_gem_detail` or `mcp__poemcp__fetch_wiki_page` before reporting its mechanics. Don't trust transcript descriptions alone — a past session learned that a creator described Void Shockwave Support as "drops from Uber Elder" when it's actually an Exceptional Support Gem (levels 1-3) socketed normally; the price and effectiveness claims were accurate, the drop source was not.
 

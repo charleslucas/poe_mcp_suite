@@ -30,6 +30,8 @@ mcp__pob__get_equipped_items         # full gear read — note every slot's mods
 
 Read `character_data/<Account>/<League>/<Character>/build.md` and `meta.json` — prior analysis, open questions, upgrade path phases.
 
+Read build profile and compute constraint margins per [`README.md`](README.md) §2d. Sections 3+4 define the scoring function for gem/jewel/mod evaluation throughout the audit — which mods are valuable for *this* build vs. generically tier-high but irrelevant to its scaling.
+
 **Read the league freshness checklist:** `reference_data/leagues/<league>.md` → "Rule / mechanic changes" section. Confirm no mechanic assumption is stale before proceeding.
 
 **At this point, pause and state the plan** (Stage 1 items you identified, expected data sources, which are PoB sims vs. trade lookups). Wait for confirmation before proceeding.

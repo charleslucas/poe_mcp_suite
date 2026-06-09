@@ -204,6 +204,13 @@ The handoff artifact between design mode and analysis mode. Every analysis playb
 - Ages well: stale sections are clearly marked, not silently wrong
 - Doubles as contribution format for community sharing (see section 8)
 
+**Build profile as scoring function and constraint reduction:**
+Sections 3 (Stat Priority) + 4 (Mod Value Overrides) serve double duty beyond being a structured data store:
+1. *Scoring function* — they define "better" in build-specific terms. Generic tier analysis is wrong for any build with non-standard scaling (conversion, leech mechanics, forced-crit engines, etc.). The profile makes the correct scoring function available in every session without reconstruction.
+2. *Constraint reduction mechanism* — they collapse large search spaces to tractable ones. A mod pool of 30-40 candidates narrows to 6-10 relevant ones once filtered through the build's actual priorities. A passive tree candidate list of 50 nodes collapses to the handful that move the build's actual levers.
+
+This second property is especially important for systematic optimization: single-slot mod selection becomes a small enumerable problem (15-25 craftable candidates → sim each in PoB → rank by Section 3); full item design becomes tractable because the profile reduces the effective search space before any brute-force enumeration begins. Without the profile, exhaustive evaluation is computationally infeasible or produces wrong rankings. With it, it's a bounded search over a meaningful subset.
+
 ---
 
 ## 8. Community Knowledge Sharing
@@ -242,7 +249,10 @@ The design loop formalized. Covers all design modes (goal-first, mechanic-first,
 Add upfront gear audit phase (run `analyze_item_mods` on all slots, classify mods as load-bearing / resistance budget / attribute budget / weak / wasted with build-aware value weighting). Add constraint margin table computation. Add cascade analysis step between "identify anchor upgrade" and "search trade." Prerequisite: build profile loaded.
 
 ### All analysis playbooks
-Add build profile as a standard prerequisite. The build profile's mod value overrides and build-specific constraints should inform every recommendation made by any analysis playbook.
+Add build profile as a standard prerequisite. The build profile's mod value overrides and build-specific constraints should inform every recommendation made by any analysis playbook. Formalize the shared pattern as Section 2d in `playbooks/README.md` so each playbook references it rather than duplicating the logic.
+
+### New: `playbooks/crafting-optimization.md`
+Systematic mod selection using the build profile as scoring function and constraint reduction. Two sub-cases: (1) single-slot — enumerate all craftable mods for the target slot via `list_craftable_mods_for_base`, sim each in PoB, rank by build profile Sections 3+4; (2) full item design — profile filters the mod pool to the relevant subset (typically 6-10 from 30-40), then enumerate combinations over that reduced space. Prerequisite: build profile loaded and constraint margins computed (README.md §2d).
 
 ### `playbooks/README.md`
 Add: design vs analysis mode classification as a third gate alongside cursory vs detailed and freshness. Add: knowledge taxonomy overview with pointers to where each type lives.

@@ -66,6 +66,17 @@ If the file doesn't exist for the current league, generate it via a sub-agent (s
 ### 2c — Character snapshot
 If the task involves a specific character, read `character_data/{Account}/{League}/{Character}/meta.json` and `journal.md` before loading any live data. The journal records hard-won decisions (crafting results, build pivots, known pitfalls) that directly affect what to recommend — skipping it leads to re-solving problems already solved.
 
+### 2d — Build profile and constraint margins (character analysis sessions)
+
+For any session making recommendations about items, passive nodes, or gems for a specific character, run this after the character snapshot (§2c):
+
+1. Read `character_data/{Account}/{League}/{Character}/build-profile.md`. If it doesn't exist, create a minimal one from the current PoB state before continuing.
+2. Compute constraint margins: call `mcp__pob__lua_get_stats(category='all')` and fill the Current and Margin columns in Section 6 (Constraint Status).
+
+**Why this is the foundation for character analysis:** Sections 3 (Stat Priority) and 4 (Mod Value Overrides) serve as both the *scoring function* (what "better" means for this build) and the *constraint reduction mechanism* (collapsing a 30-40 mod pool to the 6-10 candidates that actually matter). Without the profile, recommendations fall back to generic tier evaluation — which is wrong for any build with non-standard scaling (conversion, leech mechanics, forced-crit engines, etc.). With it, even exhaustive optimization over a single slot or item is tractable.
+
+Applies to: gear-shopping (required), tree-analysis (required), dps-analysis (required), build-optimization-sim (required). build-comparison uses it conditionally — when one of the builds is the current character.
+
 ---
 
 ## 3. Narration norms
@@ -155,6 +166,7 @@ Each domain playbook below has a thin wrapper **skill** in `.claude/skills/<name
 - `crafting-decisions.md` — Eldritch implicit choices, bench crafting, corruption gambling expected value
 - `defense-audit.md` — EHP analysis, recovery sources, ailment immunity coverage, layered defenses
 - `league-start-character-pick.md` — Annual workflow: guides + class meta + early-league economy
+- `crafting-optimization.md` — build-aware mod selection: single-slot (enumerate craftable mods via `list_craftable_mods_for_base`, sim each in PoB, rank by build profile §3+4); full item design (profile filters pool to relevant subset ~6-10 from 30-40, enumerate combinations over that). Prerequisite: §2d.
 
 ---
 
