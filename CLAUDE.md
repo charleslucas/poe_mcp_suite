@@ -2,6 +2,11 @@
 
 **Setup / post-pull:** If this is a fresh clone or you just ran `git pull`, read [`CLAUDE_INSTALL.md`](CLAUDE_INSTALL.md) to check for new installation steps or tools that need running.
 
+**Session-start update check (run once per session, silent if current):**
+1. Suite updates: run `git fetch origin --quiet 2>&1` then `git log HEAD..origin/main --oneline`. If any lines appear, tell the user: "poe_mcp_suite has N upstream commit(s) — run `git pull` to update."
+2. PoB version: read the first line of `C:\Users\charl\AppData\Roaming\Path of Building Community\changelog.txt` (format: `VERSION[X.Y.Z][...]`). Fetch `https://api.github.com/repos/PathOfBuildingCommunity/PathOfBuilding/releases/latest` and extract `tag_name` (strip leading `v`). If the versions differ, tell the user: "PoB has an update: installed X.Y.Z → latest Y.Y.Y. Update via the PoB launcher, then relaunch via `pob-mcp/LaunchPoBWithAPI.bat`."
+If both are current, say nothing — this check should be invisible when no action is needed.
+
 **Cursory-vs-detailed gate (cross-cutting — applies to EVERY task):** Before doing anything, decide whether the request is *cursory* (a quick lookup/answer — proceed directly, no playbook) or *detailed* (multi-source, multi-stage, or >10K expected tokens — engage the matching playbook and pause for approval before pulling data). This triage is domain-independent and lives here on purpose; the per-domain skills assume it has already happened. Full criteria in [`playbooks/README.md`](playbooks/README.md) section 1.
 
 **Freshness check (a SEPARATE axis from cursory/detailed):** The cursory gate measures *effort*; freshness measures whether the answer depends on patch-specific game data. They're independent — a question can be cheap (one lookup) yet still be exactly what stale knowledge gets wrong. Classify the *content*:
