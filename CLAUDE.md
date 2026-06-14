@@ -15,6 +15,13 @@ If both are current, say nothing — this check should be invisible when no acti
 
 **Playbooks & skills:** Detailed analysis procedures live in `playbooks/` (the single source of truth). Thin wrapper **skills** in `.claude/skills/` auto-trigger on matching detailed-scope requests and tell you to read `playbooks/README.md` (shared meta-framework: context management, league pre-flight, narration norms, trust hierarchy) plus the relevant specific playbook. If a skill fires for what is actually a cursory task, honor the gate above and answer directly instead. If no playbook exists for a recurring detailed task shape, note that and write one (then add a wrapper skill).
 
+**Model routing (a third pre-task axis, independent of cursory/detailed and freshness):** Different models have different PoE training knowledge. Tools compensate for data gaps, but not for the meta-judgement that comes from knowing the game deeply. Route by what the task's *primary input* is:
+- **Haiku** — single-tool lookups, price checks, simple data retrieval with no synthesis needed.
+- **Sonnet (default)** — gear audits, tree optimization, crafting analysis, trade searches. Live tool data (PoB calc, mod pools, prices) is the primary input; training knowledge gaps are covered by tools. Knowledge current through 3.25 (Settlers of Kalguur, Aug 2025).
+- **Opus** — guide synthesis, build concept validation, meta questions ("is this archetype viable?"), questions about recent balance changes or league-specific mechanics. Training knowledge is the primary input and must be current. Knowledge current through 3.26 (Secrets of the Atlas, Jan 2026).
+
+For **guide synthesis** specifically: default to Opus and note it inline ("Running guide synthesis with Opus for best meta knowledge — say 'use Sonnet' to downgrade"). Do not ask for explicit confirmation; just note it and proceed unless redirected.
+
 **Before extracting, modifying, or redistributing any Path of Exile game data — including writing to the `reference_data/skilltree/` or `reference_data/atlastree/` forks, or building any tooling that reads from a local PoE install — read [`legal_considerations.md`](legal_considerations.md).** It documents what the project deliberately does and does not redistribute, and why. Stay inside those boundaries:
 
 - **Safe to publish to the forks:** node IDs, positions, connections, group/orbit data, node names, integer stat values and stat-table references — i.e., the same kinds of fields GGG already publishes in their own `data.json`.
@@ -23,25 +30,15 @@ If both are current, say nothing — this check should be invisible when no acti
 
 If you're unsure whether a particular extraction or redistribution falls inside the conservative boundary, **stop and ask the user before proceeding**. Don't infer; check.
 
-**GGG trade API — one-time informed consent (not per session):** The following tools hit `https://www.pathofexile.com/api/trade`. GGG's ToS (section 7c) restricts automated access, and account bans are a real consequence. The goal is for the user to be aware of this *once*, not to create ongoing friction.
+**GGG trade API — one-time informed consent:** Before calling trade API tools, check memory for `trade_api_tos_acknowledged`. If absent, pause, explain the ToS risk (details in [`legal_considerations.md`](legal_considerations.md) → "GGG Terms of Service"), and save the memory once acknowledged.
 
-**Before calling any of these tools, check memory for a note that the user has already been informed (look for `trade_api_tos_acknowledged` in memory).** If no such memory exists, pause and explain: (1) these tools make direct requests to GGG's trade API, (2) GGG's ToS section 7c restricts automated API access, (3) account bans are possible if GGG detects unusual patterns, (4) this suite follows the API guidelines (rate limits, User-Agent, URL-return pattern) to stay within acceptable personal-use behavior, and (5) full reasoning is in `legal_considerations.md`. Once the user acknowledges, **save a memory** (`trade_api_tos_acknowledged`) so this never interrupts them again.
+Tools requiring this check: `mcp__pob__search_trade_items`, `find_weighted_trade_items`, `compare_trade_items`, `get_item_price`; `mcp__poe__search_trade`, `search_by_item_mods`, `fetch_listing`.
 
-Tools that require this one-time check:
-- `mcp__pob__search_trade_items`, `mcp__pob__find_weighted_trade_items`, `mcp__pob__compare_trade_items`, `mcp__pob__get_item_price`
-- `mcp__poe__search_trade`, `mcp__poe__search_by_item_mods`, `mcp__poe__fetch_listing`
-
-Tools that do NOT require this check (they do not hit GGG's trade API):
-- `price_item`, `price_items`, `price_tab`, `scan_stash_tabs` — local algo + poe.ninja only
-- All other `mcp__pob__` tools — talk to local PoB only
-- `ninja_lookup`, `currency_overview` — poe.ninja only
-- `list_tabs`, `get_tab`, `get_character` — GGG's official OAuth gateway (approved path)
-
-Full reasoning in [`legal_considerations.md`](legal_considerations.md) → "GGG Terms of Service" section.
+Tools exempt (no GGG trade API): `price_item/items/tab`, `scan_stash_tabs` (poe.ninja only); all other `mcp__pob__` tools (local PoB only); `ninja_lookup`, `currency_overview` (poe.ninja); `list_tabs`, `get_tab`, `get_character` (GGG OAuth gateway).
 
 ---
 
-- **Your built-in PoE knowledge is roughly current as of mid-2024.** Content, balance changes, and mechanics introduced after that point may be missing or wrong in your training data. Proactively use MCP tools to pull current data: `fetch_wiki_page` for item/passive descriptions, `ninja_lookup`/`currency_overview` for prices, live PoB TCP for calc results. Always defer to live tool results over training intuition when they conflict.
+- **Training knowledge cutoffs are model-dependent** (see model routing rule above). In all cases, proactively use MCP tools for current data: `fetch_wiki_page` for item/passive descriptions, `ninja_lookup`/`currency_overview` for prices, live PoB TCP for calc results. Always defer to live tool results over training intuition when they conflict.
 
 - **Check `reference_data/` first for cached game knowledge.** Eldritch implicit pools, crafting mods, shrine details, GGG official tree exports, and other slowly-changing game data live there. Read the `fetched:` date and `league:` frontmatter to check staleness. The directory is gitignored (data is regenerable), but `reference_data/README.md` IS committed — read it on first contact with a fresh clone. New clones need to follow the setup steps there (clone GGG repos for `skilltree/` and `atlastree/`, fetch Eldritch wiki pages, etc.).
 

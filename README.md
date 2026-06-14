@@ -68,9 +68,13 @@ The crafting mod lookup tools use data from [craftofexile.com](https://www.craft
 
 ## A note on Claude's Path of Exile knowledge
 
-Claude's built-in PoE knowledge is roughly current as of mid-2024 — content, balance changes, and mechanics introduced after that point may be missing or wrong. **Before relying on Claude's game-mechanics advice, confirm it against current sources.**
+Claude's built-in PoE knowledge varies from about August 2024 to January 2026 depending on the model — content, balance changes, and mechanics introduced after that point may be missing or wrong. **Before relying on Claude's game-mechanics advice, confirm it against current sources.**
 
 The MCP servers exist partly to bridge this gap: use `fetch_wiki_page` (POEMCP) for up-to-date item and passive descriptions, `ninja_lookup` / `currency_overview` for current prices, and `parse_pob` or the live PoB TCP connection for accurate calc results. When Claude's training intuition conflicts with a live tool result, trust the tool.
+
+Haiku 4.5  - January 2025
+Sonnet 4.6 - Settlers of Kalguur  (3.25) - August 2025
+Opus 4.8   - Secrets of the Atlas (3.26) - January 2026
 
 ---
 
