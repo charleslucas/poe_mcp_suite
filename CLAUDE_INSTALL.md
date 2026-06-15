@@ -25,6 +25,22 @@ If you cloned without `--recurse-submodules`:
 git submodule update --init --recursive
 ```
 
+### Enable the submodule-pointer guard (recommended, one-time per clone)
+
+This repo ships a tracked `pre-push` hook (`.githooks/pre-push`) that blocks a
+suite push if any submodule pointer recorded in HEAD isn't reachable on that
+submodule's own remote. It prevents the failure mode where the suite's
+`origin/main` references submodule commits that were committed locally but never
+pushed to the forks — which makes `git submodule update` fail on every other
+clone. Git doesn't track hook *activation*, so enable it once per machine:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+If a push is ever blocked, push the named submodule first (`git -C <submodule>
+push origin <branch>`), then retry. Emergency bypass: `git push --no-verify`.
+
 ---
 
 ## Step 1 — Prerequisites

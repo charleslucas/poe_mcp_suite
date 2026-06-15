@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# pre-push hook for poe_mcp_suite
+#
+# Blocks pushing the superproject if any submodule pointer recorded in the
+# current HEAD is NOT reachable on that submodule's own remote. This prevents
+# the failure mode where the suite's origin/main references submodule commits
+# that were committed locally but never pushed to the forks — a fresh clone
+# then can't `git submodule update` (it tries to fetch a commit that does not
+# exist on the remote).
+#
+# Enable per clone with:  git config core.hooksPath .githooks
+# Emergency bypass:        git push --no-verify
+set -u
+
+repo_root="$(git rev-parse --show-toplevel)" || exit 0
+cd "$repo_root" || exit 0
+
+paths=$(git config -f .gitmodules --get-regexp '^submodule\..*\.path$' 2>/dev/null | awk '{print $2}')
+[ -z "$paths" ] && exit 0
+
+fail=0
+for path in $paths; do
+  # Recorded gitlink commit in the current HEAD tree.
+  sha=$(git ls-tree HEAD "$path" 2>/dev/null | awk '$2=="commit"{print $3}')
+  [ -z "$sha" ] && continue   # not a committed gitlink (e.g. freshly added) — skip
+
+  if [ ! -e "$path/.git" ]; then
+    echo "pre-push: WARNING: submodule '$path' not initialized; cannot verify pointer $sha" >&2
+    continue
+  fi
+
+  # Refresh remote-tracking refs so the contains-check reflects the real remote.
+  # Non-fatal on failure (offline): fall back to cached remote refs.
+  git -C "$path" fetch -q origin 2>/dev/null \
+    || echo "pre-push: WARNING: fetch failed for '$path'; checking against cached remote refs" >&2
+
+  if ! git -C "$path" branch -r --contains "$sha" 2>/dev/null | grep -q .; then
+    echo "pre-push: ERROR: submodule '$path' pointer ${sha:0:10} is NOT on its remote." >&2
+    echo "          Push it first:  git -C $path push origin <branch>" >&2
+    fail=1
+  fi
+done
+
+if [ "$fail" -ne 0 ]; then
+  echo "pre-push: aborting — push the submodule commit(s) listed above, then retry." >&2
+  echo "          (Emergency bypass: git push --no-verify)" >&2
+  exit 1
+fi
+exit 0
