@@ -1,0 +1,4 @@
+# Git hooks must stay LF — a CRLF shebang line breaks bash on Unix/macOS
+# ("bad interpreter"), which would silently disable the hooks.
+.githooks/** text eol=lf
+*.sh text eol=lf
