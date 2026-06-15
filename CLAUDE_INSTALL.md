@@ -343,10 +343,26 @@ Quick smoke test (less thorough):
 
 ---
 
+## Backing up your data
+
+The git-tracked code is recoverable by re-cloning, but your `character_data`
+(journals, snapshots, build analysis) and Claude `memory` live outside git. Back
+them up to a timestamped zip with:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\backup-data.ps1
+```
+
+and restore on any machine with `scripts\restore-data.ps1 -Zip <file>`. Full
+details, options, and cross-machine caveats: [`BACKUP.md`](BACKUP.md).
+
+---
+
 ## Documentation map
 
 | Topic | File |
 |-------|------|
+| Backing up / restoring non-git user & character data | [`BACKUP.md`](BACKUP.md) |
 | pob-mcp full setup, all env vars, troubleshooting | [`pob-mcp/README.md`](pob-mcp/README.md) |
 | pob-mcp tool list (~123 tools) | [`pob-mcp/docs/TOOLS.md`](pob-mcp/docs/TOOLS.md) |
 | poe-mcp-server setup and module architecture | [`poe-mcp-server/README.md`](poe-mcp-server/README.md) |
