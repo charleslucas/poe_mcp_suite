@@ -24,6 +24,11 @@ and wrongly.
    node / item's *current* stats** — it does not need to run at every step of an analysis, only at the
    stages where patch-specific knowledge is the input.
 
+> **Removals count as much as additions.** A *removed* mechanic breaks old assumptions just as hard as a
+> new one — e.g. Ancestral totems removed (3.25), the "increased Item Quantity" gear affix removed (3.25).
+> "It isn't listed as newly added" ≠ "it still works the way you remember." When a model recommends a
+> mechanic from memory, that mechanic still existing is itself a freshness claim.
+
 ## Model training cutoffs (PoE patch)
 
 | Model | Cutoff patch | Approx date | Notes |
@@ -35,6 +40,21 @@ and wrongly.
 
 > Current league is **3.28 Mirage**. So **3.27 and 3.28 are past EVERY current model's cutoff**, and **3.26
 > is past Sonnet/Haiku** but within Opus. When in doubt, verify.
+
+---
+
+## Source bookmarks (quick reference)
+
+The wiki **league page** (mechanic overview + unique/gem tables) and **Version X.Y.0 page** (full patch
+notes / balance changes) for each recent league. Fetch via `mcp__poemcp__fetch_wiki_page`.
+
+| Patch | League page | Version (patch notes) |
+|---|---|---|
+| 3.28 Mirage | https://www.poewiki.net/wiki/Mirage_league | https://www.poewiki.net/wiki/Version_3.28.0 |
+| 3.27 Keepers of the Flame | https://www.poewiki.net/wiki/Keepers_of_the_Flame | https://www.poewiki.net/wiki/Version_3.27.0 |
+| 3.26 Secrets of the Atlas | https://www.poewiki.net/wiki/Secrets_of_the_Atlas | https://www.poewiki.net/wiki/Version_3.26.0 |
+| 3.25 Settlers of Kalguur | https://www.poewiki.net/wiki/Settlers_of_Kalguur | https://www.poewiki.net/wiki/Version_3.25.0 |
+| — all patches — | | https://www.poewiki.net/wiki/Version_history |
 
 ---
 
@@ -55,12 +75,16 @@ Full cache: [`reference_data/leagues/mirage.md`](leagues/mirage.md).
 | **Volatile Vaal Orb** | Mirage currency: rerolls unique mod values OR destroys it | `leagues/mirage.md` |
 | **Crucible is ABSENT in Mirage** | No Crucible furnaces/atlas nodes; existing Crucible weapon mods can't be re-applied | `leagues/mirage.md` |
 
-### 3.27 — (league name/mechanic UNCONFIRMED)  (past ALL models)
-Confirmed via wiki Version history: a **3.27.0 patch line existed (2025-10-31 → early 2026-03)** but it is
-**absent from the "Major releases" table** and the version-history page does not name its league/mechanic.
-| Item | Status |
-|---|---|
-| 3.27 temp league | ⚠ **Exists but name + mechanic UNKNOWN.** If a build/character references a 3.27-introduced item or mechanic, **fetch the league list or 3.27.0 patch notes** to identify it. Open gap. |
+### 3.27 — Keepers of the Flame  (past ALL models)
+Cache: [`leagues/keepers_of_the_flame_3.27.md`](leagues/keepers_of_the_flame_3.27.md). Breach-sequel expansion (2025-10-31).
+| Mechanic / item / system | What it is (one line) | Notes |
+|---|---|---|
+| **Bloodline Ascendancy classes** | New ascendancy classes | ⚠ origin of **The Unseen Hand → 3rd ring slot** (seen in Mirage). Unfamiliar ascendancy / extra slot → suspect a Bloodline |
+| **Assassin rework** | Shadow/Assassin ascendancy changed | old Assassin intuition stale |
+| **Breach overhaul** | New Breach art/encounters/bosses/rewards (Hiveborn) | Breach farming/atlas strategy |
+| **New gems** | Conflagration, Thunderstorm, Kinetic Fusillade/Rain, Wall of Force; supports **Windburst, Kinetic Instability, Living Lightning** | the 3 supports are the Djinn-coin blacklist entries (cross-ref Mirage) |
+| **Full passive refund (char + atlas) with Gold** | Respec is cheap now | don't assume regret-orb scarcity when advising tree changes |
+| **Spectres auto-revive on new instance**; async trading; Vaal Orb replaces Remnant of Corruption | QoL that changes workflow assumptions | — |
 
 ### 3.26 — Secrets of the Atlas  (past Sonnet/Haiku; within Opus)
 Cache: [`leagues/secrets_of_the_atlas_3.26.md`](leagues/secrets_of_the_atlas_3.26.md). Additive endgame expansion + major crafting.
@@ -98,8 +122,7 @@ These are things models commonly get wrong from training noise, independent of p
 ## Gaps / to research
 - [x] **3.25 Settlers** detail cache → `leagues/settlers_3.25.md` (2026-06-16).
 - [x] **3.26 Secrets of the Atlas** detail cache → `leagues/secrets_of_the_atlas_3.26.md` (2026-06-16).
-- [x] **3.27 existence** confirmed (patch line 2025-10-31 → 2026-03) — but ↓ still open:
-- [ ] **3.27 league NAME + MECHANIC** — not on the wiki Version-history page. Fetch the league list or 3.27.0 patch notes to identify it, then add a section above.
+- [x] **3.27 = Keepers of the Flame** (Breach sequel, 2025-10-31) — detail cache → `leagues/keepers_of_the_flame_3.27.md` (2026-06-16).
 - [ ] **3.28 Mirage atlas tree nodes** — `leagues/mirage.md` notes the GGG export predated release; refresh when available.
 - [ ] Confirm **Haiku 4.5 and Fable 5** training cutoffs (currently conservative placeholders).
 
