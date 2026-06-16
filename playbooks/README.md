@@ -77,6 +77,15 @@ For any session making recommendations about items, passive nodes, or gems for a
 
 Applies to: gear-shopping (required), tree-analysis (required), dps-analysis (required), build-optimization-sim (required). build-comparison uses it conditionally — when one of the builds is the current character.
 
+### 2e — Freshness index (model-aware)
+Consult [`reference_data/freshness_index.md`](../reference_data/freshness_index.md) when a stage's input is
+patch-specific mechanic/item/system knowledge. Look up the **running model's** training cutoff there and
+treat anything newer than that cutoff as must-verify rather than answer-from-memory (the generic "training
+is old" warning becomes a precise per-model boundary: e.g. Sonnet 3.25, Opus 3.26; current league is 3.28).
+This bites at specific stages — asserting how a mechanic works, evaluating a unique/node's *current* stats —
+not every step, but checking once at pre-flight primes you to catch those moments. The `freshness-check`
+skill auto-surfaces it.
+
 ---
 
 ## 3. Narration norms

@@ -41,6 +41,11 @@ Optional follow-up if relevant:
 
 ## Step 2 — Data loads (driven by Q1–Q4 answers)
 
+> **Current-league free damage:** check whether the league offers a cheap damage add. **Mirage:** a **Djinn
+> coin** (Coin of Power/Skill/Knowledge, matched to the skill's attribute) imbues a random support on a
+> finished lvl-20, 6-linked gem ≈ a free 7th link — a real DPS lever on the main skill. See
+> `reference_data/leagues/{league}.md` → Djinn Coins, and the model-aware `reference_data/freshness_index.md`.
+
 ### Always load
 - Pre-flight: `mcp__pob__get_context_usage` + league reference + character snapshot (see [`README.md`](README.md) section 2)
 - Build profile + constraint margins: see [`README.md`](README.md) §2d. Sections 3+4 define which stats are the actual DPS levers for this build — critical for identifying the right bottlenecks in Step 3 rather than chasing generically-good mods that don't move this build's damage.

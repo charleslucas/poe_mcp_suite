@@ -70,6 +70,12 @@ Grep "<Gem " in the saved build XML
 
 ## Stage 2 — Gem/link audit (always do first — highest ROI, near-free)
 
+> **Current-league free supports:** check whether the current league offers a cheap way to add a support
+> to a finished gem. **Mirage:** a **Djinn coin** (Coin of Power/Skill/Knowledge, matched to the skill's
+> attribute) imbues a random lvl-1 support on a lvl-20, 6-linked gem — effectively a free 7th link. Factor
+> this into the main-link audit before recommending currency spend elsewhere. See
+> `reference_data/leagues/{league}.md` → Djinn Coins (and `[[mirage-djinn-coins]]` memory).
+
 **Snapshot before any changes:**
 ```
 mcp__pob__snapshot_build(tag="before-gem-sim-<date>", description="baseline for gem sim")

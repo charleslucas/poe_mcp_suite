@@ -21,6 +21,9 @@ reference_data/*
 !reference_data/README.md
 !reference_data/skilltree
 !reference_data/atlastree
+# Curated model-aware index of post-training mechanics — committed (travels with the suite,
+# referenced by the freshness-check skill), unlike the regenerable cached data alongside it.
+!reference_data/freshness_index.md
 
 # Local game-data extraction scratch space.
 # See legal_considerations.md — most output from pathofexile-dat / bundle extraction is

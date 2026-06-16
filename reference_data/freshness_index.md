@@ -1,0 +1,109 @@
+---
+maintained: 2026-06-16
+purpose: Model-aware index of PoE mechanics/items/systems that postdate (or are unreliable in) Claude training data, so the running model knows what it must verify rather than answer from memory.
+committed: yes (gitignore exception — this is curated, not regenerable)
+---
+
+# PoE Freshness Index (model-aware)
+
+This is a **router, not a data dump.** Each entry says *what exists*, *which patch it landed in*, and
+*where the real data is* — it does not reproduce the data. The point is to defeat **unknown unknowns**:
+the cases where the running model doesn't realize its training is stale and asserts a mechanic confidently
+and wrongly.
+
+## How to use it (the procedure)
+
+1. **Identify the running model.** `mcp__pob__get_context_usage` reports the active model ID. (You may
+   already know it from the session.)
+2. **Look up that model's training cutoff** in the table below.
+3. **Anything in the index with a patch *newer* than the running model's cutoff = MUST VERIFY** before you
+   assert how it works. Use the "Where / verify via" pointer (a cached file, a memory, or a fresh fetch).
+4. **Entries at-or-before the cutoff** are usually safe from memory, but still defer to live tool data when
+   it conflicts (trust hierarchy in `playbooks/README.md` §5).
+5. This check is most load-bearing **when about to assert how a mechanic works, or evaluate a unique /
+   node / item's *current* stats** — it does not need to run at every step of an analysis, only at the
+   stages where patch-specific knowledge is the input.
+
+## Model training cutoffs (PoE patch)
+
+| Model | Cutoff patch | Approx date | Notes |
+|---|---|---|---|
+| **Opus 4.8** (`claude-opus-4-8`) | **3.26** Secrets of the Atlas | Jan 2026 | Best PoE meta knowledge of current models |
+| **Sonnet 4.6** (`claude-sonnet-4-6`) | **3.25** Settlers of Kalguur | Aug 2025 | Default for analysis; stale on 3.26+ |
+| **Haiku 4.5** (`claude-haiku-4-5`) | **≤3.24 (unconfirmed)** | — | ⚠ cutoff not documented — treat conservatively; verify anything 3.25+ |
+| **Fable 5** (`claude-fable-5`) | **unconfirmed** | — | ⚠ cutoff not documented — treat conservatively |
+
+> Current league is **3.28 Mirage**. So **3.27 and 3.28 are past EVERY current model's cutoff**, and **3.26
+> is past Sonnet/Haiku** but within Opus. When in doubt, verify.
+
+---
+
+## Index entries
+
+### 3.28 — Mirage league  (past ALL models' cutoffs → always verify / use cache)
+Full cache: [`reference_data/leagues/mirage.md`](leagues/mirage.md).
+
+| Mechanic / item / system | What it is (one line) | Where / verify via |
+|---|---|---|
+| **Mirage league mechanic** | Free a Djinn → enter a "Mirage" sub-zone that duplicates the map's league mechanics for exclusive drops | `leagues/mirage.md` |
+| **Djinn coins** | Mirage currency: Power/Skill/Knowledge = free random support on a lvl-20 gem; Restoration/Desecration = dual-form unique swap | `leagues/mirage.md` → Djinn Coins; `[[mirage-djinn-coins]]` memory |
+| **Essence of Desolation** | New essence (from Essence inside a Mirage) → slot-specific bonus reforge | `leagues/mirage.md` |
+| **Screams of the Desiccated** | Belt rolling a shrine-buff-while-flask-free; Saresh version rolls two | `leagues/mirage.md` + `shrines.md` |
+| **The Unseen Hand (Nameless bloodline)** | Grants a **3rd ring slot** — PoB correctly shows Ring 1/2/3; not an error | `leagues/mirage.md` + `[[...]]` |
+| **Mirage dual-form uniques** | Fleshrender↔Skysunder, Desecrated↔Sacred Chalice, etc. (Maraketh/Afarud profiles) | `leagues/mirage.md` |
+| **Heroic Tragedy** | Timeless Jewel — **Kalguur** line (not Karui); same mechanic, different conversions | `leagues/mirage.md` |
+| **Volatile Vaal Orb** | Mirage currency: rerolls unique mod values OR destroys it | `leagues/mirage.md` |
+| **Crucible is ABSENT in Mirage** | No Crucible furnaces/atlas nodes; existing Crucible weapon mods can't be re-applied | `leagues/mirage.md` |
+
+### 3.27 — (league name/mechanic UNCONFIRMED)  (past ALL models)
+Confirmed via wiki Version history: a **3.27.0 patch line existed (2025-10-31 → early 2026-03)** but it is
+**absent from the "Major releases" table** and the version-history page does not name its league/mechanic.
+| Item | Status |
+|---|---|
+| 3.27 temp league | ⚠ **Exists but name + mechanic UNKNOWN.** If a build/character references a 3.27-introduced item or mechanic, **fetch the league list or 3.27.0 patch notes** to identify it. Open gap. |
+
+### 3.26 — Secrets of the Atlas  (past Sonnet/Haiku; within Opus)
+Cache: [`leagues/secrets_of_the_atlas_3.26.md`](leagues/secrets_of_the_atlas_3.26.md). Additive endgame expansion + major crafting.
+| Mechanic / item / system | What it is (one line) | Notes |
+|---|---|---|
+| **Shaper's / Elder's Exalted Orb** | Add Shaper/Elder influence + a new influenced mod to a rare | Influence crafting is accessible again |
+| **Memory Strands** (Orb of Remembrance / Unravelling / Intention) | New **mod-tier-upgrade** crafting path on bases | Relevant to "improve this rare" |
+| **Runegrafts** | Build-defining gear enchant layer (Gemcraft +1 supports, Refraction fork/chain, the Fortress +40% def) | ⚠ real power layer Sonnet/Haiku won't know — weigh in gear/DPS opt |
+| **Recombinator now core** | Mid-game crafting tool, permanent | — |
+| Betrayal/Syndicate revamp; Veiled Chaos Orb back; Legacy of Phrecia ascendancies; Allflame Embers; Kalguuran Scarabs | endgame/crafting/farming systems | see cache |
+
+### 3.25 — Settlers of Kalguur  (past Haiku; at Sonnet cutoff; within Opus/Sonnet)
+Cache: [`leagues/settlers_3.25.md`](leagues/settlers_3.25.md). Mechanic integrated to core in 3.26.
+| Mechanic / item / system | What it is (one line) | Notes |
+|---|---|---|
+| **Gold currency + Kingsmarch + shipments** | Semi-AFK income layer; gold spent on town ops | economy planning |
+| **Runes / Runesmithing** | Extra rune-mod enchant layer on gear (→ Runegrafts in 3.26) | gear crafting |
+| **Melee rework — Ancestral totems REMOVED** | Melee rescaled, scales with gem level; no more Ancestral Protector/Warchief | ⚠ don't recommend ancestral-totem buffing |
+| **"increased Item Quantity" removed from gear** | IIQ is no longer a gear affix | ⚠ breaks old MF-gearing assumptions |
+| **Warden replaced Raider**; Gladiator reworked; Tinctures back | ascendancy/skill changes | — |
+
+---
+
+## Training-data corrections (NOT league-gated — unreliable across models regardless of cutoff)
+These are things models commonly get wrong from training noise, independent of patch:
+
+| Correction | Pointer |
+|---|---|
+| **No player-accessible training dummy exists** — don't suggest "test on a dummy" | `[[poe-no-training-dummy]]` memory |
+| **Eldritch implicit pools differ by slot** (e.g. no "reduced mana cost" on body) — check before promising a mod | `reference_data/eldritch_implicits/` |
+| **Shrine buff effects** (Diamond ≠ ailment immunity, etc.) | `reference_data/shrines.md` |
+
+---
+
+## Gaps / to research
+- [x] **3.25 Settlers** detail cache → `leagues/settlers_3.25.md` (2026-06-16).
+- [x] **3.26 Secrets of the Atlas** detail cache → `leagues/secrets_of_the_atlas_3.26.md` (2026-06-16).
+- [x] **3.27 existence** confirmed (patch line 2025-10-31 → 2026-03) — but ↓ still open:
+- [ ] **3.27 league NAME + MECHANIC** — not on the wiki Version-history page. Fetch the league list or 3.27.0 patch notes to identify it, then add a section above.
+- [ ] **3.28 Mirage atlas tree nodes** — `leagues/mirage.md` notes the GGG export predated release; refresh when available.
+- [ ] Confirm **Haiku 4.5 and Fable 5** training cutoffs (currently conservative placeholders).
+
+## Maintenance
+- Add a row whenever a session surfaces a mechanic/item the running model got wrong or didn't know.
+- At each **league transition** (see `playbooks/league-transition.md`), add the outgoing league's entries here and start the new league's row.
+- When a new Claude model ships, add its cutoff to the model table.

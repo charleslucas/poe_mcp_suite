@@ -55,6 +55,11 @@ Run via `AskUserQuestion`. Skip any question where the answer is already clear f
 
 ## Step 2 — Gear audit (when Q1 = "find best upgrade" or slot is unknown)
 
+> **Current-league note:** before sourcing a replacement, check whether the current league can *transform*
+> an existing item. **Mirage:** a **Djinn coin** (Restoration ↔ Desecration) flips a dual-form Mirage unique
+> to its better stat profile (Desecration also adds a corrupted implicit). See
+> `reference_data/leagues/{league}.md` → Djinn Coins.
+
 Run `mcp__pob__analyze_item_mods` on all equipped slots. For each mod, apply a two-axis classification:
 
 **Axis 1 — Tier** (as reported by the tool)
