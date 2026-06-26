@@ -92,7 +92,7 @@ Cache: [`leagues/secrets_of_the_atlas_3.26.md`](leagues/secrets_of_the_atlas_3.2
 |---|---|---|
 | **Shaper's / Elder's Exalted Orb** | Add Shaper/Elder influence + a new influenced mod to a rare | Influence crafting is accessible again |
 | **Memory Strands** (Orb of Remembrance / Unravelling / Intention) | New **mod-tier-upgrade** crafting path on bases | Relevant to "improve this rare" |
-| **Runegrafts** | Build-defining gear enchant layer (Gemcraft +1 supports, Refraction fork/chain, the Fortress +40% def) | ⚠ real power layer Sonnet/Haiku won't know — weigh in gear/DPS opt |
+| **Runegrafts** | Currency applied to an **allocated passive Mastery** to replace it with a Runegraft effect (NOT a gear enchant — corrects earlier cache). One per *type*, no cap on total → can graft several masteries. Notable: **the Fortress** (+40% global def, −10% attr), **Gemcraft** (+1 all non-exceptional supports), **Restitching** (40% of crit damage taken recouped as life), **the River** (20% chance to full-heal on reaching low life). **Farmed via Kingsmarch shipments** to Kalguuran ports (Riben Fell DEX / Pondium INT / Kalguur STR / Any). Removable via Orb of Scouring. | ✅ confirmed live in 3.28 Mirage (wiki 2026-06-16). ⚠ **trust the [wiki Runegraft page](https://www.poewiki.net/wiki/Runegraft)** — third-party blogs (e.g. aoeah) list only a partial/"all new" subset and miss the Any-pool ones (Fortress/Gemcraft) |
 | **Recombinator now core** | Mid-game crafting tool, permanent | — |
 | Betrayal/Syndicate revamp; Veiled Chaos Orb back; Legacy of Phrecia ascendancies; Allflame Embers; Kalguuran Scarabs | endgame/crafting/farming systems | see cache |
 
