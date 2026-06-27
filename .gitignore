@@ -24,6 +24,9 @@ reference_data/*
 # Curated model-aware index of post-training mechanics — committed (travels with the suite,
 # referenced by the freshness-check skill), unlike the regenerable cached data alongside it.
 !reference_data/freshness_index.md
+# Curated index of external build-guide aggregators (discovery resources) — committed, useful to
+# every clone (parallels freshness_index.md), unlike the per-character digested guides in the cache.
+!reference_data/guide_sources.md
 
 # Local game-data extraction scratch space.
 # See legal_considerations.md — most output from pathofexile-dat / bundle extraction is
