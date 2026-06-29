@@ -48,6 +48,10 @@ and wrongly.
 The wiki **league page** (mechanic overview + unique/gem tables) and **Version X.Y.0 page** (full patch
 notes / balance changes) for each recent league. Fetch via `mcp__poemcp__fetch_wiki_page`.
 
+> For **official forum patch-note threads** and **granular point releases / hotfixes** (X.Y.0a..z — which
+> the wiki usually doesn't have per-release), see [`patch_notes_index.md`](patch_notes_index.md). The wiki
+> Version pages below are the consolidated transcription; the forum threads there are GGG's primary source.
+
 | Patch | League page | Version (patch notes) |
 |---|---|---|
 | 3.28 Mirage | https://www.poewiki.net/wiki/Mirage_league | https://www.poewiki.net/wiki/Version_3.28.0 |

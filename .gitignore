@@ -27,6 +27,9 @@ reference_data/*
 # Curated index of external build-guide aggregators (discovery resources) — committed, useful to
 # every clone (parallels freshness_index.md), unlike the per-character digested guides in the cache.
 !reference_data/guide_sources.md
+# Curated index of patch-note / hotfix thread links — committed, the authoritative "what changed"
+# diff that pairs with freshness_index.md. Useful to every clone.
+!reference_data/patch_notes_index.md
 
 # Local game-data extraction scratch space.
 # See legal_considerations.md — most output from pathofexile-dat / bundle extraction is
