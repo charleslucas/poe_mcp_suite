@@ -30,6 +30,9 @@ reference_data/*
 # Curated index of patch-note / hotfix thread links — committed, the authoritative "what changed"
 # diff that pairs with freshness_index.md. Useful to every clone.
 !reference_data/patch_notes_index.md
+# Mechanic-keyed registry with scope tags (core / challenge-league / event-only / removed / disabled) —
+# committed; the compartmentalization layer that keeps league/event data from bleeding into the wrong build.
+!reference_data/mechanics_index.md
 
 # Local game-data extraction scratch space.
 # See legal_considerations.md — most output from pathofexile-dat / bundle extraction is

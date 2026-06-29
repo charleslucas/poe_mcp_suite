@@ -11,6 +11,12 @@ This is a **router, not a data dump.** Each entry says *what exists*, *which pat
 the cases where the running model doesn't realize its training is stale and asserts a mechanic confidently
 and wrongly.
 
+> **Companion view:** this file is keyed by **patch** (vs the running model's cutoff). For a **mechanic-keyed**
+> view — each mechanic's lifecycle and, crucially, its **current scope** (`core` / `challenge-league` /
+> `event-only` / `removed` / `disabled-this-league`) — see [`mechanics_index.md`](mechanics_index.md). Use it
+> at character pre-flight to **filter mechanics to the character's context** so league/event data doesn't bleed
+> into the wrong build (e.g. event-only Forbidden Tattoos must not touch a Mirage or 3.29 character).
+
 ## How to use it (the procedure)
 
 1. **Identify the running model.** `mcp__pob__get_context_usage` reports the active model ID. (You may
