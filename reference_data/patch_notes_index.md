@@ -38,16 +38,17 @@ primary; wiki Version page = consolidated transcription.
 
 | Version | Type | Official forum thread | Wiki Version page | Patch line |
 |---|---|---|---|---|
-| **3.28.0j** | Hotfix / point release | https://www.pathofexile.com/forum/view-thread/3974219 (posted ~2026-06-23) | — | 3.28 cycle (Mirage, per our reference_data) |
+| **3.28.0j** | Hotfix / point release | https://www.pathofexile.com/forum/view-thread/3974219 (posted ~2026-06-23) | — | 3.28 Mirage cycle; notes also cover the concurrent **Return of the Ancestors** event league |
 | 3.28.0 | League launch | _(add when bookmarked)_ | https://www.poewiki.net/wiki/Version_3.28.0 | 3.28 Mirage |
 | 3.27.0 | League launch | _(add when bookmarked)_ | https://www.poewiki.net/wiki/Version_3.27.0 | 3.27 Keepers of the Flame |
 | 3.26.0 | League launch | _(add when bookmarked)_ | https://www.poewiki.net/wiki/Version_3.26.0 | 3.26 Secrets of the Atlas |
 | 3.25.0 | League launch | _(add when bookmarked)_ | https://www.poewiki.net/wiki/Version_3.25.0 | 3.25 Settlers of Kalguur |
 
-> ⚠ **Open flag (2026-06-29):** a WebFetch summary of the 3.28.0j thread reported the expansion as "Return
-> of the Ancestors," which conflicts with all our other data (3.28 = **Mirage**). Likely a summarizer
-> confabulation; unverified. The version number (3.28.0j) is certain. Confirm the 3.28 league name against
-> the wiki before treating either as fact.
+> ✅ **Resolved (2026-06-29):** 3.28 = **Mirage** (confirmed). The 3.28.0j notes reference **Return of the
+> Ancestors** because it's a separate **~3-week event league** (2026-06-25 → 07-16) running *inside* 3.28
+> Mirage (same client, same ladders) — not the 3.28 expansion. It's strongly build-relevant (alternate
+> Phrecian ascendancies + Forbidden Tattoos). See `leagues/return_of_the_ancestors.md` and the freshness
+> index entry.
 
 ## Maintenance
 

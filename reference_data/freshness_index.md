@@ -79,6 +79,19 @@ Full cache: [`reference_data/leagues/mirage.md`](leagues/mirage.md).
 | **Volatile Vaal Orb** | Mirage currency: rerolls unique mod values OR destroys it | `leagues/mirage.md` |
 | **Crucible is ABSENT in Mirage** | No Crucible furnaces/atlas nodes; existing Crucible weapon mods can't be re-applied | `leagues/mirage.md` |
 
+### Return of the Ancestors — event league (concurrent with 3.28 Mirage, ~2026-06-25 → 07-16)
+Full cache: [`reference_data/leagues/return_of_the_ancestors.md`](leagues/return_of_the_ancestors.md). A
+**time-limited (~3-week) event** running *inside* 3.28 Mirage (same client/ladders, NOT a separate realm) —
+surfaced in the 3.28.0j patch notes. **Strongly build-relevant: normal ascendancy intuition does not apply
+while it's active.** ⚠ Time-boxed — these entries expire when the event ends (~2026-07-16); verify it's still
+running before applying.
+
+| Mechanic / item / system | What it is (one line) | Where / verify via |
+|---|---|---|
+| **Legacy of Phrecia ascendancies (forced)** | All 19 base ascendancies (except Reliquarian) are replaced by alternate **Phrecian** classes for the event — every character runs an alternate ascendancy | `leagues/return_of_the_ancestors.md` (Phrecia dates to 3.26 — within Opus; the *forced event-wide* use is new) |
+| **Forbidden Tattoos** (event-exclusive) | **Not class-restricted** — splice another class's random ascendancy notable onto your tree; shared limit 1; can strategically disable unwanted ascendancy passives. Deleted on migration. | `leagues/return_of_the_ancestors.md` |
+| **Trial of the Ancestors (ToTA) returns** | Re-enabled via drop-anywhere **Silver Coins** → Halls of the Dead tournament; ToTA rewards/tattoos farmable | `leagues/return_of_the_ancestors.md` |
+
 ### 3.27 — Keepers of the Flame  (past ALL models)
 Cache: [`leagues/keepers_of_the_flame_3.27.md`](leagues/keepers_of_the_flame_3.27.md). Breach-sequel expansion (2025-10-31).
 | Mechanic / item / system | What it is (one line) | Notes |
