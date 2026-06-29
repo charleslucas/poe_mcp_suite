@@ -81,10 +81,12 @@ Full cache: [`reference_data/leagues/mirage.md`](leagues/mirage.md).
 
 ### Return of the Ancestors — event league (concurrent with 3.28 Mirage, ~2026-06-25 → 07-16)
 Full cache: [`reference_data/leagues/return_of_the_ancestors.md`](leagues/return_of_the_ancestors.md). A
-**time-limited (~3-week) event** running *inside* 3.28 Mirage (same client/ladders, NOT a separate realm) —
-surfaced in the 3.28.0j patch notes. **Strongly build-relevant: normal ascendancy intuition does not apply
-while it's active.** ⚠ Time-boxed — these entries expire when the event ends (~2026-07-16); verify it's still
-running before applying.
+**time-limited (~3-week) fresh-start event** on the 3.28 client — surfaced in the 3.28.0j patch notes. You
+**make NEW characters** for it: **nothing transfers in from Mirage, nothing transfers out to 3.29** (event
+characters migrate to Standard at the end). So **existing Mirage characters and the 3.29 build plans are
+unaffected** — the entries below apply **only to characters made inside the event.** For those,
+**normal ascendancy intuition does not apply.** ⚠ Time-boxed — expires when the event ends (~2026-07-16);
+verify it's still running before applying.
 
 | Mechanic / item / system | What it is (one line) | Where / verify via |
 |---|---|---|
