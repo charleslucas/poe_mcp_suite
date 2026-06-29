@@ -61,7 +61,10 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 | **Memory Strands** (Remembrance/Unravelling/Intention) | `core` ⚠verify | 3.26 | Mod-tier-upgrade crafting path on bases | ⚠ confirm it persisted past 3.26; `leagues/secrets_of_the_atlas_3.26.md` |
 | **Shaper's / Elder's Exalted Orb** | `core` ⚠verify | 3.26 | Add influence + a new influenced mod to a rare | ⚠ confirm persistence; 3.26 cache |
 | **Bloodline ascendancies / The Unseen Hand (3rd ring slot)** | `core` ⚠verify | 3.27 Keepers | Alt ascendancy classes; Unseen Hand grants a 3rd ring slot (seen on Mirage chars) | ⚠ confirm core vs league; `leagues/keepers_of_the_flame_3.27.md` |
-| **Legacy of Phrecia alternate ascendancies** | `core` (selectable) / **`event-only` when FORCED** | added 3.26; **forced event-wide** in Return of the Ancestors | Alternate "Phrecian" ascendancies; normally optional, but the event **replaces all 19 base ascendancies** with them | `leagues/return_of_the_ancestors.md` |
+
+> **Note — Legacy of Phrecia alternate ascendancies are NOT core.** The 19 "Phrecian" alternates exist
+> *only* during Ancestor/Phrecia events — see the `event-only` row below. In normal/core play the standard
+> 19 ascendancies are the only set.
 
 ## Challenge-league mechanics (live only in 3.28 Mirage — gone in 3.29 unless cored)
 
@@ -79,7 +82,7 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 | Mechanic | Scope | Current state | Verify / detail |
 |---|---|---|---|
 | **Forbidden Tattoos** | `event-only` | NOT class-restricted — splice another class's random ascendancy notable; shared limit 1; can strategically disable unwanted ascendancy passives; deleted on migration | `leagues/return_of_the_ancestors.md` |
-| **Forced Phrecian ascendancies** | `event-only` | Every event character runs an alternate ascendancy — normal ascendancy intuition does not apply | `leagues/return_of_the_ancestors.md` |
+| **Phrecian alternate ascendancies (the 19)** | `event-only` | **Binary set-swap**: the entire normal ascendancy set is replaced by a parallel set of **19 alternates** (3 per class, Scion 1) — one whole set active or the other, never mixed. Normal ascendancy intuition does not apply. Full list in the cache. | `leagues/return_of_the_ancestors.md` |
 | **Trial of the Ancestors (ToTA) return** | `event-only` | Re-enabled via drop-anywhere Silver Coins → Halls of the Dead tournament; tattoos/rewards farmable | `leagues/return_of_the_ancestors.md` |
 
 > ⚠ **Event entries are fresh-start & time-boxed.** They apply ONLY to characters made inside the event and

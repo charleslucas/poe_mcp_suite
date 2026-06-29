@@ -96,7 +96,7 @@ verify it's still running before applying.
 
 | Mechanic / item / system | What it is (one line) | Where / verify via |
 |---|---|---|
-| **Legacy of Phrecia ascendancies (forced)** | All 19 base ascendancies (except Reliquarian) are replaced by alternate **Phrecian** classes for the event — every character runs an alternate ascendancy | `leagues/return_of_the_ancestors.md` (Phrecia dates to 3.26 — within Opus; the *forced event-wide* use is new) |
+| **Phrecian alternate ascendancies (forced, the 19)** | **Binary swap**: the normal 19 ascendancies are replaced by a parallel set of 19 alternates for the event (3 per class + Scion 1). Event-only — these alternates don't exist in core play. Every event character runs one; normal ascendancy intuition doesn't apply. Full list in cache. | `leagues/return_of_the_ancestors.md` |
 | **Forbidden Tattoos** (event-exclusive) | **Not class-restricted** — splice another class's random ascendancy notable onto your tree; shared limit 1; can strategically disable unwanted ascendancy passives. Deleted on migration. | `leagues/return_of_the_ancestors.md` |
 | **Trial of the Ancestors (ToTA) returns** | Re-enabled via drop-anywhere **Silver Coins** → Halls of the Dead tournament; ToTA rewards/tattoos farmable | `leagues/return_of_the_ancestors.md` |
 
