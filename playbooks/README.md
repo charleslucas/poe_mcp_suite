@@ -66,6 +66,8 @@ If the file doesn't exist for the current league, generate it via a sub-agent (s
 ### 2c — Character snapshot
 If the task involves a specific character, read `character_data/{Account}/{League}/{Character}/meta.json` and `journal.md` before loading any live data. The journal records hard-won decisions (crafting results, build pivots, known pitfalls) that directly affect what to recommend — skipping it leads to re-solving problems already solved.
 
+**Establish the character's mechanic context here** — its **league/realm** (the `{League}` in the path is the anchor) and whether it's an **event character** (e.g. a fresh-start event like Return of the Ancestors). This context drives the **scope filter** in §2e: only mechanics whose scope includes this context may be applied to the character. Capturing it now prevents recommending a mechanic the character can't actually use.
+
 ### 2d — Build profile and constraint margins (character analysis sessions)
 
 For any session making recommendations about items, passive nodes, or gems for a specific character, run this after the character snapshot (§2c):
@@ -85,6 +87,16 @@ is old" warning becomes a precise per-model boundary: e.g. Sonnet 3.25, Opus 3.2
 This bites at specific stages — asserting how a mechanic works, evaluating a unique/node's *current* stats —
 not every step, but checking once at pre-flight primes you to catch those moments. The `freshness-check`
 skill auto-surfaces it.
+
+**Scope filter (compartmentalization).** The freshness index is patch-keyed; its mechanic-keyed companion
+[`reference_data/mechanics_index.md`](../reference_data/mechanics_index.md) tags each mechanic's current
+**scope** (`core` / `challenge-league` / `event-only` / `removed` / `disabled-this-league` / `nerfed`). Using
+the character's context from §2c, **only consider mechanics whose scope includes that context**: a
+`challenge-league` mechanic (e.g. Mirage Djinn coins) is not present for a Standard or next-league character;
+an `event-only` mechanic (e.g. Return of the Ancestors Forbidden Tattoos) is not present for a normal league
+character; a `removed` / `disabled-this-league` one is not present at all right now. This keeps league/event
+data from bleeding into the wrong build. (For a non-character analysis, the "context" is whichever league/realm
+the question is about.)
 
 ---
 
