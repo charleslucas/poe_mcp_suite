@@ -36,18 +36,28 @@ This is what keeps **Return of the Ancestors** (event-only) from contaminating *
 and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.29**.
 
 ### Scope / status vocabulary
+
+> **PoE temporary-league taxonomy** (per the [wiki](https://www.poewiki.net/wiki/League)): *temporary* leagues
+> come in two recurring flavours — **challenge leagues** (the ~13–16-week **expansion** leagues: Mirage 3.28,
+> Keepers 3.27, Settlers 3.25… — new mechanic + expansion + challenges; characters migrate to **Standard** at
+> end) and **event leagues** (shorter, also recurring: **Legacy of Phrecia / Return of the Ancestors**, races,
+> Mayhem, Endless Delve… — characters migrate to **Standard or Void** at end) — plus private leagues. So
+> "Ancestors" is precisely an **event league**, a *sibling* of the Mirage challenge league, not a challenge
+> league itself. **Both kinds are fresh-start, temporary, and RECUR**, so the tags below cover both and you
+> **re-scope at every transition (challenge OR event)**.
+
 | Tag | Meaning | Example |
 |---|---|---|
 | `core` | Permanent; present in all leagues incl. Standard | Recombinator, Runegrafts |
-| `challenge-league` | Only in the named temp league; gone next league unless cored | Djinn coins (Mirage 3.28) |
-| `event-only` | Only during a time-boxed event | Forbidden Tattoos (Return of the Ancestors) |
+| `challenge-league` | Only in the named **challenge (expansion) league** (~13–16 wk); gone next league unless cored | Djinn coins (Mirage 3.28) |
+| `event-only` | Only during a specific **event league** (short, recurring; sibling to challenge leagues) | Forbidden Tattoos / Phrecian ascendancies (Return of the Ancestors) |
 | `removed` | Taken out of the game | Ancestral totems |
 | `disabled-this-league` | Normally core, but off in the current league | Crucible (absent in Mirage) |
 | `nerfed` / `reworked` | Still present but materially changed | Assassin rework (3.27) |
 
-> **Current context anchors (update at each league roll):** live challenge league = **3.28 Mirage** (ends
-> ~2026-07-20); next = **3.29** (launches 2026-07-24); active event = **Return of the Ancestors**
-> (2026-06-25 → 07-16, fresh-start characters only).
+> **Current context anchors (update at each league roll):** live **challenge league** = **3.28 Mirage**
+> (2026-03-06 → ~2026-07-20); next challenge league = **3.29** (launches 2026-07-24); concurrent **event
+> league** = **Return of the Ancestors** (2026-06-25 → 07-16, fresh-start characters only).
 
 ---
 

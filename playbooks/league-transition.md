@@ -34,6 +34,26 @@ The heuristic matches on the words "Hardcore", "SSF", "Ruthless" in the league n
 
 ---
 
+## Event leagues — a recurring, lighter variant of this transition
+
+Per the [wiki](https://www.poewiki.net/wiki/League), *temporary* leagues come in two recurring flavours:
+**challenge leagues** (the ~13–16-week **expansion** leagues this checklist is built for) and **event leagues**
+(shorter, also recurring — e.g. **Legacy of Phrecia / Return of the Ancestors**, races, Mayhem, Endless Delve).
+Event leagues happen regularly (often between or running alongside expansions), so treat them as a normal,
+repeating part of the cycle — not a one-off. Handle one as a *lightweight* version of this checklist:
+
+- **Usually DON'T flip `POE_LEAGUE`** to the event — events have thin/separate economies; typically keep
+  `POE_LEAGUE` on the main challenge league unless the user is actively trading in the event.
+- **Cache it** in `reference_data/leagues/{event}.md` (Step 4 sub-agent) and **scope its mechanics `event-only`**
+  in `reference_data/mechanics_index.md` (they vanish when the event ends — re-scope at event end).
+- **Characters** are fresh-start for the event and migrate to **Standard or Void** at its end (not necessarily
+  the current challenge league's parent). Update their `meta.json` league at end like any transition.
+- Event characters use the normal `character_data/{Account}/{EventLeague}/{Character}/` layout. ⚠ Alternate
+  ascendancies / event tech may not be modelled by mainline PoB — see the event's cache (e.g. Phrecian
+  ascendancies in `leagues/return_of_the_ancestors.md`).
+
+---
+
 ## Step 0 — Frame the work
 
 One sentence: *"Walking the league-transition checklist for [league] → [parent]. I'll update the env var, character meta files, and per-league docs in order."*
