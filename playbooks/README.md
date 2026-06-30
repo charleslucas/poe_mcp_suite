@@ -174,6 +174,7 @@ Each domain playbook below has a thin wrapper **skill** in `.claude/skills/<name
 | [`verify-install.md`](verify-install.md) | Post-install / post-pull health check across all four MCP servers | Stable |
 | [`atlas-planning.md`](atlas-planning.md) | Atlas node allocation, map mod blacklist, mechanic × build synergy, best map layouts | Stable |
 | [`build-comparison.md`](build-comparison.md) | Compare two builds from pobb.in/poedb.tw URLs or local files — sub-agent-first digest, then tree/item/gem diff and targeted PoB simulation | Stable (sub-agent-first; not yet session-validated) |
+| [`snapshot-driven-build-guide.md`](snapshot-driven-build-guide.md) | Author a guide for a character with no external guide: import from PoE, save dated PoB snapshots, diff vs the previous snapshot, accrete a living guide in `build.md`'s Progression Log; reusable template | Stable (session-validated 2026-06-30) |
 | [`multi-stage-analysis.md`](multi-stage-analysis.md) | Framework for analyses too large for a single context window — checkpoint files, stage protocol, resume-after-compact | Stable |
 | [`gear-shopping.md`](gear-shopping.md) | Trade site workflows, resistance/attribute math, stash scanning, price-check pitfalls | Stable |
 | [`character-leveling.md`](character-leveling.md) | Milestone PoB builds (every 20 levels), gear schedule from stash, passive tree planning, Notes tab, progression.md | Stable |
