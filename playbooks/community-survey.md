@@ -85,7 +85,23 @@ It is **unreliable** for:
 - Exact numbers (CDR values, DPS figures, breakpoint math) — always verify in PoB
 - Citation accuracy — it attributes claims to Reddit threads; the threads are real but the specific
   claim may be a synthesis artifact. Treat numbers as leads to verify, not facts
-- Distinguishing league-specific changes from permanent ones — note the league context
+- **Cross-version blending** — Reddit posts span many patches; Google AI synthesizes them without
+  version-tagging the advice. A recommendation correct in 3.21 may be wrong in 3.28 if the build
+  evolved. The Trinity vs MPD conflict for Diamond Shrine Cyclone Slayer is the canonical example:
+  Trinity is correct advice for the standard General's Cry variant across many patches, but Google
+  surfaced it for a variant where PoB showed 0 DPS contribution. The synthesis didn't distinguish.
+- **Variant blending** — if an archetype has multiple popular versions (e.g. General's Cry vs Cyclone
+  of Tumult Slayer, or auras-on vs map-mod-immune Holy Relic), advice for one variant will bleed into
+  results for another without flagging it. High risk when the build being analyzed is a niche or
+  recent variant of a well-documented archetype.
+
+**When cross-version / variant blending risk is highest:**
+- The archetype has changed significantly across recent patches (new transfig gems, ascendancy reworks)
+- Core mechanics were added recently (e.g. Void Shockwave as a transfig, Imbued Supports)
+- The specific variant is niche relative to the broader archetype's community presence
+
+**When it's lowest:** archetype is mechanically stable across the patches those Reddit posts cover —
+the advice stays valid regardless of which version the poster was playing.
 
 **Evaluation filter — before writing anything to a build plan:**
 1. Is this mechanically plausible? (Does it make sense given how the skill/stat works?)
