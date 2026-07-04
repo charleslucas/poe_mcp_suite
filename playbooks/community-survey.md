@@ -29,8 +29,19 @@ In the first 1–4 weeks of a new league, Google AI Mode is the best available s
 
 This window has the **lowest cross-version blending risk** of any use case: the current league is
 recent enough that fresh posts dominate search results, and there's little old conflicting content yet.
-It also covers exactly the gap where training knowledge is most stale — Claude's cutoff predates the
-league, so community posts are the only live source for league-specific discoveries.
+
+Training knowledge and Google AI Mode cover different gaps here — they're complementary, not redundant:
+- **Training knowledge is good for:** the foundation of returning mechanics (how Tattoos work, what
+  Sanctum rewards do, Heist blueprint logic). If a mechanic ran before, training knowledge covers its
+  rules well.
+- **Google AI Mode fills the delta:** whether a returning mechanic was modified since its last
+  appearance, current pricing and availability, newly discovered interactions with this patch's skills
+  and items, and which community strategies have emerged as best-in-slot this time around.
+
+The practical split: use training knowledge to explain *how a mechanic works*, reach for Google AI
+Mode to find out *what changed, what's different, and what the community discovered this run*. For
+a truly new mechanic with no prior appearance, both gaps open up simultaneously — that's when the
+early-league sweep is most valuable.
 
 Query cadence for early-league sweeps: run once at launch + patch notes, again after ~1 week (first
 wave of player experience), again at ~3–4 weeks (economy stabilized, meta solidifying). After that,
