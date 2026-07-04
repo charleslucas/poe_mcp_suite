@@ -20,6 +20,7 @@ the results reveal something that needs cross-checking against PoB or the wiki.
 - Resistance/attribute math or breakpoint calculations (use PoB)
 - Current prices (use `ninja_lookup`)
 - Anything requiring a single authoritative answer — community consensus is noisy
+- **Character-specific gear recommendations** — see "Query framing" section below
 
 ---
 
@@ -40,6 +41,35 @@ Add the current year to Query B to bias toward recent league experience over old
 **Example (Holy Relic Necromancer):**
 - A: `"Holy Relic Necromancer Path of Exile common mistakes weaknesses complaints community reddit"`
 - B: `"Holy Relic Necromancer Path of Exile community improvements modifications alternatives reddit 2026"`
+
+---
+
+## Query framing — the most important rule
+
+**Google AI Mode has two distinct operating modes depending on how the query is phrased:**
+
+| Query style | What Google does | Result quality |
+|---|---|---|
+| Open-ended search ("common pitfalls for X", "what does Reddit say about Y") | Fetches and synthesizes community forum content; cites Reddit/YouTube sources | **High** — surfaces real player discoveries |
+| Direct advice ("here's my gear, what should I upgrade?") | Answers from its own training knowledge; no sources cited | **Low** — same staleness issues as Claude's training; makes build-specific errors |
+
+**The tell is whether sources are cited.** If the response returns with Reddit URLs, it searched. If there are no sources, it answered from training — treat it like any other training-knowledge response (verify everything, check dates).
+
+**Practical implication:** Google AI Mode is a *community document retrieval tool*, not a build advisor. Providing character-specific gear data and asking for suggestions produces a training-knowledge response with generic, often incorrect advice (tested 2026-07-03 on MirageSixFingeredMan: incorrectly dismissed the three-ring slot as an error, suggested wrong uniques, recommended a totem anoint on a non-totem build).
+
+**For character-specific community input, reframe as a search query:**
+
+Instead of: *"Here's my gear — what should I upgrade?"*
+Use: *"[Archetype] best [slot] upgrade community reddit"* or *"[Archetype] [item] worth it reddit 2026"*
+
+These search for community discussions about that slot/item, which is what Google AI Mode does well.
+
+**Where to use community survey in the workflow:**
+
+- ✅ **During archetype/guide analysis** (before you have a character): run in parallel with the guide read. Finds edge cases and player-discovered fixes the guide author never documented. High yield.
+- ✅ **Pre-league-start**: sanity-check a build plan against real player experience.
+- ⚠️ **During character gear optimization**: lower yield. PoB simulation is the right primary tool; community survey can add slot-specific search queries ("best body armour for [archetype]") as supplementary input, but not "analyze my specific gear."
+- ❌ **As a replacement for PoB math**: it cannot simulate your actual character.
 
 ---
 
