@@ -10,21 +10,48 @@ the results reveal something that needs cross-checking against PoB or the wiki.
 
 ## When to use this
 
-- After an initial guide analysis: "did the community find anything the guide missed?"
-- User asks: "what does Reddit say about X", "common mistakes", "community pitfalls", "any improvements
-  people found", "what's wrong with this build in practice"
-- Pre-league-start: sanity-check a build plan against real player experience before committing
+**Use case 1 — Archetype pitfall pass (any time)**
+After an initial guide analysis: "did the community find anything the guide missed?" Run the two
+standard queries in parallel with the guide read. Highest yield on stable archetypes with an active
+community. See standard queries below.
+
+**Use case 2 — Pre-league-start sanity check**
+Before committing to a league-start build, check whether the community has surfaced problems with the
+archetype in the most recent league. Often catches "this used to work but was nerfed" situations that
+training knowledge misses.
+
+**Use case 3 — Early-league community sweep (highest value window)**
+In the first 1–4 weeks of a new league, Google AI Mode is the best available source for:
+- League mechanic interactions with specific builds ("does [new mechanic] work with [archetype]?")
+- Player-discovered bugs, unintended synergies, or gotchas with new content
+- Early-league economy observations ("what's actually valuable this league?")
+- Which league-start builds are performing vs. underperforming relative to pre-launch expectations
+
+This window has the **lowest cross-version blending risk** of any use case: the current league is
+recent enough that fresh posts dominate search results, and there's little old conflicting content yet.
+It also covers exactly the gap where training knowledge is most stale — Claude's cutoff predates the
+league, so community posts are the only live source for league-specific discoveries.
+
+Query cadence for early-league sweeps: run once at launch + patch notes, again after ~1 week (first
+wave of player experience), again at ~3–4 weeks (economy stabilized, meta solidifying). After that,
+community knowledge is well enough indexed that targeted queries are better than sweeps.
+
+**Use case 4 — On-demand community lookup**
+User asks: "what does Reddit say about X", "common mistakes", "community pitfalls", "any improvements
+people found", "what's wrong with this build in practice."
 
 **Not for:**
 - Verifying mechanical interactions (use PoB or `fetch_wiki_page`)
 - Resistance/attribute math or breakpoint calculations (use PoB)
 - Current prices (use `ninja_lookup`)
 - Anything requiring a single authoritative answer — community consensus is noisy
-- **Character-specific gear recommendations** — see "Query framing" section below
+- **Character-specific gear or tree recommendations** — see "Query framing" section below
 
 ---
 
 ## Standard queries
+
+### Archetype pitfall pass (use cases 1, 2, 4)
 
 Run both in parallel via `mcp__google-ai-mode__search_ai`:
 
@@ -41,6 +68,30 @@ Add the current year to Query B to bias toward recent league experience over old
 **Example (Holy Relic Necromancer):**
 - A: `"Holy Relic Necromancer Path of Exile common mistakes weaknesses complaints community reddit"`
 - B: `"Holy Relic Necromancer Path of Exile community improvements modifications alternatives reddit 2026"`
+
+### Early-league community sweep (use case 3)
+
+Run at league launch and again at ~1 week and ~3–4 weeks. Queries are broader — the goal is
+discovery, not targeted pitfall-finding.
+
+```
+Query A (league mechanic + build):
+"[Archetype Name] [League Name] league Path of Exile reddit [year]"
+
+Query B (league mechanic standalone):
+"[League Name] league Path of Exile best builds mechanics community reddit [year]"
+
+Query C (league mechanic + specific interaction, if relevant):
+"[League Name] [specific mechanic or currency] interaction [archetype] reddit"
+```
+
+**Example (Holy Relic Necromancer at 3.29 launch):**
+- A: `"Holy Relic Necromancer 3.29 league Path of Exile reddit 2026"`
+- B: `"3.29 Path of Exile best league start builds mechanics community reddit 2026"`
+- C: (only if a specific mechanic is known) `"[new mechanic name] minion build interaction reddit"`
+
+These queries have a natural expiry — they're most useful in the first month. After that, switch back
+to the standard archetype pitfall queries which will have absorbed the league-specific discoveries.
 
 ---
 
@@ -143,6 +194,7 @@ the decision table for whether to reach for it.
 | Task | Query style | Sources? | Yield | Use it? |
 |---|---|---|---|---|
 | Archetype pitfalls + improvements | Open-ended search | Reddit URLs | High — finds concrete edge cases the guide missed | ✅ Yes, in parallel with guide read |
+| **Early-league mechanic sweep** | League-name search | Reddit URLs | **Highest** — only live source for current-league discoveries; training knowledge has nothing here | ✅ Yes — run at launch, 1 wk, 3–4 wks |
 | Character gear recommendations | Direct advice + gear list | None (training) | Low — generic/wrong (dismissed 3-ring slot, suggested totem anoint on non-totem build) | ❌ No — use PoB sim |
 | Passive tree (direct advice) | Direct advice + node list | Wrong archetype articles (3.21) | Low — generic defensive nodes, no connection to actual tree state | ❌ No — use `get_passive_upgrades` |
 | Passive tree (archetype shape) | Open-ended search | Reddit threads | Medium — tells you what the archetype generally targets; can't know what's already allocated | ⚠️ Pre-tree only |
@@ -161,3 +213,9 @@ runs the actual numbers on the actual character — always the tiebreaker.
 **The parallel-query question:** Worth running in parallel during guide/archetype analysis — two queries,
 ~30 seconds, consistently surfaces 3-5 findings the guide doesn't cover. Not worth it during character
 optimization sessions where PoB has real data and community knowledge is too coarse to help.
+
+**Connection to league reference cache:** Early-league sweep findings that are league-mechanic-specific
+(not archetype-specific) belong in `reference_data/leagues/{league}.md`, not in a build-plan. Write
+archetype-specific findings to the archetype's build-plan or README; write league-wide mechanic
+discoveries (drop rates, farming strategies, economy observations) to the league cache file. See
+`playbooks/README.md` §2b for the league reference protocol.
