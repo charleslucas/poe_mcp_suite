@@ -181,6 +181,7 @@ Each domain playbook below has a thin wrapper **skill** in `.claude/skills/<name
 | [`tree-analysis.md`](tree-analysis.md) | Passive tree audit and reallocation: intent triage, node classification, connectivity/chain analysis, jewel socket safety, mastery node topology | Stable |
 | [`league-transition.md`](league-transition.md) | End-of-league migration checklist: env var, character `meta.json` updates, new-league cache bootstrap; trigger when `get_active_leagues` shows ⚠ | Stable |
 | [`build-optimization-sim.md`](build-optimization-sim.md) | Systematic gem/link/jewel optimization via live PoB sim — snapshot, sim each candidate, restore, rank by DPS-per-div. Full audit surface: support gem choice, gem quality, jewel dead-mod re-rolls, stat layer (reservation, HitChance, overcapped resists) | Stable (session-validated 2026-05-31) |
+| [`community-survey.md`](community-survey.md) | Reddit/community consensus pass for a build archetype via Google AI Mode — parallel pitfall + improvement queries, result filter, build-plan.md update protocol. Post-guide-analysis pass or on-demand. | Stable (session-validated 2026-07-03) |
 
 | [`stash-scanning.md`](stash-scanning.md) | Stash tab pricing and item evaluation. **Currently blocked** — GGG disabled the legacy stash endpoint; OAuth developer registration required for bulk access. Documents `score_rare` (individual items, works today), WealthyExile (recommended for bulk), and OAuth as a last resort. Skill auto-triggers and immediately explains the block. | Stable (blocked) |
 
