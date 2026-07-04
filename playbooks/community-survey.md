@@ -116,3 +116,32 @@ When adding community-sourced content to a plan, mark the finding's origin if it
 
 This distinguishes "the guide says" (authoritative) from "Reddit says" (probable but worth a check).
 Remove the tag once verified.
+
+---
+
+## Capability map (validated 2026-07-03)
+
+Three live experiments established where Google AI Mode adds value and where it doesn't. Use this as
+the decision table for whether to reach for it.
+
+| Task | Query style | Sources? | Yield | Use it? |
+|---|---|---|---|---|
+| Archetype pitfalls + improvements | Open-ended search | Reddit URLs | High — finds concrete edge cases the guide missed | ✅ Yes, in parallel with guide read |
+| Character gear recommendations | Direct advice + gear list | None (training) | Low — generic/wrong (dismissed 3-ring slot, suggested totem anoint on non-totem build) | ❌ No — use PoB sim |
+| Passive tree (direct advice) | Direct advice + node list | Wrong archetype articles (3.21) | Low — generic defensive nodes, no connection to actual tree state | ❌ No — use `get_passive_upgrades` |
+| Passive tree (archetype shape) | Open-ended search | Reddit threads | Medium — tells you what the archetype generally targets; can't know what's already allocated | ⚠️ Pre-tree only |
+| Community consensus on a specific item/slot | "[Archetype] [item] reddit" | Reddit URLs | Medium — finds community verdicts; verify numbers in PoB | ✅ Useful supplementary |
+
+**The core boundary:** Google AI Mode retrieves what the *community has written* about an archetype. It
+cannot reason about your specific character's current state — tree allocations, exact stat margins,
+or niche mechanics the community hasn't written about (e.g. The Unseen Hand three-ring slot).
+
+**When community and PoB conflict, PoB wins.** Example: community recommends Trinity Support for Cyclone
+Slayer (because random elemental conversion looks like it should trigger resonance), but PoB simulation
+showed Trinity = 0 DPS and Melee Physical Damage = +50.4% for the Diamond Shrine variant specifically.
+Community consensus is written for the common version of a build; niche variants diverge. The simulation
+runs the actual numbers on the actual character — always the tiebreaker.
+
+**The parallel-query question:** Worth running in parallel during guide/archetype analysis — two queries,
+~30 seconds, consistently surfaces 3-5 findings the guide doesn't cover. Not worth it during character
+optimization sessions where PoB has real data and community knowledge is too coarse to help.
