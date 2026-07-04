@@ -10,6 +10,7 @@ This repo is a git submodule container for four MCP servers used together with C
 | `poe-mcp-server/` | Python | Trade site search (returns URLs), item pricing, loot filter editing; stash scanning ⚠️ blocked (see [`playbooks/stash-scanning.md`](playbooks/stash-scanning.md)) |
 | `POEMCP/` | Python | Wiki lookups, game data (gems, items, passives, maps), poe.ninja economy |
 | `PathOfBuilding/` | Lua | Fork of PoB with a TCP/stdio JSON-RPC API — the calc backend for pob-mcp |
+| `google-ai-mode` (npx) | Node.js | Google AI Mode search — live synthesized answers with citations for freshness-sensitive PoE questions (patch notes, current meta, recent mechanics). Not a submodule; runs via `npx google-ai-mode-mcp@latest` so it always stays current with Google's interface changes. |
 
 ---
 
@@ -106,6 +107,25 @@ This installs `mcp`, `anyio`, and the GitHub-sourced PyPoE + RePoE packages. All
 Credentials are supplied via env vars in `.mcp.json` (`POE_SESSION_ID`, `POE_ACCOUNT_NAME`). A `poe-mcp-server/config.json` can be used as a fallback but is not required.
 
 **Detailed docs:** [`poe-mcp-server/README.md`](poe-mcp-server/README.md)
+
+---
+
+## Step 4b — Install google-ai-mode (optional)
+
+Provides a `search_ai` tool that queries Google's AI Mode (`udm=50`) and returns a synthesized Markdown answer with citations. Useful for freshness-sensitive questions (current patch meta, recent mechanic changes, build viability after balance updates) that fall outside Claude's training cutoff.
+
+No installation step required — it runs on demand via `npx`. Just add the entry to `.mcp.json` (already present in `.mcp.json.example`):
+
+```json
+"google-ai-mode": {
+  "command": "npx",
+  "args": ["google-ai-mode-mcp@latest"]
+}
+```
+
+**First run:** `npx` downloads the package automatically. Google may show a CAPTCHA in a browser window — solve it once and the persistent browser profile handles subsequent queries silently.
+
+**Note:** This tool automates a browser against Google Search. Use it for genuine research queries, not high-frequency polling — add deliberate delays between calls in any automated workflow.
 
 ---
 

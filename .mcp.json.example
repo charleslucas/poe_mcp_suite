@@ -7,7 +7,7 @@
         "POB_DIRECTORY": "C:/Users/CHANGE_ME/AppData/Roaming/Path of Building Community/Builds",
         "POB_LUA_ENABLED": "true",
         "POB_API_TCP": "true",
-        "POB_API_TCP_PORT": "31337",
+        "POB_API_TCP_PORT": "59166",
         "POB_RECONNECT_TIMEOUT_MS": "300000",
         "POE_TRADE_ENABLED": "true",
         "POE_SESSION_ID": "CHANGE_ME_your_POESESSID_cookie",
@@ -27,6 +27,10 @@
     "poemcp": {
       "command": "python",
       "args": ["/CHANGE_ME/poe_mcp_suite/POEMCP/server.py"]
+    },
+    "google-ai-mode": {
+      "command": "npx",
+      "args": ["google-ai-mode-mcp@latest"]
     }
   }
 }
