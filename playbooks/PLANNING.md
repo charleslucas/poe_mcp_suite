@@ -261,10 +261,12 @@ Add: design vs analysis mode classification as a third gate alongside cursory vs
 
 ## 10. Implementation Order
 
-1. Design the build profile document format (using MirageSixFingeredMan as the first real example)
-2. Write `playbooks/build-design.md`
-3. Revise `playbooks/gear-shopping.md` with audit + cascade analysis phases
-4. Update `playbooks/README.md` with mode classification and knowledge taxonomy overview
-5. Create `character_data/design_attempts/` directory structure
-6. Revise other analysis playbooks to load build profile as prerequisite
-7. Write `CONTRIBUTING.md`
+Status as of 2026-07-07:
+
+1. ✅ Design the build profile document format — done: [`build-profile-format.md`](build-profile-format.md), consumed by README §2d
+2. ✅ Write `playbooks/build-design.md` — done; wrapper skill `.claude/skills/build-design/` added 2026-07-07
+3. ✅ Revise `playbooks/gear-shopping.md` with audit + cascade analysis phases — done
+4. ✅ Update `playbooks/README.md` with mode classification and knowledge taxonomy overview — done 2026-07-07 (§1 mode gate + taxonomy pointer; §2d was already in place)
+5. ⬜ Create `character_data/design_attempts/` directory structure — **not done**; design-attempt knowledge (§6) still has no home
+6. ✅ Revise other analysis playbooks to load build profile as prerequisite — done via README §2d (gear-shopping, tree-analysis, dps-analysis, build-optimization-sim required; build-comparison conditional)
+7. ⬜ Write `CONTRIBUTING.md` — **not done**; §8's contribution metadata requirements still live only in this file

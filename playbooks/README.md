@@ -23,6 +23,8 @@ When a request is **detailed**, respond before touching any data:
 
 Only load data once the user confirms. This prevents spending 20K tokens on an analysis the user wanted as a 2-sentence summary.
 
+**Design vs analysis mode (build-related detailed tasks only):** alongside the effort gate, establish which *mode* the session is in before loading data. **Design mode** — the build doesn't exist yet, or is being fundamentally rethought: use [`build-design.md`](build-design.md), which produces the build profile. **Analysis mode** — improving a character that already exists in-game: use the analysis playbooks (gear-shopping, tree-analysis, dps-analysis, build-optimization-sim), which consume the build profile (§2d). The build profile is the handoff artifact between the two modes. Full rationale, sub-modes, and the knowledge taxonomy behind this split: [`PLANNING.md`](PLANNING.md) §2 and §5.
+
 ---
 
 ## 2. Pre-flight protocol (every detailed task)
@@ -170,6 +172,12 @@ When a task can be decomposed into bounded, independent queries, prefer spawning
 
 When spawning multiple sub-agents whose queries don't depend on each other, dispatch them in **a single message with parallel tool calls** rather than sequentially. This is the right pattern when (for example) you want to fetch and digest three guides simultaneously — total wall time is one agent's runtime, not three.
 
+**Harness notes** (behaviors of the current Claude Code harness that playbook flows should account for):
+- Agents launched via the Agent tool run **in the background by default**. When a stage gates on the digest (the next step needs the result), either launch synchronously (`run_in_background: false`) or end the turn and wait for the completion notification — don't redo the agent's work in main context while it runs.
+- For read-only digestion (transcripts, wiki pages, build XMLs), prefer the **Explore** agent type over general-purpose — it's purpose-built for "read the raw, return the conclusion."
+- A finished agent retains its context. Use **SendMessage** to ask it follow-ups (e.g. one more question about the guide it just digested) instead of spawning a fresh agent that must re-read everything.
+- For large fan-outs (4+ parallel digests: multi-guide synthesis, community-survey query batteries), the **Workflow** orchestrator can run the fan-out/verify/synthesize shape deterministically — but it requires explicit user opt-in per invocation. Offer it; never launch it unprompted.
+
 ---
 
 ## 7. Current playbooks
@@ -198,6 +206,8 @@ Each domain playbook below has a thin wrapper **skill** in `.claude/skills/<name
 - `defense-audit.md` — EHP analysis, recovery sources, ailment immunity coverage, layered defenses. Lowest-hanging: the core tools already exist (`mcp__pob__analyze_defenses`, `check_boss_readiness`)
 - `league-start-character-pick.md` — Annual workflow: guides + class meta + early-league economy. A real pick session (3.29, 2026-06) exists to mine for the task shape
 - `crafting-optimization.md` — build-aware mod selection: single-slot (enumerate craftable mods via `list_craftable_mods_for_base`, sim each in PoB, rank by build profile §3+4); full item design (profile filters pool to relevant subset ~6-10 from 30-40, enumerate combinations over that). Also: Eldritch implicit choices, corruption gambling expected value. Prerequisite: §2d. (Pure lookups are already covered by `crafting-lookup.md`.)
+- `loot-filter.md` — in-game filter maintenance via the `mcp__poe__` filter tools (`get_filter_info`, `find_blocks`, `add_block`/`replace_block`/`remove_block`, `set_basetype_rule`, `kf_check`). These tools currently have zero playbook or skill coverage despite filter edits being multi-step and easy to get wrong
+- `currency-trading.md` — economy workflows over `get_currency_rates`, `find_arbitrage`, `calculate_trading_profit`. Multi-step enough to qualify as "detailed" under §1, but currently uncovered
 
 ---
 
