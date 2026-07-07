@@ -1,5 +1,17 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-.}/scripts/session-start-check.sh\"",
+            "timeout": 45,
+            "statusMessage": "Checking suite/PoB updates..."
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": ".*",
