@@ -42,10 +42,14 @@ and wrongly.
 | **Opus 4.8** (`claude-opus-4-8`) | **3.26** Secrets of the Atlas | Jan 2026 | Best PoE meta knowledge of current models |
 | **Sonnet 4.6** (`claude-sonnet-4-6`) | **3.25** Settlers of Kalguur | Aug 2025 | Default for analysis; stale on 3.26+ |
 | **Haiku 4.5** (`claude-haiku-4-5`) | **≤3.24 (unconfirmed)** | — | ⚠ cutoff not documented — treat conservatively; verify anything 3.25+ |
-| **Fable 5** (`claude-fable-5`) | **unconfirmed** | — | ⚠ cutoff not documented — treat conservatively |
+| **Fable 5** (`claude-fable-5`) | **unconfirmed** | — | Retired 2026-07-07 (per Anthropic, no longer available) — row kept for historical sessions only |
 
 > Current league is **3.28 Mirage**. So **3.27 and 3.28 are past EVERY current model's cutoff**, and **3.26
 > is past Sonnet/Haiku** but within Opus. When in doubt, verify.
+
+> **Model not in this table** (new, experimental, or short-lived): treat its PoE cutoff as unconfirmed —
+> verify anything 3.25+ from live sources until a calibrated row is added. Never assume a newer model
+> implies a newer PoE cutoff.
 
 ---
 

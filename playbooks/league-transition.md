@@ -147,6 +147,20 @@ The `playbooks/README.md` §2b directive says to load `reference_data/leagues/{c
 
 ---
 
+## Step 7 — Roll the knowledge anchors
+
+Committed knowledge files hardcode the "current league", and league-scoped knowledge needs re-scoping. This checklist is the only procedure guaranteed to run at the moment they all change — walk every row:
+
+| # | Where | What to update |
+|---|---|---|
+| 7.1 | `reference_data/freshness_index.md` | The "Current league is **X.Y Name**" callout under the cutoff table; add source bookmarks (league page + Version X.Y.0 page) for the new league |
+| 7.2 | `reference_data/mechanics_index.md` | The "Current context anchors (update at each league roll)" line; re-scope every `challenge-league` mechanic from the ended league (→ `core` if GGG cored it, else `removed`); clear or set `disabled-this-league` entries per the new patch notes |
+| 7.3 | Claude memory (`MEMORY.md` + files) | Update or delete league-scoped memories (e.g. a mechanic memory tied to the ended league); refresh the league-transition-dates memory for the next cycle |
+
+**Wait for the new league's patch notes before re-scoping mechanics** — whether a mechanic goes core is announced there and in GGG's end-of-league news post, not guessable in advance. If running this checklist before the notes drop, mark 7.2's re-scoping as pending and leave a journal/memory note to finish it.
+
+---
+
 ## Done table
 
 When the checklist is complete, report:
@@ -157,6 +171,7 @@ When the checklist is complete, report:
 | Claude Code restarted | ✓ / pending — required for MCP subprocess to pick up env change |
 | Character meta files updated | ✓ N/A (no affected characters) |
 | New-league reference doc created | ✓ / N/A (no new league live yet) |
+| Knowledge anchors rolled (freshness index, mechanics index, memories) | ✓ / pending (re-scoping may wait on patch notes) |
 | `get_active_leagues` shows no ⚠ | ✓ / ⚠ persists (investigate) |
 
 ---

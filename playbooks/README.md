@@ -72,7 +72,7 @@ If the task involves a specific character, read `character_data/{Account}/{Leagu
 
 For any session making recommendations about items, passive nodes, or gems for a specific character, run this after the character snapshot (§2c):
 
-1. Read `character_data/{Account}/{League}/{Character}/build-profile.md`. If it doesn't exist, create a minimal one from the current PoB state before continuing.
+1. Read `character_data/{Account}/{League}/{Character}/build-profile.md`. If it doesn't exist, create a minimal one from the current PoB state before continuing (format spec: [`build-profile-format.md`](build-profile-format.md)).
 2. Compute constraint margins: call `mcp__pob__lua_get_stats(category='all')` and fill the Current and Margin columns in Section 6 (Constraint Status).
 
 **Why this is the foundation for character analysis:** Sections 3 (Stat Priority) and 4 (Mod Value Overrides) serve as both the *scoring function* (what "better" means for this build) and the *constraint reduction mechanism* (collapsing a 30-40 mod pool to the 6-10 candidates that actually matter). Without the profile, recommendations fall back to generic tier evaluation — which is wrong for any build with non-standard scaling (conversion, leech mechanics, forced-crit engines, etc.). With it, even exhaustive optimization over a single slot or item is tractable.
@@ -83,7 +83,8 @@ Applies to: gear-shopping (required), tree-analysis (required), dps-analysis (re
 Consult [`reference_data/freshness_index.md`](../reference_data/freshness_index.md) when a stage's input is
 patch-specific mechanic/item/system knowledge. Look up the **running model's** training cutoff there and
 treat anything newer than that cutoff as must-verify rather than answer-from-memory (the generic "training
-is old" warning becomes a precise per-model boundary: e.g. Sonnet 3.25, Opus 3.26; current league is 3.28).
+is old" warning becomes a precise per-model boundary — the index's cutoff table has the current numbers, and
+its "current league" callout says how far past every cutoff the game has moved).
 This bites at specific stages — asserting how a mechanic works, evaluating a unique/node's *current* stats —
 not every step, but checking once at pre-flight primes you to catch those moments. The `freshness-check`
 skill auto-surfaces it.
@@ -116,11 +117,18 @@ Throughout the session:
 
 `mcp__pob__get_context_usage` reports the active model ID alongside session state.
 
-| Model | Best for |
+Route by capability tier, not model ID (specific IDs drift as models are released and retired):
+
+| Tier | Best for |
 |---|---|
-| `claude-opus-4-7` | Complex multi-step reasoning, novel build synthesis, difficult cross-analysis |
-| `claude-sonnet-4-6` | General analysis, code, most PoE tasks — good default |
-| `claude-haiku-4-5` | Fast lookups, price checks, simple queries |
+| Opus-class and above | Complex multi-step reasoning, novel build synthesis, difficult cross-analysis |
+| Sonnet-class | General analysis, code, most PoE tasks — good default |
+| Haiku-class | Fast lookups, price checks, simple queries |
+
+Per-model **PoE training cutoffs** live in one place: the cutoff table in
+[`reference_data/freshness_index.md`](../reference_data/freshness_index.md). Don't restate cutoff facts here
+or in playbooks — look them up there. A model not listed in that table gets conservative freshness treatment
+regardless of its capability tier (see the rule under that table).
 
 If on Sonnet/Haiku and the task clearly needs deeper reasoning (synthesizing 5+ guide builds into a novel build), mention: *"This would benefit from Opus — you can switch with `/model opus` if you'd like."* Don't switch automatically. Log the model in `analysis_log.md` entries so patterns emerge over time.
 
@@ -182,14 +190,14 @@ Each domain playbook below has a thin wrapper **skill** in `.claude/skills/<name
 | [`league-transition.md`](league-transition.md) | End-of-league migration checklist: env var, character `meta.json` updates, new-league cache bootstrap; trigger when `get_active_leagues` shows ⚠ | Stable |
 | [`build-optimization-sim.md`](build-optimization-sim.md) | Systematic gem/link/jewel optimization via live PoB sim — snapshot, sim each candidate, restore, rank by DPS-per-div. Full audit surface: support gem choice, gem quality, jewel dead-mod re-rolls, stat layer (reservation, HitChance, overcapped resists) | Stable (session-validated 2026-05-31) |
 | [`community-survey.md`](community-survey.md) | Reddit/community consensus pass for a build archetype via Google AI Mode — parallel pitfall + improvement queries, result filter, build-plan.md update protocol. Post-guide-analysis pass or on-demand. | Stable (session-validated 2026-07-03) |
-
 | [`stash-scanning.md`](stash-scanning.md) | Stash tab pricing and item evaluation. **Currently blocked** — GGG disabled the legacy stash endpoint; OAuth developer registration required for bulk access. Documents `score_rare` (individual items, works today), WealthyExile (recommended for bulk), and OAuth as a last resort. Skill auto-triggers and immediately explains the block. | Stable (blocked) |
+| [`crafting-lookup.md`](crafting-lookup.md) | Current mod pools, tier ranges/spawn weights, fossil/essence affinities, bench crafts via the craftofexile cache — routes crafting lookups to live data instead of training memory | Stable |
+| [`build-design.md`](build-design.md) | Design mode: convergence loop from an anchor (goal / mechanic / item / ascendancy / concept) through constraint bootstrapping, research, and validation. Produces the build profile + build plan that analysis playbooks consume (§2d). Companion docs: [`build-profile-format.md`](build-profile-format.md), [`PLANNING.md`](PLANNING.md) | Stable |
 
 **Wishlist** (playbooks worth writing):
-- `crafting-decisions.md` — Eldritch implicit choices, bench crafting, corruption gambling expected value
-- `defense-audit.md` — EHP analysis, recovery sources, ailment immunity coverage, layered defenses
-- `league-start-character-pick.md` — Annual workflow: guides + class meta + early-league economy
-- `crafting-optimization.md` — build-aware mod selection: single-slot (enumerate craftable mods via `list_craftable_mods_for_base`, sim each in PoB, rank by build profile §3+4); full item design (profile filters pool to relevant subset ~6-10 from 30-40, enumerate combinations over that). Prerequisite: §2d.
+- `defense-audit.md` — EHP analysis, recovery sources, ailment immunity coverage, layered defenses. Lowest-hanging: the core tools already exist (`mcp__pob__analyze_defenses`, `check_boss_readiness`)
+- `league-start-character-pick.md` — Annual workflow: guides + class meta + early-league economy. A real pick session (3.29, 2026-06) exists to mine for the task shape
+- `crafting-optimization.md` — build-aware mod selection: single-slot (enumerate craftable mods via `list_craftable_mods_for_base`, sim each in PoB, rank by build profile §3+4); full item design (profile filters pool to relevant subset ~6-10 from 30-40, enumerate combinations over that). Also: Eldritch implicit choices, corruption gambling expected value. Prerequisite: §2d. (Pure lookups are already covered by `crafting-lookup.md`.)
 
 ---
 
