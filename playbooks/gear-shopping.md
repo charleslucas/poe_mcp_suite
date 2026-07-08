@@ -8,7 +8,7 @@ For Claude sessions where the user wants to find a replacement or upgrade for a 
 
 **1. Load the build profile** — `character_data/{Account}/{League}/{Character}/build-profile.md`. If it doesn't exist, create a minimal one from the current PoB state before proceeding. Gear analysis without build-specific mod value overrides (Section 4) and hard constraints (Section 5) misses the most important signal: whether a mod actually matters to *this* build. A T6 mod the build doesn't scale is worse than a T2 mod on a core stat.
 
-**2. Compute the constraint margin table** — call `mcp__pob__lua_get_stats(category='all')` and fill in the Current and Margin columns for every row in the build profile's Section 6 (Constraint Status). This is the baseline for cascade analysis. A margin is spendable budget; zero margin means any loss requires compensation before the change is valid.
+**2. Compute the constraint margin table** — call `mcp__pob__compute_constraint_margins(profile_path, write_back=true)`; it fills Section 6 (Constraint Status) from live stats and flags violated/near-floor rows (manual fallback: `lua_get_stats(category='all')` + fill by hand). This is the baseline for cascade analysis *and* constraint repacking. A margin is spendable budget; zero margin means any loss requires compensation before the change is valid.
 
 ---
 
@@ -91,6 +91,7 @@ Present this list to the user and confirm which slot to target before proceeding
 - Equipped items: `mcp__pob__get_equipped_items`
 - Current stats: `mcp__pob__lua_get_stats(category='all')` — already computed for constraint margins; re-use that call
 - Character journal if it exists: `character_data/{Account}/{League}/{Character}/journal.md`
+- **Current-league item levers**: `reference_data/leagues/{league}.md` — slot-relevant transform/craft options the league adds (e.g. Mirage Djinn coins flipping dual-form uniques). The league can change what "upgrade" means for a slot; check affirmatively, don't wait to remember.
 
 ### Add if shopping for a resistance-critical slot (ring, belt, amulet, body, boots, gloves)
 - Map ALL resistance contributions before proposing any swap — know exactly what each piece provides so the math is correct before hitting trade. A ring might be contributing fire + cold + lightning + chaos simultaneously from implicit AND explicit mods.
@@ -127,27 +128,41 @@ Present this list to the user and confirm which slot to target before proceeding
    - Sum total cost: target item + all compensations
    - **"Don't make this change" is a valid output.** If the cascade cost exceeds the budget or no viable compensation exists, record the finding in build profile Section 8 (Design Attempt Log) and stop. Knowing what not to do is as useful as finding what to buy.
 
-4. **Search trade with pseudo stat IDs** — pseudo stats (`pseudo.pseudo_total_*`) match the total regardless of where it rolls, making them far more effective than explicit stat filters:
+4. **Constraint repacking — run when the target slot carries ≥2 constraint mods (resistances/attributes)** — the trade search inherits whatever load the current item carries, so a burdened slot searches a needlessly narrow space, and the candidates that would win *after* a rebalance never surface (cascade can't chase consequences of an item the search never found). Before building the filter:
+   - From the margin table + the Step 2 `analyze_item_mods` output, list the **constraint load per slot** — who carries which resistances/attributes.
+   - For each constraint the target slot carries, probe the **cost to carry it elsewhere**: quick trade queries for the absorbing slot with vs. without that mod (a sub-agent can batch these).
+   - If absorption is cheap (rule of thumb: total absorption cost under ~30% of the slot budget), plan the **multi-slot move** — liberated target-slot search plus the absorber swap — and run the next step against the *liberated* requirement set, not the inherited one.
+   - Cascade analysis (step 3) then re-runs on the **whole multi-slot move** to validate it — same waterfall, now fed better candidates.
+   - "The current packing is already optimal" is a valid outcome; proceed with the normal single-slot search.
+
+5. **Enumerate the slot's unique/special candidates — kill the unknown-unknown** — weighted searches explore the *rare* mod space; the best item for the slot is often a unique or special base the model didn't think of, and unique knowledge is model-cutoff-bound. Enumerate instead of recalling:
+   - Dispatch an Explore sub-agent to sweep the **complete current unique list for the slot** (poe.ninja unique overviews — name, one-line effect, price) and filter it through the build profile's Core Mechanics + Section 4 to the 3–5 that actually interact with this build. The agent reads the full list; main context sees only survivors.
+   - Check `reference_data/leagues/{league}.md` for **this league's new uniques** in the slot — newer than every model's cutoff by definition.
+   - Include **special bases** where the profile flags a relevant pool: influenced, fractured-mod, synthesis-implicit, eldritch-dominated versions of the slot.
+   - Survivors compete with the rare-search results in the PoB simulation step on the same DPS/EHP-per-cost axis.
+   - For **meta convergence** ("what do other players of this build use here?"): a slot-specific `community-survey` query or the `guides/` library. Do NOT wrap poe.ninja's builds API — explicitly prohibited by their docs (see README wishlist, investigated 2026-07-08); the user browsing poe.ninja/builds and pasting findings is the sanctioned path.
+
+6. **Search trade with pseudo stat IDs** — pseudo stats (`pseudo.pseudo_total_*`) match the total regardless of where it rolls, making them far more effective than explicit stat filters:
    - `pseudo.pseudo_total_life`, `pseudo.pseudo_total_dexterity`, `pseudo.pseudo_total_cold_resistance`, etc.
    - Use `mcp__poe__get_stat_ids` to find the right IDs before building the filter
 
-5. **Evaluate results by shape, not just headline number** — check:
+7. **Evaluate results by shape, not just headline number** — check:
    - Does it cover fire AND cold, or just one? (overcapping one element is wasted budget)
    - Is it corrupted? (no further crafting possible)
    - Are there open affixes for crafting? (ilvl 82+ base usually needed for best crafts)
    - Does the base type matter? (Two-Stone Ring has dual-res implicit; Sapphire Ring has cold; Ruby has fire, etc.)
    - **Apply build profile mod value overrides**: a T4 mod that the build scales is worth more than a T2 mod it doesn't. Shape > tier.
 
-6. **Evaluate crafting as an alternative to buying** — before finalising a trade recommendation, run a quick crafting feasibility check:
+8. **Evaluate crafting as an alternative to buying** — before finalising a trade recommendation, run a quick crafting feasibility check:
    - Use `mcp__poemcp__search_craft_mods(target_mod)` to confirm the target mods are in the craftable pool.
    - Use `mcp__poemcp__get_craft_base_items(base_name)` to confirm the base exists and its drop level.
    - Signal "crafting is worth considering" when: trade has few or no good listings at budget, the target item needs only 1–2 key mods, or the user already has relevant fossils/essences in stash (check with `mcp__poe__scan_stash_tabs` if unsure).
    - Signal "just buy it" when: the item needs 3+ specific mods simultaneously (crafting cost becomes exponential), budget is tight and the user needs a guaranteed result, or a good trade listing already exists within budget.
    - For actual odds and cost estimates, direct the user to the craftofexile Calculator — our tools confirm what can roll and which fossils have affinity, but the probability math lives in their client-side engine.
 
-7. **Simulate in PoB before recommending** — use `mcp__pob__add_item` with the item text, then re-read stats to confirm resistances, attributes, and DPS all land correctly. Save the build file after if changes are good.
+9. **Simulate in PoB before recommending** — use `mcp__pob__add_item` with the item text, then re-read stats to confirm resistances, attributes, and DPS all land correctly. Save the build file after if changes are good. Uniques from step 5 and rares from step 6 rank on the same simulated axis here — the sim ranking is the recommendation, not the listing order.
 
-8. **Provide the trade link** — always include the `trade_url` from the search result so the user can verify availability themselves.
+10. **Provide the trade link** — always include the `trade_url` from the search result so the user can verify availability themselves.
 
 ---
 

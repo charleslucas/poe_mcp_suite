@@ -206,13 +206,16 @@ Each domain playbook below has a thin wrapper **skill** in `.claude/skills/<name
 | [`crafting-lookup.md`](crafting-lookup.md) | Current mod pools, tier ranges/spawn weights, fossil/essence affinities, bench crafts via the craftofexile cache — routes crafting lookups to live data instead of training memory | Stable |
 | [`build-design.md`](build-design.md) | Design mode: convergence loop from an anchor (goal / mechanic / item / ascendancy / concept) through constraint bootstrapping, research, and validation. Produces the build profile + build plan that analysis playbooks consume (§2d). Companion docs: [`build-profile-format.md`](build-profile-format.md), [`PLANNING.md`](PLANNING.md) | Stable |
 | [`guide-analysis.md`](guide-analysis.md) | Digest an external build guide into `character_data/guides/{archetype}/`: sub-agent transcript/article digestion, structured JSON entry, archetype README + synthesis updates, cross-version freshness check. Pairs with community-survey as the follow-up pass. | New (not yet session-validated) |
+| [`crafting-optimization.md`](crafting-optimization.md) | *Deciding* what to craft: build-profile-scored mod selection (single slot or full item), Eldritch implicit choices, corruption-gamble EV tables, essence/fossil routes. Pool reduced by profile §3-4, finalists simmed in PoB, ranked by impact per expected cost. Craft-vs-buy comparison built in. | New (not yet session-validated) |
 
 **Wishlist** (playbooks worth writing):
 - `defense-audit.md` — EHP analysis, recovery sources, ailment immunity coverage, layered defenses. Lowest-hanging: the core tools already exist (`mcp__pob__analyze_defenses`, `check_boss_readiness`)
 - `league-start-character-pick.md` — Annual workflow: guides + class meta + early-league economy. A real pick session (3.29, 2026-06) exists to mine for the task shape
-- `crafting-optimization.md` — build-aware mod selection: single-slot (enumerate craftable mods via `list_craftable_mods_for_base`, sim each in PoB, rank by build profile §3+4); full item design (profile filters pool to relevant subset ~6-10 from 30-40, enumerate combinations over that). Also: Eldritch implicit choices, corruption gambling expected value. Prerequisite: §2d. (Pure lookups are already covered by `crafting-lookup.md`.)
 - `loot-filter.md` — in-game filter maintenance via the `mcp__poe__` filter tools (`get_filter_info`, `find_blocks`, `add_block`/`replace_block`/`remove_block`, `set_basetype_rule`, `kf_check`). These tools currently have zero playbook or skill coverage despite filter edits being multi-step and easy to get wrong
 - `currency-trading.md` — economy workflows over `get_currency_rates`, `find_arbitrage`, `calculate_trading_profit`. Multi-step enough to qualify as "detailed" under §1, but currently uncovered
+
+**Investigated and rejected** (don't re-propose):
+- ~~poe.ninja builds/ladder API wrapper~~ ("what do ladder players of this build use in slot X") — researched 2026-07-08: poe.ninja's API docs **explicitly prohibit** third-party use of the builds API (internal, undocumented, "will be blocked"); the payload is schema-less protobuf with a hard breaking-change history, and misuse risks blocking the suite's *supported* economy endpoints (`ninja_lookup` etc.). Meta-convergence questions route instead through: `community-survey` slot-specific queries, the `guides/` library, or the user browsing poe.ninja/builds themselves and pasting findings.
 
 ---
 
