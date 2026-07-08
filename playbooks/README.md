@@ -244,7 +244,7 @@ Every playbook must have these sections in this order:
 
 ## 9. Contributing a playbook
 
-Playbooks that helped one session likely help everyone running similar work. If a recurring task in your sessions doesn't have a playbook, or an existing one is missing a pitfall you discovered, please PR it back:
+Playbooks that helped one session likely help everyone running similar work. If a recurring task in your sessions doesn't have a playbook, or an existing one is missing a pitfall you discovered, please PR it back. (The session-start hook nudges this: it announces — once each — uncommitted playbook drafts, playbook changes your clone has that the canonical repo doesn't (requires an `upstream` remote pointing at charleslucas/poe_mcp_suite), and playbooks missing their wrapper skill.)
 
 1. **Fork** [poe_mcp_suite](https://github.com/charleslucas/poe_mcp_suite)
 2. **Draft** in `playbooks/your-task-name.md` — use [`dps-analysis.md`](dps-analysis.md) as the reference example

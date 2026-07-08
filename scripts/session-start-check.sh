@@ -65,6 +65,48 @@ if [ "$current_league" = "$TEMP_LEAGUE" ]; then
   fi
 fi
 
+# --- 5. Repo hygiene: playbook contribution + pairing drift ---
+# Each finding is announced ONCE (state-deduped), then stays quiet forever.
+# Three checks: (a) uncommitted playbook drafts; (b) playbook changes not on
+# the canonical upstream repo (fork users with an `upstream` remote — skipped
+# silently otherwise); (c) playbooks missing their wrapper skill.
+hygiene_state="reference_data/.state/announced_hygiene"
+mkdir -p "$(dirname "$hygiene_state")" 2>/dev/null && touch "$hygiene_state" 2>/dev/null
+first_seen() {  # returns 0 (and records the key) only the first time a key is seen
+  grep -qxF "$1" "$hygiene_state" 2>/dev/null && return 1
+  printf '%s\n' "$1" >> "$hygiene_state"
+  return 0
+}
+
+# (a) Untracked playbook drafts
+drafts=""
+for f in $(git ls-files --others --exclude-standard playbooks/ 2>/dev/null | grep '\.md$'); do
+  first_seen "draft:$f" && drafts="$drafts ${f#playbooks/}"
+done
+[ -n "$drafts" ] && append "Uncommitted playbook draft(s):$drafts — commit once session-tested."
+
+# (b) Playbook changes not on the canonical upstream (fork users)
+if git remote get-url upstream >/dev/null 2>&1; then
+  git fetch upstream --quiet 2>/dev/null
+  unshared=""
+  for f in $(git log upstream/main..HEAD --name-only --pretty=format: -- playbooks/ 2>/dev/null | sort -u | grep '\.md$'); do
+    first_seen "unshared:$f" && unshared="$unshared ${f#playbooks/}"
+  done
+  [ -n "$unshared" ] && append "Playbook change(s) not in the canonical upstream repo:$unshared — if session-tested and generally useful, consider a PR back (playbooks/README.md §9)."
+fi
+
+# (c) Playbooks missing a wrapper skill (framework/format docs excluded)
+noskill=""
+for f in playbooks/*.md; do
+  [ -f "$f" ] || continue
+  base=$(basename "$f" .md)
+  case "$base" in README|PLANNING|multi-stage-analysis|build-profile-format) continue;; esac
+  if [ ! -f ".claude/skills/$base/SKILL.md" ]; then
+    first_seen "noskill:$base" && noskill="$noskill $base"
+  fi
+done
+[ -n "$noskill" ] && append "Playbook(s) missing a wrapper skill in .claude/skills/:$noskill (every domain playbook gets one — playbooks/README.md §7)."
+
 # Stdout from a SessionStart hook is injected into model context.
 # Empty output = nothing injected = invisible when everything is current.
 if [ -n "$out" ]; then
