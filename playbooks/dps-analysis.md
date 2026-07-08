@@ -114,6 +114,22 @@ Dispatch multiple transcripts in a **single message with parallel sub-agent call
 
 ---
 
+## Step 3b — Minion builds (run whenever damage lives in minions)
+
+The main-skill DPS readout **under-reports every minion build** — PoB computes one skill at a time, and swarm totals only exist through the Full DPS system. Before any bottleneck analysis on a minion build:
+
+1. **Verify the Full DPS configuration in PoB** — this is where minion numbers silently go wrong:
+   - Every damage-contributing socket group (each minion type, triggered novas, ballistas) needs **"Include in Full DPS"** checked in the Skills tab.
+   - Each group's **"Count" field must be set manually** to the real active quantity (10 zombies, 4 relics…). PoB does **NOT** auto-multiply by the minion limit — an unset Count silently counts the group once. Cross-check against the build's actual limits.
+   - Trigger-based minions (Holy Relic) scale with the **player's** trigger rate — verify attack rate/CDR config matches reality (the guide library has CDR breakpoint tables for Holy Relic).
+   - Spectre selection, minion gem levels, and EE/curse ownership are all part of config, not just gear.
+2. **Get the swarm table**: `mcp__pob__minion_dps_breakdown` — per-skill DPS × count, share of total, from PoB's cached calc (free). If it reports nothing flagged, fix step 1 first; recommendations made from main-skill DPS alone on a swarm build are wrong.
+3. **Stat weights**: `mcp__pob__compute_stat_weights` auto-detects minion builds and switches to a minion probe battery (+1 minion gem levels, minion damage/speed/life, player trigger speed). With Full DPS configured, probe deltas measure the whole swarm; without it, they measure the main skill's minion only — the output says which.
+4. **Apply uptime haircuts to PoB-perfect numbers.** PoB assumes every minion attacks continuously; real minions lose damage to AI, travel, and retargeting. Community rules of thumb (verify per archetype from guides): stationary/boss fights ~90–95% for ranged and triggered minions; melee minions on mobile targets ~60–80%; AG/support minions contribute buffs, not listed DPS. State the haircut used when reporting real-world estimates.
+5. **Minion survivability is DPS.** Dead minions deal nothing — minion life/resist probes and AG gear checks belong in the defense half of the analysis for any build whose minions die in content.
+
+---
+
 ## Step 4 — Output shape
 
 Write recommendations into `character_analyses/{League}-{CharacterName}.md` if it exists; otherwise propose creating one. Structure:
