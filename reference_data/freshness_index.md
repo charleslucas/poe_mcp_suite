@@ -25,10 +25,23 @@ and wrongly.
 3. **Anything in the index with a patch *newer* than the running model's cutoff = MUST VERIFY** before you
    assert how it works. Use the "Where / verify via" pointer (a cached file, a memory, or a fresh fetch).
 4. **Entries at-or-before the cutoff** are usually safe from memory, but still defer to live tool data when
-   it conflicts (trust hierarchy in `playbooks/README.md` §5).
+   it conflicts (trust hierarchy in `playbooks/README.md` §5). **Exception — the cutoff patch itself is a
+   boundary zone:** training ended near that league's *launch*, before the community discovered the nerf
+   outcomes, interactions, and consensus builds that constitute most of a league's lessons. A model
+   "current through 3.26" knows 3.26's patch notes, not its lessons — verify load-bearing claims *at* the
+   cutoff patch too, not just past it.
 5. This check is most load-bearing **when about to assert how a mechanic works, or evaluate a unique /
    node / item's *current* stats** — it does not need to run at every step of an analysis, only at the
    stages where patch-specific knowledge is the input.
+6. **Feedback loop:** when live data contradicts something the running model asserted from memory — the
+   exact event this index exists to prevent — add or annotate the relevant entry here (or in
+   `mechanics_index.md`) before moving on. The index should accrete exactly the facts models actually get
+   wrong; caught failures are better curation signal than guesses about what to include.
+
+> **Maintenance triggers:** (a) the league-transition playbook Step 7 at each league roll; (b) the
+> session-start hook's **game-patch signal** for mid-league point releases (it watches the game exe's
+> mtime and points at `patch_notes_index.md` when a patch lands). Update `maintained:` whenever you touch
+> this file.
 
 > **Removals count as much as additions.** A *removed* mechanic breaks old assumptions just as hard as a
 > new one — e.g. Ancestral totems removed (3.25), the "increased Item Quantity" gear affix removed (3.25).
@@ -50,6 +63,10 @@ and wrongly.
 > **Model not in this table** (new, experimental, or short-lived): treat its PoE cutoff as unconfirmed —
 > verify anything 3.25+ from live sources until a calibrated row is added. Never assume a newer model
 > implies a newer PoE cutoff.
+
+> **Cutoff rows are calibrated estimates, not vendor guarantees** — they come from probing models against
+> known league facts. Knowledge density thins sharply approaching each cutoff (see procedure step 4's
+> boundary-zone rule). If a model flunks a fact its row says it should know, tighten the row and note it.
 
 ---
 

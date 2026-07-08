@@ -120,8 +120,9 @@ When a fresh league launches, generate the per-league reference doc so future se
 
 1. Note the new league's name from `get_active_leagues` (e.g., "Settlers").
 2. Generate `reference_data/leagues/Settlers.md` via a sub-agent (see `playbooks/README.md` §6) that fetches `https://www.poewiki.net/wiki/Settlers_league`, summarizes drop tables / unique items / mechanic specifics, and writes the cache. Don't pull the raw wiki page into main context.
-3. Update `POE_LEAGUE` in `.mcp.json` to the new league name *only if* the user is creating a character there. If they're staying in Standard, leave POE_LEAGUE alone.
-4. Restart Claude Code so the env var change takes effect.
+3. **Generate index entries for the new mechanics** (same sub-agent or a second one). Enumerate from the wiki `Version_X.Y.0` page ("New Content and Features" section) plus the league page, cross-checked against the canonical lifecycle list at [`League_mechanics`](https://www.poewiki.net/wiki/League_mechanics) (every mechanic, active and removed). For each new mechanic: add a patch-keyed entry to `freshness_index.md` and a scope-tagged row (`challenge-league` until GGG cores it) to `mechanics_index.md`. Also record any removals/reworks the notes announce (removals break assumptions as hard as additions). Community-survey is for consensus *later*, not enumeration — the wiki pages are the enumeration source.
+4. Update `POE_LEAGUE` in `.mcp.json` to the new league name *only if* the user is creating a character there. If they're staying in Standard, leave POE_LEAGUE alone.
+5. Restart Claude Code so the env var change takes effect.
 
 Once a character is created and imported via `lua_import_character`, follow the standard post-import checklist (see `pob-mcp/CLAUDE.md` → "After lua_import_character"): ask about bandits, quest passives, pantheon.
 
@@ -156,6 +157,7 @@ Committed knowledge files hardcode the "current league", and league-scoped knowl
 | 7.1 | `reference_data/freshness_index.md` | The "Current league is **X.Y Name**" callout under the cutoff table; add source bookmarks (league page + Version X.Y.0 page) for the new league |
 | 7.2 | `reference_data/mechanics_index.md` | The "Current context anchors (update at each league roll)" line; re-scope every `challenge-league` mechanic from the ended league (→ `core` if GGG cored it, else `removed`); clear or set `disabled-this-league` entries per the new patch notes |
 | 7.3 | Claude memory (`MEMORY.md` + files) | Update or delete league-scoped memories (e.g. a mechanic memory tied to the ended league); refresh the league-transition-dates memory for the next cycle |
+| 7.4 | `scripts/session-start-check.sh` | Roll the league anchor variables at the top (`TEMP_LEAGUE`, `LEAGUE_END`, `NEXT_LEAGUE_START`). Authoritative dates: the challenge-league table on the wiki [`League`](https://www.poewiki.net/wiki/League) page (exact end timestamps + versions); GGG's announcement post for the next launch date |
 
 **Wait for the new league's patch notes before re-scoping mechanics** — whether a mechanic goes core is announced there and in GGG's end-of-league news post, not guessable in advance. If running this checklist before the notes drop, mark 7.2's re-scoping as pending and leave a journal/memory note to finish it.
 

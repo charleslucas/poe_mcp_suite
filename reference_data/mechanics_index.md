@@ -59,6 +59,17 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 > (2026-03-06 → ~2026-07-20); next challenge league = **3.29** (launches 2026-07-24); concurrent **event
 > league** = **Return of the Ancestors** (2026-06-25 → 07-16, fresh-start characters only).
 
+> **Canonical enumeration sources (two complementary views):**
+> - Mechanic-keyed: [`League_mechanics`](https://www.poewiki.net/wiki/League_mechanics) — **every league
+>   mechanic, active and removed, with its lifecycle** ("removed in X.Y.0", "not added to core", "replaced
+>   in X.Y.0"). Seed new entries at league transitions (league-transition playbook Step 4.3) and audit this
+>   file for missing removals — it's how we'd catch a mechanic that quietly left the game without an entry
+>   here recording it.
+> - League-keyed: [`League`](https://www.poewiki.net/wiki/League) — every league ever run, with **exact
+>   start/end dates + release version**, each linking to a per-league detail page listing what was active
+>   (mechanics, uniques, monsters) in that league. The authoritative source for the context-anchor dates
+>   above and for reconstructing a past league's context (e.g. a Standard character built during Settlers).
+
 ---
 
 ## Active mechanics

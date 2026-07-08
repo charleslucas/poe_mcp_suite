@@ -141,11 +141,15 @@ If on Sonnet/Haiku and the task clearly needs deeper reasoning (synthesizing 5+ 
 When sources conflict:
 1. Live in-game observation by the user (item pastes, character API data)
 2. GGG official exports (`reference_data/skilltree/`, `reference_data/atlastree/`)
-3. Live PoB TCP for the loaded build
-4. Live wiki fetch via `mcp__poemcp__fetch_wiki_page`
-5. Cached `reference_data/` — check the `fetched:` date in frontmatter before trusting
-6. PoB's bundled tree data
-7. Claude's training (last resort — often outdated on prices, mod availability, league mechanics)
+3. GGG official patch notes / news posts (via [`reference_data/patch_notes_index.md`](../reference_data/patch_notes_index.md)) — authoritative for *what changed*; the wiki transcribes them with a lag of days-to-weeks, worst exactly when it matters (early league)
+4. Live PoB TCP for the loaded build
+5. Live wiki fetch via `mcp__poemcp__fetch_wiki_page`
+6. Cached `reference_data/` — check the `fetched:`/`patch:` frontmatter before trusting
+7. PoB's bundled tree data
+8. Claude's training (last resort — often outdated on prices, mod availability, league mechanics)
+
+For **prices/economy** specifically, this list doesn't apply: poe.ninja and the trade API are the only
+acceptable sources; training data is never usable for prices at any confidence.
 
 ---
 

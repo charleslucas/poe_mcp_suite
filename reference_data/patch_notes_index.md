@@ -26,8 +26,15 @@ them. When a freshness entry says "verify," the patch notes here are the authori
 
 | Anchor | URL |
 |---|---|
+| **poepatchnotes.com (aggregator — fastest single check)** | https://poepatchnotes.com/ |
 | PoE News (latest releases) | https://www.pathofexile.com/news |
 | Wiki — Version history (all versions) | https://www.poewiki.net/wiki/Version_history |
+
+> **poepatchnotes.com** (third-party, verified useful 2026-07-07): full text of every patch, point release,
+> and hotfix on one page — including the granular `X.Y.0j Hotfix 2`-level entries the wiki never gets —
+> each with a `[Source]` link to the official forum thread. PoE1 and PoE2 on separate pages. Use it as the
+> first stop when the session-start hook reports a game patch; the forum threads it links to remain the
+> primary source for anything load-bearing.
 
 ---
 

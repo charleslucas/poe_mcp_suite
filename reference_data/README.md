@@ -61,11 +61,23 @@ Each manually-curated file should have YAML frontmatter:
 ---
 source: https://www.poewiki.net/wiki/... or https://github.com/grindinggear/...
 fetched: 2026-05-21
+patch: 3.28.0j          # game version the data reflects (point release if known)
 league: 3.28 Mirage
 ---
 ```
 
-This makes staleness easy to check. The GGG repo subdirectories have their own git history — `git log` inside `skilltree/` or `atlastree/` tells you the last sync.
+This makes staleness easy to check — and staleness is **event-based, not time-based**. Data classes
+invalidate on different events, so stamp the event, not just the date:
+
+| Class | Examples | Stale when |
+|---|---|---|
+| **Patch-stamped** | mod pools, mechanic behavior, gem/node values | current game patch ≠ `patch:` (the session-start hook signals game patches) |
+| **League-stamped** | league mechanics, drop availability, scarab pools | current league ≠ `league:` |
+| **Time-stamped** | prices, economy snapshots | hours — never trust cached prices; re-fetch |
+
+The `fetched:` date remains useful context but is the weakest signal — a 3-month-old file whose `patch:`
+still matches is fine; a 3-day-old file fetched just before a hotfix is not. The GGG repo subdirectories
+have their own git history — `git log` inside `skilltree/` or `atlastree/` tells you the last sync.
 
 ---
 
