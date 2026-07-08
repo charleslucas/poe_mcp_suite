@@ -1,6 +1,6 @@
 ---
 name: build-comparison
-description: Compare two Path of Exile builds (current vs guide, or two variants) from pobb.in/poedb.tw URLs, saved PoB files, or the loaded build. Sub-agent-first — each build is digested in its own context so main context sees compact summaries, then diffs tree/items/gems with targeted PoB simulation.
+description: Compare two PoE builds (current vs guide, or two variants) from pobb.in/poedb.tw URLs, saved PoB files, or the loaded build — sub-agent digests each build, then tree/item/gem diff with targeted PoB simulation.
 when_to_use: Use for two-build comparisons — "compare my build to this guide", "how does my tree differ from X", "what would I change to match this build", or two pobb.in/poedb.tw URLs in one message.
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: freshness-check
-description: Model-aware check of whether your PoE training data is stale on a specific mechanic, item, or system before you assert how it works, plus a scope filter so league/event mechanics aren't applied to the wrong character. Routes to reference_data/freshness_index.md (post-training mechanics by patch + each Claude model's cutoff) and reference_data/mechanics_index.md (each mechanic's current scope: core / challenge-league / event-only / removed / disabled).
-when_to_use: Use before stating how a recent or current-league PoE mechanic/item/system works; when the user asks "is X still in the game", "does Y still work", "what changed in league Z", "is this new this league", or asks about a mechanic you don't clearly recognize; and within detailed analyses (dps-analysis, gear-shopping, tree-analysis, build-optimization-sim, crafting-lookup, atlas-planning, build-design) at the stage where patch-specific mechanic/item knowledge is the input. Skip for timeless/conceptual questions (how a mechanic fundamentally works, the math) — those are safe from memory.
+description: Model-aware staleness check before asserting how a PoE mechanic/item/system works, plus a scope filter so league/event mechanics don't bleed into the wrong character. Routes to freshness_index.md + mechanics_index.md.
+when_to_use: Use before stating how a recent or current-league mechanic/item works; on "is X still in the game", "does Y still work", "what changed in league Z", or any mechanic you don't clearly recognize; and at the patch-specific stage of any detailed analysis. Skip timeless/conceptual questions (fundamentals, math).
 ---
 
 Your PoE training knowledge has a **model-specific cutoff** and the game changes every league, so the

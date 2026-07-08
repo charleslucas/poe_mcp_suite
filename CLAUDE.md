@@ -51,7 +51,7 @@ Tools exempt (no GGG trade API): `price_item/items/tab`, `scan_stash_tabs` (poe.
   - `meta.json` — identity + current stats snapshot. Read this first.
   - `inventory.json` — equipped items, flasks, jewels, eldritch implicits. Update via Edit, not full rewrite.
   - `build.md` — narrative: concept, gap analysis vs guide, upgrade plans, open questions.
-  - `journal.md` — append-only chronological log. New entries at the bottom under `## YYYY-MM-DD`.
+  - `journal.md` — rolling log: a Summary of older entries at top, last ~5 entries verbatim below. Append new entries at the bottom under `## YYYY-MM-DD`; when Recent exceeds ~5 entries, roll the oldest into `journal-archive.md` (verbatim, load only for history spelunking) and fold their durable facts into the Summary.
   - `snapshots/` — dated raw PoB XML exports.
   - `buffer/` — regenerable files (transcripts, raw API responses, build guide XMLs). Safe to delete.
 

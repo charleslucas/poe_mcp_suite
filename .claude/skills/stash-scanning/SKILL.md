@@ -1,7 +1,7 @@
 ---
 name: stash-scanning
-description: Stash tab scanning and item pricing — evaluating stash contents to find items worth listing, vendoring, or keeping. NOTE - bulk stash tools are currently blocked (GGG disabled the legacy stash endpoint; OAuth developer registration required for full access). score_rare works today for individual items.
-when_to_use: Use when the user wants to scan or price stash tab contents — "what's in my stash worth selling", "price my dump tab", "is this item worth listing", "scan my stash", "what should I vendor". IMPORTANT - immediately inform the user that bulk stash scanning is currently blocked and explain the three options (score_rare for individual items, OAuth registration if they want full access, or waiting for GGG to restore the endpoint). Do not attempt list_tabs or get_tab — they will return 403.
+description: Stash tab scanning and item pricing. NOTE - bulk stash tools currently blocked (GGG disabled the legacy endpoint); score_rare works for individual items.
+when_to_use: Use for scanning or pricing stash contents — "what's in my stash worth selling", "price my dump tab", "is this item worth listing", "what should I vendor". Immediately tell the user bulk scanning is blocked (options - score_rare per item, OAuth registration, or wait); do not call list_tabs/get_tab — they 403.
 ---
 
 This task uses the **Stash Scanning** playbook. The playbooks in `playbooks/` are the single source of truth — read them rather than working from memory, so you always get the current version.

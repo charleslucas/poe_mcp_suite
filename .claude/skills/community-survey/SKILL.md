@@ -1,7 +1,7 @@
 ---
 name: community-survey
-description: Community consensus / pitfall discovery for a Path of Exile build archetype — querying Google AI Mode (Reddit/YouTube synthesis) for common mistakes, weaknesses, and player-discovered improvements that guides miss. Pairs with build-plan.md updates.
-when_to_use: Use when asked about community opinion on a build — "what does Reddit say about X", "common mistakes with [build]", "any community improvements to this", "pitfalls I should know", "what did people find wrong with this build in practice", "do a community survey". Also use proactively after completing an initial guide analysis, as a post-analysis pass before finalizing a build plan. Skip for single mechanical questions (use the wiki or PoB directly) or price checks (use ninja_lookup).
+description: Community consensus / pitfall discovery for a PoE build archetype via Google AI Mode (Reddit/YouTube synthesis) — mistakes, weaknesses, and improvements that guides miss.
+when_to_use: Use for community opinion on a build — "what does Reddit say about X", "common mistakes with [build]", "any community improvements", "pitfalls I should know", "do a community survey" — and proactively after a guide analysis, before finalizing a build plan. Skip single mechanical questions (wiki/PoB) and price checks (ninja_lookup).
 ---
 
 This task uses the **Community Survey** playbook.

@@ -46,7 +46,7 @@ Rough token costs (calibrated from real sessions — see `character_data/analysi
 |---|---|
 | `meta.json` | ~500 |
 | `inventory.json` | ~2–3K |
-| `build.md` + `journal.md` combined | ~8–12K |
+| `build.md` + `journal.md` (rolled) combined | ~5–7K — journals keep a Summary + last ~5 entries; full history in `journal-archive.md` (load only when needed) |
 | YouTube transcript (38K chars) | ~10–12K |
 | `reference_data/leagues/{league}.md` | ~4–5K |
 | `lua_get_stats` result | ~500–1K |
