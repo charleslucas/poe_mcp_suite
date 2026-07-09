@@ -9,8 +9,21 @@ Used by playbooks/tree-analysis.md Step 3b. Two modes:
 
   2. SET mode (--remove id,id,...): validate a proposed removal SET as a whole.
      ⚠ Individually-removable nodes are NOT necessarily jointly removable — a loop
-     tolerates one cut but not two (2026-07-09: removing Fearsome Force + Arcanist's
-     Dominion together stranded 22 nodes even though each sat on a loop).
+     segment tolerates one cut but not two (2026-07-09: two wheel travel nodes were each
+     safe alone; removing both stranded the notable between them).
+
+  3. NEAR mode (--near N [--grep text] [--travel]): list unallocated nodes reachable
+     within N allocations of the current tree, grouped by real path distance (respects
+     the mastery-terminal rule). Offline complement to PoB's get_node_power heat map:
+     exhaustive (no top-20 cap), filterable by stat text, no PoB required. Value
+     judgement still belongs to PoB simulation (playbook 3e).
+
+  4. ADD mode (--add id,id,...): analyze a proposed allocation. Reports whether the
+     addition CREATES loops (cycle count before/after) and — the useful part — which
+     previously-locked nodes become individually removable because the new loop provides
+     an alternate path. Loops have zero mechanical value in PoE, so a created loop means
+     a redundant connection: the refund candidates on the ring's other side reduce the
+     NET cost of reaching the target. Validate any actual refund set with --remove.
 
 Guards beyond raw connectivity:
   - Mastery clusters: a mastery stays allocatable only while >=1 notable from its own
@@ -42,6 +55,10 @@ def load_args():
     p.add_argument("--alloc", help="comma-separated allocated node IDs")
     p.add_argument("--alloc-file", help="file containing allocated node IDs (any separators)")
     p.add_argument("--remove", help="comma-separated node IDs: validate this removal set instead of listing")
+    p.add_argument("--near", type=int, help="list unallocated nodes within N allocations of the tree")
+    p.add_argument("--grep", help="near mode: only nodes whose name/stats contain this text (case-insensitive)")
+    p.add_argument("--travel", action="store_true", help="near mode: include travel nodes (default: notables/jewels only)")
+    p.add_argument("--add", help="comma-separated node IDs: analyze a proposed allocation (loop creation + refund candidates)")
     p.add_argument("--data", default="reference_data/skilltree/data.json", help="path to GGG tree data.json")
     a = p.parse_args()
     if not a.alloc and not a.alloc_file:
@@ -122,6 +139,142 @@ def main():
         if n.get("ascendancyName"):
             kind = f"asc-{kind}"
         return f"[{nid}] {n.get('name')} <{kind}>: " + "; ".join(n.get("stats", []))
+
+    def traversable(nid):
+        n = nodes.get(nid)
+        return (n is not None and not n.get("isMastery") and n.get("group") is not None
+                and n.get("classStartIndex") is None and not n.get("isAscendancyStart"))
+
+    def removable_alone(graph, roots):
+        """IDs whose solo removal leaves every other node reachable from roots."""
+        def reach(live):
+            seen = set(roots & live)
+            stack = list(seen)
+            while stack:
+                cur = stack.pop()
+                for nb in nbrs(cur) & live:
+                    if nb not in seen:
+                        seen.add(nb)
+                        stack.append(nb)
+            return seen
+        out = set()
+        for nid in graph:
+            if nid in roots:
+                continue
+            live = graph - {nid}
+            if reach(live) == live:
+                out.add(nid)
+        return out
+
+    if a.near:
+        # BFS outward from the allocated frontier through unallocated, traversable nodes.
+        # dist = number of allocations needed to have the node (its whole path included).
+        dist = {}
+        cur = set()
+        for u in main:
+            for v in nbrs(u):
+                if v not in main and v not in dist and traversable(v):
+                    dist[v] = 1
+                    cur.add(v)
+        depth = 1
+        while cur and depth < a.near:
+            nxt = set()
+            for u in cur:
+                for v in nbrs(u):
+                    if v not in main and v not in dist and traversable(v):
+                        dist[v] = depth + 1
+                        nxt.add(v)
+            cur = nxt
+            depth += 1
+        rows = []
+        for nid, dd in dist.items():
+            n = nodes[nid]
+            is_notable = n.get("isNotable")
+            is_jewel = "Jewel Socket" in (n.get("name") or "")
+            if not (is_notable or is_jewel or a.travel):
+                continue
+            blob = ((n.get("name") or "") + " " + " ".join(n.get("stats", []))).lower()
+            if a.grep and a.grep.lower() not in blob:
+                continue
+            rows.append((dd, 0 if is_notable else (1 if is_jewel else 2), nid))
+        rows.sort()
+        print(f"=== UNALLOCATED NODES WITHIN {a.near} ALLOCATION(S)"
+              + (f" matching '{a.grep}'" if a.grep else "")
+              + (" (incl. travel)" if a.travel else " (notables/jewels; --travel for all)") + " ===")
+        for dd, _, nid in rows:
+            print(f"[cost {dd}] {describe(nid)}")
+        print(f"\n{len(rows)} node(s). Cost = allocations to reach (path included). "
+              "Exact path via find_path_to_node; value via PoB sim (playbook 3e).")
+        sys.exit(0)
+
+    if a.add:
+        added = {x for x in parse_ids(a.add) if x not in main}
+        bad = [x for x in added if not traversable(x) and not (nodes.get(x) or {}).get("isAscendancyStart")]
+        if bad:
+            print(f"⚠ skipped (mastery/class-start/unknown): {sorted(bad)}")
+            added -= set(bad)
+        union = main | added
+        roots = starts | {nid for nid in added if nodes[nid].get("isAscendancyStart")}
+
+        def reach_from(roots_, live):
+            seen = set(roots_ & live)
+            stack = list(seen)
+            while stack:
+                cur_ = stack.pop()
+                for nb in nbrs(cur_) & live:
+                    if nb not in seen:
+                        seen.add(nb)
+                        stack.append(nb)
+            return seen
+
+        stranded = added - reach_from(roots, union)
+        if stranded:
+            print(f"❌ addition not connected to the tree: {sorted(stranded)} — "
+                  "include the connecting path nodes in --add")
+            sys.exit(1)
+
+        def cycle_count(graph):
+            E = sum(len(nbrs(u) & graph) for u in graph) // 2
+            seen, comps = set(), 0
+            for s in graph:
+                if s in seen:
+                    continue
+                comps += 1
+                stack = [s]
+                seen.add(s)
+                while stack:
+                    cur_ = stack.pop()
+                    for nb in nbrs(cur_) & graph:
+                        if nb not in seen:
+                            seen.add(nb)
+                            stack.append(nb)
+            return E - len(graph) + comps
+
+        dc = cycle_count(union) - cycle_count(main)
+        print(f"=== ADDITION ANALYSIS: +{len(added)} node(s) {sorted(added)} ===")
+        for nid in sorted(added, key=int):
+            print(f"  {describe(nid)}")
+        if dc <= 0:
+            print("\nNo loop created — a plain extension (dead-end chain). "
+                  "Removability of existing nodes is unchanged.")
+        else:
+            print(f"\n🔁 CREATES {dc} loop(s) — this connection is redundant (loops have no "
+                  "mechanical value), which usually means REFUND POTENTIAL on the ring:")
+            before = removable_alone(main, starts)
+            after = removable_alone(union, roots)
+            newly = sorted((after - before) - added, key=int)
+            if newly:
+                print("  Previously-locked nodes now individually removable (refund candidates):")
+                for nid in newly:
+                    print(f"    {describe(nid)}")
+                print(f"  → Net cost of this addition could be as low as "
+                      f"{len(added)} - {len(newly)} refunded = {len(added) - len(newly)} point(s)."
+                      f"\n  ⚠ Refunds are ALTERNATIVES on the ring, not all simultaneously safe —"
+                      f"\n     validate the exact refund set with --remove id,id,...")
+            else:
+                print("  ...but no allocated node becomes individually removable "
+                      "(the ring's other side is load-bearing or already removable).")
+        sys.exit(0)
 
     if a.remove:
         removal = set(parse_ids(a.remove))

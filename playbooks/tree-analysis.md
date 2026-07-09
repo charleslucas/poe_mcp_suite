@@ -134,6 +134,19 @@ Always prefer removing the **same number of points from the weakest cluster** ov
 
 For each target node to add, use `mcp__pob__find_path_to_node` from the nearest currently allocated node. Do **not** assume the path cost from the JSON adjacency alone — PoB's connectivity model may route differently. Common source of error: counting the adjacent mastery node as a valid stepping stone (see Pitfalls).
 
+Two offline planning modes on `find_removable_nodes.py` complement the PoB tools:
+
+```bash
+# Exhaustive "what's within N points" scan (no PoB needed, no top-20 cap, stat-filterable —
+# offline complement to get_node_power's impact ranking):
+python scripts/find_removable_nodes.py --alloc ... --near 3 --grep life
+# Loop-aware allocation analysis: does adding these nodes CREATE a loop, and if so which
+# already-allocated nodes become refundable (net-cost reduction)?
+python scripts/find_removable_nodes.py --alloc ... --add 48362,27203
+```
+
+**Why `--add`'s loop detection matters:** loops have zero mechanical value in PoE, so an addition that closes a ring is a *redundant connection* — which usually means travel nodes on the ring's other side become individually removable. The net cost of reaching a target through a loop-closing path is `path − refunds`, which can invert which of two candidate targets is cheaper. Validate the actual refund set with `--remove` (refund candidates on one ring are alternatives, not all simultaneously safe), and the final tree via `update_tree_delta` + node count as always.
+
 ### 3e — Back up, then verify real impact by simulation
 
 3d verifies path *cost*; nothing so far verifies the stat *gain* is real. `get_node_power`, `get_passive_upgrades`, and build-profile scoring are all **estimates** — they miss breakpoints, thresholds, conversion, and stat interactions. For any recommendation carrying a material DPS/EHP claim, verify it in PoB before presenting it:
