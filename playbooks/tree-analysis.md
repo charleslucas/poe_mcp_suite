@@ -92,14 +92,22 @@ for nid in allocated_ids:
 
 This gives you the population of each type and the full list of normal travel nodes with their stats. Do not rely on `search_tree_nodes` alone for this — it has a `limit` cap and won't return all nodes.
 
-### 3b — Find removable chains
+### 3b — Find removable nodes (connectivity analysis)
 
-For each normal node, compute its allocated neighbours (combine `in` + `out` edges, filter to allocated set). A node is **removable** only if doing so doesn't disconnect any other allocated node from the class start.
+Run [`scripts/find_removable_nodes.py`](../scripts/find_removable_nodes.py) with the allocated IDs from `lua_get_tree`:
 
-Safe removal patterns:
-1. **Pendant leaf**: a notable or normal node whose only allocated neighbour is a single travel node. Remove both.
-2. **Pendant chain**: a sequence N₁ → N₂ → … → Nₙ where N₁ has only one allocated neighbour (the junction back to the main tree). Remove the whole chain from Nₙ inward.
-3. **Loop shortcut**: a travel node with two allocated neighbours that are themselves already connected by another path. Rare — verify before assuming.
+```bash
+# List every node safely removable ALONE (includes loop nodes pendant-peeling misses):
+python scripts/find_removable_nodes.py --alloc 1203,2913,...
+# Validate a proposed multi-node removal as a SET (mandatory before recommending):
+python scripts/find_removable_nodes.py --alloc 1203,2913,... --remove 35685,9505
+```
+
+It does remove-and-BFS articulation analysis from the class start (not naive leaf-peeling — a **degree-2 node on a loop is removable**; leaf-peeling misses these, found 2026-07-09), skips ascendancy/alt-ascendancy/mastery nodes correctly, and warns when a removal strips a mastery cluster's last allocated notable.
+
+Two rules the script enforces that manual inspection gets wrong:
+1. **Individually-removable ≠ jointly-removable.** A loop tolerates one cut, not two. Always re-validate the final removal **set** with `--remove` — never sum single-node verdicts (see Pitfalls).
+2. **The script plans; live PoB verifies.** It reads GGG's *standard* `data.json`, so on alternate/event trees the topology can differ slightly. The authoritative check is still applying the delta via `update_tree_delta` (3e) and confirming the returned node count — a lower-than-expected total means PoB dropped stranded nodes.
 
 **Jewel socket check (mandatory):** Before finalising any removal, check that every Large/Medium/Basic Jewel Socket in the allocated set retains at least one non-removed allocated neighbour. If a jewel socket's only allocated neighbour is the node being removed, the jewel socket becomes disconnected and the jewel goes inactive. The 2026-05-25 session found this ruled out two otherwise-attractive pairs (armour smalls connecting only to jewel sockets).
 
@@ -211,7 +219,10 @@ A mastery stays allocatable only while at least one **notable from its own clust
 `lua_get_tree` returns the count of allocated nodes, not available passive points. Available points = (level − 1) + quest rewards (typically 24 at endgame) + bandit bonus − allocated nodes. A level 96 character with 24 quest rewards and Kill All bandit has 95 + 24 + 1 = 120 available points. If `lua_get_tree` shows 124 allocated nodes, there are no free points — the "extra" nodes came from Passive Skill Point items or similar.
 
 ### Connectivity is not obvious
-Even with the adjacency data, it's not always obvious which nodes are safely removable. The "find all leaf nodes" approach often returns zero results at endgame because nodes form dense loops around the Duelist/Witch starting areas. Use the pendant-chain analysis (Step 3b) instead of trying to find pure graph leaves.
+Even with the adjacency data, it's not always obvious which nodes are safely removable. The "find all leaf nodes" approach often returns zero results at endgame because nodes form dense loops around the Duelist/Witch starting areas — and **pendant-peeling also misses loop nodes entirely** (a degree-2 node on a cycle is safe to remove; the loop provides the alternate path). Use `scripts/find_removable_nodes.py` (Step 3b), which does true remove-and-BFS articulation analysis.
+
+### Individually-removable nodes are NOT jointly removable
+A loop tolerates one cut but not two. Single-node verdicts do not compose: each of two loop nodes can be independently safe while removing **both** severs the cycle and strands everything between them. **Example (2026-07-09):** Fearsome Force and Arcanist's Dominion each sat on a loop in a 102-node Scion tree; removing the pair stranded ~20 nodes (live PoB dropped them silently — the only symptom was the total falling to 80). **Rule:** validate the final removal set with `find_removable_nodes.py --remove id,id,...`, then confirm the applied `update_tree_delta` node count matches expectation — a shortfall means stranding.
 
 ### Tooltip discrepancies — Timeless Jewel FIRST, stale data second
 When the in-game tooltip on a node doesn't match what `mcp__pob__get_tree_node` returns (or what `data.json` says), there are two possible explanations, and **you must rule out the first before treating it as the second**:
