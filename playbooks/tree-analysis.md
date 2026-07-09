@@ -22,7 +22,7 @@ Ask before loading anything. Many of these answers may already be in the journal
 - **DPS increase** → also load [`dps-analysis.md`](dps-analysis.md) and prioritise damage multipliers, accuracy, crit chance, and skill-specific notables. Use PoB stat simulation to validate candidates.
 - **Survivability / defence** → focus on life pool, resistance capping, block chance, armour/ES, recovery sources. Cross-reference [`defense-audit.md`](defense-audit.md) once it exists.
 - **Reach a specific notable** → surgical: identify the path cost, find N points to free, check connectivity for each candidate.
-- **Well-rounded / general tune-up** → evaluate all allocated notables for value-per-point; flag both weak defence and weak offence nodes.
+- **Well-rounded / general tune-up** → evaluate all allocated notables for value-per-point; flag both weak defence and weak offence nodes. Also run the free mastery-effect re-optimization pass (Step 3g) — it costs no points and stale picks are common on a tuned-up build.
 - **Mechanic-specific** → e.g., "I want more rage", "I want leech mastery". Pull the relevant cluster from the tree and map the path cost from the current frontier.
 
 **Q2 — Points budget:**
@@ -60,6 +60,9 @@ Ask before loading anything. Many of these answers may already be in the journal
 ### Add if intent = DPS increase
 - `mcp__pob__lua_get_stats` to establish the DPS baseline before any changes
 - Load [`dps-analysis.md`](dps-analysis.md) alongside this playbook
+
+### Add if intent = general tune-up or the build recently changed shape
+- `mcp__pob__suggest_masteries` — re-optimizes every allocated mastery's *effect* choice (Step 3g). Free (no point cost), and stale picks are common. Requires the build loaded.
 
 ### Add if searching for a specific notable
 - `mcp__pob__search_tree_nodes` with the keyword (see pitfalls for correct usage)
@@ -142,6 +145,14 @@ After an edit is applied (and kept), re-verify the downstream state that tree ed
 
 If any row changed unexpectedly, restore the 3e backup and re-plan. A final `lua_get_stats` matching the 3e-predicted delta is the cheap catch-all — an unexplained mismatch means one of these broke.
 
+### 3g — Re-optimize mastery effect selections (free value pass)
+
+Distinct from protecting a mastery's *node* (3b/3f), this checks whether the **effect you chose** from each mastery's menu is still the best option. Each allocated mastery grants one picked effect out of several; the pick is made once at allocation and rarely revisited, so a build that changed shape (added conversion, swapped skills, over-capped a resist) often carries a stale choice. Re-selecting costs **no passive points** — pure free value.
+
+- Run `mcp__pob__suggest_masteries` (no params — it sims every option on every allocated mastery against live DPS/EHP and ranks them). Needs the build loaded; in TCP mode the open build already qualifies.
+- Flag any mastery where a different option beats the current pick by a material margin *for this build's profile* (apply the 3c damage-interaction gate to its ranking — a raw DPS delta on a conversion/crit-interacting option can mislead).
+- This is a standalone pass, **not** part of the reallocation sequence — run it whenever (especially for "general tune-up" or after any build reshape). Acting on a suggestion is a tree edit, so it flows through 3e (back up first — `lua_set_tree` wipes mastery selections) and 3f (waterfall) like any other edit.
+
 ---
 
 ## Step 4 — Output shape
@@ -158,7 +169,7 @@ For open-ended tune-ups, append to `character_data/{Account}/{League}/{Character
 - Stat deltas before/after
 
 Update `meta.json`:
-- `last_analyzed`, `current_stats` (armour, DPS, resistances), `masteries` (if a mastery node was removed/added)
+- `last_analyzed`, `current_stats` (armour, DPS, resistances), `masteries` (if a mastery node was removed/added **or an effect was re-selected via 3g**)
 
 ---
 
