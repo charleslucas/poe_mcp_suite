@@ -1,7 +1,26 @@
 # Spec: rewrite `get_gem_detail` to source from PoB game data (not poedb scraping)
 
-**Status:** design / spec (2026-07-02). **Owner:** poe_mcp_suite. **Supersedes:** the poedb-scraping
-implementation in `POEMCP/sources/player/gems.py` (interim guard already shipped — POEMCP `2df9223`).
+**Status:** ✅ IMPLEMENTED (2026-07-09) via option A (pob-mcp tool + new PoB API action). **Owner:**
+poe_mcp_suite. **Supersedes:** the poedb-scraping implementation in `POEMCP/sources/player/gems.py`
+(now demoted to fallback — POEMCP `c150010`).
+
+**Implementation landed:**
+- **PoB fork** (`api-stdio` `9344462a`): `BuildOps.get_gem_detail` + `Handlers.get_gem_detail` — reads
+  `data.gems` / `data.gemForBaseName`, reuses `calcLib.buildSkillInstanceStats` + `data.describeStats`.
+  Static game data; works with no build loaded.
+- **pob-mcp** (`main` `0d371ab`): `get_gem_detail` MCP tool (bridge `getGemDetail` → `get_gem_detail` TCP
+  action, schema, handler, router). Formats to the §6 markdown shape.
+- **POEMCP** (`main` `c150010`): docstring redirect — poedb scraper is now the fallback.
+- **Acceptance (§7) all passed live:** Fireball, Raise Zombie, Absolution, Spell Echo, Vaal Summon
+  Skeletons, and transfigured (Absolution of Inspiring / Raise Zombie of Falling) — each returns the
+  gem's own tags/type/per-level stats + variants, never a Default Attack.
+- **Deferred follow-ups:** the version-guard + raw-extraction fallback (§4/§8 step 2) and the
+  installed-vs-fork data-source question (§9) are NOT done — the tool reads the running PoB's in-memory
+  data via TCP, so it's inherently current when PoB is; a headless/stale-fork path was not needed.
+
+---
+
+**Original spec below (design / 2026-07-02).**
 
 ## 1. Problem
 `get_gem_detail` scrapes poedb HTML and mis-targets: the `div.gemPopup` elements it reads are the
