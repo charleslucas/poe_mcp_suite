@@ -5,10 +5,16 @@
 
 cd "$(dirname "$0")/.." 2>/dev/null || exit 0
 
-# ── League anchors — rolled by the league-transition playbook (Step 7) ──────
+# ── League anchors — rolled by the league-transition playbook (Step 7.4) ────
+# Challenge league (the one POE_LEAGUE tracks) and the next one to launch.
 TEMP_LEAGUE="${POE_TEMP_LEAGUE:-Mirage}"
 LEAGUE_END="${POE_LEAGUE_END:-2026-07-20}"
 NEXT_LEAGUE_START="${POE_NEXT_LEAGUE_START:-2026-07-24}"
+NEXT_LEAGUE_NAME="${POE_NEXT_LEAGUE_NAME:-Curse of the Allflame (3.29)}"
+# Concurrent EVENT league — ends on its own (earlier) date and POE_LEAGUE never
+# points at it, so it needs its own proximity signal (see check 4b).
+EVENT_LEAGUE="${POE_EVENT_LEAGUE:-Return of the Ancestors}"
+EVENT_END="${POE_EVENT_END:-2026-07-16}"
 
 out=""
 append() { [ -n "$out" ] && out="$out"$'\n'; out="$out$1"; }
@@ -60,7 +66,33 @@ if [ "$current_league" = "$TEMP_LEAGUE" ]; then
     if [ "$days" -lt 0 ]; then
       append "$TEMP_LEAGUE ended $LEAGUE_END but POE_LEAGUE still points at it — run the league-transition playbook."
     elif [ "$days" -le 7 ]; then
-      append "$TEMP_LEAGUE ends in $days day(s) ($LEAGUE_END; next league launches $NEXT_LEAGUE_START) — plan the league-transition run."
+      append "$TEMP_LEAGUE ends in $days day(s) ($LEAGUE_END; $NEXT_LEAGUE_NAME launches $NEXT_LEAGUE_START) — plan the league-transition run."
+    fi
+  fi
+fi
+
+# --- 4b. Event-league end (independent of POE_LEAGUE; events don't flip it) ---
+# Event leagues (e.g. Return of the Ancestors) end on their own date and have
+# their own fresh-start characters that migrate to Standard/Void — but because
+# POE_LEAGUE stays on the challenge league, check 4 never sees them. Signal only
+# while an UN-migrated event character still exists (its meta.json league field
+# still names the event); the transition playbook flips that field, so this
+# self-limits once the migration is done rather than nagging forever.
+if [ -n "$EVENT_LEAGUE" ] && [ -n "$EVENT_END" ]; then
+  unmigrated=0
+  for m in character_data/*/"$EVENT_LEAGUE"/*/meta.json; do
+    [ -f "$m" ] || continue
+    if grep -q "\"league\" *: *\"$EVENT_LEAGUE\"" "$m" 2>/dev/null; then unmigrated=1; break; fi
+  done
+  if [ "$unmigrated" = 1 ]; then
+    ev_epoch=$(date -d "$EVENT_END" +%s 2>/dev/null)
+    if [ -n "$ev_epoch" ]; then
+      ev_days=$(( (ev_epoch - $(date +%s)) / 86400 ))
+      if [ "$ev_days" -lt 0 ]; then
+        append "Event league '$EVENT_LEAGUE' ended $EVENT_END but a character is still marked in it — migrate it to Standard/Void and re-scope event mechanics (league-transition playbook → 'Event leagues' notes)."
+      elif [ "$ev_days" -le 7 ]; then
+        append "Event league '$EVENT_LEAGUE' ends in $ev_days day(s) ($EVENT_END) — its character(s) migrate to Standard/Void; plan the lightweight event-transition."
+      fi
     fi
   fi
 fi
