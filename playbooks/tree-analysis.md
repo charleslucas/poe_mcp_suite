@@ -101,7 +101,12 @@ Run [`scripts/find_removable_nodes.py`](../scripts/find_removable_nodes.py) with
 python scripts/find_removable_nodes.py --alloc 1203,2913,...
 # Validate a proposed multi-node removal as a SET (mandatory before recommending):
 python scripts/find_removable_nodes.py --alloc 1203,2913,... --remove 35685,9505
+# Enumerate the allocation's closed shapes (loops) with their cut-tolerant segments —
+# the formal version of visually spotting loops on the tree:
+python scripts/find_tree_shapes.py --alloc 1203,2913,...
 ```
+
+`find_tree_shapes.py` traces the planar faces of the allocated subgraph (node positions from the tree export), so its output matches what visual inspection shows: triangles, mastery-cluster wheels, large travel rings — each shape listed with its **segments** (chains between junctions; ≤1 cut per segment is the composability heuristic). Both scripts analyze **ascendancy nodes too** — six ascendancy trees contain loops (Deadeye, Raider, Saboteur, Chieftain, Reliquarian, King in the Mists); only alt/Phrecian ascendancy nodes (absent from `data.json`) are skipped.
 
 It does remove-and-BFS articulation analysis from the class start (not naive leaf-peeling — a **degree-2 node on a loop is removable**; leaf-peeling misses these, found 2026-07-09), skips ascendancy/alt-ascendancy/mastery nodes correctly, and warns when a removal strips a mastery cluster's last allocated notable.
 
@@ -222,7 +227,10 @@ A mastery stays allocatable only while at least one **notable from its own clust
 Even with the adjacency data, it's not always obvious which nodes are safely removable. The "find all leaf nodes" approach often returns zero results at endgame because nodes form dense loops around the Duelist/Witch starting areas — and **pendant-peeling also misses loop nodes entirely** (a degree-2 node on a cycle is safe to remove; the loop provides the alternate path). Use `scripts/find_removable_nodes.py` (Step 3b), which does true remove-and-BFS articulation analysis.
 
 ### Individually-removable nodes are NOT jointly removable
-A loop tolerates one cut but not two. Single-node verdicts do not compose: each of two loop nodes can be independently safe while removing **both** severs the cycle and strands everything between them. **Example (2026-07-09):** Fearsome Force and Arcanist's Dominion each sat on a loop in a 102-node Scion tree; removing the pair stranded ~20 nodes (live PoB dropped them silently — the only symptom was the total falling to 80). **Rule:** validate the final removal set with `find_removable_nodes.py --remove id,id,...`, then confirm the applied `update_tree_delta` node count matches expectation — a shortfall means stranding.
+A loop segment tolerates one cut but not two. Single-node verdicts do not compose: two nodes on the same loop segment can each be independently safe while removing **both** severs the segment and strands everything between them. **Verified example (2026-07-09, 102-node Scion tree):** on the 5-node Minion Critical wheel, travel nodes 7898 and 1722 were each SAFE to remove alone, but removing both together stranded Fearsome Force sitting between them. (The same session's original stranding incident — ~20 nodes silently dropped, tree total fell to 80 — turned out to be simpler: Arcanist's Dominion was a plain **cut vertex** stranding 19 nodes all by itself; the mistake there was recommending a removal without running the connectivity analysis at all.) **Rule:** validate the final removal set with `find_removable_nodes.py --remove id,id,...`, then confirm the applied `update_tree_delta` node count matches expectation — a shortfall means stranding.
+
+### Allocation loops can be much larger than the tree's visual faces
+The base tree's largest drawn face is ~18 nodes (measured 2026-07-09), but an **allocation** can merge faces into far bigger rings: two parallel travel paths that rejoin at both ends with no interior connections allocated form one giant cycle. Don't reason about loop safety from the base tree's visual shapes — enumerate the *allocation's* shapes with `find_tree_shapes.py` (Step 3b), which traces the allocated subgraph directly.
 
 ### Tooltip discrepancies — Timeless Jewel FIRST, stale data second
 When the in-game tooltip on a node doesn't match what `mcp__pob__get_tree_node` returns (or what `data.json` says), there are two possible explanations, and **you must rule out the first before treating it as the second**:

@@ -16,8 +16,11 @@ Guards beyond raw connectivity:
   - Mastery clusters: a mastery stays allocatable only while >=1 notable from its own
     cluster group is allocated. Removals that strip a cluster's last allocated notable
     are flagged (the mastery effect would silently drop).
-  - Masteries and ascendancy nodes are never traversable paths (mastery-terminal rule),
-    and ascendancy/alt-ascendancy nodes absent from data.json are skipped gracefully.
+  - Masteries are never traversable paths (mastery-terminal rule).
+  - Ascendancy nodes ARE analyzed (several ascendancy trees contain loops — Deadeye,
+    Raider, Saboteur, Chieftain, Reliquarian, King in the Mists), rooted at the
+    allocated ascendancy-start node. Alternate/Phrecian ascendancy nodes absent from
+    data.json are skipped gracefully (live PoB is the arbiter for those).
 
 Usage:
   python scripts/find_removable_nodes.py --alloc 1203,2913,...        # list mode
@@ -57,14 +60,14 @@ def main():
     nodes = data["nodes"]
     raw_alloc = parse_ids(a.alloc or Path(a.alloc_file).read_text())
 
-    # Partition: main-tree traversable vs skipped (ascendancy/alt-ascendancy/mastery/unknown)
+    # Partition: traversable (main tree + ascendancy) vs skipped (mastery/unknown).
+    # Ascendancy nodes present in data.json are analyzed like any other — their trees can
+    # contain loops. Alt-ascendancy nodes (absent from data.json) are skipped.
     main, skipped, masteries = set(), [], []
     for nid in raw_alloc:
         n = nodes.get(nid)
         if n is None:
             skipped.append((nid, "not in data.json (alt-ascendancy?)"))
-        elif n.get("ascendancyName"):
-            skipped.append((nid, f"ascendancy ({n.get('name')})"))
         elif n.get("isMastery"):
             masteries.append(nid)  # allocated masteries: checked for cluster-notable rule, not pathing
             skipped.append((nid, f"mastery ({n.get('name')})"))
@@ -75,8 +78,11 @@ def main():
         n = nodes.get(nid, {})
         return {str(x) for x in (n.get("in", []) + n.get("out", []))}
 
-    # Class start(s): allocated nodes adjacent to the synthetic root
+    # Connectivity roots: the class start (adjacent to the synthetic root) PLUS each
+    # allocated ascendancy start — the ascendancy cluster is a separate component whose
+    # own start anchors it (the class edge is implicit, not in the edge data).
     starts = {str(x) for x in nodes.get("root", {}).get("out", [])} & main
+    starts |= {nid for nid in main if nodes[nid].get("isAscendancyStart")}
     if not starts:
         sys.exit("ERROR: no allocated class-start node found — check the alloc list")
 
@@ -113,6 +119,8 @@ def main():
         kind = ("notable" if n.get("isNotable")
                 else "jewel" if "Jewel Socket" in (n.get("name") or "")
                 else "travel")
+        if n.get("ascendancyName"):
+            kind = f"asc-{kind}"
         return f"[{nid}] {n.get('name')} <{kind}>: " + "; ".join(n.get("stats", []))
 
     if a.remove:
