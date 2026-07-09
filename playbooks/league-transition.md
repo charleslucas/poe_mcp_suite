@@ -49,8 +49,11 @@ repeating part of the cycle — not a one-off. Handle one as a *lightweight* ver
 - **Characters** are fresh-start for the event and migrate to **Standard or Void** at its end (not necessarily
   the current challenge league's parent). Update their `meta.json` league at end like any transition.
 - Event characters use the normal `character_data/{Account}/{EventLeague}/{Character}/` layout. ⚠ Alternate
-  ascendancies / event tech may not be modelled by mainline PoB — see the event's cache (e.g. Phrecian
-  ascendancies in `leagues/return_of_the_ancestors.md`).
+  ascendancies / event tech may not be modelled by mainline PoB's **default** tree — but check for a
+  **"3.XX (alternate)" tree version** first (PoB ships `TreeData/3_XX_alternate/` for Phrecian-style events;
+  switching the imported spec's tree version enables the alternate ascendancies — discovered 2026-07-09,
+  details in `leagues/return_of_the_ancestors.md` → Tooling). Don't conclude "PoB can't model it" from the
+  default tree alone.
 
 ---
 
