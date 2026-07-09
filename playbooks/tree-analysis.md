@@ -8,7 +8,7 @@ For sessions where the user wants to evaluate, optimise, or reallocate nodes on 
 
 ## Step 0 — Frame the work for the user
 
-*"Using the Tree Analysis playbook — triage first to establish the goal, then I'll pull the tree, classify nodes, and run connectivity analysis to find safe reallocation candidates."*
+*"Using the Tree Analysis playbook — triage first to establish the goal, then I'll pull the tree, classify nodes, run connectivity analysis to find safe reallocation candidates, and sim-verify the finalists in PoB before recommending."*
 
 This is always a **detailed analysis** — apply the cursory/detailed gate from [`README.md`](README.md) section 1 before loading data.
 
@@ -26,7 +26,7 @@ Ask before loading anything. Many of these answers may already be in the journal
 - **Mechanic-specific** → e.g., "I want more rage", "I want leech mastery". Pull the relevant cluster from the tree and map the path cost from the current frontier.
 
 **Q2 — Points budget:**
-- How many free points exist now?
+- How many free points exist now? ⚠ Compute it — don't read it off `lua_get_tree` (that's *allocated nodes*, not available points; see the "Point budget accounting" pitfall for the formula).
 - How many does the target require? (Use `find_path_to_node` to get the exact count before assuming.)
 
 **Q3 — Constraints:**
@@ -79,7 +79,7 @@ Run a Python script against `reference_data/skilltree/data.json` using the node 
 ```python
 for nid in allocated_ids:
     node = nodes[str(nid)]
-    type = ('keystone' if node.get('isKeystone') else
+    kind = ('keystone' if node.get('isKeystone') else
             'notable' if node.get('isNotable') else
             'ascendancy' if node.get('ascendancyName') else
             'mastery' if node.get('isMastery') else
@@ -100,6 +100,8 @@ Safe removal patterns:
 
 **Jewel socket check (mandatory):** Before finalising any removal, check that every Large/Medium/Basic Jewel Socket in the allocated set retains at least one non-removed allocated neighbour. If a jewel socket's only allocated neighbour is the node being removed, the jewel socket becomes disconnected and the jewel goes inactive. The 2026-05-25 session found this ruled out two otherwise-attractive pairs (armour smalls connecting only to jewel sockets).
 
+**Mastery check (mandatory):** A mastery is only allocatable while at least one **notable from its own cluster group** is allocated — a different dependency rule from connectivity. For every allocated mastery, verify at least one same-group notable survives the removal set (`data.json` group membership: the mastery and its notables share a `group` id). If a removal takes a cluster's last allocated notable, the mastery effect is silently lost along with its point — no visible error, exactly like jewel-socket stranding. Count the lost mastery effect in the stats-lost table.
+
 ### 3c — Evaluate candidate value
 
 Rank candidates by value-per-point *relative to this build's profile*:
@@ -108,11 +110,37 @@ Rank candidates by value-per-point *relative to this build's profile*:
 - A "+5% to all Elemental Resistances" node on an already-overcapped build contributes 0 effective defence.
 - Check the character's `meta.json` and journal for known constraints before declaring a node waste.
 
+**Damage-interaction gate (applies to EVERY intent, not just "DPS increase"):** the moment a candidate's value hinges on damage scaling — conversion, gain-as-extra, crit, penetration, ailments — you are making a DPS judgment, even if the session's stated intent is "free up points" or "reach a notable". Load [`dps-analysis.md`](dps-analysis.md)'s interaction pitfalls (or sim the node, Step 3e) before ranking it. The 2026-05-24 failure happened exactly here: in a tree session, Divine Wrath's "gain % phys as extra lightning" was recommended without noticing the build's full phys→ele conversion zeroes it, and Eagle Eye's crit chance was oversold under a forced-100%-crit mechanic — both pitfalls were already written down in dps-analysis.md, which hadn't been loaded because the intent wasn't "DPS".
+
 Always prefer removing the **same number of points from the weakest cluster** over removing scattered individual smalls. A chain removal (notable + 1–2 path nodes) is cleaner and easier to reverse than random individual smalls spread across the tree.
 
 ### 3d — Verify addition paths
 
 For each target node to add, use `mcp__pob__find_path_to_node` from the nearest currently allocated node. Do **not** assume the path cost from the JSON adjacency alone — PoB's connectivity model may route differently. Common source of error: counting the adjacent mastery node as a valid stepping stone (see Pitfalls).
+
+### 3e — Back up, then verify real impact by simulation
+
+3d verifies path *cost*; nothing so far verifies the stat *gain* is real. `get_node_power`, `get_passive_upgrades`, and build-profile scoring are all **estimates** — they miss breakpoints, thresholds, conversion, and stat interactions. For any recommendation carrying a material DPS/EHP claim, verify it in PoB before presenting it:
+
+1. **Back up first (mandatory before any tree edit):** `mcp__pob__create_spec` with `copyFrom` the current spec (or `mcp__pob__snapshot_build`). Tree-editing tools are known-destructive — `lua_set_tree` silently wipes mastery selections and cluster-jewel internals (see Pitfalls) — so every edit must be trivially reversible. The backup also captures the pre-edit mastery/jewel state that 3f diffs against.
+2. Apply the candidate change (prefer `update_tree_delta` — it builds incrementally from the current connected tree).
+3. Read the actual delta with `mcp__pob__lua_get_stats` against the baseline. This is the number that goes in the output table — not the heuristic estimate.
+4. Revert (re-select the backup spec) unless the user has approved keeping the change.
+
+For deeper multi-change optimization, hand off to [`build-optimization-sim.md`](build-optimization-sim.md) — same sim-before-spend principle, full workflow.
+
+### 3f — Post-edit waterfall check
+
+After an edit is applied (and kept), re-verify the downstream state that tree edits are known to silently break — do not assume the plan surviving 3b means the *applied* result is intact:
+
+| Check | How | What breaks silently |
+|---|---|---|
+| Mastery selections | Diff mastery effects vs the 3e backup (`lua_get_tree` / GUI) | `lua_set_tree` wipes selections; removing a cluster's last notable drops its mastery |
+| Threshold jewels | Re-run `mcp__pob__evaluate_threshold_jewels` | An edit near a threshold-jewel socket can flip "at least N in radius" off |
+| Radius-effect jewels | Re-run `mcp__pob__list_radius_effect_jewels` | A removed node in a radius jewel's range changes what it grants/transforms |
+| Jewel sockets | Confirm every socketed jewel's socket is still connected | Stranded socket = jewel inactive, no error |
+
+If any row changed unexpectedly, restore the 3e backup and re-plan. A final `lua_get_stats` matching the 3e-predicted delta is the cheap catch-all — an unexplained mismatch means one of these broke.
 
 ---
 
@@ -121,7 +149,7 @@ For each target node to add, use `mcp__pob__find_path_to_node` from the nearest 
 For surgical reallocations (reach a specific notable), a chat response is sufficient:
 - Table: N nodes to remove | stats lost | why it's safe
 - Table: M nodes to add | stats gained | entry point
-- Net stat delta (DPS %, life Δ, armour Δ, resistance Δ)
+- Net stat delta (DPS %, life Δ, armour Δ, resistance Δ) — **sim-verified numbers from 3e**, not heuristic estimates; say which it is if a delta wasn't simmed
 
 For open-ended tune-ups, append to `character_data/{Account}/{League}/{Character}/journal.md` under `## YYYY-MM-DD — Passive Tree Analysis`:
 - Methodology note (intent, constraints)
@@ -153,6 +181,9 @@ Example from 2026-05-25: Divine Judgement [13164] appeared to be "1 node away" b
 
 ### Jewel sockets strand on removal
 Any Large, Medium, or Basic Jewel Socket node that has only one allocated neighbour will become disconnected (and its jewel inactive) if that neighbour is removed. This silently nerfs the build without any visible error. Always check `alloc_nbrs(jewel_socket_id)` before finalising a removal that touches nodes near jewel sockets.
+
+### Masteries strand on notable removal
+A mastery stays allocatable only while at least one **notable from its own cluster group** is allocated — connectivity alone is not enough. Removing a cluster's last allocated notable silently drops the allocated mastery effect (and its point) with no visible error, even if the mastery node itself remains path-connected. Run the Step 3b mastery check on every removal set, and diff mastery selections post-edit (Step 3f).
 
 ### `search_tree_nodes` usage
 - **Omit `node_type` to search all types.** Passing `node_type: "any"` was a bug (filtered everything) — fixed 2026-05-25 in both Lua and TypeScript layers. The fix is in: `PathOfBuilding/src/API/BuildOps.lua` and `pob-mcp/src/server/toolRouter.ts`.
