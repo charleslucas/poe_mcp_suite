@@ -1,5 +1,5 @@
 ---
-maintained: 2026-06-16
+maintained: 2026-07-08
 purpose: Model-aware index of PoE mechanics/items/systems that postdate (or are unreliable in) Claude training data, so the running model knows what it must verify rather than answer from memory.
 committed: yes (gitignore exception — this is curated, not regenerable)
 ---
@@ -55,10 +55,11 @@ and wrongly.
 | **Opus 4.8** (`claude-opus-4-8`) | **3.26** Secrets of the Atlas | Jan 2026 | Best PoE meta knowledge of current models |
 | **Sonnet 4.6** (`claude-sonnet-4-6`) | **3.25** Settlers of Kalguur | Aug 2025 | Default for analysis; stale on 3.26+ |
 | **Haiku 4.5** (`claude-haiku-4-5`) | **≤3.24 (unconfirmed)** | — | ⚠ cutoff not documented — treat conservatively; verify anything 3.25+ |
-| **Fable 5** (`claude-fable-5`) | **unconfirmed** | — | Retired 2026-07-07 (per Anthropic, no longer available) — row kept for historical sessions only |
+| **Fable 5** (`claude-fable-5`) | **3.26** reliable; **3.27** nominal-but-thin | Jan 2026 | Calibrated 2026-07-08 by in-session self-probe (contamination-aware: tested for detail *beyond* the loaded caches, not mere recognition). Deep 3.25–3.26 (produced Faustus currency exchange, merc subdue→recruit — absent from our caches); **zero independent 3.27 detail → verify-first**; blind 3.28+. Only current model with training knowledge of the original **Feb-2025 Legacy of Phrecia event** (Idols; the 19 alt ascendancies, low per-node detail). PoE recency ≈ Opus 4.8 — its edge is reasoning, not fresher game data. **Subscription access ends 2026-07-12** (an earlier "retired 2026-07-07" note here was wrong — user confirmed live access 2026-07-08). |
 
-> Current league is **3.28 Mirage**. So **3.27 and 3.28 are past EVERY current model's cutoff**, and **3.26
-> is past Sonnet/Haiku** but within Opus. When in doubt, verify.
+> Current league is **3.28 Mirage** — past EVERY model's cutoff. **3.27** is past every model's *reliable*
+> window (Fable holds it nominally but with thin detail — still verify). **3.26** is within Opus/Fable, past
+> Sonnet 4.6/Haiku. When in doubt, verify.
 
 > **Model not in this table** (new, experimental, or short-lived): treat its PoE cutoff as unconfirmed —
 > verify anything 3.25+ from live sources until a calibrated row is added. Never assume a newer model
@@ -170,7 +171,9 @@ These are things models commonly get wrong from training noise, independent of p
 - [x] **3.26 Secrets of the Atlas** detail cache → `leagues/secrets_of_the_atlas_3.26.md` (2026-06-16).
 - [x] **3.27 = Keepers of the Flame** (Breach sequel, 2025-10-31) — detail cache → `leagues/keepers_of_the_flame_3.27.md` (2026-06-16).
 - [ ] **3.28 Mirage atlas tree nodes** — `leagues/mirage.md` notes the GGG export predated release; refresh when available.
-- [ ] Confirm **Haiku 4.5 and Fable 5** training cutoffs (currently conservative placeholders).
+- [x] **Fable 5** cutoff calibrated 2026-07-08 (see model table; subscription access ends 2026-07-12).
+- [ ] Confirm **Haiku 4.5** training cutoff (still a conservative placeholder).
+- [ ] Confirm **Sonnet 5** (`claude-sonnet-5`) cutoff — in active session use since 2026-07 but has no row; until calibrated, treat per the model-not-in-table rule above.
 
 ## Maintenance
 - Add a row whenever a session surfaces a mechanic/item the running model got wrong or didn't know.
