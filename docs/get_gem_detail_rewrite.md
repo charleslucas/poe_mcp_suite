@@ -52,6 +52,41 @@ Ranked by freshness (freshest first):
    data with PoB's own loader and dump JSON — rather than a fragile Python Lua parser or regex. This reuses
    PoB's own data model and is what pob-mcp headless already does.
 
+## 4b. VALIDATED implementation recipe (explored live 2026-07-09, PoB 2.65.0)
+
+Rather than parse `Data/*.lua` files, **read PoB's already-parsed in-memory data via a new API action** and
+reuse PoB's own renderer. Confirmed functions/fields in the fork (now synced to 2.65.0):
+
+- **Gem lookup:** `data.gemForBaseName[name:lower()]` → gemId → `data.gems[gemId]` (call it `gem`).
+  `gem.grantedEffect` = the resolved granted effect. Variants share `gem.gameId` via
+  `data.gemsByGameId[gameId]` (base / `Vaal…` / transfigured `…AltX`). `gem.secondaryGrantedEffect` = Vaal
+  half.
+- **Tags:** `gem.tagString` (ready human string) + `gem.tags` (set). **Type:** `grantedEffect.support` (bool).
+  **Flavor:** `grantedEffect.description`. **Cast:** `grantedEffect.castTime`.
+- **Per-level fields:** `grantedEffect.levels[n]` → `.levelRequirement`, `.critChance`,
+  `.damageEffectiveness` (×100 for %), cost/mana. Max level = `#grantedEffect.levels`.
+- **Per-level stat lines (THE renderer):**
+  `local inst = { level = n, quality = q, gemData = gem }`
+  `local stats = calcLib.buildSkillInstanceStats(inst, grantedEffect)`  -- assembles {statName=value}
+  `local descriptions = data.describeStats(stats, grantedEffect.statDescriptionScope)`  -- English lines
+  (This is exactly `GemSelectControl.lua`:734-740 and `SkillsTab.lua`:777. `data.describeStats` =
+  `Modules/StatDescriber`.)
+- **Quality lines:** iterate `grantedEffect.qualityStats` as `{statName, valPerQual}`; render at +20% via
+  `data.describeStats({[stat]=val*20}, scope)` (SkillsTab.lua:773-777).
+- **Requirements:** `calcLib.getGemStatRequirement(reqLevel, grantedEffect.support, gem.reqStr/reqDex/reqInt)`.
+- **Deps in the API scope:** `data` (global) + `calcLib` (`require("Modules/CalcTools")`) — both already
+  available to the fork's `src/API/BuildOps.lua` (headless + TCP). No build needs to be loaded — this reads
+  static game data, so it works even with no character open.
+
+Suggested action shape: `get_gem_detail(gemName, levels?)` → `{ name, tags[], support, castTime, description,
+variants[], requirements{level,str,dex,int}, perLevel: [{level, levelRequirement, critChance,
+damageEffectiveness, cost, statLines[]}], qualityLines[], provenance: "PoB <version> data" }`. Handler formats
+to the markdown shape in §6. Selected levels: 1, ~mid, max (mirror the current output).
+
+**Test loop caveat:** changing `src/API/*.lua` requires re-running `InstallTcpApi.ps1` + **relaunching PoB**
+(it loads the API Lua at startup) before a live `lua_*` test — or build a headless luajit harness. Plan for
+that iteration cost; it's the main reason this is a focused multi-step build, not a one-shot.
+
 ## 5. Architecture decision (open — recommend option A)
 The real gem data + a LuaJIT/PoB pipeline already live in **pob-mcp** (headless luajit against a PoB checkout,
 plus live TCP). `POEMCP` is Python with no PoB connection. Options:
