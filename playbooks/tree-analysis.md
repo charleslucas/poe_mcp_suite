@@ -125,7 +125,7 @@ For each target node to add, use `mcp__pob__find_path_to_node` from the nearest 
 
 3d verifies path *cost*; nothing so far verifies the stat *gain* is real. `get_node_power`, `get_passive_upgrades`, and build-profile scoring are all **estimates** — they miss breakpoints, thresholds, conversion, and stat interactions. For any recommendation carrying a material DPS/EHP claim, verify it in PoB before presenting it:
 
-1. **Back up first (mandatory before any tree edit):** `mcp__pob__create_spec` with `copyFrom` the current spec (or `mcp__pob__snapshot_build`). Tree-editing tools are known-destructive — `lua_set_tree` silently wipes mastery selections and cluster-jewel internals (see Pitfalls) — so every edit must be trivially reversible. The backup also captures the pre-edit mastery/jewel state that 3f diffs against.
+1. **Back up first (mandatory before any tree edit):** `mcp__pob__snapshot_build` (restore later with `mcp__pob__restore_snapshot`). Tree-editing tools are known-destructive — `lua_set_tree` silently wipes mastery selections and cluster-jewel internals (see Pitfalls) — so every edit must be trivially reversible. **Do NOT use `create_spec` as the backup** — it fabricates a malformed spec object that breaks later item operations (see the `create_spec` pitfall). The snapshot also captures the pre-edit mastery/jewel state that 3f diffs against.
 2. Apply the candidate change (prefer `update_tree_delta` — it builds incrementally from the current connected tree).
 3. Read the actual delta with `mcp__pob__lua_get_stats` against the baseline. This is the number that goes in the output table — not the heuristic estimate.
 4. Revert (re-select the backup spec) unless the user has approved keeping the change.
@@ -203,6 +203,9 @@ A mastery stays allocatable only while at least one **notable from its own clust
 
 ### `lua_set_tree` is unsafe for cluster jewel builds
 `lua_set_tree` silently drops cluster jewel internal passives and wipes all mastery effect selections. For any character with Large Cluster Jewels, do tree changes in the PoB GUI or in-game, then re-sync with `lua_import_character`. See 2026-05-21 journal entry for the full list of known `lua_set_tree` bugs.
+
+### `create_spec` fabricates a malformed spec — don't use it for backups
+`create_spec` (BuildOps.lua) builds a **plain Lua table**, not a real `PassiveSpec` — it omits `jewels` (and other fields a genuine spec has). The spec displays fine in `list_specs`, but any native PoB code that iterates every spec chokes on it. Concretely (2026-07-09): with a `create_spec` backup present, `lua_import_character` **crashed during its clear-items step** (`ItemsTab.lua:1562: bad argument #1 to 'pairs'` — `pairs(spec.jewels)` on the malformed spec), leaving a partial import (new tree, old items) that made every defensive stat wrong. The character's data was never the problem. **Use `snapshot_build`/`restore_snapshot` for backups.** If a `create_spec` backup already broke an import: `delete_spec` the backup, then re-import cleanly.
 
 ### Point budget accounting
 `lua_get_tree` returns the count of allocated nodes, not available passive points. Available points = (level − 1) + quest rewards (typically 24 at endgame) + bandit bonus − allocated nodes. A level 96 character with 24 quest rewards and Kill All bandit has 95 + 24 + 1 = 120 available points. If `lua_get_tree` shows 124 allocated nodes, there are no free points — the "extra" nodes came from Passive Skill Point items or similar.
