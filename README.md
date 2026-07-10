@@ -2,13 +2,13 @@
 
 > **This product is not affiliated with or endorsed by Grinding Gear Games in any way.**
 
-A suite of [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) servers that give Claude deep, live integration with Path of Exile — from build theory-crafting and passive tree simulation to trade, loot filters, and wiki lookups.
+A suite of [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) servers that give an AI agent deep, live integration with Path of Exile — from build theory-crafting and passive tree simulation to trade, loot filters, and wiki lookups. It works with any MCP-compatible agent, and ships a workflow framework additionally optimized for Claude Code.
 
-Each server runs independently and exposes a set of tools that Claude can call during conversation. Together they allow Claude to act as an informed PoE assistant: loading your actual build in Path of Building, simulating node choices, checking prices on poe.ninja, searching trade, scoring individual items, and more — all without leaving the chat.
+Each server runs independently and exposes a set of tools the agent can call during conversation. Together they let the agent act as an informed PoE assistant: loading your actual build in Path of Building, simulating node choices, checking prices on poe.ninja, searching trade, scoring individual items, and more — all without leaving the chat.
 
 poe_mcp_suite is a master git repo that acts a wrapper for four independently developed MCP tools and some other useful utilities.
 
-Point your Claude instance, or other AI at the CLAUDE.md file, and it should find everything it needs to install, connect to Path of Exile and Path of Building, and use all the various API calls for the tools.
+Point your AI agent at the [`AGENTS.md`](AGENTS.md) file (or [`CLAUDE.md`](CLAUDE.md) if you use Claude Code), and it should find everything it needs to install, connect to Path of Exile and Path of Building, and use all the various API calls for the tools.
 
 If you have any issues or suggestions feel free to e-mail at zerosquaredio@gmail.com, or make changes in your own repos and create pull requests back to this one. 
 
@@ -66,46 +66,49 @@ The crafting mod lookup tools use data from [craftofexile.com](https://www.craft
 
 ---
 
-## A note on Claude's Path of Exile knowledge
+## A note on your AI model's Path of Exile knowledge
 
-Claude's built-in PoE knowledge varies from about August 2024 to January 2026 depending on the model — content, balance changes, and mechanics introduced after that point may be missing or wrong. **Before relying on Claude's game-mechanics advice, confirm it against current sources.**
+An AI model's built-in PoE knowledge is frozen at its training cutoff — for current models, somewhere between about August 2024 and January 2026 — so content, balance changes, and mechanics introduced after that point may be missing or wrong. **Before relying on the model's game-mechanics advice, confirm it against current sources.**
 
-The MCP servers exist partly to bridge this gap: use `fetch_wiki_page` (POEMCP) for up-to-date item and passive descriptions, `ninja_lookup` / `currency_overview` for current prices, and `parse_pob` or the live PoB TCP connection for accurate calc results. When Claude's training intuition conflicts with a live tool result, trust the tool.
+The MCP servers exist partly to bridge this gap: use `fetch_wiki_page` (POEMCP) for up-to-date item and passive descriptions, `ninja_lookup` / `currency_overview` for current prices, and `parse_pob` or the live PoB TCP connection for accurate calc results. When the model's training intuition conflicts with a live tool result, trust the tool.
+
+Training cutoffs for the Claude models the suite is tuned for:
 
 Haiku 4.5  - January 2025
 Sonnet 4.6 - Settlers of Kalguur  (3.25) - August 2025
 Opus 4.8   - Secrets of the Atlas (3.26) - January 2026
+Fable 5    - Secrets of the Atlas (3.26) - January 2026
 
 ---
 
-## How Claude organizes the work (and how you help)
+## How the agent organizes the work (and how you help)
 
-Path of Exile is a *huge* game — thousands of items, modifiers, passive nodes, atlas mechanics, league-specific systems, all interacting in ways that change every patch. No single source — not Claude's training, not the wiki, not poe.ninja, not Path of Building — is correct about all of it all the time. To make this manageable, the suite uses a small workflow framework that you'll see Claude reference during sessions.
+Path of Exile is a *huge* game — thousands of items, modifiers, passive nodes, atlas mechanics, league-specific systems, all interacting in ways that change every patch. No single source — not the model's training, not the wiki, not poe.ninja, not Path of Building — is correct about all of it all the time. To make this manageable, the suite uses a small workflow framework that you'll see the agent reference during sessions.
 
 ### Playbooks
 
-When you start a recognizable task — "help me improve my DPS," "what map mods should I run," "is this rare worth keeping?" — Claude loads a matching **playbook** from [`playbooks/`](playbooks/). Each playbook contains:
+When you start a recognizable task — "help me improve my DPS," "what map mods should I run," "is this rare worth keeping?" — the agent loads a matching **playbook** from [`playbooks/`](playbooks/). Each playbook contains:
 
 - A short **triage questionnaire** to scope the work (goal, budget, locked items, etc.) — answering 3-4 questions up front saves a lot of back-and-forth later
-- A **data-load matrix** that determines which sources Claude needs (skip the atlas tree if we're doing a gear-only analysis, etc.)
+- A **data-load matrix** that determines which sources the agent needs (skip the atlas tree if we're doing a gear-only analysis, etc.)
 - The **analysis pattern** to follow, in order
 - A **pitfalls section** with concrete lessons from previous sessions ("Diamond Shrine does NOT grant ailment immunity" / "Body armour Eldritch has no mana cost mod") — so prior mistakes don't get repeated
 
-Playbooks are committed to this repo; if a task shape recurs and a playbook doesn't exist yet, Claude can draft one mid-session.
+Playbooks are committed to this repo; if a task shape recurs and a playbook doesn't exist yet, the agent can draft one mid-session.
 
-> **Sharing playbooks back:** if you or Claude draft a new playbook that works well for you, or you have improved an existing one with new data sources, or you've added MCPs or tools, please consider opening a pull request to this repo so others can gain from your insights. See [`playbooks/README.md`](playbooks/README.md) for format conventions and submission guidelines. Pitfalls discovered in one session can save hours for the next person who hits the same wall.
+> **Sharing playbooks back:** if you or the agent draft a new playbook that works well for you, or you have improved an existing one with new data sources, or you've added MCPs or tools, please consider opening a pull request to this repo so others can gain from your insights. See [`playbooks/README.md`](playbooks/README.md) for format conventions and submission guidelines. Pitfalls discovered in one session can save hours for the next person who hits the same wall.
 
 ### Reference data cache
 
-Slowly-changing game data — the official GGG passive tree exports, atlas tree, Eldritch implicit pools, shrine mechanics — gets cached locally in [`reference_data/`](reference_data/) so Claude doesn't re-fetch it every session. The directory itself is gitignored (the data is regenerable and large), but `reference_data/README.md` is committed and tells a fresh clone how to populate it. Each cached file has a `fetched:` date and `league:` in its frontmatter so staleness is easy to spot.
+Slowly-changing game data — the official GGG passive tree exports, atlas tree, Eldritch implicit pools, shrine mechanics — gets cached locally in [`reference_data/`](reference_data/) so the agent doesn't re-fetch it every session. The directory itself is gitignored (the data is regenerable and large), but `reference_data/README.md` is committed and tells a fresh clone how to populate it. Each cached file has a `fetched:` date and `league:` in its frontmatter so staleness is easy to spot.
 
 ### Per-character analyses
 
-Detailed build analyses for each character live in [`character_data/<Account>/<League>/<Character>/`](character_data/) — also gitignored (junction to `%APPDATA%/poe_claude_data/` on Windows), since they include playstyle notes and personal info. Claude reads the doc at the start of a session and appends new findings, decisions, and crafting outcomes as you work.
+Detailed build analyses for each character live in [`character_data/<Account>/<League>/<Character>/`](character_data/) — also gitignored (junction to `%APPDATA%/poe_claude_data/` on Windows), since they include playstyle notes and personal info. The agent reads the doc at the start of a session and appends new findings, decisions, and crafting outcomes as you work.
 
 ### Your role as co-pilot on data hygiene
 
-Claude will narrate what it's doing so you can follow along — *"Pulling current Eldritch pool from poewiki — cached version is 14 days old," "Writing this to `reference_data/X.md` so we don't refetch next time."* When data is stale, missing, or possibly out of date for the current league, **Claude will ask you for help**:
+The agent will narrate what it's doing so you can follow along — *"Pulling current Eldritch pool from poewiki — cached version is 14 days old," "Writing this to `reference_data/X.md` so we don't refetch next time."* When data is stale, missing, or possibly out of date for the current league, **the agent will ask you for help**:
 
 - *"Can you paste an Eldritch boots mod list from your stash so I have current data?"*
 - *"Has GGG changed how rage decay works recently? My training says X but I want to verify."*
@@ -113,7 +116,7 @@ Claude will narrate what it's doing so you can follow along — *"Pulling curren
 
 Your in-game observations are the single most authoritative source for your specific situation, and your help refreshing the local cache compounds — better data this session means faster, more accurate analyses in every future session. The game is constantly changing; you're the freshest data source we have.
 
-*Also* - Claude (or any AI) is forgetful after a context compression.  I have tried to create a playbook and context-management framework to encourage Claude to always cache the most up-to-date data before doing analyses, and have given it awareness of it's own context so it can intelligently load data and write out any analysis results before compression happens.  But Claude still will forget and fall-back to using it's trained-in game data, which is a couple years out of date.  Diligence on asking it if it has read the playbooks, loaded recent data sources, and written it's results to the character cache will help keep it on track and provide much better analyses.
+*Also* - the agent (or any AI) is forgetful after a context compression.  I have tried to create a playbook and context-management framework to encourage the agent to always cache the most up-to-date data before doing analyses, and have given it awareness of it's own context so it can intelligently load data and write out any analysis results before compression happens.  But the agent still will forget and fall-back to using it's trained-in game data, which is a couple years out of date.  Diligence on asking it if it has read the playbooks, loaded recent data sources, and written it's results to the character cache will help keep it on track and provide much better analyses.
 
 ---
 
@@ -122,7 +125,7 @@ Your in-game observations are the single most authoritative source for your spec
 ### pob-mcp
 **Repo:** [charleslucas/pob-mcp](https://github.com/charleslucas/pob-mcp) · **~123 tools**
 
-The core build-analysis server. Connects Claude to [Path of Building](https://github.com/PathOfBuildingCommunity/PathOfBuilding) — either headless (for batch work) or live via a TCP socket to the running PoB GUI. When connected live, every change Claude makes (adding a gem, allocating a passive, swapping an item) appears in the PoB window in real time.
+The core build-analysis server. Connects the agent to [Path of Building](https://github.com/PathOfBuildingCommunity/PathOfBuilding) — either headless (for batch work) or live via a TCP socket to the running PoB GUI. When connected live, every change the agent makes (adding a gem, allocating a passive, swapping an item) appears in the PoB window in real time.
 
 Key capabilities:
 - Load, save, and compare build files
@@ -165,7 +168,7 @@ Key capabilities:
 
 A fork of Path of Building Community with a JSON-RPC API layer added (`src/API/`). This is the calculation backend that `pob-mcp` connects to. It exposes PoB's full calc engine — passive tree simulation, item stat computation, full DPS/EHP calculations — over a TCP socket (live GUI mode) or stdio (headless mode).
 
-The API additions live on the `api-stdio` branch and are designed to be non-destructive: the PoB GUI remains fully usable while Claude works with the same build through the API.
+The API additions live on the `api-stdio` branch and are designed to be non-destructive: the PoB GUI remains fully usable while the agent works with the same build through the API.
 
 ---
 
@@ -262,9 +265,13 @@ The four things to change:
 2. Open browser DevTools → Application (Chrome) or Storage (Firefox) → Cookies → `pathofexile.com`
 3. Copy the value of the `POESESSID` cookie
 
-### 3. Claude Desktop vs Claude Code
+### 3. Where the config goes (by client)
+
+The same `mcpServers` block works across MCP clients — only the file location differs. Two common examples:
 
 - **Claude Code** — `.mcp.json` goes in the workspace root (already where you put it above)
 - **Claude Desktop** — paste the same `mcpServers` block into:
   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+Other clients (Cursor, Windsurf, Cline, VS Code, Zed, …) use the same block in their own MCP config location.
