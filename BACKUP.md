@@ -43,7 +43,7 @@ or register `backup-data.ps1` as a Windows Task Scheduler job for periodic snaps
 
 ## Restore (same machine or a new one)
 
-1. Clone the suite with submodules and follow [`CLAUDE_INSTALL.md`](CLAUDE_INSTALL.md).
+1. Clone the suite with submodules and follow [`INSTALL.md`](INSTALL.md).
 2. Restore the data:
 
 ```powershell

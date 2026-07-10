@@ -1,12 +1,12 @@
 # poe_mcp_suite — Installation Guide
 
-This repo is a git submodule container for four MCP servers used together with Claude for Path of Exile. There is no runnable code here — everything lives in the submodules.
+This repo is a git submodule container for four MCP servers for Path of Exile, usable with any MCP-compatible AI agent. There is no runnable code here — everything lives in the submodules.
 
 ## Servers at a glance
 
 | Submodule | Language | What it does |
 |-----------|----------|--------------|
-| `pob-mcp/` | TypeScript / Node.js | Connects Claude to Path of Building — build analysis, passive tree simulation, gem/item management, trade |
+| `pob-mcp/` | TypeScript / Node.js | Connects the agent to Path of Building — build analysis, passive tree simulation, gem/item management, trade |
 | `poe-mcp-server/` | Python | Trade site search (returns URLs), item pricing, loot filter editing; stash scanning ⚠️ blocked (see [`playbooks/stash-scanning.md`](playbooks/stash-scanning.md)) |
 | `POEMCP/` | Python | Wiki lookups, game data (gems, items, passives, maps), poe.ninja economy |
 | `PathOfBuilding/` | Lua | Fork of PoB with a TCP/stdio JSON-RPC API — the calc backend for pob-mcp |

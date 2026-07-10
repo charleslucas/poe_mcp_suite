@@ -70,7 +70,7 @@ All three MCP servers (pob-mcp, poe-mcp-server, POEMCP) currently use stdio tran
 3. Add the tunnel URLs to Claude.ai Settings → Integrations
 4. Full tool access from Claude.ai web, with credentials staying local
 
-See `CLAUDE_INSTALL.md` → "Step 6 (optional)" for the full intended setup guide.
+See `INSTALL.md` → "Step 6 (optional)" for the full intended setup guide.
 
 **Note:** This preserves the git/PR contribution model. Each user runs their own instance; no shared server is needed. The playbooks and CLAUDE.md remain in the repo as before.
 

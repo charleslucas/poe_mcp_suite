@@ -1,6 +1,6 @@
 # poe_mcp_suite — Notes for Claude
 
-**Setup / post-pull:** If this is a fresh clone or you just ran `git pull`, read [`CLAUDE_INSTALL.md`](CLAUDE_INSTALL.md) to check for new installation steps or tools that need running.
+**Setup / post-pull:** If this is a fresh clone or you just ran `git pull`, read [`INSTALL.md`](INSTALL.md) to check for new installation steps or tools that need running.
 
 **Session-start update check (automated via hook):** A `SessionStart` hook (`.claude/settings.json` → [`scripts/session-start-check.sh`](scripts/session-start-check.sh)) runs the session-boundary checks — suite upstream, PoB version, game-patch signal, league-end proximity, and playbook hygiene (uncommitted drafts, unshared-vs-upstream changes, missing wrapper skills; each announced once) — and injects a `[Session-start update check]` message into context **only when action is needed**. If that message is present, relay it to the user early in your first response. If it's absent, everything is current — do **not** re-run the check manually. (Manual fallback if hooks are disabled: `git fetch origin --quiet` + `git log HEAD..origin/main --oneline`; compare the first line of `%APPDATA%\Path of Building Community\changelog.txt` against the latest tag at `https://api.github.com/repos/PathOfBuildingCommunity/PathOfBuilding/releases/latest`.)
 
