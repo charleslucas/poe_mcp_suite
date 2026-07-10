@@ -1,5 +1,5 @@
 ---
-maintained: 2026-07-08
+maintained: 2026-07-10
 purpose: Model-aware index of PoE mechanics/items/systems that postdate (or are unreliable in) Claude training data, so the running model knows what it must verify rather than answer from memory.
 committed: yes (gitignore exception — this is curated, not regenerable)
 ---
@@ -141,6 +141,7 @@ Cache: [`leagues/secrets_of_the_atlas_3.26.md`](leagues/secrets_of_the_atlas_3.2
 | **Memory Strands** (Orb of Remembrance / Unravelling / Intention) | New **mod-tier-upgrade** crafting path on bases | Relevant to "improve this rare" |
 | **Runegrafts** | Currency applied to an **allocated passive Mastery** to replace it with a Runegraft effect (NOT a gear enchant — corrects earlier cache). One per *type*, no cap on total → can graft several masteries. Notable: **the Fortress** (+40% global def, −10% attr), **Gemcraft** (+1 all non-exceptional supports), **Restitching** (40% of crit damage taken recouped as life), **the River** (20% chance to full-heal on reaching low life). **Farmed via Kingsmarch shipments** to Kalguuran ports (Riben Fell DEX / Pondium INT / Kalguur STR / Any). Removable via Orb of Scouring. | ✅ confirmed live in 3.28 Mirage (wiki 2026-06-16). ⚠ **trust the [wiki Runegraft page](https://www.poewiki.net/wiki/Runegraft)** — third-party blogs (e.g. aoeah) list only a partial/"all new" subset and miss the Any-pool ones (Fortress/Gemcraft) |
 | **Recombinator now core** | Mid-game crafting tool, permanent | — |
+| **Animate Guardian keeps its items on death** (3.26.0) | AG's equipped items are **no longer destroyed when it dies** (pre-3.26: permanently lost) — it just can't be resummoned in the same area it died in. Kills the old "AG death = lose your gear" risk framing. Also (stable, oft-forgotten): items with socketed gems **cannot be animated**, and the AG **cannot use skills from gems or item-granted skills** — sockets/gems are inert; only item *mods* + "nearby allies" auras (Leer Cast, Dying Breath) matter. | wiki [Animate Guardian](https://www.poewiki.net/wiki/Animate_Guardian). ⚠ **Boundary-zone miss:** Opus 4.8 (cutoff *at* 3.26) confidently asserted the OLD delete-on-death rule 2026-07-10 — proof of procedure step 4 (verify load-bearing claims *at* the cutoff patch, not just past it). Relevant to the 3.29 Holy Relic Necro (AG is core there). |
 | Betrayal/Syndicate revamp; Veiled Chaos Orb back; Legacy of Phrecia ascendancies; Allflame Embers; Kalguuran Scarabs | endgame/crafting/farming systems | see cache |
 
 ### 3.25 — Settlers of Kalguur  (past Haiku; at Sonnet cutoff; within Opus/Sonnet)
