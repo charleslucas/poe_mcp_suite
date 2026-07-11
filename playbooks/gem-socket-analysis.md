@@ -27,17 +27,27 @@ Detailed scope — run pre-flight and pause for approval before pulling data.
 
 ---
 
-## Why a dedicated playbook (the core trap)
+## Why a dedicated playbook
 
-**Path of Building discards the gem→socket binding on import.** It reads each gem's
-socket position from the API, uses it to route the gem into the correct link *group*,
-then throws away the per-socket colour/index (it assumes sockets are freely
-chromable). So **no pob-mcp tool can tell you the real socket colours or which gem is
-off-colour** — `get_socket_colors` gives the item's colour *layout* but not the gem
-binding; `get_skill_setup` gives gems-per-group but no colours.
+The socket picture lives across several sources, and the traps are in combining them
+correctly. What matters is a group's **colour *counts* + link size** — never a
+per-gem map: within a link group, which gem sits in which same-colour socket is
+**interchangeable** (a linked pair of two blue sockets is order-independent). The
+sources:
 
-The **only authoritative source for the exact binding is the GGG API**, via
-`mcp__poe-trade-mcp__get_socketed_gems`. Everything in this playbook starts there.
+- **Item socket colours** — stored on the item (the `Sockets:` line). PoB keeps
+  these; it only abstracts *which gem occupies which position* (irrelevant, per
+  above). Read them via `get_socket_colors` (own loaded build) or `item_sockets`
+  from `parse_pob_skill_groups` (a shared build link).
+- **Which gems are grouped / linked** — `get_skill_setup` (own build) or
+  `parse_pob_skill_groups` (shared build).
+- **A gem's natural colour** — static game data; `get_gem_detail` (never memory).
+- **Exact per-socket gem + colour + off-colour, in one call**, for the user's *own*
+  loaded character — `get_socketed_gems` (GGG API). The convenient authoritative
+  source; the essentials are also derivable from the three above.
+
+**Off-colour is a colour-count comparison** — a group's gem colours vs its socket
+colours — not a per-gem lookup.
 
 ---
 
@@ -188,16 +198,18 @@ When a slot is a purchase candidate (hand the search itself to
 
 When the input is a **build link** (pobb.in / poedb.tw / pastebin), not the user's
 own loaded character, you can't use `get_socketed_gems` (that reads *their* live
-character from the PoE API). Reconstruct the requirement from the export instead —
-and remember the file stores gem **identity and grouping, never colours** (a gem's
-colour is static game data, always looked up).
+character from the PoE API). Reconstruct it from the export instead. The file stores
+gem **identity + grouping** *and* each **item's actual socket colours** (the author's
+real `Sockets:` layout); only a *gem's own* colour is game data that's looked up.
 
 1. **Pull the structure:** `mcp__poe-data-mcp__parse_pob_skill_groups(link, skill_set=…)`.
    A build usually has many skill sets (per act / progression stage) — the returned
    `skill_sets` index lists them; pick the one you're copying (e.g. the endgame set)
    by id or title substring. You get every link group: its gems (name/skillId/
-   level/quality/support), `gem_count`, and an item `slot` **only when the author
-   bound one**.
+   level/quality/support), `gem_count`, an item `slot` **only when the author bound
+   one**, and — for slot-bound groups — `item_sockets`: the item's **actual** socket
+   colours (e.g. `B-R-G-B-B-B`). That's the author's real coloring, the direct target
+   to replicate; derive from gems (below) for unassigned groups and to sanity-check.
 2. **The link group is the unit.** Unassigned groups (`slot: null`) are
    item-agnostic — any gear with the right links/colours hosts them. A `slot` appears
    only when the **item itself is load-bearing**: a real N-link, a +gem-level weapon,
