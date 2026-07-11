@@ -94,6 +94,12 @@ Check every gem in the main link:
 
 ### 2b — Support gem choice sims
 
+> **Socket feasibility first — PoB's sim ignores it.** PoB assumes any support fits any
+> socket, but the real item needs an **open socket of that colour, linked** to the skill.
+> A support that sims as a big gain yet requires an off-colour or an extra link may not be
+> practical. Confirm the slot's real layout with `mcp__poe-trade-mcp__get_socketed_gems`
+> (full pass: [`gem-socket-analysis.md`](gem-socket-analysis.md)) before recommending it.
+
 For each support gem that looks questionable, sim the swap one at a time:
 1. Remove the suspect gem (`remove_gem`)
 2. Add the candidate replacement at level 20 (`add_gem`)
