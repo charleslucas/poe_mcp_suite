@@ -229,6 +229,26 @@ real `Sockets:` layout); only a *gem's own* colour is game data that's looked up
 6. **Flag chromatic difficulty** against the target base (Stage 2): e.g. that
    `4B` on Cospri's Will (an *evasion/Dex* base — wants green) is a heavy off-colour.
 
+### Output template — the socketing guide
+
+Render the result as an implementation guide someone can follow, in this shape:
+
+- **Load-bearing gear** (specific items — colours must match): one entry per
+  slot-bound group → *item · link size · **colours** (from `item_sockets`) · the gems
+  it holds*, plus the craft steps: **buy → Jeweller's (sockets) → Fusing (links) →
+  Chromatic / bench "N sockets coloured X" / Harvest (colours)**, with **off-colour
+  difficulty flagged** (dominant-attribute base vs required colours). Call out
+  support-granting uniques (Hungry Loop: 1 real socket, level the supports in to be
+  consumed).
+- **Item-agnostic groups** (any spare sockets — helmet / gloves / boots): a table of
+  *link size · **colours** (derived from gems) · gems*. Note the easiest base for each
+  (e.g. a `4B` link → an Int/ES piece).
+- **Don't build these:** PoB DPS-calc dummies, alternate/duplicate groups (e.g. the
+  same spectre link shown per spectre), and item-*granted* skills (temp chains from
+  the AG's gloves) — flag them so they aren't mistaken for real sockets.
+- **One-line takeaway:** which single item carries the real cost (usually the one
+  heavy off-colour), everything else being on-colour or trivial.
+
 ---
 
 ## Stage 6 — Record findings & close
