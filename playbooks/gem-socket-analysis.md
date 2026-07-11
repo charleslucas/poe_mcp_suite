@@ -1,0 +1,219 @@
+# Playbook: Skill-Gem & Socket Analysis
+
+Analyze a character's socket colours, links, gem placement, off-colours, and empty
+sockets — the layer that `build-optimization-sim` and `dps-analysis` assume away.
+This playbook **owns the socket dimension**: which gem sits in which coloured
+socket, whether anything is off-colour, what a given empty socket can actually take,
+and whether the arrangement is sound. It **hands the "is a change worth it?" question
+to [`build-optimization-sim.md`](build-optimization-sim.md)** (live PoB DPS sim) and
+socket-aware purchases to [`gear-shopping.md`](gear-shopping.md).
+
+Read [`README.md`](README.md) first (cursory/detailed gate, pre-flight, context
+management, narration norms, trust hierarchy).
+
+---
+
+## When to use this playbook
+
+- "Give me a full skill-gem / socket analysis."
+- "I have an empty socket — what's the best gem to put in it?"
+- "Are there gem-arrangement improvements that would improve my build?"
+- "Are any of my gems off-colour?" / "How hard is this item to colour?"
+- Before a **gear purchase**, to preserve (or cheaply match) an item's socket setup.
+
+Detailed scope — run pre-flight and pause for approval before pulling data.
+
+---
+
+## Why a dedicated playbook (the core trap)
+
+**Path of Building discards the gem→socket binding on import.** It reads each gem's
+socket position from the API, uses it to route the gem into the correct link *group*,
+then throws away the per-socket colour/index (it assumes sockets are freely
+chromable). So **no pob-mcp tool can tell you the real socket colours or which gem is
+off-colour** — `get_socket_colors` gives the item's colour *layout* but not the gem
+binding; `get_skill_setup` gives gems-per-group but no colours.
+
+The **only authoritative source for the exact binding is the GGG API**, via
+`mcp__poe-trade-mcp__get_socketed_gems`. Everything in this playbook starts there.
+
+---
+
+## Stage 0 — Triage & pre-flight
+
+Ask up front (saves rework):
+1. **Which character / build?** Confirm it's loaded in PoB and confirm the league
+   (pass `league` / `character_name` explicitly — auto-detect is unreliable).
+2. **Goal:** full audit · a specific empty socket · an off-colour check · a
+   socket-aware gear swap?
+3. **Budget** for chromatics / gear, and any **locked items** (can't recolour or
+   replace — e.g. a corrupted item can't be re-chromed).
+
+Then pull the two structural reads:
+
+```
+mcp__poe-trade-mcp__get_socketed_gems(character_name=…)   # EXACT binding: colours, links, gem-in-each-socket, empties
+mcp__pob__get_skill_setup(main_only=false)                # gem groups: active vs support, item-granted skills
+```
+
+**Pause and state the plan** (which items/sockets you'll analyze, whether off-colour
+or empty-socket work is in scope so you know to pull gem colours). Wait for approval.
+
+---
+
+## Stage 1 — Build the socket/gem/colour map
+
+Merge the two reads into one per-item view: slot, item, `layout` (e.g. `B-B-B-R`),
+link groups, and each socket's colour + the gem in it (level/quality/support) or
+`empty`.
+
+`get_socketed_gems` is authoritative for **colours, links, empties, and which gem is
+where** — including multi-group items that `get_skill_setup` can't disambiguate (a
+body armour split into two 3-links shows as one "Body Armour" slot in
+`get_skill_setup`, but `get_socketed_gems` gives the exact per-socket group).
+
+Use `get_skill_setup` for what the API doesn't label: **active vs support** role, and
+**item-granted skills**.
+
+**Reconcile the counts** — mismatches are the interesting findings:
+- **Empty sockets** (fewer gems than sockets) → candidates for Stage 3.
+- **Item-granted skills are NOT socketed.** A skill granted by an item (e.g. Maw of
+  Mischief → *Death Wish*) shows up as its own group in `get_skill_setup` but occupies
+  **no socket**. Never count it against socket capacity, and never "move" it.
+- **Abyssal sockets hold jewels, not skill gems** (e.g. Stygian Vise → Ghastly Eye
+  Jewels). They appear in `get_socketed_gems` with colour `A`; treat them as jewels
+  (defer to jewel analysis, not gem analysis).
+
+---
+
+## Stage 2 — Off-colour analysis
+
+A gem in a socket whose colour ≠ the gem's natural colour is **off-colour** — it works
+in-game but was forced there with chromatics/harder crafting, and PoB hides it
+entirely.
+
+**`get_socketed_gems` already reports this.** For each gem in an R/G/B socket it returns
+`gem_color` (the gem's natural colour, sourced from the API's authoritative attribute
+data) and `off_color`, plus `off_color_count` per item. **White/colourless gems** (no
+attribute requirement — Convocation, Portal, etc.) return `gem_color: "W"`, fit any
+socket, and are **never** off-colour; the API omits their colour and the tool maps that
+to "W". So read off-colours straight from the tool.
+
+Only reach for `get_gem_detail` when you need the colour of a gem that **isn't currently
+socketed** — e.g. an empty-socket candidate (Stage 3). Natural colour = the gem's
+**dominant attribute requirement**: Strength → **R**, Dexterity → **G**, Intelligence →
+**B**; no attribute requirement → **white** (fits any socket).
+
+> **Cardinal rule — never assert a gem's colour from memory.** In one session, two
+> memory-based colour claims were both wrong — *Raise Zombie* is **blue** (not red) and
+> *Convocation* is **white** (not blue) — each nearly derailing the analysis. The tool's
+> `gem_color`/`off_color` come from the game's own data; trust them over recollection,
+> and use `get_gem_detail`'s requirements for anything not already socketed.
+
+**Colour-driven unique items are a special case, not an error.** On items whose mods
+key off socket colour — **Triad Grip** (minions convert 25% of physical per socket:
+Fire/R, Cold/G, Lightning/B, Chaos/W), Tinkerskin, etc. — the *colours are the
+mechanic*. Report what the colours produce and whether it matches the build's scaling.
+(Agnes's Triad Grip `B-B-B-R` → minions deal 75% Lightning / 25% Fire, and all four
+gems happen to be on-colour — a clean setup, not an off-colour problem.)
+
+For any off-colour found, estimate **chromatic difficulty** from the base's attribute
+requirements: colours matching the base's dominant attribute are cheap; forcing a
+colour the base has no requirement for (e.g. a pure-dex base needing 3 blue) is
+expensive — flag it and consider `Vorici`/fossil/Hillock methods.
+
+---
+
+## Stage 3 — "Best gem for this empty socket?"
+
+An empty socket can only be answered with its **colour** and its **link group** — both
+from `get_socketed_gems`. Work in this order:
+
+1. **Colour** — the empty socket's colour constrains cheap options to gems of that
+   natural colour (others require a recolour first; note the cost).
+2. **Link membership** — is the empty socket in the same group as an active skill?
+   - **Linked to an active skill** → a *support* gem for that skill is the high-value
+     use. Shortlist supports that (a) are that socket's colour and (b) support the
+     skill's tags (confirm tags via `get_gem_detail`).
+   - **Unlinked / its own group** → only a standalone active/utility gem helps (aura,
+     golem, movement, guard, curse-on-self, Convocation, etc.).
+3. **Value** — shortlist 2–4 candidates, then **hand off to
+   [`build-optimization-sim.md`](build-optimization-sim.md) Stage 2b**: `add_gem` each
+   into the live build and sim the DPS/EHP delta. Do not guess the value — sim it.
+
+Recommend the winner with: colour (and recolour cost if off-colour), the link it
+joins, and the simmed gain.
+
+---
+
+## Stage 4 — Arrangement improvements
+
+With the full map, look for structural wins (then sim value in
+`build-optimization-sim`):
+
+- **Support in the wrong link** — a support gem in a group with no active skill (or the
+  wrong skill's group) does nothing. `get_socketed_gems` groups reveal this.
+- **Main skill under-linked** while a lesser skill hogs a bigger link → consider
+  swapping which skill lives in the best link.
+- **Missing obvious support** in a link with an empty socket (Stage 3).
+- **Redundant/dead supports** for the build's scaling → `build-optimization-sim`
+  Stage 2 owns the DPS-value call; this playbook just flags the socket/colour
+  feasibility of the swap (does the replacement fit the colour?).
+- **Quality/level** gaps are `build-optimization-sim`'s domain — note but don't
+  re-audit here.
+
+---
+
+## Stage 5 — Socket-aware gear implications
+
+When a slot is a purchase candidate (hand the search itself to
+[`gear-shopping.md`](gear-shopping.md)):
+
+- **Default: match the existing socket arrangement.** Unless the user says otherwise,
+  a replacement should have **≥ the same links** and be able to hold the same gem
+  colours — otherwise the gem setup breaks or needs expensive recolouring/re-linking.
+  Use `search_trade` with `min_links` (and socket-colour filters where the trade site
+  supports them).
+- **"Easily modified to match"** = the base's attribute requirements make the needed
+  colours cheap, and the item isn't corrupted (corrupted → colours/links locked).
+- **Colour-driven uniques** (Triad Grip et al.): a replacement must reproduce the
+  *functional* colour counts, not just the link count — losing a blue socket changes
+  the minion damage type.
+
+---
+
+## Stage 6 — Record findings & close
+
+Update `character_data/<Account>/<League>/<Character>/build.md`:
+- Add a dated "Socket / Gem-Layout" section: the full per-item map (colours, links,
+  gem-in-each-socket), any off-colours (with chromatic difficulty), empty sockets and
+  the recommended gem (with simmed gain), and arrangement changes.
+- Add follow-ups (unsimmed candidates, gear-swap socket constraints) to Open Questions.
+
+---
+
+## Pitfalls (this playbook exists to encode these)
+
+| Pitfall | Reality |
+|---|---|
+| Reading socket colours from PoB | PoB **discards** them on import — use `get_socketed_gems` (API) |
+| Gem colours from memory | Frequently wrong (Raise Zombie is **blue**, Convocation is **white**) — trust the tool's `gem_color` / `get_gem_detail` |
+| Treating a gem's missing API colour as bad data | Absent colour = **white/colourless** gem (fits any socket), not an error — the tool reports `gem_color: "W"` |
+| Counting item-granted skills as socketed | They occupy **no** socket (Maw of Mischief → Death Wish) |
+| Treating abyssal sockets as gem sockets | They hold **jewels** — defer to jewel analysis |
+| Recommending a gem for an empty socket without its colour/link | Needs both — a support only helps if **linked** to an active skill of the right colour |
+| Assuming Triad-Grip-style colours are "wrong" | The colours are the **mechanic** — analyze the conversion they produce |
+| Guessing a change's DPS value here | Hand to `build-optimization-sim` and **sim** it |
+
+---
+
+## Data sources
+
+| Source | Gives | Notes |
+|---|---|---|
+| `mcp__poe-trade-mcp__get_socketed_gems` | Exact colours, links, gem-in-each-socket, empties, **off-colour** (`gem_color`/`off_color`) | **Authoritative**; white gems report `gem_color: "W"` (fit any socket) |
+| `mcp__pob__get_skill_setup` | Gem groups, active/support, item-granted skills | No colours |
+| `mcp__pob__get_socket_colors` | Item colour layout from the live PoB build | Fallback if API unavailable; **no gem binding** |
+| `mcp__pob__get_gem_detail` | Gem tags + attribute requirements (→ natural colour) | Patch-current; the authoritative colour source |
+| [`build-optimization-sim.md`](build-optimization-sim.md) | DPS/EHP value of a gem change | Sim every candidate here |
+| [`gear-shopping.md`](gear-shopping.md) | Socket-aware replacement search | `min_links`, colour matching |
