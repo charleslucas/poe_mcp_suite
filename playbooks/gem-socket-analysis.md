@@ -20,6 +20,8 @@ management, narration norms, trust hierarchy).
 - "Are there gem-arrangement improvements that would improve my build?"
 - "Are any of my gems off-colour?" / "How hard is this item to colour?"
 - Before a **gear purchase**, to preserve (or cheaply match) an item's socket setup.
+- **From a build link:** "What socket colours/links do I need to copy this build?"
+  (a pobb.in / poedb.tw / pastebin PoB link) — see the *shared-build* section below.
 
 Detailed scope — run pre-flight and pause for approval before pulling data.
 
@@ -182,6 +184,41 @@ When a slot is a purchase candidate (hand the search itself to
 
 ---
 
+## Shared-build variant — required colours from a PoB link
+
+When the input is a **build link** (pobb.in / poedb.tw / pastebin), not the user's
+own loaded character, you can't use `get_socketed_gems` (that reads *their* live
+character from the PoE API). Reconstruct the requirement from the export instead —
+and remember the file stores gem **identity and grouping, never colours** (a gem's
+colour is static game data, always looked up).
+
+1. **Pull the structure:** `mcp__poe-data-mcp__parse_pob_skill_groups(link, skill_set=…)`.
+   A build usually has many skill sets (per act / progression stage) — the returned
+   `skill_sets` index lists them; pick the one you're copying (e.g. the endgame set)
+   by id or title substring. You get every link group: its gems (name/skillId/
+   level/quality/support), `gem_count`, and an item `slot` **only when the author
+   bound one**.
+2. **The link group is the unit.** Unassigned groups (`slot: null`) are
+   item-agnostic — any gear with the right links/colours hosts them. A `slot` appears
+   only when the **item itself is load-bearing**: a real N-link, a +gem-level weapon,
+   or a support-granting unique. Report those as "needs *this* item".
+3. **Derive each gem's colour** via `mcp__pob__get_gem_detail` — dominant attribute
+   requirement → R/G/B, no requirement → **white** (fits any). **Read at a mid/high
+   level** (e.g. 20): low levels omit the requirement (Void Manipulation and Unbound
+   Ailments show none at L1 — and Void Manipulation is *Dex/green*, not blue).
+4. **Required colours per group** = the colour counts of its non-white gems, in a
+   link of `gem_count` size. e.g. a 6-link of Raise Zombie(B) + Multistrike(R) +
+   Minion Damage(B) + Vaal Skeletons(B) + Void Manip(G) + Unbound Ailments(B) →
+   **`4B 1R 1G`**.
+5. **Subtract item-granted supports.** A support-granting unique inflates `gem_count`
+   without adding sockets — **The Hungry Loop** shows 6 gems but is a 1-socket unset
+   ring: it holds one gem and *grants* the rest. Its real requirement is 1 socket of
+   the socketed gem's colour, not a 6-link.
+6. **Flag chromatic difficulty** against the target base (Stage 2): e.g. that
+   `4B` on Cospri's Will (an *evasion/Dex* base — wants green) is a heavy off-colour.
+
+---
+
 ## Stage 6 — Record findings & close
 
 Update `character_data/<Account>/<League>/<Character>/build.md`:
@@ -200,6 +237,8 @@ Update `character_data/<Account>/<League>/<Character>/build.md`:
 | Gem colours from memory | Frequently wrong (Raise Zombie is **blue**, Convocation is **white**) — trust the tool's `gem_color` / `get_gem_detail` |
 | Treating a gem's missing API colour as bad data | Absent colour = **white/colourless** gem (fits any socket), not an error — the tool reports `gem_color: "W"` |
 | Counting item-granted skills as socketed | They occupy **no** socket (Maw of Mischief → Death Wish) |
+| Reading gem colour at gem level 1 | Low levels omit the attribute requirement — read at mid/high level (Void Manipulation is **green**, not blue) |
+| Treating a support-granting unique's group as a real link | The Hungry Loop shows 6 gems but is a **1-socket** ring (grants the supports) — subtract item-granted supports |
 | Treating abyssal sockets as gem sockets | They hold **jewels** — defer to jewel analysis |
 | Recommending a gem for an empty socket without its colour/link | Needs both — a support only helps if **linked** to an active skill of the right colour |
 | Assuming Triad-Grip-style colours are "wrong" | The colours are the **mechanic** — analyze the conversion they produce |
@@ -211,7 +250,8 @@ Update `character_data/<Account>/<League>/<Character>/build.md`:
 
 | Source | Gives | Notes |
 |---|---|---|
-| `mcp__poe-trade-mcp__get_socketed_gems` | Exact colours, links, gem-in-each-socket, empties, **off-colour** (`gem_color`/`off_color`) | **Authoritative**; white gems report `gem_color: "W"` (fit any socket) |
+| `mcp__poe-trade-mcp__get_socketed_gems` | Exact colours, links, gem-in-each-socket, empties, **off-colour** (`gem_color`/`off_color`) | **Authoritative** for the user's own loaded character; white gems report `gem_color: "W"` |
+| `mcp__poe-data-mcp__parse_pob_skill_groups` | Link groups per skill set from a **build link** (gems, support flags, item slot bindings) | For copying a shared build; **no colours** (derive via get_gem_detail) |
 | `mcp__pob__get_skill_setup` | Gem groups, active/support, item-granted skills | No colours |
 | `mcp__pob__get_socket_colors` | Item colour layout from the live PoB build | Fallback if API unavailable; **no gem binding** |
 | `mcp__pob__get_gem_detail` | Gem tags + attribute requirements (→ natural colour) | Patch-current; the authoritative colour source |
