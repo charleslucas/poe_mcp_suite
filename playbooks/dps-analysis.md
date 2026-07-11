@@ -76,6 +76,7 @@ Optional follow-up if relevant:
 - Gem level/quality for all gems in main socket group
 - `mcp__pob__suggest_support_gems` and `mcp__pob__compare_gem_setups` for the main skill
 - Wiki page for the main skill gem if mechanics need verification
+- **Socket feasibility** — before recommending a support add/swap: `mcp__poe-trade-mcp__get_socketed_gems` confirms there's an open socket of the right **colour**, **linked** to the skill (a support only helps if linked to it). Off-colours also make a setup harder to replicate on a replacement item. Full socket pass: [`gem-socket-analysis.md`](gem-socket-analysis.md).
 
 ### Add for Bossing target (Q3)
 - Boss readiness check: `mcp__pob__check_boss_readiness`
