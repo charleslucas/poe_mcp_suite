@@ -118,12 +118,12 @@ Don't just confirm the conventional path — specifically look for:
 - Community discussions of "why doesn't this work?" — sometimes the answer is "it actually does"
 
 ### Research tools
-- `mcp__poemcp__fetch_wiki_page` — mechanic descriptions, item stats, skill data
-- `mcp__poemcp__fetch_youtube_transcript` — guide video content
-- `mcp__poemcp__fetch_reddit_post` — community discussion and theory
+- `mcp__poe-data-mcp__fetch_wiki_page` — mechanic descriptions, item stats, skill data
+- `mcp__poe-data-mcp__fetch_youtube_transcript` — guide video content
+- `mcp__poe-data-mcp__fetch_reddit_post` — community discussion and theory
 - `mcp__pob__get_tree_node` — passive node stats (current data)
-- `mcp__poemcp__get_gem_detail` — skill gem data
-- `mcp__poemcp__get_item_detail` — item stats
+- `mcp__poe-data-mcp__get_gem_detail` — skill gem data
+- `mcp__poe-data-mcp__get_item_detail` — item stats
 
 ### After research: update the constraint set
 - Confirm or refute conventional wisdom items from Activity 1

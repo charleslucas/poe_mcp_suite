@@ -58,22 +58,22 @@ Once stash access is restored, the intended workflow:
 
 ### Stage 0 — Pre-flight
 ```
-mcp__poe__list_tabs          # see all tab names and indices
-mcp__poe__cache_status       # check cache freshness
+mcp__poe-trade-mcp__list_tabs          # see all tab names and indices
+mcp__poe-trade-mcp__cache_status       # check cache freshness
 ```
 
 ### Stage 1 — Load tab contents
 ```
-mcp__poe__get_tab(tab_name="dump")    # fetch and cache a specific tab
+mcp__poe-trade-mcp__get_tab(tab_name="dump")    # fetch and cache a specific tab
 ```
 Or for all tabs with underscore prefix:
 ```
-mcp__poe__scan_stash_tabs(min_price=5)   # prices everything worth ≥5c
+mcp__poe-trade-mcp__scan_stash_tabs(min_price=5)   # prices everything worth ≥5c
 ```
 
 ### Stage 2 — Price analysis
 ```
-mcp__poe__price_tab(tab_name="dump", min_price=5)
+mcp__poe-trade-mcp__price_tab(tab_name="dump", min_price=5)
 ```
 
 Returns sorted rare items with:
@@ -85,7 +85,7 @@ Returns sorted rare items with:
 
 Named items (uniques, currency, gems) are priced via poe.ninja:
 ```
-mcp__poe__ninja_lookup(name="Divine Orb")
+mcp__poe-trade-mcp__ninja_lookup(name="Divine Orb")
 ```
 
 ### Stage 3 — Decision making

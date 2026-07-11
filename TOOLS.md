@@ -5,8 +5,8 @@ A unified index of every MCP tool exposed by the suite. The suite bundles **thre
 | Server | Prefix | Tools | Detailed doc |
 |--------|--------|------:|--------------|
 | **pob-mcp** | `mcp__pob__` | 124 | [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) |
-| **poe-mcp-server** | `mcp__poe__` | 33 | [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) |
-| **POEMCP** | `mcp__poemcp__` | 19 | [POEMCP/TOOLS.md](POEMCP/TOOLS.md) |
+| **poe-trade-mcp** | `mcp__poe-trade-mcp__` | 33 | [poe-trade-mcp/TOOLS.md](poe-trade-mcp/TOOLS.md) |
+| **poe-data-mcp** | `mcp__poe-data-mcp__` | 19 | [poe-data-mcp/TOOLS.md](poe-data-mcp/TOOLS.md) |
 | **Total** | — | **~176** | — |
 
 PathOfBuilding's [`src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md) documents the *Lua-side* actions that pob-mcp wraps. Those are not Claude-callable directly — they're the underlying API.
@@ -82,7 +82,7 @@ Connecting to a running PoB GUI in TCP mode, or spawning headless LuaJIT.
 | `refresh_tree_data` | pob |
 | `optimize_tree` / `suggest_optimal_nodes` / `get_passive_upgrades` | pob |
 | `suggest_masteries` | pob |
-| `search_passive` / `get_passive_detail` | poemcp |
+| `search_passive` / `get_passive_detail` | poe-data-mcp |
 
 ## 🌳 Passive Tree — Patches Overlay
 
@@ -142,7 +142,7 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 | `remove_skill` / `set_main_skill` / `get_skill_setup` | pob |
 | `analyze_skill_links` / `optimize_skill_links` / `find_optimal_links` | pob |
 | `suggest_support_gems` / `compare_gem_setups` / `gem_upgrade_path` | pob |
-| `search_gem` / `get_gem_detail` | poemcp |
+| `search_gem` / `get_gem_detail` | poe-data-mcp |
 
 ## 🛡 Items, Flasks, Anointments
 
@@ -162,8 +162,8 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 | `search_master_crafts` | pob ⭐ new |
 | `get_essence_detail` | pob ⭐ new |
 | `calculate_mod_odds` | pob ⭐ new |
-| `search_item` / `get_item_detail` | poemcp |
-| `search_mods` | poemcp |
+| `search_item` / `get_item_detail` | poe-data-mcp |
+| `search_mods` | poe-data-mcp |
 
 ## 🧪 Crafting Research (Craft of Exile)
 
@@ -171,13 +171,13 @@ Live data downloaded from craftofexile.com and cached locally. Tools return curr
 
 | Tool | Server |
 |------|--------|
-| `craftofexile_cache_status` | poemcp |
-| `update_craftofexile_cache` | poemcp |
-| `search_craft_mods` | poemcp |
-| `get_craft_base_items` | poemcp |
-| `get_craft_tiers` | poemcp |
-| `get_fossil_info` | poemcp |
-| `get_essence_mods` | poemcp |
+| `craftofexile_cache_status` | poe-data-mcp |
+| `update_craftofexile_cache` | poe-data-mcp |
+| `search_craft_mods` | poe-data-mcp |
+| `get_craft_base_items` | poe-data-mcp |
+| `get_craft_tiers` | poe-data-mcp |
+| `get_fossil_info` | poe-data-mcp |
+| `get_essence_mods` | poe-data-mcp |
 
 ## 🛒 Trade Search & Pricing
 
@@ -196,7 +196,7 @@ Live data downloaded from craftofexile.com and cached locally. Tools return curr
 | `fetch_listing` | poe |
 | `price_item` / `price_items` / `price_tab` | poe |
 | `get_stat_ids` / `get_filter_info` | poe |
-| `price_check` | poemcp |
+| `price_check` | poe-data-mcp |
 
 ## 💰 Economy & Currency
 
@@ -205,7 +205,7 @@ Live data downloaded from craftofexile.com and cached locally. Tools return curr
 | `get_currency_rates` | pob |
 | `find_arbitrage` / `calculate_trading_profit` | pob |
 | `ninja_lookup` | poe |
-| `currency_overview` | poemcp |
+| `currency_overview` | poe-data-mcp |
 
 ## 📜 Stash & Character API
 
@@ -231,11 +231,11 @@ Live data downloaded from craftofexile.com and cached locally. Tools return curr
 
 | Tool | Server |
 |------|--------|
-| `fetch_wiki_page` | poemcp |
-| `fetch_reddit_post` | poemcp |
-| `fetch_youtube_transcript` / `fetch_youtube_description` | poemcp |
-| `parse_pob` | poemcp |
-| `env_search` / `env_detail` | poemcp |
+| `fetch_wiki_page` | poe-data-mcp |
+| `fetch_reddit_post` | poe-data-mcp |
+| `fetch_youtube_transcript` / `fetch_youtube_description` | poe-data-mcp |
+| `parse_pob` | poe-data-mcp |
+| `env_search` / `env_detail` | poe-data-mcp |
 
 ## 🛠 Build Goals, Leveling, Shopping
 

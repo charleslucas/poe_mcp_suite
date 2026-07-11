@@ -2,11 +2,11 @@
 	path = pob-mcp
 	url = https://github.com/charleslucas/pob-mcp.git
 [submodule "poe-mcp-server"]
-	path = poe-mcp-server
-	url = https://github.com/charleslucas/poe-mcp-server.git
+	path = poe-trade-mcp
+	url = https://github.com/charleslucas/poe-trade-mcp.git
 [submodule "POEMCP"]
-	path = POEMCP
-	url = https://github.com/charleslucas/POEMCP.git
+	path = poe-data-mcp
+	url = https://github.com/charleslucas/poe-data-mcp.git
 [submodule "PathOfBuilding"]
 	path = PathOfBuilding
 	url = https://github.com/charleslucas/PathOfBuilding.git

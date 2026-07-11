@@ -51,7 +51,7 @@ For a **personal tool** used by one person in their own sessions, formal OAuth r
 | Requirement | Status |
 |---|---|
 | User-Agent: `OAuth {clientId}/{version} (contact: {contact})` | ✅ `poe_trade.py`: `"OAuth BoschAIMaster/1.0 (contact: buildtool@localhost)"` |
-| Parse `X-Rate-Limit-*` response headers and comply | ✅ pob-mcp uses Bottleneck; poe-mcp-server now uses header-driven `_observed_min_interval` |
+| Parse `X-Rate-Limit-*` response headers and comply | ✅ pob-mcp uses Bottleneck; poe-trade-mcp now uses header-driven `_observed_min_interval` |
 | Non-affiliation notice in a visible location | ✅ Added to all four READMEs (2026-05-31) and to trade tool outputs |
 | Reasonable attempts to avoid 4xx errors | ✅ Retry logic + rate limiting in both servers |
 
@@ -83,7 +83,7 @@ GGG allows **ExileExchange** (Ctrl+D in PoB — opens the trade site in a browse
 
 - Claude warns the user and requires explicit confirmation before calling any trade API tool (see `CLAUDE.md`). Warning is once per session.
 - All GGG API calls send the required User-Agent header.
-- Rate limiting: pob-mcp uses Bottleneck (≤4/sec, 300s cache); poe-mcp-server uses header-driven adaptive interval (floor 1.5s) + `Retry-After` on 429.
+- Rate limiting: pob-mcp uses Bottleneck (≤4/sec, 300s cache); poe-trade-mcp uses header-driven adaptive interval (floor 1.5s) + `Retry-After` on 429.
 - Non-affiliation notice: in all four READMEs and in trade tool outputs.
 - If GGG ever objects, we stop immediately. Contact: **zerosquaredio@gmail.com**.
 

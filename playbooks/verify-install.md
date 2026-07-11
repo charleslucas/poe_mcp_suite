@@ -5,7 +5,7 @@ For Claude sessions where the user wants to confirm the suite is correctly insta
 - Fresh `git clone --recurse-submodules` of `poe_mcp_suite`
 - `git pull` + `git submodule update --remote --recursive`
 - Touching `.mcp.json`, env vars, or relaunching the MCP client
-- A regression fix landing in any submodule (e.g., the MapStash crash fix in `poe-mcp-server`)
+- A regression fix landing in any submodule (e.g., the MapStash crash fix in `poe-trade-mcp`)
 - The user says "verify the install" or "run the test suite"
 
 This is a deterministic checklist, not an analysis task — no triage step. Run every test, report a green/red table at the end, and stop *before* any destructive cleanup (the user might keep older standalones around for comparison).
@@ -28,8 +28,8 @@ Run these via `Bash` / `Read` / `Glob`. They catch broken installs before any MC
 
 | # | Check | Tool / command | Pass criteria |
 |---|---|---|---|
-| 1.1 | `.mcp.json` exists in suite root | `Read .mcp.json` | File exists; contains `pob`, `poe`, `poemcp` keys under `mcpServers` |
-| 1.2 | All submodules populated | `Glob */README.md` | Returns matches for `pob-mcp/`, `poe-mcp-server/`, `POEMCP/`, `PathOfBuilding/` |
+| 1.1 | `.mcp.json` exists in suite root | `Read .mcp.json` | File exists; contains `pob`, `poe`, `poe-data-mcp` keys under `mcpServers` |
+| 1.2 | All submodules populated | `Glob */README.md` | Returns matches for `pob-mcp/`, `poe-trade-mcp/`, `poe-data-mcp/`, `PathOfBuilding/` |
 | 1.3 | `pob-mcp` built | `Glob pob-mcp/build/index.js` | One match (means `npm run build` was run) |
 | 1.4 | PoB API files installed | `Glob "$env:APPDATA/Path of Building Community/API/*.lua"` (Windows) | Three matches: `TcpServer.lua`, `Handlers.lua`, `BuildOps.lua` |
 | 1.5 | `reference_data/` set up | `Glob reference_data/skilltree/data.json`, `Glob reference_data/atlastree/data.json` | One match each (GGG repos cloned per `reference_data/README.md`) |
@@ -38,28 +38,28 @@ A failure in any 1.x check usually means an install step from `CLAUDE.md` was sk
 
 ---
 
-## Step 2 — Tier 2: POEMCP server (no credentials)
+## Step 2 — Tier 2: poe-data-mcp server (no credentials)
 
-POEMCP needs no auth, so it's the cheapest server to validate. If this tier fails, the Python install (`pip install -e .` in `POEMCP/`) is broken.
+poe-data-mcp needs no auth, so it's the cheapest server to validate. If this tier fails, the Python install (`pip install -e .` in `poe-data-mcp/`) is broken.
 
 | # | Test | Tool call | Pass criteria |
 |---|---|---|---|
-| 2.1 | Server alive + ninja API reachable | `mcp__poemcp__currency_overview` (no args) | Returns a currency table with Chaos values |
-| 2.2 | Wiki/poedb scraping works | `mcp__poemcp__get_item_detail` with `item_name: "Headhunter"` | Returns mod text mentioning rare monsters / buffs |
-| 2.3 | Gem search works | `mcp__poemcp__search_gem` with `query: "Spark"` | Returns at least one gem with `name` matching `Spark` |
+| 2.1 | Server alive + ninja API reachable | `mcp__poe-data-mcp__currency_overview` (no args) | Returns a currency table with Chaos values |
+| 2.2 | Wiki/poedb scraping works | `mcp__poe-data-mcp__get_item_detail` with `item_name: "Headhunter"` | Returns mod text mentioning rare monsters / buffs |
+| 2.3 | Gem search works | `mcp__poe-data-mcp__search_gem` with `query: "Spark"` | Returns at least one gem with `name` matching `Spark` |
 
 ---
 
-## Step 3 — Tier 3: poe-mcp-server (needs POE_SESSION_ID)
+## Step 3 — Tier 3: poe-trade-mcp (needs POE_SESSION_ID)
 
 If the session cookie is expired, every test here fails with 401/403. If only Tier 3 fails (Tiers 2 and 4 pass), suspect the cookie before the install.
 
 | # | Test | Tool call | Pass criteria |
 |---|---|---|---|
-| 3.1 | Auth + stash listing works | `mcp__poe__list_tabs` | Returns an array of tab objects with `index`, `name`, `type` |
-| 3.2 | **MapStash regression test** | `mcp__poe__get_tab` with `tab_index: 3` (or whichever index has `type: "MapStash"` from 3.1) | Returns `{count, items}` *without* a crash. Empty `items` is fine — the historical bug was an exception, not zero items |
-| 3.3 | Ninja lookup works | `mcp__poe__ninja_lookup` with `name: "Mirror of Kalandra"` | Returns a price in chaos |
-| 3.4 | Character API works | `mcp__poe__get_character` with `character_name: <any char on the account>` | Returns class, level, and equipped item list |
+| 3.1 | Auth + stash listing works | `mcp__poe-trade-mcp__list_tabs` | Returns an array of tab objects with `index`, `name`, `type` |
+| 3.2 | **MapStash regression test** | `mcp__poe-trade-mcp__get_tab` with `tab_index: 3` (or whichever index has `type: "MapStash"` from 3.1) | Returns `{count, items}` *without* a crash. Empty `items` is fine — the historical bug was an exception, not zero items |
+| 3.3 | Ninja lookup works | `mcp__poe-trade-mcp__ninja_lookup` with `name: "Mirror of Kalandra"` | Returns a price in chaos |
+| 3.4 | Character API works | `mcp__poe-trade-mcp__get_character` with `character_name: <any char on the account>` | Returns class, level, and equipped item list |
 
 If the account has no MapStash tab, skip 3.2 and note it — but flag that the regression test wasn't exercised.
 
@@ -86,7 +86,7 @@ End the run with a single summary table the user can scan at a glance:
 
 ```
 Tier 1 (Filesystem)   ✅ 5/5
-Tier 2 (POEMCP)        ✅ 3/3
+Tier 2 (poe-data-mcp)        ✅ 3/3
 Tier 3 (poe-mcp)       ✅ 4/4   ← MapStash regression: passed
 Tier 4 (pob-mcp)       ⚠ 0/4   ← skipped: PoB GUI not running
 ```
@@ -102,13 +102,13 @@ If everything green: state explicitly *"All four servers are healthy — safe to
 Concrete lessons from prior verification sessions. Add to this list when a new failure mode surfaces.
 
 **Path / install pitfalls**
-- A stale standalone clone of `pob-mcp` / `poe-mcp-server` / `POEMCP` elsewhere on disk can mask a suite install: if `.mcp.json` still points at the old paths, you're testing the wrong copy. Confirm the `args:` paths in `.mcp.json` resolve into `poe_mcp_suite/` before trusting any green result.
+- A stale standalone clone of `pob-mcp` / `poe-trade-mcp` / `poe-data-mcp` elsewhere on disk can mask a suite install: if `.mcp.json` still points at the old paths, you're testing the wrong copy. Confirm the `args:` paths in `.mcp.json` resolve into `poe_mcp_suite/` before trusting any green result.
 - After a PoB update, `Modules\Main.lua` loses its TCP patch. `LaunchPoBWithAPI.bat` self-heals — but only on next launch. If PoB is already open and 4.1 fails, the user has to close it and relaunch via the batch file.
 - `npm run build` in `pob-mcp/` is easy to forget after a submodule pull. Check 1.3 catches this — if it fails, run `cd pob-mcp && npm install && npm run build`.
 
 **MCP client pitfalls**
 - Tool schemas are loaded lazily in Claude Code. The first call to any `mcp__*` tool can return `InputValidationError` if the schema hasn't been fetched yet — use `ToolSearch` with `select:<tool_name>` to load the schema before the test call. This is a tooling quirk, not an install failure.
-- `mcp__poemcp__get_leagues` does NOT exist (despite the name suggesting parity with `mcp__pob__get_leagues`). Use `currency_overview` to verify POEMCP is alive.
+- `mcp__poe-data-mcp__get_leagues` does NOT exist (despite the name suggesting parity with `mcp__pob__get_leagues`). Use `currency_overview` to verify poe-data-mcp is alive.
 
 **Credential pitfalls**
 - `POE_SESSION_ID` cookies expire silently. A 401/403 on every Tier 3 test points at the cookie, not the install. The fix is reauth in a browser and updating `.mcp.json` — do NOT log the cookie value when diagnosing.

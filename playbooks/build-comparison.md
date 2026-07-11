@@ -14,7 +14,7 @@ One sentence: *"Using the Build Comparison playbook — I'll dispatch a sub-agen
 
 **Before touching any build data:** run the standard pre-flight from [`README.md`](README.md) section 2 — context check, league reference, character snapshot if comparing against the user's current character. If one of the builds is the current character, also run the build profile pre-flight (README.md §2d) — the profile's Sections 3+4 become the filter for which differences matter; a delta in a mod the build doesn't scale is noise, a delta in a core scaling stat is signal.
 
-**Gem and mechanic verification:** Your training data has a cutoff. New league gems, reworked skills, and changed interactions need verification from live sources before being used in analysis. Default: verify any gem that sounds new or that a guide creator describes as "new this league" via `mcp__poemcp__get_gem_detail` or `mcp__poemcp__fetch_wiki_page` before reporting its mechanics. Don't trust transcript descriptions alone — a past session learned that a creator described Void Shockwave Support as "drops from Uber Elder" when it's actually an Exceptional Support Gem (levels 1-3) socketed normally; the price and effectiveness claims were accurate, the drop source was not.
+**Gem and mechanic verification:** Your training data has a cutoff. New league gems, reworked skills, and changed interactions need verification from live sources before being used in analysis. Default: verify any gem that sounds new or that a guide creator describes as "new this league" via `mcp__poe-data-mcp__get_gem_detail` or `mcp__poe-data-mcp__fetch_wiki_page` before reporting its mechanics. Don't trust transcript descriptions alone — a past session learned that a creator described Void Shockwave Support as "drops from Uber Elder" when it's actually an Exceptional Support Gem (levels 1-3) socketed normally; the price and effectiveness claims were accurate, the drop source was not.
 
 **Key principle:** sub-agents do the parsing, main context does the diffing. The agents are bounded I/O (fetch + parse + summarize); the insight work — what differs and why it matters — happens in main context where I can see both digests at once.
 
@@ -108,7 +108,7 @@ Adapt and dispatch:
 
 Spawn a SEPARATE sub-agent (not the build digest agent) to extract author intent from the transcript. The build digest agent only needs the pobb.in link from the description; the transcript agent reads the prose.
 
-> Fetch the YouTube transcript at `{URL}` via `mcp__poemcp__fetch_youtube_transcript`. The build is `{archetype}` ({class}/{ascendancy}). Extract and return, in under 800 tokens: (1) why specific notables were chosen, (2) mandatory vs optional items, (3) known build weaknesses or gotchas the author flagged, (4) playstyle notes (mapping vs bossing). Skip filler, sponsor reads, and gameplay commentary that doesn't inform build choices. If a Mobalytics or written guide URL is in the description, mention which tier(s) it documents.
+> Fetch the YouTube transcript at `{URL}` via `mcp__poe-data-mcp__fetch_youtube_transcript`. The build is `{archetype}` ({class}/{ascendancy}). Extract and return, in under 800 tokens: (1) why specific notables were chosen, (2) mandatory vs optional items, (3) known build weaknesses or gotchas the author flagged, (4) playstyle notes (mapping vs bossing). Skip filler, sponsor reads, and gameplay commentary that doesn't inform build choices. If a Mobalytics or written guide URL is in the description, mention which tier(s) it documents.
 
 ### What you DON'T need in main context
 - Raw XML strings of either build
@@ -145,8 +145,8 @@ Rank differences by likely impact:
 
 ### 3b.5 — Budget reality check (when goal = "should I switch builds")
 If the target build uses 2-3 expensive uniques (Mageblood, Headhunter, Forbidden Flame/Flesh, multi-divine rares), price-check them against current stash value before recommending the switch:
-1. `mcp__poe__ninja_lookup` each expensive unique from the target digest
-2. `mcp__poe__price_tab` or `mcp__poe__scan_stash_tabs` to estimate current stash value
+1. `mcp__poe-trade-mcp__ninja_lookup` each expensive unique from the target digest
+2. `mcp__poe-trade-mcp__price_tab` or `mcp__poe-trade-mcp__scan_stash_tabs` to estimate current stash value
 3. Report the gap concretely: *"Mageblood costs ~40 div; your stash is ~8 div — aspirational tier is ~5× away."*
 
 This prevents recommending Mageblood-tier builds to someone who just league-started.

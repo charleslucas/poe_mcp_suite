@@ -53,7 +53,7 @@ Load the targeted mechanic's node cluster from `atlastree/league.json`. Pull ALL
 Pull `mcp__pob__analyze_defenses` for detailed leech/recovery breakdown. Cross-reference damage type against reflect variants.
 
 ### Add if Q3 = actively juicing
-Also pull current scarab prices via `mcp__poe__ninja_lookup` for the relevant scarab types to assess which mechanic's scarabs are most valuable.
+Also pull current scarab prices via `mcp__poe-trade-mcp__ninja_lookup` for the relevant scarab types to assess which mechanic's scarabs are most valuable.
 
 ---
 

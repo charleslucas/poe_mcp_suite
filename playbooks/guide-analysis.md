@@ -32,10 +32,10 @@ Auto-derive before asking: check `character_data/guides/` for an existing archet
 | Always | Root conventions | `character_data/guides/README.md` (first time per session) |
 | Always | Archetype README (if exists) | Read — consensus notes + current best guide by tier |
 | Always | Freshness pre-flight | Guide's league vs current league; `reference_data/mechanics_index.md` scope check for the build's core mechanics (README §2e) |
-| YouTube source | Video description **first** (cheap — usually contains the pobb.in link) | `mcp__poemcp__fetch_youtube_description` |
-| YouTube + full digest | Transcript — **sub-agent only**, never main context | Explore sub-agent calling `mcp__poemcp__fetch_youtube_transcript` |
+| YouTube source | Video description **first** (cheap — usually contains the pobb.in link) | `mcp__poe-data-mcp__fetch_youtube_description` |
+| YouTube + full digest | Transcript — **sub-agent only**, never main context | Explore sub-agent calling `mcp__poe-data-mcp__fetch_youtube_transcript` |
 | Written guide | Article — sub-agent | Explore sub-agent with WebFetch |
-| PoB link present | Build extraction | `mcp__poemcp__parse_pob`, or sub-agent digesting the XML |
+| PoB link present | Build extraction | `mcp__poe-data-mcp__parse_pob`, or sub-agent digesting the XML |
 | Purpose = (b) evaluating for character | `meta.json` + `build-profile.md` | Character dir (README §2c/§2d) |
 
 ---

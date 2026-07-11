@@ -21,8 +21,8 @@ If you have any issues or suggestions feel free to e-mail at zerosquaredio@gmail
 For per-server detail (descriptions, arguments), see each submodule's own doc:
 
 - [pob-mcp/docs/TOOLS.md](pob-mcp/docs/TOOLS.md) — ~123 tools, Path of Building integration
-- [poe-mcp-server/TOOLS.md](poe-mcp-server/TOOLS.md) — 31 tools, trade/stash/market/character API
-- [POEMCP/TOOLS.md](POEMCP/TOOLS.md) — 13 tools, wiki/economy lookups
+- [poe-trade-mcp/TOOLS.md](poe-trade-mcp/TOOLS.md) — 31 tools, trade/stash/market/character API
+- [poe-data-mcp/TOOLS.md](poe-data-mcp/TOOLS.md) — 13 tools, wiki/economy lookups
 - [PathOfBuilding/src/API/TOOLS.md](PathOfBuilding/src/API/TOOLS.md) — internal Lua API actions wrapped by pob-mcp
 - [PathOfBuilding/src/API/TOOLS.md](PathOfBuilding/src/API/TOOLS.md)
 
@@ -52,13 +52,13 @@ The PathOfBuilding submodule is a fork of Path of Building Community, originally
 The pob-mcp server started as a fork of ianderse's pob-mcp project.
 - Original repo: [ianderse/pob-mcp](https://github.com/ianderse/pob-mcp)
 
-**boschzilla / poe-mcp-server**
-The poe-mcp-server started as a fork of boschzilla's poe-mcp-server project.
+**boschzilla / poe-trade-mcp**
+The poe-trade-mcp started as a fork of boschzilla's poe-trade-mcp project.
 - Original repo: [boschzilla on GitHub](https://github.com/boschzilla) · [@boschzilla on X](https://x.com/boschzilla)
 
-**shalayiding / POEMCP**
-The POEMCP server started as a fork of shalayiding's POEMCP project.
-- Original repo: [shalayiding/POEMCP](https://github.com/shalayiding/POEMCP)
+**shalayiding / poe-data-mcp**
+The poe-data-mcp server started as a fork of shalayiding's poe-data-mcp project.
+- Original repo: [shalayiding/poe-data-mcp](https://github.com/shalayiding/poe-data-mcp)
 
 **Craft of Exile**
 The crafting mod lookup tools use data from [craftofexile.com](https://www.craftofexile.com), a community crafting calculator maintained independently of GGG. Craft of Exile is the most comprehensive source of mod pool, fossil affinity, and crafting odds data available to the community. Each user fetches their own copy of the data directly from the site; nothing is redistributed by this project.
@@ -70,7 +70,7 @@ The crafting mod lookup tools use data from [craftofexile.com](https://www.craft
 
 An AI model's built-in PoE knowledge is frozen at its training cutoff — for current models, somewhere between about August 2024 and January 2026 — so content, balance changes, and mechanics introduced after that point may be missing or wrong. **Before relying on the model's game-mechanics advice, confirm it against current sources.**
 
-The MCP servers exist partly to bridge this gap: use `fetch_wiki_page` (POEMCP) for up-to-date item and passive descriptions, `ninja_lookup` / `currency_overview` for current prices, and `parse_pob` or the live PoB TCP connection for accurate calc results. When the model's training intuition conflicts with a live tool result, trust the tool.
+The MCP servers exist partly to bridge this gap: use `fetch_wiki_page` (poe-data-mcp) for up-to-date item and passive descriptions, `ninja_lookup` / `currency_overview` for current prices, and `parse_pob` or the live PoB TCP connection for accurate calc results. When the model's training intuition conflicts with a live tool result, trust the tool.
 
 Training cutoffs for the Claude models the suite is tuned for:
 
@@ -136,8 +136,8 @@ Key capabilities:
 - Import characters directly from the PoE API
 - Search trade for upgrades — returns a clickable trade URL (ExileExchange pattern, no automated listing fetches), generate weighted trade queries, check poe.ninja prices
 
-### poe-mcp-server
-**Repo:** [charleslucas/poe-mcp-server](https://github.com/charleslucas/poe-mcp-server) · **~33 tools**
+### poe-trade-mcp
+**Repo:** [charleslucas/poe-trade-mcp](https://github.com/charleslucas/poe-trade-mcp) · **~33 tools**
 
 A multi-server bundle covering the player-facing side of the economy and account data.
 
@@ -149,8 +149,8 @@ Key capabilities:
 - **Pricer**: price individual or batch items using poe.ninja and a rare-item scorer
 - **Filter**: read and edit loot filter files in place — find blocks, add/remove/replace rules, set BaseType priorities
 
-### POEMCP
-**Repo:** [charleslucas/POEMCP](https://github.com/charleslucas/POEMCP) · **17 tools**
+### poe-data-mcp
+**Repo:** [charleslucas/poe-data-mcp](https://github.com/charleslucas/poe-data-mcp) · **17 tools**
 
 A knowledge and economy lookup server backed by the PoE wiki, poe.ninja, and Craft of Exile.
 
@@ -197,7 +197,7 @@ Before cloning, make sure the following are installed and on your system PATH:
 | Requirement | Version | Used by | Download |
 |-------------|---------|---------|----------|
 | **Node.js** | 18 LTS+ | pob-mcp | [nodejs.org](https://nodejs.org) |
-| **Python** | 3.10+ | poe-mcp-server, POEMCP | [python.org](https://python.org) |
+| **Python** | 3.10+ | poe-trade-mcp, poe-data-mcp | [python.org](https://python.org) |
 | **Git** | 2.x+ | submodule checkout | [git-scm.com](https://git-scm.com) |
 | **Path of Building Community** | latest | TCP live mode | [GitHub releases](https://github.com/PathOfBuildingCommunity/PathOfBuilding/releases) |
 
@@ -218,11 +218,11 @@ Or if you already cloned without `--recurse-submodules`:
 git submodule update --init --recursive
 ```
 
-**Install Python dependencies** (covers poe-mcp-server, POEMCP, and RePoE):
+**Install Python dependencies** (covers poe-trade-mcp, poe-data-mcp, and RePoE):
 
 ```bash
 pip install -r requirements.txt
-pip install -e POEMCP/
+pip install -e poe-data-mcp/
 ```
 
 **Install pob-mcp** (Node.js):

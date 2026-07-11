@@ -1,8 +1,8 @@
 # Spec: rewrite `get_gem_detail` to source from PoB game data (not poedb scraping)
 
 **Status:** ✅ IMPLEMENTED (2026-07-09) via option A (pob-mcp tool + new PoB API action). **Owner:**
-poe_mcp_suite. **Supersedes:** the poedb-scraping implementation in `POEMCP/sources/player/gems.py`
-(now demoted to fallback — POEMCP `c150010`).
+poe_mcp_suite. **Supersedes:** the poedb-scraping implementation in `poe-data-mcp/sources/player/gems.py`
+(now demoted to fallback — poe-data-mcp `c150010`).
 
 **Implementation landed:**
 - **PoB fork** (`api-stdio` `9344462a`): `BuildOps.get_gem_detail` + `Handlers.get_gem_detail` — reads
@@ -10,7 +10,7 @@ poe_mcp_suite. **Supersedes:** the poedb-scraping implementation in `POEMCP/sour
   Static game data; works with no build loaded.
 - **pob-mcp** (`main` `0d371ab`): `get_gem_detail` MCP tool (bridge `getGemDetail` → `get_gem_detail` TCP
   action, schema, handler, router). Formats to the §6 markdown shape.
-- **POEMCP** (`main` `c150010`): docstring redirect — poedb scraper is now the fallback.
+- **poe-data-mcp** (`main` `c150010`): docstring redirect — poedb scraper is now the fallback.
 - **Acceptance (§7) all passed live:** Fireball, Raise Zombie, Absolution, Spell Echo, Vaal Summon
   Skeletons, and transfigured (Absolution of Inspiring / Raise Zombie of Falling) — each returns the
   gem's own tags/type/per-level stats + variants, never a Default Attack.
@@ -27,7 +27,7 @@ poe_mcp_suite. **Supersedes:** the poedb-scraping implementation in `POEMCP/sour
 **summoned-monster** tooltips (inside `col-monster` tab-panes), not the gem's own tooltip. Result: spells
 returned as wand attacks, minion gems returned as their minion's default attack, and 0 popups for many
 non-summon gems. poedb's data is correct — it's human-facing HTML that's ambiguous and inconsistent to
-scrape (see investigation, POEMCP commit `2df9223`). An interim guard now suppresses the wrong tooltip and
+scrape (see investigation, poe-data-mcp commit `2df9223`). An interim guard now suppresses the wrong tooltip and
 returns the (correct) Level Effect table + a caveat. This spec replaces the scraping with the game's own data.
 
 ## 2. Goal
@@ -108,14 +108,14 @@ that iteration cost; it's the main reason this is a focused multi-step build, no
 
 ## 5. Architecture decision (open — recommend option A)
 The real gem data + a LuaJIT/PoB pipeline already live in **pob-mcp** (headless luajit against a PoB checkout,
-plus live TCP). `POEMCP` is Python with no PoB connection. Options:
+plus live TCP). `poe-data-mcp` is Python with no PoB connection. Options:
 
 - **(A, recommended) Put gem-detail in pob-mcp.** Add a `get_gem_detail` (and structured `search_gem`) tool
-  to pob-mcp that reads the **installed** PoB `Data/` via luajit (or live TCP when connected). Point POEMCP's
+  to pob-mcp that reads the **installed** PoB `Data/` via luajit (or live TCP when connected). Point poe-data-mcp's
   `get_gem_detail` at it (delegate) or deprecate it. Keeps a single PoB-data pipeline; no duplication. Note:
   pob-mcp's headless path currently uses the **stale fork** (`POB_FORK_PATH`) — this tool must read the
   **installed** PoB data (or the fork must be synced first).
-- **(B) Keep it in POEMCP**, shelling out to `luajit` to dump the installed PoB data → JSON → format. Keeps
+- **(B) Keep it in poe-data-mcp**, shelling out to `luajit` to dump the installed PoB data → JSON → format. Keeps
   the tool where it is, but duplicates a mini PoB-data loader in Python-land.
 
 `skillGemService.ts` in pob-mcp is a *hand-curated* database for support-gem suggestions (synergies, cost
@@ -140,7 +140,7 @@ and correct variant. Regression: the interim guard's caveat path should no longe
 4. Update `TOOLS.md` / tool description to note the data source.
 
 ## 9. Open questions
-- Tool location: **A (pob-mcp)** vs B (POEMCP)? (Recommend A.)
+- Tool location: **A (pob-mcp)** vs B (poe-data-mcp)? (Recommend A.)
 - Do we implement the raw-extraction fallback now, or ship PoB-data + a freshness *warning* first and add raw
   extraction later? (Recommend: warning first, raw fallback as a follow-up.)
 - Does reading the **installed** PoB dir (vs `POB_FORK_PATH`) need a new env var, or reuse an existing PoB

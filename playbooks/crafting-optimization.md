@@ -37,11 +37,11 @@ Auto-derive before asking: currency/fossils/essences on hand (stash scan), open 
 |---|---|---|
 | Always | Build profile + constraint margins | README §2d; `mcp__pob__compute_constraint_margins(profile_path, write_back=true)` |
 | Always | craftofexile cache ready | `craftofexile_cache_status` → `update_craftofexile_cache` if stale/missing (crafting-lookup Step 1) |
-| (a)/(b)/(e) | Craftable pool for the base | `mcp__pob__list_craftable_mods_for_base` / `mcp__poemcp__search_craft_mods`; tiers + weights via `get_craft_tiers` |
+| (a)/(b)/(e) | Craftable pool for the base | `mcp__pob__list_craftable_mods_for_base` / `mcp__poe-data-mcp__search_craft_mods`; tiers + weights via `get_craft_tiers` |
 | (a) | Target item's current mods + open affixes | `mcp__pob__analyze_item_mods` |
 | (c) | Eldritch implicit pools for the slot | `reference_data/` cached wiki pages (fetch if stale — patch-stamped) |
-| (d) | Corrupted-outcome prices | `mcp__poe__ninja_lookup` for base + corrupted variants; wiki corruption-outcome table |
-| (e) | Fossil/essence affinities | `mcp__poemcp__get_fossil_info` / `get_essence_mods` |
+| (d) | Corrupted-outcome prices | `mcp__poe-trade-mcp__ninja_lookup` for base + corrupted variants; wiki corruption-outcome table |
+| (e) | Fossil/essence affinities | `mcp__poe-data-mcp__get_fossil_info` / `get_essence_mods` |
 | Odds needed | Hit probability | `mcp__pob__calculate_mod_odds`; direct the user to the craftofexile calculator for multi-mod compound odds |
 
 ---

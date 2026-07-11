@@ -23,7 +23,7 @@ Before loading any data, run this scoping questionnaire via `AskUserQuestion`. S
 - All of the above
 
 **Q2 — Budget**
-- Read live from stash via `mcp__poe__list_tabs` + `mcp__poe__price_tab` BEFORE asking. Only ask if the stash read fails or returns nothing useful. Present the computed budget back to the user for confirmation: "I see ~X chaos / Y div in your stash. Use this as the budget?"
+- Read live from stash via `mcp__poe-trade-mcp__list_tabs` + `mcp__poe-trade-mcp__price_tab` BEFORE asking. Only ask if the stash read fails or returns nothing useful. Present the computed budget back to the user for confirmation: "I see ~X chaos / Y div in your stash. Use this as the budget?"
 - If they want a smaller working budget, ask.
 
 **Q3 — DPS profile target**
@@ -55,10 +55,10 @@ Optional follow-up if relevant:
 - Character journal if it exists: `character_data/{Account}/{League}/{Character}/journal.md`
 
 ### Add if Q1 = Gear or All
-- League context (current league name affects ninja prices, mod pool, league mechanics): `mcp__poemcp__currency_overview`
-- Trade API stat IDs for mods we're about to search: `mcp__poe__get_stat_ids`
+- League context (current league name affects ninja prices, mod pool, league mechanics): `mcp__poe-data-mcp__currency_overview`
+- Trade API stat IDs for mods we're about to search: `mcp__poe-trade-mcp__get_stat_ids`
 - Eldritch implicit pools from `reference_data/eldritch_implicits/` if any helmet/body/glove/boots are uniques or rares being recrafted
-- Wiki page for each equipped unique if its mechanics are non-obvious: `mcp__poemcp__fetch_wiki_page`
+- Wiki page for each equipped unique if its mechanics are non-obvious: `mcp__poe-data-mcp__fetch_wiki_page`
 
 ### Add if Q1 = Tree or All
 - Full passive tree allocation: `mcp__pob__lua_get_tree` with `include_node_ids: true`
@@ -90,7 +90,7 @@ Optional follow-up if relevant:
 If the analysis pulls **3+ guide transcripts** (synthesizing recommendations from multiple build guides), or **3+ wiki pages for non-trivial mechanic verification**, delegate each to a sub-agent rather than loading inline. A single transcript is ~10-12K tokens; three of them in main context can blow the budget before analysis starts.
 
 Sub-agent prompt template for transcript extraction:
-> "Fetch the YouTube transcript at `{URL}` via `mcp__poemcp__fetch_youtube_transcript`. The build is `{archetype}` ({class}/{ascendancy}). Extract and return, in under 800 tokens: (1) skill links and support gem priority, (2) key passive notables and ascendancy choices, (3) gear: must-have uniques + key rare mods per slot, (4) playstyle notes (mapping vs bossing, defenses), (5) anything the author flagged as a known weakness or gotcha. Skip filler, jokes, sponsor reads, and gameplay commentary that doesn't inform the build."
+> "Fetch the YouTube transcript at `{URL}` via `mcp__poe-data-mcp__fetch_youtube_transcript`. The build is `{archetype}` ({class}/{ascendancy}). Extract and return, in under 800 tokens: (1) skill links and support gem priority, (2) key passive notables and ascendancy choices, (3) gear: must-have uniques + key rare mods per slot, (4) playstyle notes (mapping vs bossing, defenses), (5) anything the author flagged as a known weakness or gotcha. Skip filler, jokes, sponsor reads, and gameplay commentary that doesn't inform the build."
 
 Dispatch multiple transcripts in a **single message with parallel sub-agent calls** so they run concurrently — total wall time is one transcript's, not N.
 

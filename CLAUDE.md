@@ -33,7 +33,7 @@ If you're unsure whether a particular extraction or redistribution falls inside 
 
 **GGG trade API — one-time informed consent:** Before calling trade API tools, check memory for `trade_api_tos_acknowledged`. If absent, pause, explain the ToS risk (details in [`legal_considerations.md`](legal_considerations.md) → "GGG Terms of Service"), and save the memory once acknowledged.
 
-Tools requiring this check: `mcp__pob__search_trade_items`, `find_weighted_trade_items`, `compare_trade_items`, `get_item_price`; `mcp__poe__search_trade`, `search_by_item_mods`, `fetch_listing`.
+Tools requiring this check: `mcp__pob__search_trade_items`, `find_weighted_trade_items`, `compare_trade_items`, `get_item_price`; `mcp__poe-trade-mcp__search_trade`, `search_by_item_mods`, `fetch_listing`.
 
 Tools exempt (no GGG trade API): `price_item/items/tab`, `scan_stash_tabs` (poe.ninja only); all other `mcp__pob__` tools (local PoB only); `ninja_lookup`, `currency_overview` (poe.ninja); `list_tabs`, `get_tab`, `get_character` (GGG OAuth gateway).
 
@@ -61,4 +61,4 @@ Tools exempt (no GGG trade API): `price_item/items/tab`, `scan_stash_tabs` (poe.
 - **`POE_SESSION_ID` is sensitive** — treat it like a password. It enables importing private characters and running weighted trade queries. Never log or commit it.
 - **PoB must be launched via `pob-mcp/LaunchPoBWithAPI.bat`**, not the normal shortcut, for TCP mode to work.
 - **After a PoB update**, the batch file self-heals by re-patching `Modules/Main.lua`. Tell the user to dismiss the integrity check warning and relaunch via the batch file.
-- **Submodule pointer updates**: when a sub-repo is updated, **push the submodule first** (`git -C <submodule> push origin <branch>`), *then* advance the suite pointer (`git add -A && git commit && git push`). Pushing the suite pointer before the submodule commit exists on its fork leaves `origin/main` referencing a commit no other clone can fetch. The tracked `pre-push` hook (`.githooks/pre-push`, enable once per clone via `git config core.hooksPath .githooks`) guards against this automatically. Note submodule branches differ: POEMCP is `main`, poe-mcp-server is `master`.
+- **Submodule pointer updates**: when a sub-repo is updated, **push the submodule first** (`git -C <submodule> push origin <branch>`), *then* advance the suite pointer (`git add -A && git commit && git push`). Pushing the suite pointer before the submodule commit exists on its fork leaves `origin/main` referencing a commit no other clone can fetch. The tracked `pre-push` hook (`.githooks/pre-push`, enable once per clone via `git config core.hooksPath .githooks`) guards against this automatically. Note submodule branches differ: poe-data-mcp is `main`, poe-trade-mcp is `master`.

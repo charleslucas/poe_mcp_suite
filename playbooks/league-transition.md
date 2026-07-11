@@ -137,7 +137,7 @@ Trade and ninja results are cached per-league. After updating `POE_LEAGUE`:
 
 - Trade cache TTL is 1 hour ([tradeClient.ts](../pob-mcp/src/services/tradeClient.ts)) — expires naturally.
 - ninja cache lives in `poeNinjaClient` — same TTL.
-- Cached stash tab listings from `poe-mcp-server` may still reference the old league name; the next `list_tabs` call refreshes them against the new default.
+- Cached stash tab listings from `poe-trade-mcp` may still reference the old league name; the next `list_tabs` call refreshes them against the new default.
 
 Nothing to manually invalidate; just be aware that the *first* price lookup after the switch may take a moment longer than usual while caches warm.
 

@@ -1,6 +1,6 @@
 # Issues — poe_mcp_suite
 
-Cross-cutting issue tracker for the whole suite (pob-mcp, poe-mcp-server, POEMCP, the PathOfBuilding fork, skills/playbooks, Claude integration). Lives at the top level rather than per-subdir because most issues touch multiple components or are easier to triage in one place.
+Cross-cutting issue tracker for the whole suite (pob-mcp, poe-trade-mcp, poe-data-mcp, the PathOfBuilding fork, skills/playbooks, Claude integration). Lives at the top level rather than per-subdir because most issues touch multiple components or are easier to triage in one place.
 
 **Entry format:** short title (`### ...`), 1–3 sentence description, a **Repro:** line where applicable, and a single-line **Affects:** scope. Move resolved entries to the *Closed* section at the bottom with a one-line note.
 
@@ -56,12 +56,12 @@ Between two sims in the same socket group, Speed jumped 1.49 → 1.70 attacks/se
 
 ### HTTP/SSE transport not implemented — servers are stdio-only
 
-All three MCP servers (pob-mcp, poe-mcp-server, POEMCP) currently use stdio transport, which works for Claude Code (subprocess model) but not Claude.ai web (which requires HTTP/SSE transport + a publicly accessible URL).
+All three MCP servers (pob-mcp, poe-trade-mcp, poe-data-mcp) currently use stdio transport, which works for Claude Code (subprocess model) but not Claude.ai web (which requires HTTP/SSE transport + a publicly accessible URL).
 
 **Remaining work per server:**
 
-- **POEMCP** (easiest): Uses `FastMCP` which already supports `mcp.run(transport="sse", port=...)`. Change `server.py` to accept a `--transport sse --port N` flag. ~10 lines.
-- **poe-mcp-server**: `mcp_server_utils.py` shim hardcodes `stdio_server()` and ignores the port arg. Replace with SSE transport when a `--http` flag is passed. ~20 lines. Each sub-server or `poe_all.py` needs to accept the flag.
+- **poe-data-mcp** (easiest): Uses `FastMCP` which already supports `mcp.run(transport="sse", port=...)`. Change `server.py` to accept a `--transport sse --port N` flag. ~10 lines.
+- **poe-trade-mcp**: `mcp_server_utils.py` shim hardcodes `stdio_server()` and ignores the port arg. Replace with SSE transport when a `--http` flag is passed. ~20 lines. Each sub-server or `poe_all.py` needs to accept the flag.
 - **pob-mcp** (most work): Node.js MCP SDK has `SSEServerTransport` available but it's not wired in. Need a `--http --port N` startup mode that starts `SSEServerTransport` instead of `StdioServerTransport`. ~50 lines.
 
 **Intended user experience once done:**
@@ -130,7 +130,7 @@ Added `NON_AFFILIATION_NOTICE` constant to `poe_trade.py`; included in JSON outp
 
 ---
 
-### ~~`poe-mcp-server` trade tools lack Bottleneck-style rate limiting~~ ✅ Improved 2026-05-31
+### ~~`poe-trade-mcp` trade tools lack Bottleneck-style rate limiting~~ ✅ Improved 2026-05-31
 
 `poe_trade.py` now parses `X-Rate-Limit-Ip`/`X-Rate-Limit-Account`/`X-Rate-Limit-Client` response headers and dynamically adjusts the inter-request interval (with 25% safety margin). Also uses `Retry-After` header value on 429 responses instead of fixed wait times. Floor remains 1.5s. Cross-process coordination with pob-mcp's Bottleneck limiter is still not possible (separate processes), but the header-driven approach means each process self-tunes to GGG's actual observed limits.
 

@@ -7,8 +7,8 @@ This repo is a git submodule container for four MCP servers for Path of Exile, u
 | Submodule | Language | What it does |
 |-----------|----------|--------------|
 | `pob-mcp/` | TypeScript / Node.js | Connects the agent to Path of Building — build analysis, passive tree simulation, gem/item management, trade |
-| `poe-mcp-server/` | Python | Trade site search (returns URLs), item pricing, loot filter editing; stash scanning ⚠️ blocked (see [`playbooks/stash-scanning.md`](playbooks/stash-scanning.md)) |
-| `POEMCP/` | Python | Wiki lookups, game data (gems, items, passives, maps), poe.ninja economy |
+| `poe-trade-mcp/` | Python | Trade site search (returns URLs), item pricing, loot filter editing; stash scanning ⚠️ blocked (see [`playbooks/stash-scanning.md`](playbooks/stash-scanning.md)) |
+| `poe-data-mcp/` | Python | Wiki lookups, game data (gems, items, passives, maps), poe.ninja economy |
 | `PathOfBuilding/` | Lua | Fork of PoB with a TCP/stdio JSON-RPC API — the calc backend for pob-mcp |
 | `google-ai-mode` (npx) | Node.js | Google AI Mode search — live synthesized answers with citations for freshness-sensitive PoE questions (patch notes, current meta, recent mechanics). Not a submodule; runs via `npx google-ai-mode-mcp@latest` so it always stays current with Google's interface changes. |
 
@@ -49,7 +49,7 @@ push origin <branch>`), then retry. Emergency bypass: `git push --no-verify`.
 ### All platforms
 - **Git** 2.x+
 - **Node.js** 18+ and **npm** (for pob-mcp)
-- **Python** 3.10+ (for poe-mcp-server and POEMCP)
+- **Python** 3.10+ (for poe-trade-mcp and poe-data-mcp)
 - **Path of Building Community** installed (for TCP mode — standard install, no special version)
 
 ### Headless mode only (optional — TCP mode is simpler)
@@ -82,31 +82,31 @@ Verify: `node pob-mcp/build/index.js` should start without crashing.
 
 ---
 
-## Step 3 — Install POEMCP
+## Step 3 — Install poe-data-mcp
 
 ```bash
-cd POEMCP
+cd poe-data-mcp
 pip install -e .
 cd ..
 ```
 
 Installs `mcp[cli]`, `httpx`, and `beautifulsoup4`. No API keys required — data is fetched at runtime from poedb.tw, poe.ninja, and poewiki.net.
 
-**Detailed docs:** [`POEMCP/README.md`](POEMCP/README.md)
+**Detailed docs:** [`poe-data-mcp/README.md`](poe-data-mcp/README.md)
 
 ---
 
-## Step 4 — Install poe-mcp-server
+## Step 4 — Install poe-trade-mcp
 
 ```bash
-pip install -r poe-mcp-server/requirements.txt
+pip install -r poe-trade-mcp/requirements.txt
 ```
 
-This installs `mcp`, `anyio`, and the GitHub-sourced PyPoE + RePoE packages. All required modules (`poe_lib`, `stash_cache`, `rare_scorer`) are included directly in the `poe-mcp-server/` directory — no external sibling repositories needed.
+This installs `mcp`, `anyio`, and the GitHub-sourced PyPoE + RePoE packages. All required modules (`poe_lib`, `stash_cache`, `rare_scorer`) are included directly in the `poe-trade-mcp/` directory — no external sibling repositories needed.
 
-Credentials are supplied via env vars in `.mcp.json` (`POE_SESSION_ID`, `POE_ACCOUNT_NAME`). A `poe-mcp-server/config.json` can be used as a fallback but is not required.
+Credentials are supplied via env vars in `.mcp.json` (`POE_SESSION_ID`, `POE_ACCOUNT_NAME`). A `poe-trade-mcp/config.json` can be used as a fallback but is not required.
 
-**Detailed docs:** [`poe-mcp-server/README.md`](poe-mcp-server/README.md)
+**Detailed docs:** [`poe-trade-mcp/README.md`](poe-trade-mcp/README.md)
 
 ---
 
@@ -236,11 +236,11 @@ Each user runs their own instance locally and connects their own credentials. No
 Each server will need to be started with an HTTP/SSE flag instead of (or alongside) stdio mode:
 
 ```bash
-# poe-mcp-server — once HTTP mode is added
-python poe-mcp-server/poe_all.py --http --port 8481
+# poe-trade-mcp — once HTTP mode is added
+python poe-trade-mcp/poe_all.py --http --port 8481
 
-# POEMCP — FastMCP already supports this, likely just:
-python POEMCP/server.py --transport sse --port 8484
+# poe-data-mcp — FastMCP already supports this, likely just:
+python poe-data-mcp/server.py --transport sse --port 8484
 
 # pob-mcp — once SSEServerTransport is wired in
 node pob-mcp/build/index.js --http --port 8480
@@ -257,8 +257,8 @@ The exact flags will be documented here once implemented.
 
 # Run a tunnel for each server (each gets a random HTTPS URL)
 cloudflared tunnel --url http://localhost:8480   # pob-mcp
-cloudflared tunnel --url http://localhost:8481   # poe-mcp-server
-cloudflared tunnel --url http://localhost:8484   # POEMCP
+cloudflared tunnel --url http://localhost:8481   # poe-trade-mcp
+cloudflared tunnel --url http://localhost:8484   # poe-data-mcp
 ```
 
 Each tunnel prints something like `https://random-name.trycloudflare.com`. Save those URLs.
@@ -308,7 +308,7 @@ cp .mcp.json.example .mcp.json
     },
     "poe": {
       "command": "python",
-      "args": ["/absolute/path/to/poe_mcp_suite/poe-mcp-server/poe_all.py"],
+      "args": ["/absolute/path/to/poe_mcp_suite/poe-trade-mcp/poe_all.py"],
       "env": {
         "POE_SESSION_ID": "your-poesessid-cookie-here",
         "POE_ACCOUNT_NAME": "YourAccount#1234",
@@ -318,9 +318,9 @@ cp .mcp.json.example .mcp.json
         // "POE_CLIENT_ID": "your-client-id-here"
       }
     },
-    "poemcp": {
+    "poe-data-mcp": {
       "command": "python",
-      "args": ["/absolute/path/to/poe_mcp_suite/POEMCP/server.py"]
+      "args": ["/absolute/path/to/poe_mcp_suite/poe-data-mcp/server.py"]
     }
   }
 }
@@ -358,8 +358,8 @@ For a thorough, repeatable check after any fresh clone, `git pull`, submodule bu
 
 Quick smoke test (less thorough):
 - With PoB running via `pob-mcp/LaunchPoBWithAPI.bat` and a build open, ask Claude: *"Use lua_start and tell me the current build's DPS and life."* Console should show `>> get_stats` / `<< get_stats ok`.
-- For POEMCP: *"What does Headhunter do?"* → Claude calls `get_item_detail`.
-- For poe-mcp-server: *"What's the current price of a Mirror of Kalandra?"* → Claude calls `ninja_lookup`.
+- For poe-data-mcp: *"What does Headhunter do?"* → Claude calls `get_item_detail`.
+- For poe-trade-mcp: *"What's the current price of a Mirror of Kalandra?"* → Claude calls `ninja_lookup`.
 
 ---
 
@@ -385,10 +385,10 @@ details, options, and cross-machine caveats: [`BACKUP.md`](BACKUP.md).
 | Backing up / restoring non-git user & character data | [`BACKUP.md`](BACKUP.md) |
 | pob-mcp full setup, all env vars, troubleshooting | [`pob-mcp/README.md`](pob-mcp/README.md) |
 | pob-mcp tool list (~123 tools) | [`pob-mcp/docs/TOOLS.md`](pob-mcp/docs/TOOLS.md) |
-| poe-mcp-server setup and module architecture | [`poe-mcp-server/README.md`](poe-mcp-server/README.md) |
-| poe-mcp-server tool list (~30 tools) | [`poe-mcp-server/TOOLS.md`](poe-mcp-server/TOOLS.md) |
-| POEMCP setup | [`POEMCP/README.md`](POEMCP/README.md) |
-| POEMCP tool list (13 tools) | [`POEMCP/TOOLS.md`](POEMCP/TOOLS.md) |
+| poe-trade-mcp setup and module architecture | [`poe-trade-mcp/README.md`](poe-trade-mcp/README.md) |
+| poe-trade-mcp tool list (~30 tools) | [`poe-trade-mcp/TOOLS.md`](poe-trade-mcp/TOOLS.md) |
+| poe-data-mcp setup | [`poe-data-mcp/README.md`](poe-data-mcp/README.md) |
+| poe-data-mcp tool list (13 tools) | [`poe-data-mcp/TOOLS.md`](poe-data-mcp/TOOLS.md) |
 | PathOfBuilding API fork overview | [`PathOfBuilding/README.md`](PathOfBuilding/README.md) |
 | PathOfBuilding Lua TCP action reference | [`PathOfBuilding/src/API/TOOLS.md`](PathOfBuilding/src/API/TOOLS.md) |
 | Engineering decisions and bug history | [`pob-mcp/docs/DEVELOPMENT_HISTORY.md`](pob-mcp/docs/DEVELOPMENT_HISTORY.md) |

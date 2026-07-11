@@ -19,8 +19,8 @@ This is always a **detailed analysis** — apply the cursory/detailed gate from 
 Establish the shape of the work before loading anything. Several of these can be auto-derived.
 
 **Auto-derive (read before asking):**
-- Character class and level: `mcp__pob__lua_list_characters` (or `mcp__poe__get_character`)
-- Pre-farmed gear: ask which stash tab(s) hold the leveling/endgame gear, then `mcp__poe__get_tab`
+- Character class and level: `mcp__pob__lua_list_characters` (or `mcp__poe-trade-mcp__get_character`)
+- Pre-farmed gear: ask which stash tab(s) hold the leveling/endgame gear, then `mcp__poe-trade-mcp__get_tab`
 
 **Ask the user:**
 1. **Build concept** — what's the endgame goal? Class, main skill, ascendancy target. Without this, gear and passive recommendations can't be prioritized correctly.
@@ -34,20 +34,20 @@ Establish the shape of the work before loading anything. Several of these can be
 ### Always load
 | Source | Tool | Notes |
 |--------|------|-------|
-| Character current state | `mcp__pob__lua_import_character` or `mcp__poe__get_character` | Level, class, equipped items, allocated nodes |
-| Pre-farmed gear stash | `mcp__poe__get_tab` | Gets item list with level requirements — forms the gear schedule |
+| Character current state | `mcp__pob__lua_import_character` or `mcp__poe-trade-mcp__get_character` | Level, class, equipped items, allocated nodes |
+| Pre-farmed gear stash | `mcp__poe-trade-mcp__get_tab` | Gets item list with level requirements — forms the gear schedule |
 | Context usage | `mcp__pob__get_context_usage` | Check headroom before loading guide builds or transcripts |
 
 ### Add if a guide build is provided
 | Source | Tool | Notes |
 |--------|------|-------|
-| Guide build XML | `mcp__poemcp__parse_pob` | Use for triage only — don't load into PoB until you know the class matches |
-| Mechanic verification | `mcp__poemcp__fetch_wiki_page` | Any mechanic that sounds like a bug exploit, "infinite", or "immortal" — verify current state before building around it |
-| YouTube transcript | `mcp__poemcp__fetch_youtube_transcript` | Only if gems/interactions need verbal explanation not in XML |
+| Guide build XML | `mcp__poe-data-mcp__parse_pob` | Use for triage only — don't load into PoB until you know the class matches |
+| Mechanic verification | `mcp__poe-data-mcp__fetch_wiki_page` | Any mechanic that sounds like a bug exploit, "infinite", or "immortal" — verify current state before building around it |
+| YouTube transcript | `mcp__poe-data-mcp__fetch_youtube_transcript` | Only if gems/interactions need verbal explanation not in XML |
 
 ### Add if building from scratch (no guide)
 - `mcp__pob__search_tree_nodes` for key archetype notables
-- `mcp__poemcp__fetch_wiki_page` for the main skill gem
+- `mcp__poe-data-mcp__fetch_wiki_page` for the main skill gem
 
 ---
 
@@ -155,7 +155,7 @@ If the build archetype is novel (not already in `character_data/guides/{archetyp
 - **Merging paths:** When multiple notables share a path prefix, only count those prefix nodes once. A 5-node path + a 6-node path sharing a 3-node prefix = 5+6-3 = 8 total nodes, not 11. Manually inspect `find_path_to_node` results before summing.
 
 ### Hotfix and mechanic verification
-- **Any mechanic described as "immortal", "infinite", or known to be a bug exploit** — always verify current state via `mcp__poemcp__fetch_wiki_page` before building the character around it. The Rongokurai's Boon / Temporal Chains interaction was hotfixed within hours of the Reddit post going live; the wiki will show the current behavior.
+- **Any mechanic described as "immortal", "infinite", or known to be a bug exploit** — always verify current state via `mcp__poe-data-mcp__fetch_wiki_page` before building the character around it. The Rongokurai's Boon / Temporal Chains interaction was hotfixed within hours of the Reddit post going live; the wiki will show the current behavior.
 - **Ghost Reaver conflicts with Wicked Ward.** Ghost Reaver says "Cannot Recharge Energy Shield" — taking both makes Wicked Ward useless. Don't combine them.
 - **Zealot's Oath is 1 passive point and converts all life regen to ES regen.** For any ES build with significant life regeneration on gear, this is often the single highest-value passive in the build.
 

@@ -143,7 +143,7 @@ When sources conflict:
 2. GGG official exports (`reference_data/skilltree/`, `reference_data/atlastree/`)
 3. GGG official patch notes / news posts (via [`reference_data/patch_notes_index.md`](../reference_data/patch_notes_index.md)) — authoritative for *what changed*; the wiki transcribes them with a lag of days-to-weeks, worst exactly when it matters (early league)
 4. Live PoB TCP for the loaded build
-5. Live wiki fetch via `mcp__poemcp__fetch_wiki_page`
+5. Live wiki fetch via `mcp__poe-data-mcp__fetch_wiki_page`
 6. Cached `reference_data/` — check the `fetched:`/`patch:` frontmatter before trusting
 7. PoB's bundled tree data
 8. Claude's training (last resort — often outdated on prices, mod availability, league mechanics)
@@ -211,7 +211,7 @@ Each domain playbook below has a thin wrapper **skill** in `.claude/skills/<name
 **Wishlist** (playbooks worth writing):
 - `defense-audit.md` — EHP analysis, recovery sources, ailment immunity coverage, layered defenses. Lowest-hanging: the core tools already exist (`mcp__pob__analyze_defenses`, `check_boss_readiness`)
 - `league-start-character-pick.md` — Annual workflow: guides + class meta + early-league economy. A real pick session (3.29, 2026-06) exists to mine for the task shape
-- `loot-filter.md` — in-game filter maintenance via the `mcp__poe__` filter tools (`get_filter_info`, `find_blocks`, `add_block`/`replace_block`/`remove_block`, `set_basetype_rule`, `kf_check`). These tools currently have zero playbook or skill coverage despite filter edits being multi-step and easy to get wrong
+- `loot-filter.md` — in-game filter maintenance via the `mcp__poe-trade-mcp__` filter tools (`get_filter_info`, `find_blocks`, `add_block`/`replace_block`/`remove_block`, `set_basetype_rule`, `kf_check`). These tools currently have zero playbook or skill coverage despite filter edits being multi-step and easy to get wrong
 - `currency-trading.md` — economy workflows over `get_currency_rates`, `find_arbitrage`, `calculate_trading_profit`. Multi-step enough to qualify as "detailed" under §1, but currently uncovered
 
 **Investigated and rejected** (don't re-propose):

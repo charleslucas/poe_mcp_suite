@@ -48,7 +48,7 @@ Run via `AskUserQuestion`. Skip any question where the answer is already clear f
 - Unique item locked in an adjacent slot that cannot move
 
 **Q5 — Budget**
-- Read from stash first via `mcp__poe__list_tabs` + ninja lookups on notable items before asking. Present the estimate for confirmation.
+- Read from stash first via `mcp__poe-trade-mcp__list_tabs` + ninja lookups on notable items before asking. Present the estimate for confirmation.
 - If budget is clear from prior conversation, skip.
 
 ---
@@ -97,17 +97,17 @@ Present this list to the user and confirm which slot to target before proceeding
 - Map ALL resistance contributions before proposing any swap — know exactly what each piece provides so the math is correct before hitting trade. A ring might be contributing fire + cold + lightning + chaos simultaneously from implicit AND explicit mods.
 
 ### Add if the target item involves a unique
-- Ninja lookup via `mcp__poe__ninja_lookup` for current price and variant pricing
-- Wiki fetch via `mcp__poemcp__fetch_wiki_page` if the unique's interaction with the build isn't obvious
+- Ninja lookup via `mcp__poe-trade-mcp__ninja_lookup` for current price and variant pricing
+- Wiki fetch via `mcp__poe-data-mcp__fetch_wiki_page` if the unique's interaction with the build isn't obvious
 
 ### Add if the swap affects attributes
 - Check total Str / Dex / Int before and after. Losing an item with +53 Dex affects gems AND other equipment that has Dex requirements.
 - Check which gems and gear pieces have the closest attribute requirements — those are the first to fail if an attribute source is removed.
 
 ### Add if the user mentions stash scanning
-- Fetch relevant stash tabs: `mcp__poe__get_tab` (populates cache)
+- Fetch relevant stash tabs: `mcp__poe-trade-mcp__get_tab` (populates cache)
 - Ninja lookup on any notable uniques found — check ALL stash tabs including Char Stash, not just dump tabs. Valuable items accumulate in character stashes.
-- Note: `mcp__poe__price_tab` returns 0 priced items for rares by design — the rare scorer identifies items worth checking on trade, but does not produce price estimates. Use trade search for actual rare prices.
+- Note: `mcp__poe-trade-mcp__price_tab` returns 0 priced items for rares by design — the rare scorer identifies items worth checking on trade, but does not produce price estimates. Use trade search for actual rare prices.
 
 ---
 
@@ -144,7 +144,7 @@ Present this list to the user and confirm which slot to target before proceeding
 
 6. **Search trade with pseudo stat IDs** — pseudo stats (`pseudo.pseudo_total_*`) match the total regardless of where it rolls, making them far more effective than explicit stat filters:
    - `pseudo.pseudo_total_life`, `pseudo.pseudo_total_dexterity`, `pseudo.pseudo_total_cold_resistance`, etc.
-   - Use `mcp__poe__get_stat_ids` to find the right IDs before building the filter
+   - Use `mcp__poe-trade-mcp__get_stat_ids` to find the right IDs before building the filter
 
 7. **Evaluate results by shape, not just headline number** — check:
    - Does it cover fire AND cold, or just one? (overcapping one element is wasted budget)
@@ -154,9 +154,9 @@ Present this list to the user and confirm which slot to target before proceeding
    - **Apply build profile mod value overrides**: a T4 mod that the build scales is worth more than a T2 mod it doesn't. Shape > tier.
 
 8. **Evaluate crafting as an alternative to buying** — before finalising a trade recommendation, run a quick crafting feasibility check:
-   - Use `mcp__poemcp__search_craft_mods(target_mod)` to confirm the target mods are in the craftable pool.
-   - Use `mcp__poemcp__get_craft_base_items(base_name)` to confirm the base exists and its drop level.
-   - Signal "crafting is worth considering" when: trade has few or no good listings at budget, the target item needs only 1–2 key mods, or the user already has relevant fossils/essences in stash (check with `mcp__poe__scan_stash_tabs` if unsure).
+   - Use `mcp__poe-data-mcp__search_craft_mods(target_mod)` to confirm the target mods are in the craftable pool.
+   - Use `mcp__poe-data-mcp__get_craft_base_items(base_name)` to confirm the base exists and its drop level.
+   - Signal "crafting is worth considering" when: trade has few or no good listings at budget, the target item needs only 1–2 key mods, or the user already has relevant fossils/essences in stash (check with `mcp__poe-trade-mcp__scan_stash_tabs` if unsure).
    - Signal "just buy it" when: the item needs 3+ specific mods simultaneously (crafting cost becomes exponential), budget is tight and the user needs a guaranteed result, or a good trade listing already exists within budget.
    - For actual odds and cost estimates, direct the user to the craftofexile Calculator — our tools confirm what can roll and which fossils have affinity, but the probability math lives in their client-side engine.
 
@@ -221,8 +221,8 @@ If cascade analysis found a change infeasible, record in build profile Section 8
 
 ### Stash scanning
 - **Check the Char Stash tab too.** Valuable items accumulate in character stashes, not just dump tabs. Scanning only numbered dump tabs misses items that can be worth many divines.
-- **`price_tab` min_price filter always returns 0 results for rares** because `rare_scorer.price_estimate` is intentionally set to 0. The scorer identifies items worth checking on trade via `should_trade_check`, but does not produce chaos estimates. Use `mcp__poe__search_trade` for actual rare pricing.
-- **Unique items need ninja lookup, not the rare scorer.** The scorer only handles magic/rare items. For uniques, call `mcp__poe__ninja_lookup` directly.
+- **`price_tab` min_price filter always returns 0 results for rares** because `rare_scorer.price_estimate` is intentionally set to 0. The scorer identifies items worth checking on trade via `should_trade_check`, but does not produce chaos estimates. Use `mcp__poe-trade-mcp__search_trade` for actual rare pricing.
+- **Unique items need ninja lookup, not the rare scorer.** The scorer only handles magic/rare items. For uniques, call `mcp__poe-trade-mcp__ninja_lookup` directly.
 - **Foulborn variants are priced separately from base versions.** `Foulborn Ventor's Gamble` (Foulborn prefix = reroll) has its own price tier. Check both the base and Foulborn entries in ninja results.
 
 ---
