@@ -104,6 +104,13 @@ Present this list to the user and confirm which slot to target before proceeding
 - Check total Str / Dex / Int before and after. Losing an item with +53 Dex affects gems AND other equipment that has Dex requirements.
 - Check which gems and gear pieces have the closest attribute requirements — those are the first to fail if an attribute source is removed.
 
+### Add if the slot has sockets/gems (weapon, body, helmet, gloves, boots)
+- Read the current socket layout: `mcp__poe-trade-mcp__get_socketed_gems` — colours, links, and which gems live in this slot. The replacement has to house those gems.
+- **Default: match the socket arrangement.** Unless the user says otherwise, prefer a replacement with **≥ the same links** and the ability to hold the same gem **colours** — otherwise the gem setup breaks or needs expensive re-linking/recolouring. Filter with `search_trade`'s `min_links` (and socket-colour filters where the trade site supports them).
+- **"Easily modified to match"** = the base's dominant attribute makes the needed colours cheap, and the item isn't corrupted (corrupted → colours/links locked).
+- **Colour-driven uniques** (Triad Grip etc.): match the functional colour *counts*, not just the link count — losing a socket colour changes the item's effect.
+- For a full socket / off-colour / empty-socket pass, use the [`gem-socket-analysis.md`](gem-socket-analysis.md) playbook.
+
 ### Add if the user mentions stash scanning
 - Fetch relevant stash tabs: `mcp__poe-trade-mcp__get_tab` (populates cache)
 - Ninja lookup on any notable uniques found — check ALL stash tabs including Char Stash, not just dump tabs. Valuable items accumulate in character stashes.
