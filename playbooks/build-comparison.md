@@ -2,6 +2,8 @@
 
 For sessions where the user wants to compare two builds — e.g. their current character vs a guide build, or two theory-craft variants. Builds can come from pobb.in/poedb.tw URLs, locally saved PoB files, or the currently loaded PoB build.
 
+**For 3+ candidates** ("which of these should I build?"), use [`build-shortlist.md`](build-shortlist.md) — it prunes cheaply on digests first and invokes this playbook only for its tier-matched pairwise finals.
+
 This playbook is **sub-agent-first**: each build is parsed and digested in its own sub-agent context, so main context only sees compact summaries (~1.5K tokens per build) instead of raw XML (~50-100K per build). See [`README.md`](README.md) section 6 for the meta-criteria on when sub-agents earn their cost.
 
 **Triggers:** "compare my build to this guide", "how does my tree differ from X", "what would I need to change to match this build", two pobb.in URLs in the same message.
