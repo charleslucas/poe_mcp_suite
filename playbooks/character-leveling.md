@@ -102,6 +102,9 @@ Write `character_data/{account}/{char}/progression.md` with the full schedule:
 - Gear unlock table (item | level req | slot | what it replaces | why it matters)
 - Passive priorities per phase
 - Gem setup at each phase
+- **Checkpoint tolerances per phase** — the pass/fail floors a mid-leveling checkpoint
+  (Step 6) tests against: res targets by act, rough life floor, main-link size, key gem
+  levels. These make "am I on track?" answerable in seconds.
 - Open questions / farming needs
 
 This is the player-facing document; it should be readable without opening PoB.
@@ -146,7 +149,50 @@ If the build archetype is novel (not already in `character_data/guides/{archetyp
 
 ---
 
-## Step 5 — Pitfalls
+## Step 5 — Checkpoint & reconvergence (the drift loop)
+
+**Plans are aspirational corridors, not scripts.** Real leveling drifts — found gear
+replaces planned gear, passive picks get improvised, pace varies. The plan's job is to
+make reconvergence *cheap*, and this loop is the recurring in-league procedure for:
+*"I just levelled N times with gear I found and some nodes I picked — how close am I to
+the plan, and how do I track back?"*
+
+**Triggers:** every ~10–15 levels, after each lab, entering a new act tier, or on request
+("am I on track?"). Cursory-to-light scope — minutes, not a full analysis.
+
+1. **Import reality:** `lua_import_character` (league explicit). Read `progression.md`'s
+   current-phase tolerances.
+2. **Pick the reference = the nearest milestone AT OR BELOW current level** — never the
+   endgame build (a lvl-34 char vs the lvl-100 aspiration measures nothing). Between
+   milestones, pro-rate the point budget.
+3. **Cheap diff** (digest-style, per build-comparison's format; no sims yet):
+   - *Tree:* planned notables present / missing / extra. Travel-small differences are
+     noise — compare **notables + keystones + masteries**, not raw node lists.
+   - *Gear:* judge each found item by the **slot's job in the plan** (res, life, minion
+     levels, trigger craft), not item identity. A random rare that caps res IS the plan.
+   - *Gems:* main-link size and **gem levels** (minion builds scale on levels — an
+     underleveled main gem is real drift; also check weapon-swap gems are soaking XP).
+   - *Tolerances:* pass/fail against the phase floors from progression.md.
+4. **Classify every divergence — four kinds, two directions:**
+   - **Benign** (equivalent path/rare): ignore, note nothing.
+   - **Beneficial** (found gear/pick beats the plan): **converge the PLAN to the
+     character** — amend progression.md and, if generalizable, the archetype trunk. Drift
+     is not always error; sometimes reality wins.
+   - **Drift-to-fix** (missing load-bearing notable, res under cap, wrong bridge
+     support): goes in the track-back list.
+   - **Blocked** (planned item/gem unavailable or unaffordable): plan a substitute now,
+     don't leave a hole.
+5. **Track-back plan, ordered by cost:** free fixes first (gem swaps, stash gear), then
+   respec-point spends (count available quest refunds), then purchases. If a fix is
+   load-bearing, verify it in the milestone PoB before recommending. Hand deep tree work
+   to `tree-analysis`, purchases to `gear-shopping`.
+6. **Record:** one journal entry (drift found → decisions), tick/annotate the
+   progression.md checkpoint. Plan amendments from (4b) update the doc so the *next*
+   checkpoint measures against amended reality.
+
+---
+
+## Step 6 — Pitfalls
 
 ### Passive tree planning
 - **`update_tree_delta` is unreliable for nodes more than 2–3 steps from the tree frontier.** It often silently drops nodes with "total count lower than expected." Use `find_path_to_node` to get the exact intermediate node IDs, then set the entire tree at once with `lua_set_tree`.
