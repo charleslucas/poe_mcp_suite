@@ -166,6 +166,36 @@ Committed knowledge files hardcode the "current league", and league-scoped knowl
 
 ---
 
+## Step 8 — Archetype refresh (guide library trunks)
+
+Archetype analyses in `character_data/guides/{archetype}/` are **league-spanning living
+documents** (see the library README → "League lifecycle — trunk & branches"); characters
+instantiate from the trunk's current-league state. At each transition, refresh the trunks
+that matter — gated on patch notes, like 7.2:
+
+1. **Which archetypes?** Active candidates first (anything marked as a league-start pick or
+   with a character planned), then any the user asks about. Skip dormant archetypes — their
+   trunks just stay stamped with their last-reviewed league.
+2. **Resolve re-verify watchlists.** Archetype READMEs/profiles and
+   `guides/_comparisons/*.md` carry "re-verify at patch notes" triggers (nerf-exposed gems,
+   masteries, mechanics). Walk each against the actual notes: survived / buffed / nerfed /
+   removed. A nerf that breaks a core mechanic ("they're nerfing this trigger — what
+   replaces it?") → targeted mini [`build-design.md`](build-design.md) research loop for a
+   replacement; record the outcome either way.
+3. **Scan for new opportunities.** *"What new equipment/gems/mechanics could make this build
+   better?"* — new uniques/gems from the Version X.Y.0 notes (Step 4.3 already enumerated
+   them) filtered through the archetype's build-profile scaling; plus early-league
+   [`community-survey.md`](community-survey.md) queries once the community has data.
+4. **Archive, then bump.** Before rewriting a trunk for the new league: copy the superseded
+   plan to `{archetype}/history/{league}-build-plan.md`, then update `build-profile.md` /
+   `build-plan.md` and their `league:` stamps. Standing `_comparisons/` decisions whose
+   numbers a nerf invalidated get re-opened (or re-affirmed with a dated note).
+
+A character created for the new league then forks the freshly-bumped trunk — that's the
+branch point.
+
+---
+
 ## Done table
 
 When the checklist is complete, report:
@@ -177,6 +207,7 @@ When the checklist is complete, report:
 | Character meta files updated | ✓ N/A (no affected characters) |
 | New-league reference doc created | ✓ / N/A (no new league live yet) |
 | Knowledge anchors rolled (freshness index, mechanics index, memories) | ✓ / pending (re-scoping may wait on patch notes) |
+| Archetype trunks refreshed (watchlists resolved, plans archived + league-bumped) | ✓ / pending (waits on patch notes) / N/A (no active archetypes) |
 | `get_active_leagues` shows no ⚠ | ✓ / ⚠ persists (investigate) |
 
 ---

@@ -264,6 +264,13 @@ The build profile is NOT a narrative — it is structured data. Keep it compact.
 
 The narrative milestone breakdown. Lives at `character_data/{Account}/{League}/{Character}/build.md` or, for a design that hasn't started play yet, at `character_data/guides/{archetype}/build-plan.md`.
 
+**Trunk-and-branch semantics** (library README → "League lifecycle"): the archetype-dir
+copy is the league-spanning **trunk** — league-stamped, revised each league (see
+[`league-transition.md`](league-transition.md) Step 8). Creating a character **forks a
+copy** into the character dir as its `build.md` baseline; never move the trunk. Multiple
+characters (even in one league) can branch from the same trunk state, and character-side
+learnings that generalize flow back to the archetype's README/synthesis.
+
 Contents:
 - One-paragraph concept summary (why this build, what makes it interesting)
 - Per-milestone breakdown (passive direction, skills, gear tier, key purchases)
