@@ -190,6 +190,10 @@ that matter — gated on patch notes, like 7.2:
    plan to `{archetype}/history/{league}-build-plan.md`, then update `build-profile.md` /
    `build-plan.md` and their `league:` stamps. Standing `_comparisons/` decisions whose
    numbers a nerf invalidated get re-opened (or re-affirmed with a dated note).
+5. **Republish.** If the archetype has a "Published" URL in its README, re-run the publish
+   workflow (library README → "Publishing back to the community") against the bumped trunk —
+   pastes are immutable, so the revision gets a **new** pobb.in URL, appended to the
+   README's league → URL history.
 
 A character created for the new league then forks the freshly-bumped trunk — that's the
 branch point.

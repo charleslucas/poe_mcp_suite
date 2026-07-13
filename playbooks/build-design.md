@@ -271,6 +271,11 @@ copy** into the character dir as its `build.md` baseline; never move the trunk. 
 characters (even in one league) can branch from the same trunk state, and character-side
 learnings that generalize flow back to the archetype's README/synthesis.
 
+**A matured trunk can be published back to the community** (pobb.in via
+`lua_share_pobb`, analysis baked into the Notes tab, sources credited) — workflow in the
+library README → "Publishing back to the community". Contribute upstream, not just to
+suite users.
+
 Contents:
 - One-paragraph concept summary (why this build, what makes it interesting)
 - Per-milestone breakdown (passive direction, skills, gear tier, key purchases)
