@@ -121,6 +121,30 @@ Handle results per [`build-shortlist.md`](build-shortlist.md) Stage 2: consensus
 opinions with revealed preference (poe.ninja/builds ladder via
 `reference_data/guide_sources.md`) to correct for loud-minority and meta-recency bias.
 
+### Derivative / variant discovery ("builds based on builds")
+
+**No lineage index exists anywhere in the PoE ecosystem** — there is no structured way to
+find builds forked from a known build, or variants claiming to fix a known weakness.
+Community survey is the only discovery mechanism. Run this after a pitfall pass, once the
+archetype's weaknesses are named — one query per weakness that matters to the user:
+
+```
+"[Archetype] build variant version that fixes [weakness] modified improved alternative reddit [year]"
+"[Archetype] but [desired property] reddit [year]"
+"builds based on [creator]'s [build] reddit"
+```
+
+Treatment rules:
+- **A claimed fix is a mechanic claim — verify it against game data** before crediting it
+  (`get_gem_detail`/wiki). Validated example: "Vaal Absolution fixes the ramp-up" was
+  directionally true for the *shell* but does NOT transfer to pRAW — one gem lookup
+  settled it. Expect derivative claims to be looser than guide claims.
+- **Check the fix actually addresses the user's axis**, not an adjacent one (e.g. an
+  auto-summon-on-kill fix solves mapping clunk but barely helps *mid-boss death recovery*
+  where kills are scarce).
+- If a derivative gets digested, record **lineage in its entry notes** ("derived from
+  {author}'s {build}; claims to fix {weakness}") and cross-link both archetype READMEs.
+
 ---
 
 ## Query framing — the most important rule
