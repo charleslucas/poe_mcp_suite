@@ -71,6 +71,13 @@ For each candidate, in the guide library — creating `guides/{archetype}/` dirs
 - **Deepen only where an axis demands it** — if "leveling smoothness" is a ranked axis, the
   guide's leveling section needs reading; if not, skip it. Every deepening lands in the
   archetype dir (README notes, synthesis.md), never only in the comparison doc.
+- **Community survey for recognizable archetypes** — when a candidate has a known community
+  name (e.g. "zoomancer"), run [`community-survey.md`](community-survey.md)'s standard
+  queries against that name. Highest yield precisely on the axes guides and PoB capture
+  worst: real-world playability/feel, current-league equipment consensus, tree/mastery
+  choices players actually converged on, and "was this nerfed?" viability checks. Record
+  the **community name as an alias** in the archetype README (searches and surveys key off
+  it, and it may differ from our dir name); findings land in the archetype dir as usual.
 
 Freshness pre-flight per candidate (guide's league vs current patch; `freshness-check` on
 core mechanics) — a candidate built on a nerfed mechanic is a Stage-2 elimination with cause.
