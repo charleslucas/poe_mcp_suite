@@ -125,14 +125,29 @@ opinions with revealed preference (poe.ninja/builds ladder via
 
 **No lineage index exists anywhere in the PoE ecosystem** — there is no structured way to
 find builds forked from a known build, or variants claiming to fix a known weakness.
-Community survey is the only discovery mechanism. Run this after a pitfall pass, once the
-archetype's weaknesses are named — one query per weakness that matters to the user:
+Community survey is the only discovery mechanism. Derivatives arise from **two trigger
+classes** with different clocks:
 
+**Weakness-driven** (run after a pitfall pass — one query per weakness that matters):
 ```
 "[Archetype] build variant version that fixes [weakness] modified improved alternative reddit [year]"
 "[Archetype] but [desired property] reddit [year]"
 "builds based on [creator]'s [build] reddit"
 ```
+
+**Event-driven** (run when the event happens — these are time-triggered, not
+weakness-triggered, and the freshest/highest-drift claims):
+```
+New tech / discovered interaction:  "[Archetype] new tech interaction discovered reddit [month year]"
+New or changed equipment:           "[new item] [archetype] enables build variant reddit [year]"
+Mid-league hotfix / nerf:           "[Archetype] after nerf hotfix workaround still viable reddit [month year]"
+```
+- Tech discoveries cluster in league weeks 1–4; add the **month** to the query, not just
+  the year. A mid-league hotfix to a banked archetype should trigger the hotfix query
+  immediately (library precedent: turtle-necromancer's mechanic was hotfixed to ~50%
+  uptime — the "how did the community adapt?" query is exactly what refreshes such an
+  entry). League-boundary changes are handled by `league-transition.md` Step 8; this
+  covers the *mid-league* clock the transition checklist can't see.
 
 Treatment rules:
 - **A claimed fix is a mechanic claim — verify it against game data** before crediting it
