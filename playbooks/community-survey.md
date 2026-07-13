@@ -104,6 +104,23 @@ Query C (league mechanic + specific interaction, if relevant):
 These queries have a natural expiry — they're most useful in the first month. After that, switch back
 to the standard archetype pitfall queries which will have absorbed the league-specific discoveries.
 
+### Cross-archetype consensus (for `build-shortlist` — roster discovery & head-to-head)
+
+```
+Discovery (no candidate list yet — qualifiers come from the user's ranked axes):
+"best [category] build [league] Path of Exile [axis qualifiers] reddit [year]"
+  e.g. "best minion build 3.29 Path of Exile high dps one button low apm reddit 2026"
+
+Head-to-head (two named archetypes):
+"[Archetype A] vs [Archetype B] Path of Exile which is better reddit [year]"
+```
+
+Handle results per [`build-shortlist.md`](build-shortlist.md) Stage 2: consensus is a
+**prior to verify with sims, never a verdict**; conflicting camps usually optimize
+*different axes* — extract which, and map it onto the user's ranked axes. Pair stated
+opinions with revealed preference (poe.ninja/builds ladder via
+`reference_data/guide_sources.md`) to correct for loud-minority and meta-recency bias.
+
 ---
 
 ## Query framing — the most important rule

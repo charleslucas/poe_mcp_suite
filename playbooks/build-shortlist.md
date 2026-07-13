@@ -56,6 +56,22 @@ a defence-best list are **different rankings of the same candidates**. Ask point
 **Pause and state the plan** (roster, ranked axes, elimination criteria, expected depth per
 stage). Wait for approval.
 
+### Stage 0b — Roster discovery (when the user brings a question, not a list)
+
+"What's the best minion build, assuming high DPS and low button usage?" has no candidate
+list — build one *from the value function*:
+
+- **Community survey, query built from the ranked axes**: e.g. *"best minion build
+  [league] high dps one button low apm reddit [year]"* — the Stage-0 qualifiers ARE the
+  search terms. ([`community-survey.md`](community-survey.md) mechanics.)
+- **Revealed preference**: `reference_data/guide_sources.md` → poe.ninja/builds ladder
+  filters — what people *actually play* complements what they *say* (stated opinions
+  over-weight the loud; ladder data over-weights the meta; together they triangulate).
+- **Existing library first**: check `guides/` for already-banked archetypes matching the
+  question — prior effort may seed the roster for free.
+
+Target a roster of ~3–6, confirm it with the user, then proceed to Stage 1 as normal.
+
 ---
 
 ## Stage 1 — Roster normalization (bank the per-candidate effort)
@@ -91,6 +107,18 @@ Build the matrix (candidates × ranked axes) from Stage-1 digests:
 - Fill **numeric axes** from stored/parsed stats — clearly tagged with gear tier and config.
 - Fill **mechanical axes** (clear feel, leveling timing, playstyle) from digest notes — these
   are judgement calls; say so.
+- **Community head-to-head as a prior** (optional, cheap): survey queries like
+  *"[A] vs [B] which is better reddit [year]"* or *"best [category] build [league] reddit"*.
+  Use the result as a **prior to verify, never a verdict** — community opinion sits below
+  live sims in the trust hierarchy (README §5), and it carries meta/recency/streamer bias.
+  Two rules:
+  - **Conflicting opinions are data, not noise.** Camps that disagree on "which is better"
+    almost always hold different unstated value functions ("X is better" = the clear-speed
+    camp; "Y is better" = the boss-DPS camp). Extract *which axis each camp is optimizing*
+    and map it onto the Stage-0 ranked axes — it often sharpens or challenges the user's
+    own ranking, and tells you exactly which axis the finals must settle with numbers.
+  - **Strong consensus is a seeding signal**: it promotes a candidate to the finals and
+    flags the claimed edge for sim verification — it does not skip verification.
 - **Eliminate**: hard-constraint failures first, then dominated candidates (worse or equal on
   every ranked axis than some survivor). Record each elimination + one-line cause in the
   decision doc.

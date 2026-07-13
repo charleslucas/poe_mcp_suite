@@ -1,7 +1,7 @@
 ---
 name: build-shortlist
 description: N-way build bake-off — compare 3+ candidate PoE builds (e.g. a set of pobb.in links) via value-function triage, cheap digest matrix, then tier-matched pairwise finals; banks per-candidate analyses in the guide library and the decision in _comparisons/.
-when_to_use: Use when the user wants to compare several candidate builds to pick one — "compare these minion builds", "which of these should I build a character around", "help me choose between these N builds", or re-running/extending a prior _comparisons/ decision. For exactly two builds use build-comparison; for designing the chosen build use build-design.
+when_to_use: Use when the user wants to compare several candidate builds to pick one — "compare these minion builds", "which of these should I build a character around", "help me choose between these N builds" — OR asks an open-ended best-build question with criteria but no candidate list ("what's the best minion build for high DPS and low buttons?" → roster discovery via community survey + ladder, then the bake-off). Also for re-running/extending a prior _comparisons/ decision. For exactly two builds use build-comparison; for designing the chosen build use build-design.
 ---
 
 This task uses the **Build Shortlist** playbook. The playbooks in `playbooks/` are the single source of truth — read them rather than working from memory, so you always get the current version.
