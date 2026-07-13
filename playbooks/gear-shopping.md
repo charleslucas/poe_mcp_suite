@@ -188,6 +188,26 @@ If cascade analysis found a change infeasible, record in build profile Section 8
 
 ---
 
+## League-start gate sourcing (buy the gates before the wave)
+
+A build plan's **gear gates** (mandatory uniques/transfigured gems — see
+[`build-shortlist.md`](build-shortlist.md) axis 4 and `guides/_comparisons/` watchlists)
+are known *before* league start, so source them strategically instead of reactively.
+Different gates have different week-1 price **trajectories** — tag each and act accordingly:
+
+| Trajectory class | Behaviour | Buy strategy |
+|---|---|---|
+| **Meta-taxed, common supply** (popular build's uniques/transfig gems) | spikes days 2–5 as the meta wave reaches its swap point, eases later | **buy early** — prioritize gate purchases over incremental rare upgrades (gates appreciate; generic rares depreciate) |
+| **Boss-/content-gated supply** (e.g. specific boss drops) | high early because supply lags, falls as farmers catch up | **wait**, or farm the source yourself; week-1 buying pays the maximum |
+| **Self-farmable** (lab-font transfig gems, div-card targets) | n/a | farm it — de-risks entirely |
+| **Social sourcing** (meta spectre corpses via global 6666) | availability risk, not price risk | source at transition time |
+
+Run the watchlist through `ninja_lookup` / `get_item_price` daily in days 1–4 once league
+data populates. Side benefit: a gate item whose price *collapses* right after patch notes is
+a nerf-detection signal for the build that needed it.
+
+---
+
 ## Step 6 — Pitfalls (lessons from past sessions)
 
 ### Build profile required
