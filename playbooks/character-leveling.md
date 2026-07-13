@@ -151,14 +151,24 @@ If the build archetype is novel (not already in `character_data/guides/{archetyp
 
 ## Step 5 — Checkpoint & reconvergence (the drift loop)
 
-**Plans are aspirational corridors, not scripts.** Real leveling drifts — found gear
-replaces planned gear, passive picks get improvised, pace varies. The plan's job is to
-make reconvergence *cheap*, and this loop is the recurring in-league procedure for:
-*"I just levelled N times with gear I found and some nodes I picked — how close am I to
-the plan, and how do I track back?"*
+**Plans are aspirational corridors, not scripts — and they must never get in the way of
+just playing the game.** Real leveling drifts — found gear replaces planned gear, passive
+picks get improvised, pace varies — and that drift is *free and guiltless*: no obligation
+to consult anything mid-session. The plan's job is to make reconvergence **cheap and
+schedulable**, and this loop is the recurring in-league procedure for: *"I just levelled N
+times with gear I found and some nodes I picked — how close am I to the plan, and how do I
+track back?"*
 
-**Triggers:** every ~10–15 levels, after each lab, entering a new act tier, or on request
-("am I on track?"). Cursory-to-light scope — minutes, not a full analysis.
+**Resync is a deliberate, budgeted decision, not a nag.** The checkpoint's output is a
+track-back plan **with its cost attached** (respec points, currency, ~minutes) that the
+user schedules whenever they feel like syncing up — the same way they'd plan a shopping
+trip. The only thing the checkpoint should flag *urgently* is a tolerance failure that
+predicts a fun-stopping wall ahead (e.g. res 40 under cap entering the next act boss) —
+protect future fun, not plan purity.
+
+**Triggers:** at natural pauses — end of a session, hideout downtime, after each lab, a
+new act tier — or on request ("am I on track?"). Cursory-to-light scope — minutes, not a
+full analysis.
 
 1. **Import reality:** `lua_import_character` (league explicit). Read `progression.md`'s
    current-phase tolerances.
