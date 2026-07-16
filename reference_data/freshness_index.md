@@ -1,5 +1,5 @@
 ---
-maintained: 2026-07-10
+maintained: 2026-07-16
 purpose: Model-aware index of PoE mechanics/items/systems that postdate (or are unreliable in) Claude training data, so the running model knows what it must verify rather than answer from memory.
 committed: yes (gitignore exception — this is curated, not regenerable)
 ---
@@ -94,6 +94,25 @@ notes / balance changes) for each recent league. Fetch via `mcp__poemcp__fetch_w
 
 ### 3.28 — Mirage league  (past ALL models' cutoffs → always verify / use cache)
 Full cache: [`reference_data/leagues/mirage.md`](leagues/mirage.md).
+
+> ### 🔴 END OF LEAGUE — Mirage does **NOT** go core in 3.29 (GGG end-of-league post, read 2026-07-16)
+> **Mirage ends 2026-07-20, 3PM PDT.** This is the authoritative "what goes core" answer the league-transition
+> playbook (Step 7.2) waits for — re-scope `mechanics_index.md` from it. GGG's stated outcomes:
+>
+> | Thing | Fate after 7/20 |
+> |---|---|
+> | **The Mirage league mechanic itself** (Djinn → Mirage sub-zones) | ❌ **NOT going core** → scope `removed`. Everything gated behind it (Djinn coins, Essence of Desolation, Volatile Vaal Orb, Mirage-exclusive drops) goes with it. |
+> | **Astrolabes** | ✅ **stays core** (was Mirage-introduced *Atlas* content) |
+> | **Exceptional Support gems** | ✅ **stays core** |
+> | **Transfusion Support** | ⚠ **no longer obtainable from Divination Cards** (existing copies presumably persist; new supply dies) |
+> | **Maps with Empowered Mirages covering the entire map** | ❌ **not openable in Standard** (dead maps) |
+> | **Black Baryas** | ⚠ **existing ones usable, no way to obtain more** → legacy/finite |
+>
+> ⚠ **Modelling note:** the rows in the table below are `challenge-league` scope and become **`removed`** at
+> league end EXCEPT Astrolabes / Exceptional Supports (→ `core`). Don't recommend a Mirage-gated lever
+> (e.g. **Djinn coins** — see `[[mirage-djinn-coins]]`) to any Standard or 3.29 character after 7/20.
+> **Not yet answered here:** whether Screams of the Desiccated / dual-form uniques / Heroic Tragedy / The
+> Unseen Hand persist as legacy drops — the post didn't say; verify at the transition.
 
 | Mechanic / item / system | What it is (one line) | Where / verify via |
 |---|---|---|
