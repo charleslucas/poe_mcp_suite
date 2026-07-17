@@ -110,6 +110,8 @@ Videos + community surveys not yet ingested; wiki not yet populated.
 | **New gems** | 4 "Pact of X" Exceptional skills; Coursing Currents + Crystalfall Exceptional supports; Mana-Infused Staff; 4 Str/Int transfigured (incl. Divine Blast of Radiance) | cache §New content |
 | **15 new uniques / 3 div cards / Pearlescent Amulet / 2 Bloodline classes** | Counts only — names not in notes | cache ledger (headline — enumerate via wiki/videos) |
 | **Absolution cast 0.75→0.65s; Companionship/Communion supports; Maw of Mischief mana-efficiency** | Minion-line balance details | cache §Minion balance |
+| **Ascendancy changes = exactly 5 classes** (Assassin, Hierophant, Inquisitor, Occultist, Reliquarian) | ✅ verified 2 sources — **Necromancer/Deadeye/Guardian explicitly UNCHANGED**. New: Luminary (Scion, permanent mercs) + 2 Bloodline classes (one league-exclusive, unenumerated). "Reliquarian" is real; reshuffle is image-only | cache §Ascendancies |
+| **Bifurcated Critical Strikes (new keyword)** | Crit chance rolled twice — either roll crits; both → extra crit damage doubled; lucky/unlucky per roll; always-crit prevents it. Introduced via Assassin's Mystical Infusion | cache §Ascendancies |
 
 ### 3.28 — Mirage league  (past ALL models' cutoffs → always verify / use cache)
 Full cache: [`reference_data/leagues/mirage.md`](leagues/mirage.md).
