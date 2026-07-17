@@ -45,6 +45,7 @@ primary; wiki Version page = consolidated transcription.
 
 | Version | Type | Official forum thread | Wiki Version page | Patch line |
 |---|---|---|---|---|
+| **3.29.0** | League launch | https://www.pathofexile.com/forum/view-thread/3985332 (posted 2026-07-16) | https://www.poewiki.net/wiki/Version_3.29.0 _(not yet populated at bookmark time)_ | **3.29 Curse of the Allflame** (launches 2026-07-24). Digested → `leagues/curse_of_the_allflame_3.29.md` (with drill-down ledger) |
 | **3.28.0j** | Hotfix / point release | https://www.pathofexile.com/forum/view-thread/3974219 (posted ~2026-06-23) | — | 3.28 Mirage cycle; notes also cover the concurrent **Return of the Ancestors** event league |
 | 3.28.0 | League launch | _(add when bookmarked)_ | https://www.poewiki.net/wiki/Version_3.28.0 | 3.28 Mirage |
 | 3.27.0 | League launch | _(add when bookmarked)_ | https://www.poewiki.net/wiki/Version_3.27.0 | 3.27 Keepers of the Flame |

@@ -82,6 +82,7 @@ notes / balance changes) for each recent league. Fetch via `mcp__poemcp__fetch_w
 
 | Patch | League page | Version (patch notes) |
 |---|---|---|
+| **3.29 Curse of the Allflame** | https://www.poewiki.net/wiki/Curse_of_the_Allflame_league _(pending)_ | **Forum (primary):** https://www.pathofexile.com/forum/view-thread/3985332 · wiki https://www.poewiki.net/wiki/Version_3.29.0 _(pending)_ |
 | 3.28 Mirage | https://www.poewiki.net/wiki/Mirage_league | https://www.poewiki.net/wiki/Version_3.28.0 |
 | 3.27 Keepers of the Flame | https://www.poewiki.net/wiki/Keepers_of_the_Flame | https://www.poewiki.net/wiki/Version_3.27.0 |
 | 3.26 Secrets of the Atlas | https://www.poewiki.net/wiki/Secrets_of_the_Atlas | https://www.poewiki.net/wiki/Version_3.26.0 |
@@ -91,6 +92,24 @@ notes / balance changes) for each recent league. Fetch via `mcp__poemcp__fetch_w
 ---
 
 ## Index entries
+
+### 3.29 — Curse of the Allflame  (launches 2026-07-24; past ALL models' cutoffs → always verify / use cache)
+Full cache: [`reference_data/leagues/curse_of_the_allflame_3.29.md`](leagues/curse_of_the_allflame_3.29.md) —
+**pre-launch, from the 2026-07-16 patch notes**; its **drill-down ledger** tracks per-line depth/confidence.
+Videos + community surveys not yet ingested; wiki not yet populated.
+
+| Mechanic / item / system | What it is (one line) | Where / verify via |
+|---|---|---|
+| **League mechanic: seafloor Voyages** | Valerie/The Sovereign — dive the ocean floor under Allflame lantern light; Charts→Voyages; ship-heart item-split (keep one ghost outcome); **Ducats** warp items. ⚠ "Allflame" here ≠ the 3.24 Allflame Embers corpse item | cache §Mechanic |
+| **🔴 GEM SOCKET REWORK (core)** | Any gem fits any socket colour; +10% quality on colour match; sockets default WHITE; Chromatics force one non-white socket. **All recolouring/off-colour intuition is stale** | cache §Rule changes #1 — VERIFY exact rules before advising |
+| **Minions never pause while attacking** | All non-spectre minions — explicit big DPS gain (zombies/skeletons/SRS/golems) | cache §Minion balance |
+| **Spectre life nerf** | "No Spectre should have more life than a Meatsack" | cache §Minion balance |
+| **Triad Grip reworked** | Converts per **socketed gem colour** (empty socket→Chaos), not socket colour | cache §Minion balance |
+| **Abyss / Legion / Talisman revamps** | Pre-opened soul-fed pits + Abyss boss; Legion Crystals of Permutation; Talismans = enchantments, uncorrupted | cache §Rule changes #4-6 |
+| **Mercenaries → core + Luminary (Scion)** | Act 3+; wagered duels; mercs don't count as party members; Luminary ascendancy hires permanently | cache §Rule changes #7 |
+| **New gems** | 4 "Pact of X" Exceptional skills; Coursing Currents + Crystalfall Exceptional supports; Mana-Infused Staff; 4 Str/Int transfigured (incl. Divine Blast of Radiance) | cache §New content |
+| **15 new uniques / 3 div cards / Pearlescent Amulet / 2 Bloodline classes** | Counts only — names not in notes | cache ledger (headline — enumerate via wiki/videos) |
+| **Absolution cast 0.75→0.65s; Companionship/Communion supports; Maw of Mischief mana-efficiency** | Minion-line balance details | cache §Minion balance |
 
 ### 3.28 — Mirage league  (past ALL models' cutoffs → always verify / use cache)
 Full cache: [`reference_data/leagues/mirage.md`](leagues/mirage.md).

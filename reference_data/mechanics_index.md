@@ -88,6 +88,21 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 > *only* during Ancestor/Phrecia events — see the `event-only` row below. In normal/core play the standard
 > 19 ascendancies are the only set.
 
+## 3.29 Curse of the Allflame — effective at launch 2026-07-24 (⚠ NOT live yet; fold into sections above at the transition)
+Source: patch notes 2026-07-16 → digest + drill-down ledger in `leagues/curse_of_the_allflame_3.29.md`.
+
+| Mechanic | Scope (from 7/24) | Current state | Verify / detail |
+|---|---|---|---|
+| **Allflame seafloor Voyages** (Valerie/The Sovereign/Charts/Ducats) | `challenge-league` (3.29) | The 3.29 league mechanic — underwater exploration + item transformation. ⚠ NOT the 3.24 "Allflame Embers" corpse item — name collision | cache §Mechanic |
+| **Gem socket colour system** | `core` **reworked 3.29** 🔴 | Any gem in any socket; +10% quality on match; white default; Chromatics force one non-white. Old recolour/off-colour intuition = stale for ALL characters incl. Standard | cache §Rule changes #1 (verify exact rules) |
+| **Minion attack pausing** | `core` **removed 3.29** (buff) | Non-spectre minions never pause while attacking — big army-DPS gain | cache §Minion balance |
+| **Spectre life** | `nerfed` 3.29 | Capped ~Meatsack level — spectre-tank archetypes hurt | cache §Minion balance |
+| **Abyss** | `core` **reworked 3.29** | Pits pre-opened, fed with slain souls; new Abyss boss + exclusive uniques | cache §Rule changes #4 |
+| **Legion** | `core` **reworked 3.29** | Crystals of Permutation (Domain) + Enshrouding Crystals (maps) — enshrouded-unique transformation | cache §Rule changes #5 |
+| **Talismans** | `core` **reworked 3.29** | Enchantment mods, uncorrupted by default; red-beast/bestiary sourced; uniques via Black Mórrigan | cache §Rule changes #6 |
+| **Mercenaries of Trarthus** | `core` (cored 3.29; was 3.26 league) | Act 3+; wagered duels; not party members; **Luminary** Scion ascendancy hires permanently | cache §Rule changes #7 |
+| **Triad Grip** | `reworked` 3.29 | Conversion keys off **socketed gem colour** (empty→Chaos), not socket colour | cache §Minion balance |
+
 ## Challenge-league mechanics (live only in 3.28 Mirage — gone in 3.29 unless cored)
 
 | Mechanic | Scope | Current state | Verify / detail |
