@@ -56,8 +56,9 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 | `nerfed` / `reworked` | Still present but materially changed | Assassin rework (3.27) |
 
 > **Current context anchors (update at each league roll):** live **challenge league** = **3.28 Mirage**
-> (2026-03-06 → ~2026-07-20); next challenge league = **3.29** (launches 2026-07-24); concurrent **event
-> league** = **Return of the Ancestors** (2026-06-25 → 07-16, fresh-start characters only).
+> (2026-03-06 → **ends 2026-07-20 3PM PDT**; does NOT go core — see freshness_index.md end-of-league entry);
+> next challenge league = **3.29 Curse of the Allflame** (launches 2026-07-24); ~~event league Return of the
+> Ancestors~~ **ENDED 2026-07-16** — its event-only mechanics are now `removed` (section below).
 
 > **Canonical enumeration sources (two complementary views):**
 > - Mechanic-keyed: [`League_mechanics`](https://www.poewiki.net/wiki/League_mechanics) — **every league
@@ -98,13 +99,18 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 | **Volatile Vaal Orb** | `challenge-league` (Mirage) | Reroll unique mod values OR destroy it | `leagues/mirage.md` |
 | **Heroic Tragedy** (timeless jewel — Kalguur line) | `challenge-league` (Mirage) ⚠verify | Kalguur conversions (not Karui) | `leagues/mirage.md` |
 
-## Event-only mechanics (Return of the Ancestors — fresh-start chars, ~2026-06-25 → 07-16)
+## Event-only mechanics (Return of the Ancestors — ❌ ENDED 2026-07-16, all `removed`)
+> 🔴 **The event ended 2026-07-16 3PM PDT.** Every row below is now `removed` — it does NOT exist for any live
+> character (Mirage, Standard, or 3.29). Event characters migrated to Standard **lose these** (Forbidden Tattoos
+> deleted; the Scavenger/Phrecian ascendancy gone → an ascendancy-less Scion). Kept here as history + as the
+> re-scope record. ⚠ ToTA is the one to watch: it's *recurred* before (base-game 3.22, this event) — if it
+> returns to core or a future event, re-scope it then; don't assume "removed forever."
 
-| Mechanic | Scope | Current state | Verify / detail |
+| Mechanic | Scope (post-2026-07-16) | Current state | Verify / detail |
 |---|---|---|---|
-| **Forbidden Tattoos** | `event-only` | NOT class-restricted — splice another class's random ascendancy notable; shared limit 1; can strategically disable unwanted ascendancy passives; deleted on migration | `leagues/return_of_the_ancestors.md` |
-| **Phrecian alternate ascendancies (the 19)** | `event-only` | **Binary set-swap**: the entire normal ascendancy set is replaced by a parallel set of **19 alternates** (3 per class, Scion 1) — one whole set active or the other, never mixed. Normal ascendancy intuition does not apply. Full list in the cache. | `leagues/return_of_the_ancestors.md` |
-| **Trial of the Ancestors (ToTA) return** | `event-only` | Re-enabled via drop-anywhere Silver Coins → Halls of the Dead tournament; tattoos/rewards farmable | `leagues/return_of_the_ancestors.md` |
+| **Forbidden Tattoos** | `removed` (was `event-only`; event ended 2026-07-16) | Deleted on migration to Standard. Gone for all live characters. | `leagues/return_of_the_ancestors.md` (historical) |
+| **Phrecian alternate ascendancies (the 19)** | `removed` (was `event-only`; event ended 2026-07-16) | Binary set-swap of the 19 ascendancies — **event-only, now gone**. Migrated Scions/etc. keep the char but lose the alternate ascendancy. Normal ascendancy set applies everywhere else. | `leagues/return_of_the_ancestors.md` (historical) |
+| **Trial of the Ancestors (ToTA) return** | `removed` (was `event-only`; event ended 2026-07-16) | Silver Coins / Halls of the Dead gone with the event. ⚠ ToTA has recurred before — re-scope if it comes back. | `leagues/return_of_the_ancestors.md` (historical) |
 
 > ⚠ **Event entries are fresh-start & time-boxed.** They apply ONLY to characters made inside the event and
 > expire ~2026-07-16. **Nothing transfers in from Mirage or out to 3.29** — so existing Mirage characters and
