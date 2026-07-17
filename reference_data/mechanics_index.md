@@ -1,5 +1,5 @@
 ---
-maintained: 2026-06-29
+maintained: 2026-07-16
 purpose: Mechanic-keyed registry of PoE mechanics/systems — each one's lifecycle (introduced → changed → removed/returned) and, critically, its CURRENT SCOPE, so analyses can filter mechanics to a character's actual context and not bleed league/event data into the wrong build.
 committed: yes (gitignore exception — curated, complements freshness_index.md)
 ---
