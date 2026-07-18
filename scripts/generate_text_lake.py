@@ -276,6 +276,9 @@ Regenerate: `python scripts/generate_text_lake.py` (re-run after every PoB submo
     ones (e.g. Catarina, Farrul, Aul, Olroth, Warlock, Primalist...). Before recommending
     any ASC-* node, verify its ascendancy is live in the target league (core classes +
     current-league additions only) — cf. mechanics_index scope-tagging.
+    ANOINT-ONLY WARNING: some NOTABLE rows are anoint-only nodes that do NOT physically
+    exist on the tree (e.g. Hollow Effigy) — tree data doesn't distinguish them. Before
+    treating a notable as allocatable, verify placement (get_tree_node / poedb).
   - uniques.txt: name, base, source-file, mods (ALL variants kept, {{variant:N}} markers
     retained, legend appended as {{variants: ...}}; metadata lines stripped)
   - gems.txt: kind, name, tagString, variantId (per-level stat text is runtime-only —
