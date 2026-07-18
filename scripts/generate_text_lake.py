@@ -193,8 +193,10 @@ def gen_passives(tree_version):
 
 
 # ---------------------------------------------------------------- uniques
+# NOTE: "Requires Level"/"LevelReq" are deliberately KEPT (useful for leveling-gear
+# sweeps; their absence caused a stale-req error on 2026-07-18).
 UNIQ_META = re.compile(
-    r"^(Requires Level |LevelReq:|Implicits:|Source:|Upgrade:|League:|"
+    r"^(Implicits:|Source:|Upgrade:|League:|"
     r"Selected Variant|Selected Alt Variant|Has Alt Variant|Variant: )"
 )
 BLOCK = re.compile(r"\[\[(.*?)\]\]", re.DOTALL)
@@ -280,7 +282,11 @@ Regenerate: `python scripts/generate_text_lake.py` (re-run after every PoB submo
     exist on the tree (e.g. Hollow Effigy) — tree data doesn't distinguish them. Before
     treating a notable as allocatable, verify placement (get_tree_node / poedb).
   - uniques.txt: name, base, source-file, mods (ALL variants kept, {{variant:N}} markers
-    retained, legend appended as {{variants: ...}}; metadata lines stripped)
+    retained, legend appended as {{variants: ...}}; level-req lines KEPT; other metadata stripped)
+    REBASED-UNIQUE WARNING: the base column shows the FIRST base listed — for uniques whose
+    base changed across patches (e.g. Ashcaller Quartz Wand -> Goat's Horn) that is the
+    LEGACY base; the current base appears among the {{variant:N}}-marked lines. Trade-search
+    rebased uniques by NAME, not base.
   - gems.txt: kind, name, tagString, variantId (per-level stat text is runtime-only —
     use pob-mcp get_gem_detail)
 
