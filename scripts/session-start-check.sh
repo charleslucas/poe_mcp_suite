@@ -139,6 +139,19 @@ for f in playbooks/*.md; do
 done
 [ -n "$noskill" ] && append "Playbook(s) missing a wrapper skill in .claude/skills/:$noskill (every domain playbook gets one — playbooks/README.md §7)."
 
+# --- 6. Text lake freshness (grep-able game-text corpus; see reference_data/README.md) ---
+# Regenerated from the PathOfBuilding submodule's data files — flag when missing
+# or when the submodule's data is newer than the last generation. Output is
+# local-only (legal_considerations.md); nagging until regenerated is intended.
+if [ -d "PathOfBuilding/src/Data" ]; then
+  lake_manifest="reference_data/text_lake/MANIFEST.md"
+  if [ ! -f "$lake_manifest" ]; then
+    append "Text lake not generated — run 'python scripts/generate_text_lake.py' (grep-able game-text corpus; see reference_data/README.md)."
+  elif [ -n "$(find PathOfBuilding/src/Data PathOfBuilding/src/TreeData -name '*.lua' -newer "$lake_manifest" -print -quit 2>/dev/null)" ]; then
+    append "Text lake is stale (PoB submodule data changed since last generation) — re-run 'python scripts/generate_text_lake.py'."
+  fi
+fi
+
 # Stdout from a SessionStart hook is injected into model context.
 # Empty output = nothing injected = invisible when everything is current.
 if [ -n "$out" ]; then

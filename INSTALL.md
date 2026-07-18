@@ -352,6 +352,20 @@ Same JSON block in:
 
 ---
 
+## Generate the local text lake (post-clone, recommended)
+
+After submodules are initialized, generate the **text lake** — a local, grep-able flat-text corpus of PoE game text (all passive/ascendancy nodes, uniques, gems) parsed from the `PathOfBuilding/` submodule's data files:
+
+```bash
+python scripts/generate_text_lake.py
+```
+
+Output lands in `reference_data/text_lake/` (**gitignored — local-only, never commit**; it contains expressive game content, see [`legal_considerations.md`](legal_considerations.md)). It enables exhaustive single-`grep` concept sweeps ("everything minion-related") that the per-category MCP search tools can't guarantee.
+
+**Re-run after every PathOfBuilding submodule update** (each game patch). The SessionStart hook (`scripts/session-start-check.sh`) detects a missing or stale lake and reminds you automatically.
+
+---
+
 ## Verifying the installation
 
 For a thorough, repeatable check after any fresh clone, `git pull`, submodule bump, or `.mcp.json` change, load [`playbooks/verify-install.md`](playbooks/verify-install.md) and run the four-tier suite. It exercises the filesystem layout, then each MCP server in turn, and ends with a single green/red summary table. Includes a regression test for the MapStash crash fix.
