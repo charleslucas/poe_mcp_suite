@@ -272,6 +272,10 @@ Regenerate: `python scripts/generate_text_lake.py` (re-run after every PoB submo
 - source: PathOfBuilding submodule @ src/Data + src/TreeData
 - format: tab-separated fields, one entity per line, stats joined with " | "
   - passives.txt: TYPE, name, ascendancy, #id, stats (masteries include all effects)
+    SCOPE WARNING: PoB's tree data bundles EVENT/ALTERNATE ascendancies alongside core
+    ones (e.g. Catarina, Farrul, Aul, Olroth, Warlock, Primalist...). Before recommending
+    any ASC-* node, verify its ascendancy is live in the target league (core classes +
+    current-league additions only) — cf. mechanics_index scope-tagging.
   - uniques.txt: name, base, source-file, mods (ALL variants kept, {{variant:N}} markers
     retained, legend appended as {{variants: ...}}; metadata lines stripped)
   - gems.txt: kind, name, tagString, variantId (per-level stat text is runtime-only —
