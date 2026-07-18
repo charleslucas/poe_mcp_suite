@@ -126,6 +126,7 @@ When a fresh league launches, generate the per-league reference doc so future se
 3. **Generate index entries for the new mechanics** (same sub-agent or a second one). Enumerate from the wiki `Version_X.Y.0` page ("New Content and Features" section) plus the league page, cross-checked against the canonical lifecycle list at [`League_mechanics`](https://www.poewiki.net/wiki/League_mechanics) (every mechanic, active and removed). For each new mechanic: add a patch-keyed entry to `freshness_index.md` and a scope-tagged row (`challenge-league` until GGG cores it) to `mechanics_index.md`. Also record any removals/reworks the notes announce (removals break assumptions as hard as additions). Community-survey is for consensus *later*, not enumeration — the wiki pages are the enumeration source.
 4. Update `POE_LEAGUE` in `.mcp.json` to the new league name *only if* the user is creating a character there. If they're staying in Standard, leave POE_LEAGUE alone.
 5. Restart Claude Code so the env var change takes effect.
+6. **Sync PoB + regenerate the text lake** as soon as the new-league PoB release ships (usually launch day / within a few days — NOT automatically at league boundary, see Pitfalls): `git -C PathOfBuilding fetch upstream && git -C PathOfBuilding merge upstream/dev` (then push the submodule + suite pointer per CLAUDE.md protocol), then `python scripts/generate_text_lake.py`. This is the moment the lake picks up the new league's uniques/tree/ascendancy text — the SessionStart hook flags staleness, but at league roll do it proactively; launch-validation greps depend on it.
 
 Once a character is created and imported via `lua_import_character`, follow the standard post-import checklist (see `pob-mcp/CLAUDE.md` → "After lua_import_character"): ask about bandits, quest passives, pantheon.
 
@@ -213,6 +214,7 @@ When the checklist is complete, report:
 | Knowledge anchors rolled (freshness index, mechanics index, memories) | ✓ / pending (re-scoping may wait on patch notes) |
 | Archetype trunks refreshed (watchlists resolved, plans archived + league-bumped) | ✓ / pending (waits on patch notes) / N/A (no active archetypes) |
 | `get_active_leagues` shows no ⚠ | ✓ / ⚠ persists (investigate) |
+| PoB submodule synced + text lake regenerated | ✓ / pending (waits on the new-league PoB release — hook nags meanwhile) |
 
 ---
 
@@ -221,4 +223,4 @@ When the checklist is complete, report:
 - **Don't update `POE_LEAGUE` before the user is ready to act on Standard prices.** Once flipped, the trade tools query Standard by default. If the user is still trying to liquidate Mirage stash, leave it pointing at Mirage until they're done.
 - **Hardcore characters go to Hardcore, not Standard.** If the user runs HC, double-check `get_active_leagues`'s parent column — don't assume "Standard" for everything.
 - **Restart Claude Code, not just `/reload`.** MCP servers are subprocesses spawned at session start. Env-var changes need a full process restart.
-- **PoB submodule updates are NOT aligned with league boundaries.** PoB updates on patches (~weekly during a league, irregular otherwise). Don't expect a league transition to also bring a tree/mod update.
+- **PoB submodule updates are NOT aligned with league boundaries.** PoB updates on patches (~weekly during a league, irregular otherwise). Don't expect a league transition to also bring a tree/mod update. Corollary: the **text lake** (Step 4.6) stays on old-league data until the new-league PoB release lands — until then, lake greps answer for the *previous* patch (check `text_lake/MANIFEST.md`'s tree-version stamp before trusting a sweep for new-league content).
