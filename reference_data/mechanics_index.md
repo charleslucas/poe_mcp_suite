@@ -104,7 +104,7 @@ Source: patch notes 2026-07-16 → digest + drill-down ledger in `leagues/curse_
 | **Triad Grip** | `reworked` 3.29 | Conversion keys off **socketed gem colour** (empty→Chaos), not socket colour | cache §Minion balance |
 | **Atlas Anomalies** (NEW endgame system) | `core` (new 3.29) | Manifest on Atlas after Voidstone maps; no map item, no Atlas-tree effect, no fragments, often revisitable, quadrant-tied. Houses Cadiro shop, Mana Forge, Heist/Sacred-Grove/strongbox variants | cache §Content-reveal → Atlas Anomalies (⚠ verify vs notes Endgame section) |
 | **Nameless Seer + Reflecting Mists** | `reworked` 3.29 (relocated) | **No longer spawn in normal maps** — anomaly-only now. Scrying moved off the Seer to a new tradeable **Scrying Orb** | cache §Content-reveal |
-| **Vestige uniques** (Legion) | `core` (new 3.29) | Transform an enshrouded unique → another of the same slot, keeping a "vestigial implicit" (e.g. Shaper's Touch → Maligaro's Virtuosity) | cache §Content-reveal (names TBD) |
+| **Vestige uniques** (Legion) | `core` (new 3.29) | Transform an enshrouded unique → another of the same slot, keeping a "vestigial implicit" (e.g. Shaper's Touch → Maligaro's Virtuosity). ⚠ **"Vestige" is the reveal-VIDEO's term**; the written notes describe the same mechanic as **"Crystals of Permutation"** and never say "Vestige" (confirmed 0 hits, raw-HTML grep 2026-07-17). Mechanic real + dual-sourced; the *name* + the Shaper's→Maligaro's example are video-only | cache §Content-reveal + §Reconciliations #2 (RESOLVED) |
 
 ## Challenge-league mechanics (live only in 3.28 Mirage — gone in 3.29 unless cored)
 
