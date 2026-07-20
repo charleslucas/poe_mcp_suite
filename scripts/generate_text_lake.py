@@ -238,6 +238,64 @@ def gen_gems():
     return lines
 
 
+# ---------------------------------------------------------------- mods
+# Craftable/rollable affix pools. These live in Data/Mod*.lua — NOT in the
+# passives/uniques/gems the other categories index — so "cannot deal X",
+# "Minions convert fire to chaos", corrupted/scourge/eldritch enablers etc.
+# are only greppable here. Deduped by the game's own tier `group` (one line per
+# mod family, highest-tier text kept). ModItemExclusive (unique-only mods) is
+# skipped — already covered by uniques.txt; ModCache is derived — skipped.
+MOD_FILES = [
+    "ModExplicit", "ModImplicit", "ModCorrupted", "ModEldritch", "ModScourge",
+    "ModVeiled", "ModDelve", "ModSynthesis", "ModFoulborn", "ModMaster",
+    "ModTincture", "ModJewel", "ModJewelAbyss",
+]
+
+
+def gen_mods():
+    seen = {}  # (file, group, type) -> aggregate
+    for fname in MOD_FILES:
+        path = POB / "Data" / f"{fname}.lua"
+        if not path.exists():
+            continue
+        data = LuaParser(path.read_text(encoding="utf-8")).parse()
+        for _, m in data.items():
+            if not isinstance(m, dict):
+                continue
+            texts = [m[k] for k in sorted(k for k in m if isinstance(k, int))]
+            texts = [one_line(t) for t in texts if isinstance(t, str) and t.strip()]
+            if not texts:
+                continue
+            text = " | ".join(texts)
+            atype = m.get("type", "") or "-"
+            group = m.get("group") or text  # tier family; fall back to text
+            wk = lua_list(m.get("weightKey", {}))
+            wv = lua_list(m.get("weightVal", {}))
+            classes = {k for k, v in zip(wk, wv)
+                       if isinstance(v, (int, float)) and v > 0 and k != "default"}
+            tags = set(lua_list(m.get("modTags", {})))
+            lvl = m.get("level", 0) or 0
+            key = (fname, group, atype)
+            agg = seen.get(key)
+            if agg is None:
+                seen[key] = {"text": text, "type": atype, "classes": set(classes),
+                             "tags": set(tags), "tiers": 1, "lvl": lvl}
+            else:
+                agg["tiers"] += 1
+                agg["classes"].update(classes)
+                agg["tags"].update(tags)
+                if lvl > agg["lvl"]:  # keep highest-tier text as representative
+                    agg["lvl"], agg["text"] = lvl, text
+    lines = []
+    for (fname, _group, _atype), a in seen.items():
+        cls = ",".join(sorted(a["classes"])) if a["classes"] else "any"
+        tg = ",".join(sorted(a["tags"])) if a["tags"] else "-"
+        src = fname.replace("Mod", "", 1)
+        lines.append(f"{src}\t{a['type']}\t{a['text']}\t[{cls}]\t{{{tg}}}\t{a['tiers']}t")
+    lines.sort(key=lambda x: (x.split("\t")[0], x.split("\t")[2]))
+    return lines
+
+
 # ---------------------------------------------------------------- main
 def main():
     ap = argparse.ArgumentParser()
@@ -257,6 +315,7 @@ def main():
         ("passives.txt", lambda: gen_passives(tree_version)),
         ("uniques.txt", gen_uniques),
         ("gems.txt", gen_gems),
+        ("mods.txt", gen_mods),
     ]:
         lines = gen()
         (OUT / fname).write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -289,6 +348,15 @@ Regenerate: `python scripts/generate_text_lake.py` (re-run after every PoB submo
     rebased uniques by NAME, not base.
   - gems.txt: kind, name, tagString, variantId (per-level stat text is runtime-only —
     use pob-mcp get_gem_detail)
+  - mods.txt: source, affix-type, mod text, [item classes it can roll on], {{modTags}}, tierCount
+    Rollable/craftable AFFIX pools (Explicit/Implicit/Corrupted/Eldritch/Scourge/Veiled/Delve/
+    Synthesis/Foulborn/Master/Tincture/Jewel/JewelAbyss). Deduped by the game's tier `group`
+    (one line per mod family; highest-tier text shown — exact per-tier values via
+    search_crafting_mods / craftofexile). This is where "cannot deal X", corrupted-implicit and
+    league-mechanic enablers live — they are NOT in uniques/passives/gems. ⚠ SCOPE: includes
+    league-mechanic mod pools (Scourge/Synthesis/Delve/Foulborn/Eldritch) that may not be
+    obtainable in the current league — verify availability. ModItemExclusive (unique-only mods)
+    excluded (covered by uniques.txt); numeric values are the top tier only.
 
 | file | lines |
 |---|---|
