@@ -57,9 +57,11 @@ and wrongly.
 | **Haiku 4.5** (`claude-haiku-4-5`) | **≤3.24 (unconfirmed)** | — | ⚠ cutoff not documented — treat conservatively; verify anything 3.25+ |
 | **Fable 5** (`claude-fable-5`) | **3.26** reliable; **3.27** nominal-but-thin | Jan 2026 | Calibrated 2026-07-08 by in-session self-probe (contamination-aware: tested for detail *beyond* the loaded caches, not mere recognition). Deep 3.25–3.26 (produced Faustus currency exchange, merc subdue→recruit — absent from our caches); **zero independent 3.27 detail → verify-first**; blind 3.28+. Only current model with training knowledge of the original **Feb-2025 Legacy of Phrecia event** (Idols; the 19 alt ascendancies, low per-node detail). PoE recency ≈ Opus 4.8 — its edge is reasoning, not fresher game data. **Subscription access ends 2026-07-12** (an earlier "retired 2026-07-07" note here was wrong — user confirmed live access 2026-07-08). |
 
-> Current league is **3.28 Mirage** — past EVERY model's cutoff. **3.27** is past every model's *reliable*
-> window (Fable holds it nominally but with thin detail — still verify). **3.26** is within Opus/Fable, past
-> Sonnet 4.6/Haiku. When in doubt, verify.
+> **BETWEEN LEAGUES (as of 2026-07-21):** **3.28 Mirage ENDED 2026-07-20** (chars → Standard, POE_LEAGUE →
+> Standard); **3.29 Curse of the Allflame launches 2026-07-24** (not live yet). Both are past EVERY model's
+> cutoff → always verify / use the 3.29 cache. **3.27** is past every model's *reliable* window (Fable holds it
+> nominally but with thin detail — still verify). **3.26** is within Opus/Fable, past Sonnet 4.6/Haiku. When in
+> doubt, verify.
 
 > **Model not in this table** (new, experimental, or short-lived): treat its PoE cutoff as unconfirmed —
 > verify anything 3.25+ from live sources until a calibrated row is added. Never assume a newer model

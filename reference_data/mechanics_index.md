@@ -55,10 +55,12 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 | `disabled-this-league` | Normally core, but off in the current league | Crucible (absent in Mirage) |
 | `nerfed` / `reworked` | Still present but materially changed | Assassin rework (3.27) |
 
-> **Current context anchors (update at each league roll):** live **challenge league** = **3.28 Mirage**
-> (2026-03-06 → **ends 2026-07-20 3PM PDT**; does NOT go core — see freshness_index.md end-of-league entry);
-> next challenge league = **3.29 Curse of the Allflame** (launches 2026-07-24); ~~event league Return of the
-> Ancestors~~ **ENDED 2026-07-16** — its event-only mechanics are now `removed` (section below).
+> **Current context anchors (update at each league roll):** **BETWEEN LEAGUES (as of 2026-07-21).**
+> ~~live challenge league = 3.28 Mirage~~ **Mirage ENDED 2026-07-20 3PM PDT** (did NOT go core) — all its
+> `challenge-league` mechanics re-scoped `removed` (section below); characters migrated to Standard, POE_LEAGUE
+> flipped to Standard. Next challenge league = **3.29 Curse of the Allflame** — **launches 2026-07-24, not live
+> yet**; its mechanics stay scoped `challenge-league (3.29)` and become the live anchor at launch. ~~event
+> league Return of the Ancestors~~ **ENDED 2026-07-16** — its event-only mechanics are `removed` (section below).
 
 > **Canonical enumeration sources (two complementary views):**
 > - Mechanic-keyed: [`League_mechanics`](https://www.poewiki.net/wiki/League_mechanics) — **every league
@@ -106,16 +108,22 @@ Source: patch notes 2026-07-16 → digest + drill-down ledger in `leagues/curse_
 | **Nameless Seer + Reflecting Mists** | `reworked` 3.29 (relocated) | **No longer spawn in normal maps** — anomaly-only now. Scrying moved off the Seer to a new tradeable **Scrying Orb** | cache §Content-reveal |
 | **Vestige uniques** (Legion) | `core` (new 3.29) | Transform an enshrouded unique → another of the same slot, keeping a "vestigial implicit" (e.g. Shaper's Touch → Maligaro's Virtuosity). ⚠ **"Vestige" is the reveal-VIDEO's term**; the written notes describe the same mechanic as **"Crystals of Permutation"** and never say "Vestige" (confirmed 0 hits, raw-HTML grep 2026-07-17). Mechanic real + dual-sourced; the *name* + the Shaper's→Maligaro's example are video-only | cache §Content-reveal + §Reconciliations #2 (RESOLVED) |
 
-## Challenge-league mechanics (live only in 3.28 Mirage — gone in 3.29 unless cored)
+## Ex-Mirage challenge-league mechanics (❌ league ENDED 2026-07-20 — all `removed`, did NOT go core)
+
+> 🔴 **Mirage ended 2026-07-20 3PM PDT and does NOT go core** (GGG end-of-league post, read 2026-07-16 — see
+> freshness_index.md end-of-league entry). Every row below is now `removed`: it does NOT exist for any live
+> character (Standard or 3.29). Do not recommend any of these to a Standard or 3.29 build. (Astrolabes and the
+> Exceptional Support gems were the *exceptions* that went `core` — they're not league-gated, so not listed here.)
+> If GGG revives any of these in a future league, re-scope it then; don't assume "removed forever."
 
 | Mechanic | Scope | Current state | Verify / detail |
 |---|---|---|---|
-| **Djinn coins** | `challenge-league` (Mirage) | Free random support on a lvl-20 gem (Power/Skill/Knowledge); dual-form unique swap (Restoration/Desecration) | `leagues/mirage.md`; `[[mirage-djinn-coins]]` |
-| **Mirage sub-zones** | `challenge-league` (Mirage) | Free a Djinn → duplicate-mechanic sub-zone for exclusive drops | `leagues/mirage.md` |
-| **Essence of Desolation** | `challenge-league` (Mirage) | New essence → slot-specific reforge | `leagues/mirage.md` |
-| **Screams of the Desiccated** (belt) | `challenge-league` (Mirage) | Shrine-buff-while-flask-free belt | `leagues/mirage.md` |
-| **Volatile Vaal Orb** | `challenge-league` (Mirage) | Reroll unique mod values OR destroy it | `leagues/mirage.md` |
-| **Heroic Tragedy** (timeless jewel — Kalguur line) | `challenge-league` (Mirage) ⚠verify | Kalguur conversions (not Karui) | `leagues/mirage.md` |
+| **Djinn coins** | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | Free random support on a lvl-20 gem (Power/Skill/Knowledge); dual-form unique swap (Restoration/Desecration). Gone with Mirage. | `leagues/mirage.md` (historical); `[[mirage-djinn-coins]]` |
+| **Mirage sub-zones** | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | Free a Djinn → duplicate-mechanic sub-zone for exclusive drops | `leagues/mirage.md` (historical) |
+| **Essence of Desolation** | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | New essence → slot-specific reforge | `leagues/mirage.md` (historical) |
+| **Screams of the Desiccated** (belt) | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | Shrine-buff-while-flask-free belt | `leagues/mirage.md` (historical) |
+| **Volatile Vaal Orb** | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | Reroll unique mod values OR destroy it | `leagues/mirage.md` (historical) |
+| **Heroic Tragedy** (timeless jewel — Kalguur line) | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | Kalguur conversions (not Karui) | `leagues/mirage.md` (historical) |
 
 ## Event-only mechanics (Return of the Ancestors — ❌ ENDED 2026-07-16, all `removed`)
 > 🔴 **The event ended 2026-07-16 3PM PDT.** Every row below is now `removed` — it does NOT exist for any live
