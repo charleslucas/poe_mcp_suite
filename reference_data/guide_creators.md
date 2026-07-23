@@ -28,7 +28,7 @@ ground truth. Their builds are still patch-dated secondary sources — verify me
 
 | Creator | Live survey source | Focus / philosophy | Notable archetypes | Digested in library | Last surveyed |
 |---|---|---|---|---|---|
-| **BalorMage** | [YouTube @Balormage](https://www.youtube.com/@Balormage/videos) · [PoE Vault author](https://www.poe-vault.com/guides) · [poebuilds.cc](https://www.poebuilds.cc/poe/author/balormage/) | **QoL / ease-of-use over max DPS** — league-starter-friendly, low-button, returning-player oriented. Veteran (playing since Bloodlines, content since 2015; co-hosts the *Fated Connections* podcast). | Poison SRS Necromancer (long-running signature), Holy Relic Necromancer, EA Totem Hierophant | ✅ [`holy-relic-necromancer/`](../character_data/guides/holy-relic-necromancer/) (he authored the digested guide) | 2026-07-22 |
+| **BalorMage** | [YouTube @Balormage](https://www.youtube.com/@Balormage/videos) · [PoE Vault author](https://www.poe-vault.com/guides) · [poebuilds.cc](https://www.poebuilds.cc/poe/author/balormage/) | **QoL / ease-of-use over max DPS** — league-starter-friendly, low-button, returning-player oriented. Veteran (playing since Bloodlines, content since 2015; co-hosts the *Fated Connections* podcast). | Poison SRS Necromancer (long-running signature), Holy Relic Necromancer, EA Totem Hierophant | ✅ [`holy-relic-necromancer/`](../character_data/guides/holy-relic-necromancer/) + [`poison-srs-necromancer/`](../character_data/guides/poison-srs-necromancer/) (both his guides) | 2026-07-22 |
 
 ---
 
@@ -47,8 +47,8 @@ ground truth. Their builds are still patch-dated secondary sources — verify me
   [`character_data/guides/holy-relic-necromancer/`](../character_data/guides/holy-relic-necromancer/) (see that
   folder's README for the cross-check against other sources; single-author guides warrant corroboration).
 - **Seed link (this entry's origin):** [PoE Vault — Poison SRS Necromancer](https://www.poe-vault.com/guides/balormage-summon-raging-spirits-necromancer-build-guide)
-  (3.29 Curse of the Allflame, updated 2026-07-21) · PoB: https://pobb.in/kio7xkhMV23W . Not yet digested — a
-  candidate for the guide-analysis skill if you want to build it.
+  (3.29 Curse of the Allflame, updated 2026-07-21) · PoB: https://pobb.in/kio7xkhMV23W . ✅ Digested 2026-07-22
+  → [`poison-srs-necromancer/`](../character_data/guides/poison-srs-necromancer/).
 
 ---
 
