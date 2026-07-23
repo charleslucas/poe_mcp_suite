@@ -3,7 +3,8 @@
 **Purpose:** A bookmark index of *external* sites that list/aggregate many PoE build guides — for
 **discovery** ("what builds exist around skill/mechanic X", "what's the current meta"). This is distinct
 from the per-archetype folders in `character_data/guides/{archetype}/`, which hold guides that have actually
-been **digested** for a specific build.
+been **digested** for a specific build. For discovery keyed on *individual creators* worth surveying
+periodically (rather than aggregator sites), see the sibling [`guide_creators.md`](guide_creators.md).
 
 **Committed (not cached):** this file travels with the suite (gitignore exception, like `freshness_index.md`)
 because a curated source list is useful to every clone — unlike the per-character digested guides, which live

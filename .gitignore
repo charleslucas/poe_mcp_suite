@@ -33,6 +33,9 @@ reference_data/*
 # Mechanic-keyed registry with scope tags (core / challenge-league / event-only / removed / disabled) —
 # committed; the compartmentalization layer that keeps league/event data from bleeding into the wrong build.
 !reference_data/mechanics_index.md
+# Curated registry of build-guide creators/authors worth periodically surveying — committed, useful to
+# every clone (parallels guide_sources.md). Whose new output to check, vs. where to find guides.
+!reference_data/guide_creators.md
 
 # Local game-data extraction scratch space.
 # See legal_considerations.md — most output from pathofexile-dat / bundle extraction is
