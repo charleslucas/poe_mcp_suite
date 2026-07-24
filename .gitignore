@@ -36,6 +36,9 @@ reference_data/*
 # Curated registry of build-guide creators/authors worth periodically surveying — committed, useful to
 # every clone (parallels guide_sources.md). Whose new output to check, vs. where to find guides.
 !reference_data/guide_creators.md
+# Curated vendor-recipe reference — committed, useful to every clone. Vendor recipes are server-side
+# (NOT in the client bundles/PoB/text lake), so this is manually curated from the wiki, not generated.
+!reference_data/vendor_recipes.md
 
 # Local game-data extraction scratch space.
 # See legal_considerations.md — most output from pathofexile-dat / bundle extraction is
