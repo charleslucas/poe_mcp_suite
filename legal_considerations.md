@@ -158,6 +158,15 @@ Even with strong precedent, the maintainers have chosen a conservative architect
 
 In short: **the fork's published `data.json` mirrors what GGG already publishes** (structure + names + stat references). Anything more content-rich is read by the user's local install at runtime, used in memory, and never persisted to a public repo.
 
+### Clarification: assets *inside* GGG's export repos vs. art from the client
+
+The "Art, icons, sounds — never extracted, never referenced" rule (table above) is specifically about **extracting art from a user's local install** (`Bundles2/Art/…`). It does **not** prohibit the tree-render assets that GGG **themselves include** in the public `skilltree-export` / `atlastree-export` repos — the ascendancy backgrounds, skill sprites, tattoo/mastery effects, etc. (`assets/*.webp|jpg|png`). Those are a different thing on two counts:
+
+1. **They arrive via forking GGG's public repo, not via client datamining.** GitHub's fork license grant (quoted above) explicitly lets us reproduce a public repo's content through forking. Faithfully mirroring GGG's export repo — assets and all — is the same *"mirror what GGG already publishes"* principle that governs `data.json`; we are not the ones who extracted that art from the game.
+2. **GGG publishes them for exactly this use.** The export repos exist so third-party tool developers (PoB, tree planners) can render the passive/atlas tree with the *same* official assets the client uses — i.e., so community GUIs look standardized with the game. Stripping the assets from our fork would defeat that intended use and needlessly diverge us from upstream (complicating every future merge).
+
+So the boundary is: **never extract art from the client; but do faithfully mirror GGG's own published export repos, assets included.** When we bump the `skilltree`/`atlastree` submodules by merging an upstream GGG tag, the asset updates that come along are in-bounds. (Established practice, revisited and reaffirmed 2026-07-24.)
+
 ## Safeguards we maintain
 
 1. **Attribution.** Both forks' READMEs clearly state that the data is derived from Path of Exile by Grinding Gear Games, that GGG holds all rights to the underlying content, and that the fork exists to provide a community-maintained cache of the same kind of structural data GGG already publishes themselves.

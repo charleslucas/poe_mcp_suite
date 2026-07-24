@@ -94,6 +94,9 @@ have their own git history — `git log` inside `skilltree/` or `atlastree/` tel
 
 ## Refresh Policy
 
+> Full cross-suite cascade (PoB→text lake, tree exports, wiki, prices, tools release) lives in the canonical
+> **[`../UPDATING.md`](../UPDATING.md)** data-dependency map. The table below is the `reference_data/`-local view.
+
 | Trigger | Action |
 |---|---|
 | **New PoE league launches** | `git pull` in `skilltree/` and `atlastree/`; re-fetch Eldritch pages |
