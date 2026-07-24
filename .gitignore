@@ -40,6 +40,9 @@ reference_data/*
 # Curated vendor-recipe reference — committed, useful to every clone. Vendor recipes are server-side
 # (NOT in the client bundles/PoB/text lake), so this is manually curated from the wiki, not generated.
 !reference_data/vendor_recipes.md
+# Verified quest→gem-reward / vendor-unlock reference — committed, class-general game data accreted from
+# in-game observation (gem availability is quest-gated, not level-gated). Parallels vendor_recipes.md.
+!reference_data/quest_gem_rewards.md
 
 # Local game-data extraction scratch space.
 # See legal_considerations.md — most output from pathofexile-dat / bundle extraction is

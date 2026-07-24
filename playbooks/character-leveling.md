@@ -224,5 +224,13 @@ full analysis.
 - **Sockets in `add_item` text** use dash notation: `Sockets: B-G-B-R` for a 4-link. Disconnected groups use spaces: `Sockets: B-B B`.
 - **Gem group indices shift on removal.** Always remove from highest index to lowest to avoid off-by-one errors.
 
+### Gem acquisition
+- **Gem availability is quest-gated, not level-gated.** A gem's level number is only its *use* requirement — it
+  won't appear as a quest reward or in a vendor's shop until you complete the **unlocking quest** (e.g. Summon
+  Raging Spirit is a lvl-4 gem but needs *Breaking Some Eggs* done first; verified 3.29). Never write "buy X at
+  level N" in a plan — consult [`reference_data/quest_gem_rewards.md`](../reference_data/quest_gem_rewards.md)
+  (class-general, verified-in-game quest→gem data) and extend it as the character confirms each quest live.
+  After Act 3's **Siosa** (*A Fixture of Fate*), all gems up to your level are buyable, so this bites Acts 1–2.
+
 ### Guides/ conventions
 - Create a guides/ archetype when the build concept is reusable across characters or leagues (not character-specific). Character-specific progression lives in `character_data/{account}/{char}/progression.md`; archetype consensus lives in `guides/{archetype}/README.md`.
