@@ -7,17 +7,16 @@ cd "$(dirname "$0")/.." 2>/dev/null || exit 0
 
 # ── League anchors — rolled by the league-transition playbook (Step 7.4) ────
 # Challenge league (the one POE_LEAGUE tracks) and the next one to launch.
-# STATE 2026-07-21: BETWEEN LEAGUES. Mirage ended 2026-07-20 (chars → Standard,
-# POE_LEAGUE flipped to Standard); 3.29 "Curse of the Allflame" is NOT live yet
-# (launches 2026-07-24). TEMP_LEAGUE/LEAGUE_END are intentionally blank during the
-# gap so check 4 stays silent (it only fires when POE_LEAGUE == TEMP_LEAGUE). At
-# 3.29 launch, Step 4 of the playbook sets TEMP_LEAGUE to the exact tradeable
-# league name + LEAGUE_END to GGG's announced end date (from get_active_leagues),
-# and rolls NEXT_* to the league after 3.29.
-TEMP_LEAGUE="${POE_TEMP_LEAGUE:-}"
+# STATE 2026-07-24: 3.29 "Curse of the Allflame" is LIVE (launched 2026-07-24);
+# POE_LEAGUE flipped to it; AfWednesdayWeatherwax rolled in it. ⏳ LEAGUE_END is
+# still blank — GGG's exact end date needs get_active_leagues (PoB TCP wasn't up
+# at flip time); fill it then. Blank is safe: check 4 skips the proximity warning
+# when LEAGUE_END is empty (end is ~3 months out anyway). NEXT_* cleared — the
+# league after 3.29 (3.30) isn't announced yet.
+TEMP_LEAGUE="${POE_TEMP_LEAGUE:-Curse of the Allflame}"
 LEAGUE_END="${POE_LEAGUE_END:-}"
-NEXT_LEAGUE_START="${POE_NEXT_LEAGUE_START:-2026-07-24}"
-NEXT_LEAGUE_NAME="${POE_NEXT_LEAGUE_NAME:-Curse of the Allflame (3.29)}"
+NEXT_LEAGUE_START="${POE_NEXT_LEAGUE_START:-}"
+NEXT_LEAGUE_NAME="${POE_NEXT_LEAGUE_NAME:-}"
 # Concurrent EVENT league — ends on its own (earlier) date and POE_LEAGUE never
 # points at it, so it needs its own proximity signal (see check 4b).
 # Cleared 2026-07-21: Return of the Ancestors ended 2026-07-16 (char handled); no

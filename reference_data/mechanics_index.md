@@ -55,12 +55,12 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 | `disabled-this-league` | Normally core, but off in the current league | Crucible (absent in Mirage) |
 | `nerfed` / `reworked` | Still present but materially changed | Assassin rework (3.27) |
 
-> **Current context anchors (update at each league roll):** **BETWEEN LEAGUES (as of 2026-07-21).**
-> ~~live challenge league = 3.28 Mirage~~ **Mirage ENDED 2026-07-20 3PM PDT** (did NOT go core) — all its
-> `challenge-league` mechanics re-scoped `removed` (section below); characters migrated to Standard, POE_LEAGUE
-> flipped to Standard. Next challenge league = **3.29 Curse of the Allflame** — **launches 2026-07-24, not live
-> yet**; its mechanics stay scoped `challenge-league (3.29)` and become the live anchor at launch. ~~event
-> league Return of the Ancestors~~ **ENDED 2026-07-16** — its event-only mechanics are `removed` (section below).
+> **Current context anchors (update at each league roll):** **LIVE league = 3.29 Curse of the Allflame**
+> (launched 2026-07-24; POE_LEAGUE flipped to it 2026-07-24). Its mechanics are the live anchor, scoped
+> `challenge-league (3.29)`. ~~3.28 Mirage~~ **ENDED 2026-07-20 3PM PDT** (did NOT go core) — its
+> `challenge-league` mechanics `removed` (section below); Mirage characters remain on Standard. ~~event league
+> Return of the Ancestors~~ **ENDED 2026-07-16** — its event-only mechanics `removed` (section below).
+> ⏳ 3.29 **end date pending** (fill from `get_active_leagues` once PoB TCP is up); next league (3.30) unannounced.
 
 > **Canonical enumeration sources (two complementary views):**
 > - Mechanic-keyed: [`League_mechanics`](https://www.poewiki.net/wiki/League_mechanics) — **every league
