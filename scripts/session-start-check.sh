@@ -13,7 +13,7 @@ cd "$(dirname "$0")/.." 2>/dev/null || exit 0
 # at flip time); fill it then. Blank is safe: check 4 skips the proximity warning
 # when LEAGUE_END is empty (end is ~3 months out anyway). NEXT_* cleared — the
 # league after 3.29 (3.30) isn't announced yet.
-TEMP_LEAGUE="${POE_TEMP_LEAGUE:-Curse of the Allflame}"
+TEMP_LEAGUE="${POE_TEMP_LEAGUE:-Allflame}"
 LEAGUE_END="${POE_LEAGUE_END:-}"
 NEXT_LEAGUE_START="${POE_NEXT_LEAGUE_START:-}"
 NEXT_LEAGUE_NAME="${POE_NEXT_LEAGUE_NAME:-}"

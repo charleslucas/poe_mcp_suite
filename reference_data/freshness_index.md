@@ -96,7 +96,7 @@ notes / balance changes) for each recent league. Fetch via `mcp__poemcp__fetch_w
 ## Index entries
 
 ### 3.29 — Curse of the Allflame  (launches 2026-07-24; past ALL models' cutoffs → always verify / use cache)
-Full cache: [`reference_data/leagues/curse_of_the_allflame_3.29.md`](leagues/curse_of_the_allflame_3.29.md) —
+Full cache: [`reference_data/leagues/Allflame.md`](leagues/Allflame.md) —
 **pre-launch, from the 2026-07-16 patch notes**; its **drill-down ledger** tracks per-line depth/confidence.
 Videos + community surveys not yet ingested; wiki not yet populated.
 

@@ -109,7 +109,7 @@ Other set recipes: **Exalted Orb** = full set of same-influence rares (1 ided / 
 ---
 
 ## 3.29 changes (Curse of the Allflame)
-- **Socket colours reworked** (verified — see [`leagues/curse_of_the_allflame_3.29.md`](leagues/curse_of_the_allflame_3.29.md) §Gem sockets): any gem fits any colour; sockets default White; matching colour only = +10% quality. **Bench R/G/B socket options & Harvest "reforge → White" REMOVED; Vorici benches repurposed; Omen of Blanching → Omen of Trichromatism.**
+- **Socket colours reworked** (verified — see [`leagues/Allflame.md`](leagues/Allflame.md) §Gem sockets): any gem fits any colour; sockets default White; matching colour only = +10% quality. **Bench R/G/B socket options & Harvest "reforge → White" REMOVED; Vorici benches repurposed; Omen of Blanching → Omen of Trichromatism.**
 - **Chromatic Orb no longer purchasable from a town vendor** for 3 Jeweller's Orbs *(community-reported, survey 2026-07-24 — ⚠ verify vs official notes; not in the wiki page whose history ends at 3.28)*. The **RGB-linked-socket recipe still yields a Chromatic** and (per 3.28) sits above the 6-socket Jeweller's recipe in priority, so you don't accidentally lose it.
 - **6-socket (7× Jeweller's) and 6-link (20× Fusing) recipes: unchanged.** **Chaos recipe (60–74 rare set): unchanged.**
 

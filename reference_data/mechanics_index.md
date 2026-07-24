@@ -90,8 +90,8 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 > *only* during Ancestor/Phrecia events — see the `event-only` row below. In normal/core play the standard
 > 19 ascendancies are the only set.
 
-## 3.29 Curse of the Allflame — effective at launch 2026-07-24 (⚠ NOT live yet; fold into sections above at the transition)
-Source: patch notes 2026-07-16 → digest + drill-down ledger in `leagues/curse_of_the_allflame_3.29.md`.
+## 3.29 Curse of the Allflame — effective at launch 2026-07-24 (⚠ now LIVE 2026-07-24 — scope tags below ARE the live anchor; fold rows up into Active when convenient)
+Source: patch notes 2026-07-16 → digest + drill-down ledger in `leagues/Allflame.md`.
 
 | Mechanic | Scope (from 7/24) | Current state | Verify / detail |
 |---|---|---|---|
