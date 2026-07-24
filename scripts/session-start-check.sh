@@ -67,7 +67,9 @@ fi
 
 # --- 4. League-end proximity (only while POE_LEAGUE still points at the temp league) ---
 current_league=$(sed -n 's/.*"POE_LEAGUE" *: *"\([^"]*\)".*/\1/p' .mcp.json 2>/dev/null | head -1)
-if [ "$current_league" = "$TEMP_LEAGUE" ]; then
+if [ "$current_league" = "$TEMP_LEAGUE" ] && [ -n "$LEAGUE_END" ]; then
+  # NOTE: guard on non-empty $LEAGUE_END above — on Git Bash `date -d ""` returns
+  # NOW (not empty), so without it a blank end-date yields a false "ends in 0 days".
   end_epoch=$(date -d "$LEAGUE_END" +%s 2>/dev/null)
   if [ -n "$end_epoch" ]; then
     days=$(( (end_epoch - $(date +%s)) / 86400 ))
