@@ -1,5 +1,6 @@
 # Local MCP config — contains credentials, never commit
 .mcp.json
+.mcp.json.*
 
 # Claude Code local settings — contains POE_SESSION_ID in permission command
 # strings, never commit. Shareable .claude content (skills/, agents/, commands/,
