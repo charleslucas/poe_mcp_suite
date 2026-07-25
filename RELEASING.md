@@ -38,6 +38,12 @@ section → commit + push `main` → `git tag vx.y.z && git push origin vx.y.z`.
 (PyPI trusted-publishing + MCP Registry + GitHub Release; the tag *is* the version). Then advance the suite
 pointer. **Tagging = an irreversible public publish** — confirm the version + changelog first.
 
+> ⚠ **Milestone tags must NOT use a `v` prefix.** `poe-data-mcp`'s workflow triggers on `tags: ["v*"]`, so a
+> cross-repo milestone tag like **`allflame_1.0`** (non-`v`) is safe and does **not** publish — but a `v*` name
+> would cut a real PyPI release. Reserve `vX.Y.Z` for actual `poe-data-mcp` releases; use a non-`v` name (league
+> milestone, date, etc.) for "bookmark the state" tags. (Example: `allflame_1.0` tagged across the 5 code/suite
+> repos at the 3.29 milestone, 2026-07-25.)
+
 ## Publishing the OTHER components (not set up — deliberate future task)
 `poe-data-mcp` is the reference model. The rest aren't publishable yet:
 - **pob-mcp → npm:** add a `bin` entry (so `npx pob-mcp-server` launches the server), a `files` whitelist (else
