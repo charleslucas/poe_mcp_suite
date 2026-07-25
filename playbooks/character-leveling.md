@@ -205,6 +205,14 @@ full analysis.
 ## Step 6 — Pitfalls
 
 ### Passive tree planning
+- **The tree export contains cluster-jewel & ascendancy notables that are NOT allocatable on the main tree.**
+  When mining the GGG/PoB tree data for notables to recommend, **filter to main-tree nodes**: keep only those
+  with a non-null `group` (cluster-jewel notables have `group: null` / no `orbit` / no `in`/`out` connections)
+  and no `ascendancyName`. Recommending a cluster-jewel notable as a *leveling tree target* is wrong — those
+  only come from a socketed Medium/Large Cluster Jewel. Real example (3.29, caught by the user in-game): "Call
+  to the Slaughter", "Blessed Rebirth", "Feasting Fiends", "Dread March" are all `group: null` cluster-jewel
+  minion notables, not tree nodes. Verify a notable is on the tree (`get_tree_node` / the `group` field) before
+  putting it in a corridor.
 - **`update_tree_delta` is unreliable for nodes more than 2–3 steps from the tree frontier.** It often silently drops nodes with "total count lower than expected." Use `find_path_to_node` to get the exact intermediate node IDs, then set the entire tree at once with `lua_set_tree`.
 - **1–2 nodes are frequently dropped by `lua_set_tree`** due to PoB's stricter connectivity validation vs. the game itself. This is usually harmless — check which node was dropped and manually allocate it in the PoB GUI tree view if it matters.
 - **Point budget:** PoB level = passive points from levels only. Quest passive rewards are not automatically accounted for. Include them in the budget manually (Acts 1–2 ≈ 4, full playthrough ≈ 18–24). If a milestone has leftover points, note them as "unallocated — fill with X" in build notes.
