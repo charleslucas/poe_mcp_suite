@@ -33,7 +33,7 @@ stops being a constraint** — buy anything you missed. So this file matters mos
 |---|---|---|---|---|---|
 | **Breaking Some Eggs** | Mud Flats | **Tarkleigh** | Witch | **Summon Raging Spirit**, **Frostblink** | ✅ AfWednesdayWeatherwax · Witch · 3.29 · 2026-07-24 |
 | Enemy at the Gate | Twilight Strand (kill Hillock) | Tarkleigh / Nessa | Witch | level-1 starters (incl. **Raise Zombie**) | ◐ web — verify |
-| The Caged Brute (**Brutus**) | Prison | Tarkleigh / Nessa | Witch | level-8 **supports** (incl. **Minion Damage**, **Melee Splash**) | ◐ web — verify |
+| The Caged Brute (**Brutus**) | Prison | Tarkleigh / Nessa | Witch | level-8 **supports** (incl. **Minion Damage**, **Melee Splash**) | ✅ AfWednesdayWeatherwax · Witch · 3.29 · 2026-07-24 |
 | *(other Act 1 quests — The Dweller of the Deep, The Marooned Mariner, The Siren's Cadence …)* | | | | *add as verified* | — |
 
 ## Act 2
