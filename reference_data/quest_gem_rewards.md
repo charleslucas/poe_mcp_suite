@@ -24,6 +24,8 @@ observation + wiki**, committed (useful to every clone), and **accreted as we ve
 **Global shortcut — Siosa (Act 3, The Library):** after the quest *A Fixture of Fate*, **Siosa sells every gem
 available up to your level**, regardless of class or which rewards you took. **After Act 3, gem *availability*
 stops being a constraint** — buy anything you missed. So this file matters most for **Acts 1–2**.
+⚠ **But not *literally* everything** — a few supports unlock only via a *later*-act quest and are absent from
+Siosa's Act-3 stock (verified 3.29): **Unleash Support** requires the **Act 4 *Eternal Nightmare*** quest.
 
 ---
 
@@ -44,12 +46,16 @@ stops being a constraint** — buy anything you missed. So this file matters mos
 ## Act 3
 | Quest | Location | Reward NPC | Class | Gems it unlocks | Verified |
 |---|---|---|---|---|---|
-| **A Fixture of Fate** | The Library | **Siosa** | all | **unlocks buying ALL gems up to your level** (see shortcut above) | ◐ web — verify |
+| **A Fixture of Fate** | The Library | **Siosa** | all | **buy MOST gems up to your level** (see shortcut + Unleash caveat) — verified by buying Feeding Frenzy / Anger / Desecrate here | ✅ AfWednesdayWeatherwax · Witch · 3.29 · 2026-07-25 |
 | *(Lost in Love, Sever the Right Hand, A Fixture of Fate …)* | | Clarissa / Siosa | Witch | *add as verified* | — |
 
 ## Acts 4–10
-*Add per-quest reward gems as verified. After Act 3 / Siosa this is mostly moot for availability — but record
-notable class-specific reward-only gems (e.g. movement/utility) if they surprise the plan.*
+| Quest | Location | Reward NPC | Class | Gems it unlocks | Verified |
+|---|---|---|---|---|---|
+| **Eternal Nightmare** | Act 4 (Highgate) | Petarus & Vanja / reward | all | **Unleash Support** — gated here; **NOT** in Siosa's Act-3 stock | ✅ AfWednesdayWeatherwax · Witch · 3.29 · 2026-07-25 |
+
+*After Act 3 / Siosa, availability is mostly moot — but record later-quest-gated gems (like Unleash above) that
+surprise the plan.*
 
 ---
 
