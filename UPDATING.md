@@ -17,7 +17,7 @@ GGG client patch / league launch ─┬─> GGG skilltree-export ──> referen
                                    └─> craftofexile ─────────> reference_data/craftofexile/
 
 PoB Community release ─────────────> PathOfBuilding submodule ──> reference_data/text_lake/  (regen)
-                                                              └──> PoB app install (TCP) + optional npm tools release
+                                                              └──> PoB app install (TCP) + fork push (RELEASING.md)
 ```
 
 Key non-obvious fact: **the text lake is generated from the PoB submodule ONLY.** Nothing else regenerates it —
@@ -44,7 +44,7 @@ The big cascade. Roughly in availability order (they don't all land at once):
 | **PoB submodule** | in `PathOfBuilding/`: merge `upstream` tag/dev → **push fork FIRST** → advance suite pointer | branch is `api-stdio`; push-order guarded by `.githooks/pre-push` |
 | **Text lake** | `python scripts/generate_text_lake.py` → re-stamp `MANIFEST.md` patch (~90s) | **its ONLY trigger.** Local-only output — never commit (`legal_considerations.md`) |
 | **PoB app install** | relaunch via `pob-mcp/LaunchPoBWithAPI.bat` (re-patches `Main.lua` for TCP); dismiss the integrity warning | separate from the submodule; needed for live TCP |
-| **npm / tools release** (optional) | publish the `pob-mcp` / `poe-*` packages | the "full tools release" — do once PoB 3.29 support is in |
+| **tools "release"** | push the affected submodule fork + advance the suite pointer (NOT an npm/PyPI publish — nothing we build is published; see [`RELEASING.md`](RELEASING.md)) | e.g. the 3.29 import fix shipped via the `PathOfBuilding` fork push |
 
 ### 3. GGG tree export update, standalone (no league — a mid-patch export tweak)
 - Refresh the affected submodule(s) as in #1. **Terminal — nothing downstream regenerates** (the text lake is
