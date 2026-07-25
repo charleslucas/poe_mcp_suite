@@ -1,17 +1,18 @@
 # RELEASING.md — how the suite and its components ship
 
-## TL;DR — the suite is a git clone, not a published package
-**Nothing we build is on npm or PyPI.** The suite runs from a **local clone**: `.mcp.json` points each MCP
-server at a local file, and the **submodule forks are the unit of release**. "Releasing a change" = push the
-relevant submodule fork, then advance the suite pointer (submodule-first ordering). No `npm publish` /
-`twine upload` is involved today. Companion docs: [`UPDATING.md`](UPDATING.md) (data-refresh cascade),
-[`INSTALL.md`](INSTALL.md) (first-time setup).
+## TL;DR — two release paths
+**`poe-data-mcp` is published** to **PyPI + the MCP Registry** via a **tag-driven** GitHub Actions workflow
+(push a `vX.Y.Z` tag → CI builds & publishes; no manual `twine`/token — PyPI trusted publishing via OIDC).
+**Everything else runs from the local clone** — `.mcp.json` points each server at a local file, and the
+**submodule forks are the unit of release** (push the fork + advance the suite pointer; no registry). So:
+(a) `poe-data-mcp` → **tag it**; (b) all other components → **fork push**. `google-ai-mode-mcp` is third-party
+(not ours). Companion docs: [`UPDATING.md`](UPDATING.md) (data-refresh cascade), [`INSTALL.md`](INSTALL.md) (setup).
 
 ## Component distribution map
 | Component | Our repo (branch) | Lang | Ships as / "release" = | State |
 |---|---|---|---|---|
 | **pob-mcp** | `charleslucas/pob-mcp` (main) | TS/Node | git fork; run locally via `.mcp.json` (`node build/index.js`) | pkg `pob-mcp-server` **v1.0.0, NOT on npm** |
-| **poe-data-mcp** | `charleslucas/poe-data-mcp` (main) | Python | git fork; `python server.py` | has `pyproject.toml`; **NOT on PyPI** |
+| **poe-data-mcp** | `charleslucas/poe-data-mcp` (main) | Python | **PUBLISHED — PyPI** (`uvx poe-data-mcp` / `pipx run`) + **MCP Registry**; this machine also runs it locally via `.mcp.json`. Release = **push a `vX.Y.Z` git tag** → `publish-mcp.yml` builds (`uv build`) + publishes to PyPI (trusted publishing/OIDC, no token) + MCP Registry + GitHub Release. The **tag** is the version (static `pyproject` version is ignored). | **v0.3.0 on PyPI** |
 | **poe-trade-mcp** | `charleslucas/poe-trade-mcp` (master) | Python | git fork; `python poe_all.py` | no packaging files; **NOT on PyPI** |
 | **PathOfBuilding** | `charleslucas/PathOfBuilding` (api-stdio) | Lua | **git fork push** — this is where pob-mcp's *runtime* Lua (`src/API/{Handlers,BuildOps,TcpServer}.lua`) actually releases; it reaches the user's PoB via `pob-mcp/InstallTcpApi.ps1` (run by `LaunchPoBWithAPI.bat`) | e.g. the 2026-07-25 3.29 import fix shipped here |
 | **skilltree / atlastree** | `charleslucas/poe-{skilltree,atlastree}-export` (master) | data | git fork push (GGG mirror — see `UPDATING.md`) | tracks GGG releases |
@@ -31,15 +32,21 @@ relevant submodule fork, then advance the suite pointer (submodule-first orderin
 
 That's the entire "release" today. There is no registry publish step.
 
-## If we ever want to publish to npm / PyPI (deliberate future project — NOT set up)
-Publishing is permanent; treat it as its own scoped task with explicit go-ahead + registry auth. Current gaps:
+## Releasing `poe-data-mcp` (the one published package)
+In the `poe-data-mcp/` submodule: move `[Unreleased]` CHANGELOG entries into a new `## [x.y.z] - YYYY-MM-DD`
+section → commit + push `main` → `git tag vx.y.z && git push origin vx.y.z`. The tag triggers `publish-mcp.yml`
+(PyPI trusted-publishing + MCP Registry + GitHub Release; the tag *is* the version). Then advance the suite
+pointer. **Tagging = an irreversible public publish** — confirm the version + changelog first.
+
+## Publishing the OTHER components (not set up — deliberate future task)
+`poe-data-mcp` is the reference model. The rest aren't publishable yet:
 - **pob-mcp → npm:** add a `bin` entry (so `npx pob-mcp-server` launches the server), a `files` whitelist (else
-  the whole repo ships), **decide how the TCP-bridge Lua ships** — bundle `PathOfBuilding/src/API/*.lua` into the
-  package at pack time, or fetch it — plus an npm-facing README, a version bump, and an end-to-end `npx` smoke test.
-- **poe-data-mcp / poe-trade-mcp → PyPI:** complete packaging (poe-trade-mcp has none), console-script entry
-  points, version, then `python -m build` + `twine upload`.
+  the whole repo ships), **decide how the TCP-bridge Lua ships** (bundle `PathOfBuilding/src/API/*.lua` at pack
+  time, or fetch it), an npm README, a version bump, and an `npx` smoke test. Never published (`pob-mcp-server` v1.0.0).
+- **poe-trade-mcp → PyPI:** add packaging (no `pyproject.toml` yet) + a console-script entry point + the
+  `mcp-name` PyPI marker, then copy `poe-data-mcp`'s `publish-mcp.yml` tag-driven flow.
 
 ## History
 - **2026-07-25** — 3.29 (`Allflame`) import-handler fix released via the `PathOfBuilding` fork push
   (`b12d7df8b`; suite pointer `5ca9b5c`). Also refreshed the text lake + GGG tree exports to 3.29 (see
-  `UPDATING.md`). **No npm/PyPI publish** (none is set up; see above).
+  `UPDATING.md`). Separately, **`poe-data-mcp` has a pending youtube fix** (`47cd8c4`) awaiting a `v0.3.1` tag.
