@@ -45,6 +45,7 @@ primary; wiki Version page = consolidated transcription.
 
 | Version | Type | Official forum thread | Wiki Version page | Patch line |
 |---|---|---|---|---|
+| **3.29.0b** | Hotfix / point release | https://www.pathofexile.com/forum/view-thread/3989412 (posted ~2026-07-27) | — | 3.29 Allflame launch-week QoL: league-mechanic tuning (lantern shrink timer ~60% slower, lantern/chart reward buffs, chart access from the Bathysphere, strongbox/Vesper/crab-nest tuning) + crash/bug fixes. Preceded by hotfixes 1–3 (drowning action-speed debuff −33%, blank trade-tab fix, crashes). **No character build-mechanic changes** (no skill/gem/passive/ascendancy/item balance) — freshness/mechanics indexes unaffected. |
 | **3.29.0** | League launch | https://www.pathofexile.com/forum/view-thread/3985332 (posted 2026-07-16) | https://www.poewiki.net/wiki/Version_3.29.0 _(not yet populated at bookmark time)_ | **3.29 Curse of the Allflame** (launches 2026-07-24). Digested → `leagues/Allflame.md` (with drill-down ledger) |
 | **3.28.0j** | Hotfix / point release | https://www.pathofexile.com/forum/view-thread/3974219 (posted ~2026-06-23) | — | 3.28 Mirage cycle; notes also cover the concurrent **Return of the Ancestors** event league |
 | 3.28.0 | League launch | _(add when bookmarked)_ | https://www.poewiki.net/wiki/Version_3.28.0 | 3.28 Mirage |
