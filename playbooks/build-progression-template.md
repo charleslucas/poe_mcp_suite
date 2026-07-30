@@ -206,3 +206,9 @@ walkthrough covers the route, using per-zone metadata blocks:
   in-game timings back to those files.
 - **At league end,** fold durable, reusable lessons into `guides/{archetype}/` so the next character
   inherits them; character-specific detail stays in `character_data/`.
+- ⚠ **Relative-link depth.** From `character_data/{account}/{league}/{char}/`, repo-root targets
+  (`reference_data/`, `playbooks/`) need **four** levels — `../../../../reference_data/x.md` — while
+  `guides/` lives *inside* `character_data` and needs **three**: `../../../guides/x.md`. Getting this
+  wrong is silent (VSCode just shows a dead link). Also note `character_data/` is a **directory
+  junction**, so a shell that resolves paths physically (git-bash `cd`) will report repo-root links
+  broken even when they render fine — verify lexically from the repo path, not from inside the junction.
