@@ -96,18 +96,30 @@ For each milestone (levels 20, 40, 60, 80, 100):
 
 **Gem group management:** When updating gem groups from milestone to milestone, remove obsolete groups before adding new ones. Indices shift on removal — remove from highest index to lowest to preserve lower indices.
 
-### 3e — Create progression.md
-Write `character_data/{account}/{char}/progression.md` with the full schedule:
-- Phase headers with level ranges
-- Gear unlock table (item | level req | slot | what it replaces | why it matters)
-- Passive priorities per phase
-- Gem setup at each phase
-- **Checkpoint tolerances per phase** — the pass/fail floors a mid-leveling checkpoint
-  (Step 6) tests against: res targets by act, rough life floor, main-link size, key gem
-  levels. These make "am I on track?" answerable in seconds.
-- Open questions / farming needs
+### 3e — Create build.md + progression.md
+**Use [`build-progression-template.md`](build-progression-template.md)** — it carries the section
+registry (with include/omit rules), the copy-paste skeletons, and the layout conventions. Read it
+before writing either doc; don't improvise the structure.
 
-This is the player-facing document; it should be readable without opening PoB.
+Two docs, cross-linked, because they're read in different postures:
+
+| Doc | Answers | Spine |
+|---|---|---|
+| `build.md` | *"what am I building and why"* — read once per league, updated as it evolves | build concerns (concept, gear, ascendancy, tree phases, fork) |
+| `progression.md` | *"what do I do next, and am I on track?"* — followed while playing | **act-by-act**, with the checkpoint row co-located per act |
+
+Non-negotiables from the template (each fixes a measured usability failure):
+- **Tagged essentials line per act** — every reward-bearing quest tagged inline so it can be
+  *scanned*: `(Passive Point)`, `(◆ Bandit)`, `(⏳ Lab)`, `(Gem: X)`. Never bury these in prose.
+- **Checkpoint tolerances inline with their act**, not in a distant table — otherwise the reader
+  bounces between the act block and the table judging it.
+- **State each fact once.** Ascendancy order / fork / pantheon live in `build.md`; `progression.md`
+  references them.
+- **No filler.** A section exists only if it carries real, character-specific information.
+- **Zone-by-zone walkthrough only when no good external one exists** — if the source guide links a
+  campaign walkthrough (e.g. poe-vault's quick-reference), link it and stop.
+
+Both are player-facing: readable without opening PoB.
 
 ---
 
@@ -117,7 +129,9 @@ This is the player-facing document; it should be readable without opening PoB.
 | File | Location | Purpose |
 |------|----------|---------|
 | `{Character}-20.xml` through `{Character}-100.xml` | PoB builds folder | Milestone PoB builds — open in PoB to simulate any stage |
-| `progression.md` | `character_data/{account}/{char}/` | Human-readable leveling schedule |
+| `build.md` | `character_data/{account}/{char}/` | Living build guide — concept, gear, ascendancy, tree phases, fork ([template](build-progression-template.md) §4) |
+| `progression.md` | `character_data/{account}/{char}/` | Campaign checklist — act-by-act essentials + inline checkpoints ([template](build-progression-template.md) §5) |
+| `campaign-walkthrough.md` *(conditional)* | `character_data/{account}/{char}/` | Zone-by-zone route — **only** when no good external walkthrough exists ([template](build-progression-template.md) §5) |
 | `meta.json` (update) | `character_data/{account}/{char}/` | Add `ascendancy_target`, `build_concept`, `ascendancy_plan` |
 | `journal.md` (append) | `character_data/{account}/{char}/` | Session summary entry |
 
