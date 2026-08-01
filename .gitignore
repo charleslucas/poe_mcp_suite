@@ -43,6 +43,10 @@ reference_data/*
 # Verified quest→gem-reward / vendor-unlock reference — committed, class-general game data accreted from
 # in-game observation (gem availability is quest-gated, not level-gated). Parallels vendor_recipes.md.
 !reference_data/quest_gem_rewards.md
+# Crafting mechanics ROUTING map — committed, useful to every clone. Deliberately contains NO mod pools,
+# weights or tier tables (those stay runtime-only per legal_considerations.md) — only what each mechanic
+# does, its cost/determinism, and which tool answers questions about it.
+!reference_data/crafting_index.md
 
 # Local game-data extraction scratch space.
 # See legal_considerations.md — most output from pathofexile-dat / bundle extraction is
