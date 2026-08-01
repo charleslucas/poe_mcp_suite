@@ -42,6 +42,7 @@ The big cascade. Roughly in availability order (they don't all land at once):
 | Refresh | How | Note |
 |---|---|---|
 | **PoB submodule** | in `PathOfBuilding/`: merge `upstream` tag/dev → **push fork FIRST** → advance suite pointer | branch is `api-stdio`; push-order guarded by `.githooks/pre-push` |
+| ⚠ **API signature check** | **`python scripts/check_pob_api_signatures.py`** — exit 0 = clean, 1 = drift | **Run this immediately after the submodule merge.** PoB changing a method's parameters does not break parsing; it fails at runtime, mid-analysis, with a confusing Lua error. Three such breaks since the 3.29 sync (`ImportPassiveTreeAndJewels`, `ImportItemsAndSkills`, `ImportFromNodeList` — the last silently shifted every argument because a param was *prepended*). Investigate every warning; only add to `REVIEWED_OPTIONAL` after confirming in PoB's source that the omitted params really are optional |
 | **Text lake** | `python scripts/generate_text_lake.py` → re-stamp `MANIFEST.md` patch (~90s) | **its ONLY trigger.** Local-only output — never commit (`legal_considerations.md`) |
 | **PoB app install** | relaunch via `pob-mcp/LaunchPoBWithAPI.bat` (re-patches `Main.lua` for TCP); dismiss the integrity warning | separate from the submodule; needed for live TCP |
 | **tools "release"** | push the affected submodule fork + advance the suite pointer (NOT an npm/PyPI publish — nothing we build is published; see [`RELEASING.md`](RELEASING.md)) | e.g. the 3.29 import fix shipped via the `PathOfBuilding` fork push |
