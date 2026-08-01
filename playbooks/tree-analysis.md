@@ -201,6 +201,28 @@ Update `meta.json`:
 
 ## Step 5 — Pitfalls
 
+### 🚨 `get_passive_upgrades` returns OTHER CLASSES' ASCENDANCY notables — verify with `get_tree_node`
+
+The candidate list is **not filtered by ascendancy ownership**, and nothing downstream catches it either:
+`find_path_to_node` will happily route through another class's start/ascendancy area, and `update_tree_delta`
+will **allocate the node and produce real-looking stats**. The whole toolchain will confidently price a node the
+character can never take.
+
+**Rule:** before recommending any notable, call `mcp__pob__get_tree_node` and reject it if the output has an
+**`Ascendancy:`** line that isn't the character's own ascendancy. Do this *before* costing the path — otherwise
+you'll sim a fiction.
+
+**Example (2026-08-01):** for a Witch/Necromancer, `get_passive_upgrades` ranked **Radiant Faith** (#2, +781 EHP)
+and **Sanctuary of Thought** (#1, +1,157 EHP) as the top defensive picks. Both are **Templar** ascendancy
+notables — Guardian and Hierophant respectively. `find_path_to_node` returned 7- and 9-point paths routing
+through the TEMPLAR and Guardian nodes, and `update_tree_delta` allocated them and reported a fictional
+**+624 armour**. The user caught it ("Radiant Faith is on an ascendancy wheel"), not the tooling. The real
+answer was **Sanctum of Thought** (4 pts) and **Instinct** (5 pts), both ordinary tree notables.
+
+Same family as the cluster-jewel trap in [`character-leveling.md`](character-leveling.md) (notables with
+`group: null` exist only on cluster jewels, not the tree): **a node appearing in a search result is not proof
+the character can allocate it.**
+
 ### `get_passive_upgrades` ignores path cost — always follow up with `find_path_to_node`
 
 `get_passive_upgrades` ranks unallocated notables by their **stat impact** (DPS delta, EHP delta). It does **not** factor in how many passive points it costs to reach them. A notable ranked #2 with +113k DPS may require 6 points (5 travel nodes + the notable); a notable ranked #7 with +81k DPS may require only 2 points (1 travel + notable). The latter is almost always the better 1-point spend.
