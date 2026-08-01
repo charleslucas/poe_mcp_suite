@@ -10,6 +10,14 @@ This playbook is **sub-agent-first**: each build is parsed and digested in its o
 
 ---
 
+> ⚠ **Never load the comparison build into the user's live PoB session.** Importing their character back over a
+> multi-spec guide build corrupted the passive spec (reported "Scion / 0 nodes"), broke `update_tree_delta`, and
+> crashed PoB while drawing the tree (2026-08-01). It also silently inherits the guide's **config** — charges,
+> custom Animate Guardian mods, wither stacks — because import explicitly preserves config, which inflated every
+> stat until spotted. **Diff saved XML files instead:** save the guide build under its own name once, then use
+> `compare_builds` / `compare_trees` file-to-file. If a live load is unavoidable, warn first and expect a PoB
+> restart.
+
 ## Step 0 — Frame the work for the user
 
 One sentence: *"Using the Build Comparison playbook — I'll dispatch a sub-agent per build to fetch and digest each one in parallel, then diff the summaries here. This keeps main context light."*
