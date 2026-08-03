@@ -111,6 +111,30 @@ Present this list to the user and confirm which slot to target before proceeding
 - **Colour-driven uniques** (Triad Grip etc.): match the functional colour *counts*, not just the link count — losing a socket colour changes the item's effect.
 - For a full socket / off-colour / empty-socket pass, use the [`gem-socket-analysis.md`](gem-socket-analysis.md) playbook.
 
+### Add if the slot can carry an ENCHANT (helmet, boots, gloves, body, belt, weapon, flask)
+
+**Check the enchant pool for the slot before finalising a purchase** — an enchant is a whole
+extra mod the trade filters will never show you unless you ask, and it costs nothing to include
+in a search you're running anyway.
+
+```bash
+rg "^ENCHANT\t<Slot>\t" reference_data/text_lake/enchants.txt | rg -i "<your skill>"
+```
+
+`enchants.txt` covers all seven enchantable slots (lab + Instilling), tiered `MERCILESS` / `ENDGAME`.
+Filter by the build's **actual skills** — the pool is keyed by skill name, so the useful subset is tiny.
+
+**Then apply the obtainability gate (mandatory — see the pitfall below).** Search trade for the enchant
+*before* recommending it: `search_trade` with an `enchant.stat_*` id. Note the trade site's wording can
+differ from PoB's (`"...to all Resistances"` vs PoB's `"...to Elemental Resistances"`), so a zero-result
+search may be a wording mismatch rather than genuine absence — say which you can't distinguish.
+
+**Sizing the lottery, if the user asks about farming it:** count the pool.
+`grep -c '^ENCHANT\tHelmet\t.*\tENDGAME\t' enchants.txt` → ~697 distinct endgame helmet enchants across
+~274 skills. A build with ~12 useful ones is looking at **~1.7% per Uber Lab run** for *any* of them and
+~0.14% for a *specific* one. Farming a named enchant is not a plan — treat enchants as a **tiebreaker
+between otherwise-equal listings**, never as a reason to replace a good item.
+
 ### Add if the user mentions stash scanning
 - Fetch relevant stash tabs: `mcp__poe-trade-mcp__get_tab` (populates cache)
 - Ninja lookup on any notable uniques found — check ALL stash tabs including Char Stash, not just dump tabs. Valuable items accumulate in character stashes.
@@ -245,6 +269,32 @@ a nerf-detection signal for the build that needed it.
 - **poe.ninja prices are variant-specific.** Queen's Decree is priced at 287c for 6-linked. A 2-socket Queen's Decree in your stash is worth ~10c. Always check the `links` and `variant` fields in ninja results before reporting a price.
 - **Pseudo stat IDs find more listings than explicit stat IDs.** `pseudo.pseudo_total_dexterity` matches any combination of `+# to Dexterity` and `+# to Dexterity and Intelligence` etc. Use explicit IDs only when you specifically need a mod from one explicit line.
 - **Jewel dex is capped well below 35.** A single viridian jewel cannot roll 35+ dex — the max roll for a single `+# to Dexterity` mod is ~25. If you need 35 dex from a jewel, it must come from two mods (e.g., `+# to Dex` + `+# to Dex and Int`). If no listings exist at that threshold, lower to 25+ and look for a ring instead.
+
+### 🚨 "It's in the game data" is NOT "you can get it" — gate every find on obtainability
+
+The single most repeated failure in gear sessions: finding a mod in PoB's data, presenting it as an
+upgrade, and only afterwards discovering the character can't actually obtain it. **Three instances in
+one session (2026-08-03), each caught by the user rather than the tooling:**
+
+| Find | Looked like | Actually |
+|---|---|---|
+| `of Staunching` (flask bleed immunity) | a cheap fix for a real gap | **`weightVal = { 0 }`** — cannot roll. All ailment-clear flask suffixes are legacy-only |
+| **Vis Mortis** `+1 to maximum number of Spectres` | the answer to "how do I get a 3rd spectre" | the mod is on `{variant:1,2}` (Pre-2.6.0 / Pre-3.8.0). **The current variant does not have it** |
+| Helmet enchant `+36% minion Elemental Resistances` | free defence for dying minions | **zero listings at any price**, and ~0.14%/run to farm |
+
+**Gate, in order — cheapest check first:**
+1. **Spawn weight.** `weightVal = { 0 }` on the *only* `weightKey` ⇒ dead. ⚠ A zero against a *specific*
+   tag is NOT dead — `Bubbling` reads `weightKey = { "utility_flask", "default" }, weightVal = { 0, 600 }`,
+   i.e. barred from utility flasks but weight **600** on life flasks. Read which key the zero sits under.
+2. **Variant.** For uniques, confirm the mod isn't on a `{variant:N}` line that current items don't roll.
+   `uniques.txt` keeps all variants with markers — the presence of a mod proves nothing about the live item.
+3. **Base/slot legality.** Does the mod's `weightKey` include a tag this base actually has?
+   (`Data/Bases/*.lua` → `bases.txt` has the tags.)
+4. **The market.** Search trade. Zero listings is real evidence — but distinguish "nobody has one" from
+   "my stat id or wording was wrong", and say which you can't rule out.
+
+Only after all four should a find be presented as actionable. State the gate you applied, so a later
+reader knows the difference between *verified obtainable* and *seen in a data file*.
 
 ### Stash scanning
 - **Check the Char Stash tab too.** Valuable items accumulate in character stashes, not just dump tabs. Scanning only numbered dump tabs misses items that can be worth many divines.
