@@ -249,6 +249,74 @@ def gen_bases():
     return lines
 
 
+# ---------------------------------------------------------------- map mods
+# Map modifiers — CORE content, and the input to any map-mod blacklist (see
+# playbooks/atlas-planning.md). Absent from the lake until 2026-08-03.
+#
+# ModMap.lua embeds `apply = function(...) ... end` bodies, so LuaParser (tables/strings/
+# numbers only) cannot read it. The searchable content is the affix name, the GUI label and
+# tooltipLines, so those are extracted directly. printf escapes are normalised for grep:
+# `%d%%` -> `N%`, so "+%d%% Monster Physical Damage Reduction" becomes a line a human would
+# actually search for.
+
+_MAPMOD_BLOCK = re.compile(
+    r'\["([^"]+)"\]\s*=\s*\{(.*?)\n\t\t\}', re.DOTALL)
+_MAPMOD_TIP = re.compile(r'"((?:[^"\\]|\\.)*)"')
+
+
+def _fmt_printf(s):
+    return (s.replace("%d%%", "N%").replace("%d", "N")
+             .replace("%%", "%").replace("\\n", " / "))
+
+
+def _balanced_braces(text, start):
+    """Return the contents of the {...} beginning at/after `start`, brace-matched.
+    A plain `\\{([^}]*)\\}` regex truncates nested value tables like { {20,29}, {30,39} }."""
+    i = text.find("{", start)
+    if i < 0:
+        return ""
+    depth, j = 0, i
+    while j < len(text):
+        if text[j] == "{":
+            depth += 1
+        elif text[j] == "}":
+            depth -= 1
+            if depth == 0:
+                return text[i + 1:j]
+        j += 1
+    return ""
+
+
+def gen_mapmods():
+    f = POB / "Data" / "ModMap.lua"
+    if not f.exists():
+        return []
+    src = f.read_text(encoding="utf-8")
+    lines = []
+    for m in _MAPMOD_BLOCK.finditer(src):
+        name, body = m.group(1), m.group(2)
+        lab = re.search(r'label\s*=\s*"((?:[^"\\]|\\.)*)"', body)
+        tip_at = body.find("tooltipLines")
+        val_at = body.find("values")
+        texts = []
+        if tip_at >= 0:
+            texts = [_fmt_printf(t)
+                     for t in _MAPMOD_TIP.findall(_balanced_braces(body, tip_at))
+                     if t.strip()]
+        if not texts and lab:
+            texts = [_fmt_printf(lab.group(1))]
+        if not texts:
+            continue
+        vtxt = "-"
+        if val_at >= 0:
+            raw = _balanced_braces(body, val_at)
+            nums = re.findall(r'-?\d+(?:\.\d+)?', raw)
+            vtxt = ",".join(nums) if nums else "-"
+        lines.append(f"MAPMOD\t{name}\t{vtxt}\t{' | '.join(texts)}")
+    lines.sort()
+    return lines
+
+
 # ---------------------------------------------------------------- essences
 # Essence.lua stores mod IDs per item class (`["Helmet"] = "ColdResist3"`), NOT text, which
 # is why it was skipped in the first pass — grepping it for "cold resistance" finds nothing.
@@ -512,6 +580,13 @@ MOD_FILES = [
     # "Added Small Passive Skills have N% increased Effect"), distinct from the small
     # passives themselves in clusters.txt.
     "ModFlask", "ModJewelCluster",
+    # Added 2026-08-03. All verified mod-shaped before inclusion. The `source` column IS
+    # the scope marker — a `ModNecropolis` row is self-labelling as dead-league content,
+    # so these are included-and-labelled rather than suppressed (see MANIFEST scope note).
+    "ModGraft",        # Runegrafts — core per mechanics_index
+    "BeastCraft",      # beastcrafting (Aspect suffixes etc.) — core; Bestiary reworked 3.29
+    "ModNecropolis",   # Necropolis (3.24) — verify scope before recommending
+    "ModJewelCharm",   # charms — verify scope before recommending
 ]
 
 
@@ -581,6 +656,7 @@ def main():
         ("spectres.txt", gen_spectres),
         ("enchants.txt", gen_enchants),
         ("essences.txt", gen_essences),
+        ("mapmods.txt", gen_mapmods),
         ("pantheon.txt", gen_pantheon),
         ("uniques.txt", gen_uniques),
         ("gems.txt", gen_gems),
@@ -609,9 +685,9 @@ submodule directly: `rg -i "<topic>" PathOfBuilding/src/Data/`
 
 | Still missing | Why it matters | Why not done |
 |---|---|---|
-| `BeastCraft.lua` | beastcrafting recipes | small; not yet needed |
-| `ModGraft`, `ModNecropolis`, `ModMap`, `ModFoulbornMap`, `ModJewelCharm` | further craft / league mod pools | scope-check availability first — several are dead leagues |
-| `Crucible`, `TattooPassives` | league mod pools | likely `removed`/event-only — check `mechanics_index.md` scope before trusting |
+| `Crucible.lua` | Crucible weapon-tree mods | `disabled-this-league` per mechanics_index — would be pure false positives |
+| `TattooPassives.lua` | Forbidden Tattoos | `event-only` per mechanics_index — not available in a normal league |
+| `ModFoulbornMap.lua` | Foulborn *map* mods | base `ModFoulborn` pool is already in mods.txt; map-specific variant not yet needed |
 
 ⚠️ **`Rares.lua` is NOT rare-MONSTER mods** — it is PoB's pre-made *rare item templates* for build planning
 (named items with prefix/suffix mod IDs). It was listed as a gap on 2026-08-03 based on the filename; that was
@@ -623,8 +699,20 @@ answerable from this lake or from PoB — it needs the wiki or a community surve
 **Closed 2026-08-03** (were false negatives before that date — treat any earlier "found nothing"
 conclusion on these topics as unreliable): `Data/Bases/*.lua` → **bases.txt**; `Spectres.lua` →
 **spectres.txt**; `Enchantment*.lua` → **enchants.txt**; `Pantheons.lua` → **pantheon.txt**;
-`Essence.lua` → **essences.txt**; `ClusterJewels.lua` → **clusters.txt**; `ModFlask` +
-`ModJewelCluster` → folded into **mods.txt**.
+`Essence.lua` → **essences.txt**; `ModMap.lua` → **mapmods.txt**; `ClusterJewels.lua` →
+**clusters.txt**; `ModFlask`, `ModJewelCluster`, `ModGraft`, `BeastCraft`, `ModNecropolis`,
+`ModJewelCharm` → folded into **mods.txt**.
+
+**Scope handling for league pools:** mods.txt's first column is the SOURCE, which doubles as the
+scope marker. ⚠ It is the file name with the `Mod` prefix STRIPPED — grep `^Necropolis`, not
+`^ModNecropolis`. Current values: Explicit, Eldritch, Synthesis, Scourge, JewelCluster, Jewel,
+Foulborn, JewelAbyss, Master, Corrupted, Veiled, Graft, Delve, JewelCharm, Flask, Necropolis,
+Tincture, BeastCraft. A `Necropolis` or `Scourge` row is self-labelling as league content. Dead
+leagues are therefore *included and labelled* rather than suppressed, so a sweep still surfaces them
+(useful history / Standard characters) while making their provenance obvious. **Always scope-check a
+league-pool hit against `reference_data/mechanics_index.md` before recommending it.** The two pools
+excluded outright (`Crucible`, `TattooPassives`) are the ones where mechanics_index already says
+`disabled-this-league` / `event-only`, i.e. guaranteed false positives today.
 
 Deliberately excluded (no mechanical value or redundant): `ModScalability`, `QueryMods`,
 `TradeSiteStats` (trade indexes, ~5MB combined), `FlavourText` (lore), `SkillStatMap`,
@@ -648,6 +736,10 @@ Deliberately excluded (no mechanical value or redundant): `ModScalability`, `Que
   - spectres.txt: SPECTRE, display name, metadata path, stat multipliers, tags, skill list
     The raisable-monster roster. `tags:` is how you actually filter (undead / ranged / caster);
     `skills:` is what it DOES. Numbers are PoB's multipliers, not absolute values.
+  - mapmods.txt: MAPMOD, affix name, tier values, tooltip text
+    MAP MODIFIERS — the input to a map-mod blacklist (playbooks/atlas-planning.md). printf
+    escapes normalised for grep (`%d%%` → `N%`), so lines read the way a human searches.
+    Extracted by regex, not LuaParser: ModMap.lua embeds `apply = function(...)` bodies.
   - essences.txt: ESSENCE, essence name, tier, applicable slots, GUARANTEED mod text
     Essence.lua stores mod IDs, not text — these are resolved through ModExplicit so the row
     carries the searchable text. One row per (essence, distinct mod); the slots that share that
