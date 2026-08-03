@@ -249,6 +249,63 @@ def gen_bases():
     return lines
 
 
+# ---------------------------------------------------------------- essences
+# Essence.lua stores mod IDs per item class (`["Helmet"] = "ColdResist3"`), NOT text, which
+# is why it was skipped in the first pass — grepping it for "cold resistance" finds nothing.
+# Every ID resolves against ModExplicit (verified 622/622), so we resolve them here and emit
+# the guaranteed mod TEXT, which is the thing anyone actually searches for.
+#
+# Emitted per (essence, mod-text) rather than per (essence, slot): one essence typically maps
+# many slots onto the same handful of mods, so slot-per-line would be ~20x the rows for no
+# extra searchable content. Slots are listed in the row instead.
+
+def _explicit_mod_text_by_id():
+    """id -> human-readable mod text, from ModExplicit."""
+    data = LuaParser((POB / "Data" / "ModExplicit.lua").read_text(encoding="utf-8")).parse()
+    out = {}
+    if not isinstance(data, dict):
+        return out
+    for mid, m in data.items():
+        if not isinstance(m, dict):
+            continue
+        texts = [m[k] for k in sorted(k for k in m if isinstance(k, int))]
+        texts = [one_line(t) for t in texts if isinstance(t, str) and t.strip()]
+        if texts:
+            out[mid] = " / ".join(texts)
+    return out
+
+
+def gen_essences():
+    f = POB / "Data" / "Essence.lua"
+    if not f.exists():
+        return []
+    by_id = _explicit_mod_text_by_id()
+    data = LuaParser(f.read_text(encoding="utf-8")).parse()
+    if not isinstance(data, dict):
+        return []
+    lines = []
+    for _, ess in data.items():
+        if not isinstance(ess, dict):
+            continue
+        name = ess.get("name", "?")
+        tier = ess.get("tier", "?")
+        mods = ess.get("mods")
+        if not isinstance(mods, dict):
+            continue
+        # group slots by the mod text they grant
+        by_text = {}
+        for slot, mid in mods.items():
+            if not isinstance(mid, str):
+                continue
+            text = by_id.get(mid)
+            if text:
+                by_text.setdefault(text, []).append(str(slot))
+        for text, slots in by_text.items():
+            lines.append(f"ESSENCE\t{name}\ttier{tier}\t{','.join(sorted(slots))}\t{text}")
+    lines.sort()
+    return lines
+
+
 # ---------------------------------------------------------------- enchants + pantheon
 # Lab/Instilling enchants and pantheon god powers. Both absent until 2026-08-03.
 # The pantheon gap was felt directly: identifying Soul of Ralakesh as the bleed/phys-DoT
@@ -523,6 +580,7 @@ def main():
         ("bases.txt", gen_bases),
         ("spectres.txt", gen_spectres),
         ("enchants.txt", gen_enchants),
+        ("essences.txt", gen_essences),
         ("pantheon.txt", gen_pantheon),
         ("uniques.txt", gen_uniques),
         ("gems.txt", gen_gems),
@@ -551,16 +609,22 @@ submodule directly: `rg -i "<topic>" PathOfBuilding/src/Data/`
 
 | Still missing | Why it matters | Why not done |
 |---|---|---|
-| `Essence.lua` | essence crafting pool | stores **mod IDs, not text** (`["Helmet"] = "ColdResist3"`) — needs a resolver against ModExplicit to be searchable |
-| `Rares.lua` | rare-monster modifier pool ("what one-shot me?") | monster-side data; different shape |
-| `BeastCraft.lua` | beastcrafting recipes | |
+| `BeastCraft.lua` | beastcrafting recipes | small; not yet needed |
 | `ModGraft`, `ModNecropolis`, `ModMap`, `ModFoulbornMap`, `ModJewelCharm` | further craft / league mod pools | scope-check availability first — several are dead leagues |
 | `Crucible`, `TattooPassives` | league mod pools | likely `removed`/event-only — check `mechanics_index.md` scope before trusting |
+
+⚠️ **`Rares.lua` is NOT rare-MONSTER mods** — it is PoB's pre-made *rare item templates* for build planning
+(named items with prefix/suffix mod IDs). It was listed as a gap on 2026-08-03 based on the filename; that was
+wrong. Its mods are already covered by mods.txt, so it is deliberately excluded, not missing.
+
+**PoB ships no rare-monster modifier pool at all.** "Which monster mods one-shot me?" is therefore NOT
+answerable from this lake or from PoB — it needs the wiki or a community survey. Don't hunt for it here.
 
 **Closed 2026-08-03** (were false negatives before that date — treat any earlier "found nothing"
 conclusion on these topics as unreliable): `Data/Bases/*.lua` → **bases.txt**; `Spectres.lua` →
 **spectres.txt**; `Enchantment*.lua` → **enchants.txt**; `Pantheons.lua` → **pantheon.txt**;
-`ClusterJewels.lua` → **clusters.txt**; `ModFlask` + `ModJewelCluster` → folded into **mods.txt**.
+`Essence.lua` → **essences.txt**; `ClusterJewels.lua` → **clusters.txt**; `ModFlask` +
+`ModJewelCluster` → folded into **mods.txt**.
 
 Deliberately excluded (no mechanical value or redundant): `ModScalability`, `QueryMods`,
 `TradeSiteStats` (trade indexes, ~5MB combined), `FlavourText` (lore), `SkillStatMap`,
@@ -584,6 +648,10 @@ Deliberately excluded (no mechanical value or redundant): `ModScalability`, `Que
   - spectres.txt: SPECTRE, display name, metadata path, stat multipliers, tags, skill list
     The raisable-monster roster. `tags:` is how you actually filter (undead / ranged / caster);
     `skills:` is what it DOES. Numbers are PoB's multipliers, not absolute values.
+  - essences.txt: ESSENCE, essence name, tier, applicable slots, GUARANTEED mod text
+    Essence.lua stores mod IDs, not text — these are resolved through ModExplicit so the row
+    carries the searchable text. One row per (essence, distinct mod); the slots that share that
+    mod are listed together rather than duplicated per-slot.
   - enchants.txt: ENCHANT, slot, skill, tier (MERCILESS/ENDGAME), text
     Lab + Instilling enchants across helmet/boots/gloves/body/belt/weapon/flask.
   - pantheon.txt: PANTHEON, MAJOR/MINOR, god key, soul name, granted mods
