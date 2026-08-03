@@ -293,8 +293,25 @@ one session (2026-08-03), each caught by the user rather than the tooling:**
 4. **The market.** Search trade. Zero listings is real evidence — but distinguish "nobody has one" from
    "my stat id or wording was wrong", and say which you can't rule out.
 
-Only after all four should a find be presented as actionable. State the gate you applied, so a later
+Only after all four should a find be presented as **actionable**. State the gate you applied, so a later
 reader knows the difference between *verified obtainable* and *seen in a data file*.
+
+**⚠️ This gate governs RECOMMENDATIONS, not what you're allowed to mention.** Do not read it as "stay
+quiet about anything unverified" — that trades one failure for a worse one. Users learn the game's option
+space from near-misses, and a possibility that's dead *this* patch may be live next league, on another
+character, or reachable by a route neither of you has considered yet. Blocked findings are also how the
+data gaps get discovered: `of Staunching` being weight-0 is *why* we now know all ailment-clear flask
+suffixes are legacy-only, and the enchant dead-end is what surfaced minion-ele-res as a real axis (which
+then got solved for 30c on a jewel instead of 300c on a helmet).
+
+**Label, don't suppress.** Three tiers, and say which one you're in:
+- **✅ Verified** — gate passed, market checked. "Buy this."
+- **◐ Possible but unverified** — "this exists in the data; I haven't confirmed you can get one."
+- **⛔ Dead, and why** — "this would be ideal but it's weight-0 / legacy-variant / unlisted."
+
+The ⛔ tier is worth keeping in the output, not deleting from it — spelling out *why* something is dead is
+what stops it being re-proposed in three sessions' time, and it's frequently the most interesting thing in
+the answer. Record dead ends in the character's `build.md` for exactly that reason.
 
 ### Stash scanning
 - **Check the Char Stash tab too.** Valuable items accumulate in character stashes, not just dump tabs. Scanning only numbered dump tabs misses items that can be worth many divines.
