@@ -231,6 +231,27 @@ the character can allocate it.**
 
 **Example (2026-06-01):** `get_passive_upgrades` ranked Finesse #4 (+113k DPS). Actual path: 6 nodes (5 travel). Destroyer ranked #7 (+81k DPS). Actual path: 2 nodes (1 travel). Real recommendation: Destroyer, not Finesse.
 
+### `find_path_to_node` returns *a* shortest path, not the *best* one — the travel nodes are the point
+
+Equal-length paths are **not** equal value. `find_path_to_node` optimises for hop count and is
+indifferent to what the travel nodes actually grant, so two 6-node routes to the same notable can
+differ by a factor of several in real gain.
+
+**Example (2026-08-02, AfWednesdayWeatherwax → Death Attunement [19897], 7 points either way):**
+
+| Route | Travel nodes pick up | Measured |
+|---|---|---|
+| `find_path_to_node`'s suggestion (`…17412, 4247`) | 2× **Minion Life** (12% each) | **+30,726 Full DPS (+2.0%)** |
+| PoB's own `AllocNode` path (`…43716, 34144`) | 2× **Minion Damage** (16% each) | **+129,303 Full DPS (+8.4%)** |
+
+Same target, same 7 points, **4× the damage** — purely from which equal-length path you walk.
+
+**Rule:** treat `find_path_to_node` as a *cost* estimate, not an allocation plan. Before recommending,
+either (a) let `update_tree_delta` auto-path (it uses PoB's own `spec:AllocNode`, which is what the GUI
+does) and read back the `Auto-pathed …(IDs: …)` line, or (b) `get_tree_node` each travel node and check
+what it grants. Then give the user the **explicit node ID list** to allocate — if they path differently
+in-game they will not reproduce the simmed number.
+
 ### Mastery nodes are terminal
 In the passive tree graph, mastery nodes (the large central node of a cluster) appear as neighbours to regular notables and smalls in the JSON. **You can path TO a mastery node, but you cannot path THROUGH it.** A node that is adjacent to a mastery in the JSON cannot be reached via the mastery — you must find the non-mastery path.
 
