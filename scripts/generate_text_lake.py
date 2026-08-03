@@ -192,6 +192,161 @@ def gen_passives(tree_version):
     return lines
 
 
+# ---------------------------------------------------------------- bases
+# Item BASE data: implicits and base-type properties. Data/Bases/*.lua was read ZERO
+# times by this generator until 2026-08-03, so the lake could not answer "what implicit
+# does this base have?" at all.
+#
+# The case that exposed it: the Granite Flask's "+1500 to Armour" is a BASE-TYPE
+# property (flask.buff), not an implicit and not an explicit — it appears in no mod
+# pool. It turned out to be the single most important defensive number on a character,
+# and had to be grepped straight out of the submodule because the lake had nothing.
+#
+# These files are statements (`itemBases["X"] = {...}`), not a returned table, so we
+# locate each assignment and parse the table literal that follows.
+
+_BASE_ASSIGN = re.compile(r'itemBases\[\s*"([^"]+)"\s*\]\s*=\s*(?=\{)')
+
+
+def gen_bases():
+    lines = []
+    for f in sorted((POB / "Data" / "Bases").glob("*.lua")):
+        src = f.read_text(encoding="utf-8")
+        for m in _BASE_ASSIGN.finditer(src):
+            name = m.group(1)
+            try:
+                base = LuaParser(src[m.end():]).parse()
+            except Exception:
+                continue
+            if not isinstance(base, dict):
+                continue
+            itype = base.get("type", "?")
+            sub = base.get("subType", "") or "-"
+            req = base.get("req") or {}
+            lvl = req.get("level", 0) if isinstance(req, dict) else 0
+
+            # Base-type properties that read as stats to a player but live nowhere else.
+            props = []
+            imp = base.get("implicit")
+            if isinstance(imp, str) and imp.strip():
+                props.append("IMPLICIT: " + one_line(imp))
+            fl = base.get("flask")
+            if isinstance(fl, dict):
+                for b in lua_list(fl.get("buff", {})):
+                    if isinstance(b, str):
+                        props.append("FLASK-BUFF: " + one_line(b))
+                bits = []
+                for k, label in (("life", "life"), ("mana", "mana"), ("duration", "duration"),
+                                 ("chargesUsed", "chargesUsed"), ("chargesMax", "chargesMax")):
+                    if fl.get(k) is not None:
+                        bits.append(f"{label}={fl[k]}")
+                if bits:
+                    props.append("FLASK: " + ", ".join(bits))
+            if not props:
+                continue  # plain stat-stick bases add noise, not searchable text
+            lines.append(f"BASE\t{itype}\t{name}\t{sub}\treq{lvl}\t{' | '.join(props)}")
+    lines.sort()
+    return lines
+
+
+# ---------------------------------------------------------------- enchants + pantheon
+# Lab/Instilling enchants and pantheon god powers. Both absent until 2026-08-03.
+# The pantheon gap was felt directly: identifying Soul of Ralakesh as the bleed/phys-DoT
+# god required grepping Pantheons.lua out of the submodule, because the lake had nothing.
+
+ENCHANT_FILES = ["EnchantmentHelmet", "EnchantmentBoots", "EnchantmentGloves",
+                 "EnchantmentBody", "EnchantmentBelt", "EnchantmentWeapon", "EnchantmentFlask"]
+
+
+def gen_enchants():
+    lines = []
+    for fname in ENCHANT_FILES:
+        path = POB / "Data" / f"{fname}.lua"
+        if not path.exists():
+            continue
+        slot = fname.replace("Enchantment", "")
+        data = LuaParser(path.read_text(encoding="utf-8")).parse()
+        if not isinstance(data, dict):
+            continue
+        for skill, tiers in data.items():
+            if not isinstance(tiers, dict):
+                continue
+            for tier, texts in tiers.items():
+                for t in lua_list(texts) if isinstance(texts, dict) else []:
+                    if isinstance(t, str) and t.strip():
+                        lines.append(f"ENCHANT\t{slot}\t{skill}\t{tier}\t{one_line(t)}")
+    lines.sort()
+    return lines
+
+
+def gen_pantheon():
+    f = POB / "Data" / "Pantheons.lua"
+    if not f.exists():
+        return []
+    data = LuaParser(f.read_text(encoding="utf-8")).parse()
+    lines = []
+    if not isinstance(data, dict):
+        return []
+    for key, god in data.items():
+        if not isinstance(god, dict):
+            continue
+        kind = "MAJOR" if god.get("isMajorGod") else "MINOR"
+        for soul in lua_list(god.get("souls", {})):
+            if not isinstance(soul, dict):
+                continue
+            sname = soul.get("name", "?")
+            mods = [one_line(m["line"]) for m in lua_list(soul.get("mods", {}))
+                    if isinstance(m, dict) and isinstance(m.get("line"), str)]
+            if mods:
+                lines.append(f"PANTHEON\t{kind}\t{key}\t{sname}\t{' | '.join(mods)}")
+    lines.sort()
+    return lines
+
+
+# ---------------------------------------------------------------- spectres
+# The full raisable-monster roster. Absent from the lake until 2026-08-03 despite being
+# the single largest body of minion-relevant text in PoB's data (~325 minion/spectre
+# lines), which made "which spectre should I use?" unanswerable by a sweep.
+#
+# Emits the searchable dimensions: display name, monster tags (how you actually filter —
+# "undead", "ranged", "caster"...), and the skill list (what the spectre DOES). Numeric
+# multipliers (life/damage/resists) are included compactly because spectre choice is
+# usually a durability-vs-damage tradeoff.
+
+_MINION_ASSIGN = re.compile(r'minions\[\s*"([^"]+)"\s*\]\s*=\s*(?=\{)')
+
+
+def gen_spectres():
+    f = POB / "Data" / "Spectres.lua"
+    if not f.exists():
+        return []
+    src = f.read_text(encoding="utf-8")
+    lines = []
+    for m in _MINION_ASSIGN.finditer(src):
+        meta = m.group(1)
+        try:
+            mon = LuaParser(src[m.end():]).parse()
+        except Exception:
+            continue
+        if not isinstance(mon, dict):
+            continue
+        name = mon.get("name", "?")
+        tags = ",".join(str(t) for t in lua_list(mon.get("monsterTags", {})))
+        skills = ",".join(str(s) for s in lua_list(mon.get("skillList", {})))
+        stats = []
+        for k, label in (("life", "life"), ("damage", "dmg"), ("attackTime", "atkTime"),
+                         ("fireResist", "fireRes"), ("coldResist", "coldRes"),
+                         ("lightningResist", "lightRes"), ("chaosResist", "chaosRes")):
+            v = mon.get(k)
+            if v is not None:
+                stats.append(f"{label}={v}")
+        lines.append(
+            f"SPECTRE\t{name}\t{meta}\t{', '.join(stats)}\ttags:{tags}\tskills:{skills}"
+        )
+    lines.sort()
+    return lines
+
+
 # ---------------------------------------------------------------- clusters
 # Cluster jewel SMALL-passive skills live ONLY in Data/ClusterJewels.lua — they are
 # NOT in TreeData/*/tree.lua, so gen_passives() never saw them. Cluster NOTABLES are
@@ -293,6 +448,13 @@ MOD_FILES = [
     "ModExplicit", "ModImplicit", "ModCorrupted", "ModEldritch", "ModScourge",
     "ModVeiled", "ModDelve", "ModSynthesis", "ModFoulborn", "ModMaster",
     "ModTincture", "ModJewel", "ModJewelAbyss",
+    # ModFlask was missing until 2026-08-03 — every flask prefix/suffix (Flagellant's,
+    # Bubbling, Seething, of Staunching, the armour/evasion "during Effect" suffixes)
+    # was absent from the lake, so a whole gear slot's mod pool had to be grepped out of
+    # the submodule by hand. ModJewelCluster covers cluster jewels' OWN explicits (e.g.
+    # "Added Small Passive Skills have N% increased Effect"), distinct from the small
+    # passives themselves in clusters.txt.
+    "ModFlask", "ModJewelCluster",
 ]
 
 
@@ -358,6 +520,10 @@ def main():
     for fname, gen in [
         ("passives.txt", lambda: gen_passives(tree_version)),
         ("clusters.txt", gen_clusters),
+        ("bases.txt", gen_bases),
+        ("spectres.txt", gen_spectres),
+        ("enchants.txt", gen_enchants),
+        ("pantheon.txt", gen_pantheon),
         ("uniques.txt", gen_uniques),
         ("gems.txt", gen_gems),
         ("mods.txt", gen_mods),
@@ -377,24 +543,24 @@ Regenerate: `python scripts/generate_text_lake.py` (re-run after every PoB submo
 - tree version: {tree_version} (PoB TreeData; 'alternate'/'ruthless' variants excluded)
 - source: PathOfBuilding submodule @ src/Data + src/TreeData + src/Data/ClusterJewels.lua
 
-## ⚠️ NOT EXHAUSTIVE — known source gaps (audited 2026-08-03)
+## ⚠️ STILL NOT EXHAUSTIVE — remaining source gaps (audited + largely closed 2026-08-03)
 
-A concept sweep of this lake is **not** yet a complete sweep of the game. These PoB data files
-are NOT read by the generator, so grepping the lake for a topic returns a FALSE NEGATIVE for
-anything that lives only in them. Until they are added, grep the submodule directly as well:
-`rg -i "<topic>" PathOfBuilding/src/Data/`
+A sweep of this lake is close to, but not yet, a complete sweep of the game. For the sources
+below, grepping the lake returns a FALSE NEGATIVE. Until they are added, also grep the
+submodule directly: `rg -i "<topic>" PathOfBuilding/src/Data/`
 
-| Missing source | Why it matters (minion-sweep hit count as a proxy) |
-|---|---|
-| `Data/Bases/*.lua` | **item BASE implicits + base properties** (e.g. Granite Flask's `+1500 to Armour`, Bone Helmet minion damage) — 41 |
-| `Spectres.lua` | the entire spectre roster — 325 |
-| `ModFlask.lua` | **all flask prefixes/suffixes** — mods.txt does NOT cover flasks — 5 |
-| `ModJewelCluster.lua` | cluster jewels' own explicit mods — 31 |
-| `Rares.lua` | rare-monster modifier pool ("what one-shot me?") — 12 |
-| `Enchantment*.lua` | lab/helmet/weapon/flask enchants (incl. Instilling) — 9 (helmet) |
-| `Essence.lua` | essence crafting pool — 7 |
-| `Pantheons.lua` | pantheon god powers — 2 |
-| `BeastCraft.lua`, `ModGraft`, `ModNecropolis`, `ModMap`, `ModFoulbornMap`, `ModJewelCharm`, `Crucible`, `TattooPassives` | further craft/league mod pools |
+| Still missing | Why it matters | Why not done |
+|---|---|---|
+| `Essence.lua` | essence crafting pool | stores **mod IDs, not text** (`["Helmet"] = "ColdResist3"`) — needs a resolver against ModExplicit to be searchable |
+| `Rares.lua` | rare-monster modifier pool ("what one-shot me?") | monster-side data; different shape |
+| `BeastCraft.lua` | beastcrafting recipes | |
+| `ModGraft`, `ModNecropolis`, `ModMap`, `ModFoulbornMap`, `ModJewelCharm` | further craft / league mod pools | scope-check availability first — several are dead leagues |
+| `Crucible`, `TattooPassives` | league mod pools | likely `removed`/event-only — check `mechanics_index.md` scope before trusting |
+
+**Closed 2026-08-03** (were false negatives before that date — treat any earlier "found nothing"
+conclusion on these topics as unreliable): `Data/Bases/*.lua` → **bases.txt**; `Spectres.lua` →
+**spectres.txt**; `Enchantment*.lua` → **enchants.txt**; `Pantheons.lua` → **pantheon.txt**;
+`ClusterJewels.lua` → **clusters.txt**; `ModFlask` + `ModJewelCluster` → folded into **mods.txt**.
 
 Deliberately excluded (no mechanical value or redundant): `ModScalability`, `QueryMods`,
 `TradeSiteStats` (trade indexes, ~5MB combined), `FlavourText` (lore), `SkillStatMap`,
@@ -410,6 +576,18 @@ Deliberately excluded (no mechanical value or redundant): `ModScalability`, `Que
     treating a notable as allocatable, verify placement (get_tree_node / poedb).
     CLUSTER NOTE: cluster-jewel NOTABLES are in the tree node list, so they ARE here.
     Cluster SMALL passives are NOT — they live only in ClusterJewels.lua → clusters.txt.
+  - bases.txt: BASE, item type, base name, subType, req level, properties
+    Item-BASE implicits AND base-type properties. The latter exist in NO mod pool — e.g. a
+    Granite Flask's `+1500 to Armour` is `FLASK-BUFF`, not an implicit or explicit. Rows with
+    no implicit/flask text are omitted (plain stat-stick bases are noise). Armour/evasion/ES
+    and weapon numbers are NOT emitted — use pob-mcp item tools for those.
+  - spectres.txt: SPECTRE, display name, metadata path, stat multipliers, tags, skill list
+    The raisable-monster roster. `tags:` is how you actually filter (undead / ranged / caster);
+    `skills:` is what it DOES. Numbers are PoB's multipliers, not absolute values.
+  - enchants.txt: ENCHANT, slot, skill, tier (MERCILESS/ENDGAME), text
+    Lab + Instilling enchants across helmet/boots/gloves/body/belt/weapon/flask.
+  - pantheon.txt: PANTHEON, MAJOR/MINOR, god key, soul name, granted mods
+    Both the base god and its upgrade souls (captured-monster upgrades).
   - clusters.txt: kind, jewel-size, name, tag, enchant text, stats
     CLUSTER-SMALL rows are the "Added Small Passive Skills grant: X" pool, keyed by jewel
     size (Small/Medium/Large) — the exhaustive answer to "what can a cluster small give?".
