@@ -192,6 +192,50 @@ def gen_passives(tree_version):
     return lines
 
 
+# ---------------------------------------------------------------- clusters
+# Cluster jewel SMALL-passive skills live ONLY in Data/ClusterJewels.lua — they are
+# NOT in TreeData/*/tree.lua, so gen_passives() never saw them. Cluster NOTABLES are
+# in the tree node list and therefore already covered by passives.txt; this file
+# deliberately does not duplicate them (it cross-references instead).
+#
+# Found 2026-08-03: a sweep for "what can a cluster jewel small passive grant?"
+# returned ZERO hits across the whole lake and read as a confident absence.
+
+def gen_clusters():
+    f = POB / "Data" / "ClusterJewels.lua"
+    data = LuaParser(f.read_text(encoding="utf-8")).parse()
+    lines = []
+
+    # SMALL rows: one per (jewel size, skill). The enchant is the searchable text
+    # players actually see on the jewel; stats are what each added small grants.
+    for jname, jewel in (data.get("jewels") or {}).items():
+        if not isinstance(jewel, dict):
+            continue
+        size = jewel.get("size", "?")
+        for tag, skill in (jewel.get("skills") or {}).items():
+            if not isinstance(skill, dict):
+                continue
+            stats = " | ".join(one_line(s) for s in lua_list(skill.get("stats", {})))
+            ench = " | ".join(one_line(s) for s in lua_list(skill.get("enchant", {})))
+            lines.append(
+                f"CLUSTER-SMALL\t{size}\t{skill.get('name', '?')}\t{tag}\t{ench}\t{stats}"
+            )
+
+    # Cluster-only keystones (large jewels can roll these; names only in this file).
+    for ks in lua_list(data.get("keystones", {})):
+        if isinstance(ks, str):
+            lines.append(f"CLUSTER-KEYSTONE\t-\t{ks}\t-\t-\tsee passives.txt for stats")
+
+    # Notable NAME index only — stats come from the tree (passives.txt).
+    for name in sorted(data.get("notableSortOrder") or {}):
+        lines.append(
+            f"CLUSTER-NOTABLE\t-\t{name}\t-\t-\tstats in passives.txt (NOTABLE {name})"
+        )
+
+    lines.sort()
+    return lines
+
+
 # ---------------------------------------------------------------- uniques
 # NOTE: "Requires Level"/"LevelReq" are deliberately KEPT (useful for leveling-gear
 # sweeps; their absence caused a stale-req error on 2026-07-18).
@@ -313,6 +357,7 @@ def main():
     counts = {}
     for fname, gen in [
         ("passives.txt", lambda: gen_passives(tree_version)),
+        ("clusters.txt", gen_clusters),
         ("uniques.txt", gen_uniques),
         ("gems.txt", gen_gems),
         ("mods.txt", gen_mods),
@@ -330,7 +375,30 @@ Regenerate: `python scripts/generate_text_lake.py` (re-run after every PoB submo
 
 - generated: {stamp}
 - tree version: {tree_version} (PoB TreeData; 'alternate'/'ruthless' variants excluded)
-- source: PathOfBuilding submodule @ src/Data + src/TreeData
+- source: PathOfBuilding submodule @ src/Data + src/TreeData + src/Data/ClusterJewels.lua
+
+## ⚠️ NOT EXHAUSTIVE — known source gaps (audited 2026-08-03)
+
+A concept sweep of this lake is **not** yet a complete sweep of the game. These PoB data files
+are NOT read by the generator, so grepping the lake for a topic returns a FALSE NEGATIVE for
+anything that lives only in them. Until they are added, grep the submodule directly as well:
+`rg -i "<topic>" PathOfBuilding/src/Data/`
+
+| Missing source | Why it matters (minion-sweep hit count as a proxy) |
+|---|---|
+| `Data/Bases/*.lua` | **item BASE implicits + base properties** (e.g. Granite Flask's `+1500 to Armour`, Bone Helmet minion damage) — 41 |
+| `Spectres.lua` | the entire spectre roster — 325 |
+| `ModFlask.lua` | **all flask prefixes/suffixes** — mods.txt does NOT cover flasks — 5 |
+| `ModJewelCluster.lua` | cluster jewels' own explicit mods — 31 |
+| `Rares.lua` | rare-monster modifier pool ("what one-shot me?") — 12 |
+| `Enchantment*.lua` | lab/helmet/weapon/flask enchants (incl. Instilling) — 9 (helmet) |
+| `Essence.lua` | essence crafting pool — 7 |
+| `Pantheons.lua` | pantheon god powers — 2 |
+| `BeastCraft.lua`, `ModGraft`, `ModNecropolis`, `ModMap`, `ModFoulbornMap`, `ModJewelCharm`, `Crucible`, `TattooPassives` | further craft/league mod pools |
+
+Deliberately excluded (no mechanical value or redundant): `ModScalability`, `QueryMods`,
+`TradeSiteStats` (trade indexes, ~5MB combined), `FlavourText` (lore), `SkillStatMap`,
+`Costs`, `Global`, `Misc`, `Bosses`, `BossSkills`.
 - format: tab-separated fields, one entity per line, stats joined with " | "
   - passives.txt: TYPE, name, ascendancy, #id, stats (masteries include all effects)
     SCOPE WARNING: PoB's tree data bundles EVENT/ALTERNATE ascendancies alongside core
@@ -340,6 +408,18 @@ Regenerate: `python scripts/generate_text_lake.py` (re-run after every PoB submo
     ANOINT-ONLY WARNING: some NOTABLE rows are anoint-only nodes that do NOT physically
     exist on the tree (e.g. Hollow Effigy) — tree data doesn't distinguish them. Before
     treating a notable as allocatable, verify placement (get_tree_node / poedb).
+    CLUSTER NOTE: cluster-jewel NOTABLES are in the tree node list, so they ARE here.
+    Cluster SMALL passives are NOT — they live only in ClusterJewels.lua → clusters.txt.
+  - clusters.txt: kind, jewel-size, name, tag, enchant text, stats
+    CLUSTER-SMALL rows are the "Added Small Passive Skills grant: X" pool, keyed by jewel
+    size (Small/Medium/Large) — the exhaustive answer to "what can a cluster small give?".
+    These exist ONLY in Data/ClusterJewels.lua and were entirely ABSENT from the lake until
+    2026-08-03, so any earlier sweep for them returned a false negative.
+    CLUSTER-NOTABLE / CLUSTER-KEYSTONE rows are a NAME INDEX only — their stats live in
+    passives.txt. Per-size numeric values for a small (they differ Small/Medium/Large) and
+    what a specific jewel actually rolled: use pob-mcp search_cluster_jewels /
+    list_cluster_jewel_nodes. ⚠ Jewel mods like "Added Small Passive Skills have N% increased
+    Effect" scale these — the lake shows BASE values only.
   - uniques.txt: name, base, source-file, mods (ALL variants kept, {{variant:N}} markers
     retained, legend appended as {{variants: ...}}; level-req lines KEPT; other metadata stripped)
     REBASED-UNIQUE WARNING: the base column shows the FIRST base listed — for uniques whose
