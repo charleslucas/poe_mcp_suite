@@ -1,4 +1,4 @@
-# frameworks/ — meta-build guides, tech library, farming roster
+# frameworks/ — meta-build guides, meta-farming guides, tech library
 
 Curated, contribution-ready knowledge layers that sit *above* any one build or character. Built and
 field-tested in live sessions (first instances: 2026-08-04); **open to PRs** — same bar as `playbooks/`
@@ -9,7 +9,7 @@ and falsifiable.
 |---|---|
 | [`styles/`](styles/minions.md) | **Meta-build guides** (style templates) — the layer above build archetypes. Per style (minions first): decision axes, archetype roster with aliases, shared infrastructure ("best-known practices"), staged acquisitions by level band, verified traps, dated survey ledger. Use one to *design* a build of that style, then hand off to `playbooks/build-design.md`. |
 | [`concepts/`](concepts/README.md) | **Tech library** — mechanisms/pairings that work across unrelated builds (conversion ladders, trigger automation, charge engines). One file per tech: aliases, mechanism *including the intuitive-but-wrong version*, availability, references, builds using it. |
-| [`farming/`](farming/README.md) | **Farming strategy roster** — currency-making strategies with aliases, investment/attention/payout axes, build-fit, and **league-stamped** viability. Feeds `playbooks/atlas-planning.md` sessions. |
+| [`farming/`](farming/README.md) | **Meta-farming guides** — currency-making strategies with aliases, investment/attention/payout axes, build-fit, and **league-stamped** viability. Feeds `playbooks/atlas-planning.md` sessions. |
 
 ## Conventions (uniform across all three)
 
@@ -44,6 +44,12 @@ character. Three tiers, each with a defined promotion:
 3. **Proven** (here, ✅ with evidence linked): seen to work in the actual game, data attached in the
    References field. League re-stamps can demote — evidence from three patches ago degrades back to
    experimental.
+
+The ladder applies **uniformly to builds, techs, and farming strategies** — for farming, "play data" means
+recorded sessions with yields (a creator's div/hr video, a session log). ⚠ One asymmetry: **farming
+evidence decays faster** — build proofs die at patches, farming proofs also die when the mid-league economy
+moves (the commodity a strategy sells can halve in price without any patch). Farming re-stamps are
+per-league *at minimum*, and yield claims should carry their survey date, not just their patch.
 
 **Class is a view, style is canonical** — [`styles/by-class.md`](styles/by-class.md) indexes builds the way
 players search (by class/ascendancy) while the style files keep shared infrastructure unduplicated.
