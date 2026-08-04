@@ -47,6 +47,9 @@ competitors.
 | Resource | What it is | Trust notes |
 |---|---|---|
 | **Per-archetype "Compendium" posts** (reddit/gdocs) | The closest cousin to our tech library: deep single-archetype interaction docs (e.g. the 2019 *Summoner's Compendium* — hit in our own surveys) | ✅ genre is real; individual docs decay when the author stops playing; league-stamp everything taken from one |
+| **untagatunu's All-In-One PoE Compendium spreadsheet** | ✅ real (user-verified 2026-08-04): community mechanics compendium, ~6 years old; the reddit post is deleted but the spreadsheet link survives | **Structure worth mining, data expired** — a live demonstration of why frameworks league-stamp: the sheet died of staleness, not wrongness |
+| **BawLoch** (YouTube) | ✅ real (user-verified): farming strategy videos — youtube.com/watch?v=Q2rdP2IUTyM | Survey target + References source for the farming roster |
+| **Redviles** (YouTube @Redvilespoe) | ✅ real (user-verified): farming strategy channel | Survey target + References source; note the survey spelled it "RedVile's" — mangled-but-real |
 | **r/PathOfExileBuilds** | Where tech gets surfaced and named ad hoc (already indexed above for builds) | The *venue*, not a catalog — searchable, unstructured |
 | **poewiki per-item pages** | Interaction notes scattered per item; not combo-first | ✅ authoritative for single-item facts |
 | **Maxroll — atlas/farming strategy hub** | Polished per-league farming strategy articles | ◐ verify current-league coverage before citing; strategy names differ from reddit's |
@@ -55,9 +58,12 @@ competitors.
 | **League-scoped div/hr community spreadsheets** | Each league produces creator-maintained profit-tier sheets | ✅ genre real & valuable; ⚠ **creator/sheet names from AI search are unreliable** (garbled-name problem — find them via reddit search, not synthesis) |
 | **YouTube farming creators** | The deepest actual strategy source (per-strategy walkthroughs with live div/hr) | ✅ our farming roster's References already cite specific videos |
 
-⚠ Standing caution for this whole section: AI-search answers here showed `sources: []` synthesis, PoE2
-citation bleed, and cross-league vocabulary blending. Verify names/links via reddit search before adding
-any specific sheet or author to a framework's References.
+⚠ Standing caution, **corrected 2026-08-04 after user verification**: AI-search answers here showed
+`sources: []` synthesis, PoE2 bleed, and vocabulary blending — and the three creator names flagged as
+"probably garbled/invented" (untagatunu, BawLoch, Redviles) **all turned out to be real people**, with
+names only slightly mangled. The rule both directions of the Trarthus lesson now: synthesis tells justify
+**UNVERIFIED**, never "probably fake." Names from synthesis are mangled *pointers* — verify via a direct
+reddit/YouTube search (30 seconds) instead of presuming fabrication or fidelity.
 
 ## How this maps to the workflow
 

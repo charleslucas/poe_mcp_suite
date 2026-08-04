@@ -64,7 +64,7 @@ REJECTED keeps its row + cause + date.
 
 ## Step 5 — Pitfalls (all field-hit, 2026-08-04)
 
-- **AI-search garbles proper nouns** — fuzzy-gate names before declaring them fake (Bladefall of Trarthus).
+- **AI-search garbles proper nouns — in BOTH directions.** Fuzzy-gate names before declaring them fake ("Bladefall of the Tarter" was real gem *of Trarthus*), and treat synthesis tells (`sources: []`, no direct links, odd-looking handles) as **unverified, never probably-fake**: three creator names flagged as likely-invented (untagatunu, BawLoch, Redviles) were all real people with slightly mangled spellings. Synthesis names are mangled pointers — a 30-second reddit/YouTube search resolves them; presumption in either direction does not.
 - **Survey praise omits exclusivity costs** — The Dark Monarch was "mandatory for spectre builds" with no
   mention that every variant forbids all other minions. Pull the full item text before rostering.
 - **Same mechanic, opposite verdicts = investment tiers** — Essence is both a budget starter (unjuiced) and

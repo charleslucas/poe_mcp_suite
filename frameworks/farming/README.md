@@ -71,6 +71,11 @@ switching = loadout swap, not respec. Implementation: `atlas-planning` session.
 - **Contradiction preserved:** Essence is both "recommended budget starter" (unjuiced, low maps) and "trap
   for slow builds" (scarab-juiced). Same mechanic, different investment tier — the axes matter.
 
+### 2026-08-04 (addendum) — creator sources user-verified
+BawLoch (farming videos) and Redviles (@Redvilespoe) confirmed real by direct check — both are now standing
+survey targets / References sources (indexed in `reference_data/guide_sources.md`). The 6-year-old
+untagatunu compendium spreadsheet also real (post deleted, sheet alive): mine it for *structure*, not data.
+
 ### Verification queue
 - [ ] ◐ scarab names (Harvest Scarab of Doubling, Influencing/Monstrous Lineage/Mania) — **no scarab data in
   the text lake** (known gap); verify via wiki/trade before buying sets
