@@ -47,7 +47,7 @@ competitors.
 | Resource | What it is | Trust notes |
 |---|---|---|
 | **Per-archetype "Compendium" posts** (reddit/gdocs) | The closest cousin to our tech library: deep single-archetype interaction docs (e.g. the 2019 *Summoner's Compendium* — hit in our own surveys) | ✅ genre is real; individual docs decay when the author stops playing; league-stamp everything taken from one |
-| **untagatunu's All-In-One PoE Compendium spreadsheet** | ✅ real (user-verified 2026-08-04): community mechanics compendium, ~6 years old; the reddit post is deleted but the spreadsheet link survives | **Structure worth mining, data expired** — a live demonstration of why frameworks league-stamp: the sheet died of staleness, not wrongness |
+| **untagatunu's All-In-One PoE Compendium spreadsheet** | ✅ real (user-verified 2026-08-04): community mechanics compendium, ~6 years old; reddit post deleted, sheet alive: docs.google.com/spreadsheets/d/1gfNMUgdtOLPW9bAjt876F9q78uv_mie-s-ggGQK2seM | **Structure worth mining, data expired** — a live demonstration of why frameworks league-stamp: the sheet died of staleness, not wrongness |
 | **BawLoch** (YouTube) | ✅ real (user-verified): farming strategy videos — youtube.com/watch?v=Q2rdP2IUTyM | Survey target + References source for the farming roster |
 | **Redviles** (YouTube @Redvilespoe) | ✅ real (user-verified): farming strategy channel | Survey target + References source; note the survey spelled it "RedVile's" — mangled-but-real |
 | **r/PathOfExileBuilds** | Where tech gets surfaced and named ad hoc (already indexed above for builds) | The *venue*, not a catalog — searchable, unstructured |
