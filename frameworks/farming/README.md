@@ -1,12 +1,12 @@
 > **Canonical home:** `poe_mcp_suite/frameworks/` (public). Instance data is patch-stamped (3.29) — re-verify after any league/patch change. `local library:` references point into the maintainer's private guide library (character data + digested third-party guides, not distributed); treat them as worked-example citations, not links.
 
-# Farming Strategy Database
+# Meta-Farming Guides — strategy roster
 
 **What this is:** the currency-making layer of the library — a roster of farming strategies with the same
 conventions as [`_styles/`](../styles/minions.md) and [`_concepts/`](../_concepts/README.md):
 **aliases** (community names = survey keys), **✅/◐/⛔ confidence**, **references** (videos, guides, reddit
 tutorials), and a dated **survey ledger**. Strategies are durable across leagues; their **viability is
-league-stamped** — a 3.29 tier means nothing in 3.30 until re-surveyed.
+league-stamped** — a 3.29 tier means nothing in 3.30 until re-surveyed. Entries ride the same **evidence ladder** as builds (see [`../README.md`](../README.md)), with one caveat: farming proofs also expire when the **mid-league economy** moves, so yield claims carry their survey *date*, not just their patch.
 
 **Division of labor:** this DB answers *what's worth farming and for whom*. A live
 [`atlas-planning`](../../playbooks/atlas-planning.md) session answers *how to set up your atlas for it*.
