@@ -33,7 +33,7 @@ Write to `character_data/{account}/{char}/buffer/analysis_{YYYY-MM-DD}_{type}.js
 ```json
 {
   "analysis_type": "character_improvement",
-  "character": "Memophage_4428/MirageSixFingeredMan",
+  "character": "{Account}/{Character}",
   "started": "YYYY-MM-DD",
   "stages": [
     {

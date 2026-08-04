@@ -237,7 +237,7 @@ Equal-length paths are **not** equal value. `find_path_to_node` optimises for ho
 indifferent to what the travel nodes actually grant, so two 6-node routes to the same notable can
 differ by a factor of several in real gain.
 
-**Example (2026-08-02, AfWednesdayWeatherwax → Death Attunement [19897], 7 points either way):**
+**Example (2026-08-02, a live Witch/Necromancer → Death Attunement [19897], 7 points either way):**
 
 | Route | Travel nodes pick up | Measured |
 |---|---|---|

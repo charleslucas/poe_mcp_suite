@@ -33,9 +33,9 @@ Siosa's Act-3 stock (verified 3.29): **Unleash Support** requires the **Act 4 *E
 
 | Quest | Location | Reward NPC | Class | Gems it unlocks (reward and/or vendor) | Verified |
 |---|---|---|---|---|---|
-| **Breaking Some Eggs** | Mud Flats | **Tarkleigh** | Witch | **Summon Raging Spirit**, **Frostblink** | ✅ AfWednesdayWeatherwax · Witch · 3.29 · 2026-07-24 |
+| **Breaking Some Eggs** | Mud Flats | **Tarkleigh** | Witch | **Summon Raging Spirit**, **Frostblink** | ✅ verified in-game · Witch · 3.29 · 2026-07-24 |
 | Enemy at the Gate | Twilight Strand (kill Hillock) | Tarkleigh / Nessa | Witch | level-1 starters (incl. **Raise Zombie**) | ◐ web — verify |
-| The Caged Brute (**Brutus**) | Prison | Tarkleigh / Nessa | Witch | level-8 **supports** (incl. **Minion Damage**, **Melee Splash**) | ✅ AfWednesdayWeatherwax · Witch · 3.29 · 2026-07-24 |
+| The Caged Brute (**Brutus**) | Prison | Tarkleigh / Nessa | Witch | level-8 **supports** (incl. **Minion Damage**, **Melee Splash**) | ✅ verified in-game · Witch · 3.29 · 2026-07-24 |
 | *(other Act 1 quests — The Dweller of the Deep, The Marooned Mariner, The Siren's Cadence …)* | | | | *add as verified* | — |
 
 ## Act 2
@@ -46,13 +46,13 @@ Siosa's Act-3 stock (verified 3.29): **Unleash Support** requires the **Act 4 *E
 ## Act 3
 | Quest | Location | Reward NPC | Class | Gems it unlocks | Verified |
 |---|---|---|---|---|---|
-| **A Fixture of Fate** | The Library | **Siosa** | all | **buy MOST gems up to your level** (see shortcut + Unleash caveat) — verified by buying Feeding Frenzy / Anger / Desecrate here | ✅ AfWednesdayWeatherwax · Witch · 3.29 · 2026-07-25 |
+| **A Fixture of Fate** | The Library | **Siosa** | all | **buy MOST gems up to your level** (see shortcut + Unleash caveat) — verified by buying Feeding Frenzy / Anger / Desecrate here | ✅ verified in-game · Witch · 3.29 · 2026-07-25 |
 | *(Lost in Love, Sever the Right Hand, A Fixture of Fate …)* | | Clarissa / Siosa | Witch | *add as verified* | — |
 
 ## Acts 4–10
 | Quest | Location | Reward NPC | Class | Gems it unlocks | Verified |
 |---|---|---|---|---|---|
-| **Eternal Nightmare** | Act 4 (Highgate) | Petarus & Vanja / reward | all | **Unleash Support** — gated here; **NOT** in Siosa's Act-3 stock | ✅ AfWednesdayWeatherwax · Witch · 3.29 · 2026-07-25 |
+| **Eternal Nightmare** | Act 4 (Highgate) | Petarus & Vanja / reward | all | **Unleash Support** — gated here; **NOT** in Siosa's Act-3 stock | ✅ verified in-game · Witch · 3.29 · 2026-07-25 |
 
 *After Act 3 / Siosa, availability is mostly moot — but record later-quest-gated gems (like Unleash above) that
 surprise the plan.*

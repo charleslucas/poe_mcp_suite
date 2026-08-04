@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.." 2>/dev/null || exit 0
 # ── League anchors — rolled by the league-transition playbook (Step 7.4) ────
 # Challenge league (the one POE_LEAGUE tracks) and the next one to launch.
 # STATE 2026-07-25: 3.29 "Allflame" (Curse of the Allflame) is LIVE (launched
-# 2026-07-24); POE_LEAGUE=Allflame; AfWednesdayWeatherwax leveling in it.
+# 2026-07-24); POE_LEAGUE=Allflame; current character leveling in it.
 # ⚠ LEAGUE_END / NEXT_* below are COMMUNITY ESTIMATES — GGG has NOT officially
 # announced the 3.29 end date (as of 2026-07-25). ~18wk → ends ~2026-11-23; 3.30
 # launches ~2026-11-27 (ExileCon 2026-11-07/08). Replace with GGG's real dates
