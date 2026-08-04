@@ -63,6 +63,16 @@ never delete — the cross-league phase pattern is the most predictive content a
 claims carry their survey *date*, not just their patch; and "play data" for farming means recorded sessions
 with yields (a creator's div/hr video, a session log).
 
+**League roll = global stamp expiry, triaged — not a uniform reset.** At each new league, every
+current-league status expires and the transition sweep re-derives each entry from *(permanent evidence) ×
+(patch-notes diff) × (enabler scope)*:
+- **Carried** — notes silent, enablers in scope → old proof transfers provisionally ("proven in 3.29,
+  unchanged per 3.30 notes"). This tier is what day-one decisions run on, since nothing can be re-proven yet.
+- **Experimental again** — mechanics touched, or economy-dependent. **All farming entries land here every
+  league** (fresh economy), which is exactly why their phase history is the predictive asset.
+- **Dormant** — enabler nerfed/scoped out; awaits its cycle.
+Fresh play data then re-proves from there. Executed as part of `playbooks/league-transition.md`.
+
 **Class is a view, style is canonical** — [`styles/by-class.md`](styles/by-class.md) indexes builds the way
 players search (by class/ascendancy) while the style files keep shared infrastructure unduplicated.
 

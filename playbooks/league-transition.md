@@ -132,6 +132,14 @@ Once a character is created and imported via `lua_import_character`, follow the 
 
 ---
 
+## Frameworks re-stamp sweep (added 2026-08-04)
+
+At league roll, ALL current-league statuses in `frameworks/` expire. Triage every entry (do NOT uniformly
+reset): **carried** (patch notes silent + enablers in scope — old proof transfers provisionally, powers
+day-one picks) / **experimental** (mechanics touched, or economy-dependent — all farming entries, every
+league) / **dormant** (enabler nerfed or scoped out — awaits its cycle). Append to each entry's verdict
+history; never overwrite. Procedure details: `playbooks/knowledge-frameworks.md`.
+
 ## Step 5 — Invalidate cached price data
 
 Trade and ninja results are cached per-league. After updating `POE_LEAGUE`:
