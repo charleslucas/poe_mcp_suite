@@ -25,7 +25,8 @@ unit of reuse (decided with user, 2026-08-04).
 
 Current entries: [`minion-fire-to-chaos.md`](minion-fire-to-chaos.md) (REALIZED 2026-08-04).
 
-**Vetting gate (public layer): proven out with actual play.** Community-established techs carry the
-community's play-proof; original techs need the maintainer's (equipped, measured, mapped) before they
-publish. Prototype seeds and untested pairings stay in the contributor's personal stash (private
-library) until then — someone should be able to build from anything here and succeed.
+**Vetting gate: the evidence ladder** (full version: [`../README.md`](../README.md)). Techs publish here
+at **◐ EXPERIMENTAL** once fleshed out and surfaced in a reputable venue (a detailed community post counts
+— and *making* that post is a valid promotion mechanism), and reach **✅ PROVEN** when there's data of it
+working in the actual game: a video of real play, ladder presence, or a measured played character (the
+References field carries the evidence). Raw seeds stay in the contributor's personal stash until then.

@@ -29,13 +29,24 @@ and falsifiable.
 - **Survey ledger:** every framework ends with dated survey entries recording queries run, what was found,
   what was refuted, and source quality (a `sources: []` AI answer is synthesis, not retrieval).
 
-## Publication policy
+## Publication policy — the evidence ladder
 
-1. **Vetting gate: proven out with actual play.** Vetted/common builds and techs that people can succeed
-   with. Experimental and concept-tier material stays in each contributor's personal stash (private
-   library) until play-proven — then it graduates here with its evidence.
-2. **Class is a view, style is canonical** — [`styles/by-class.md`](styles/by-class.md) indexes builds the
-   way players search (by class/ascendancy) while the style files keep the shared infrastructure unduplicated.
+**The criterion is observable: "has this been seen to work in the actual game, and can we get data on
+that?"** A video of someone actually playing it, ladder presence, or a measured build of a played
+character. Three tiers, each with a defined promotion:
+
+1. **Private-conceptual** (personal stash, not in this repo): raw seeds — "new unique, maybe build around
+   it." Stays private until fleshed out to at least the detail of a good r/PathOfExileBuilds post.
+   **Promotion mechanism can literally be making that post** — publishing to the community's venue.
+2. **Public-experimental** (here, labeled ◐ EXPERIMENTAL): surfaced in a reputable venue and worthy of
+   investigation, but no play data yet. The repo *indexes* the experiment (link to the post), it doesn't
+   host the speculation. Promotes when play data appears.
+3. **Proven** (here, ✅ with evidence linked): seen to work in the actual game, data attached in the
+   References field. League re-stamps can demote — evidence from three patches ago degrades back to
+   experimental.
+
+**Class is a view, style is canonical** — [`styles/by-class.md`](styles/by-class.md) indexes builds the way
+players search (by class/ascendancy) while the style files keep shared infrastructure unduplicated.
 
 ## Relationship to the maintainer's private library
 
