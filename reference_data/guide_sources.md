@@ -37,6 +37,28 @@ verify specifics before relying on them. Always check each resource's stated pat
 
 ---
 
+## Tech & farming-strategy sources (added 2026-08-04 — prior-art survey for `frameworks/`)
+
+**Headline finding: no maintained public equivalent of either framework exists.** Both niches are served by
+league-scoped, creator-siloed material — which is the gap `frameworks/` fills (durable, cross-league,
+evidence-laddered). These are therefore *inputs* to our frameworks (References + survey targets), not
+competitors.
+
+| Resource | What it is | Trust notes |
+|---|---|---|
+| **Per-archetype "Compendium" posts** (reddit/gdocs) | The closest cousin to our tech library: deep single-archetype interaction docs (e.g. the 2019 *Summoner's Compendium* — hit in our own surveys) | ✅ genre is real; individual docs decay when the author stops playing; league-stamp everything taken from one |
+| **r/PathOfExileBuilds** | Where tech gets surfaced and named ad hoc (already indexed above for builds) | The *venue*, not a catalog — searchable, unstructured |
+| **poewiki per-item pages** | Interaction notes scattered per item; not combo-first | ✅ authoritative for single-item facts |
+| **Maxroll — atlas/farming strategy hub** | Polished per-league farming strategy articles | ◐ verify current-league coverage before citing; strategy names differ from reddit's |
+| **Mobalytics — creator atlas-tree collections** (e.g. Fubgun) | Curated atlas trees per strategy, loadable | ◐ confirm PoE1-vs-PoE2 page — their PoE2 section surfaces in searches |
+| **PoEPlanner** | Atlas passive-tree sharing tool — the substrate reddit strategies link their trees with | ✅ long-standing; a linking format, not a strategy list |
+| **League-scoped div/hr community spreadsheets** | Each league produces creator-maintained profit-tier sheets | ✅ genre real & valuable; ⚠ **creator/sheet names from AI search are unreliable** (garbled-name problem — find them via reddit search, not synthesis) |
+| **YouTube farming creators** | The deepest actual strategy source (per-strategy walkthroughs with live div/hr) | ✅ our farming roster's References already cite specific videos |
+
+⚠ Standing caution for this whole section: AI-search answers here showed `sources: []` synthesis, PoE2
+citation bleed, and cross-league vocabulary blending. Verify names/links via reddit search before adding
+any specific sheet or author to a framework's References.
+
 ## How this maps to the workflow
 
 1. **Discover** here (start with poe.ninja/builds for meta truth; odealo/Maxroll/Mobalytics for authored options).

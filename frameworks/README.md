@@ -55,4 +55,9 @@ third-party guide content — neither is distributed**. `local library:` citatio
 private layer; treat them as worked-example provenance. Your own instances (characters, guide digests) wire
 in the same way — the frameworks are the shareable layer.
 
+**Prior art** (surveyed 2026-08-04): no maintained public equivalent of these frameworks exists — the
+niches are served by league-scoped creator spreadsheets, per-archetype reddit compendia, and per-creator
+video guides. Those are this project's *inputs* (see `reference_data/guide_sources.md` → "Tech &
+farming-strategy sources"), and the frameworks are the durable, provenance-labeled index over them.
+
 Maintenance procedure: `playbooks/knowledge-frameworks.md`.
