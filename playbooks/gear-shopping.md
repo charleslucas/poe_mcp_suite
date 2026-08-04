@@ -293,6 +293,12 @@ one session (2026-08-03), each caught by the user rather than the tooling:**
 4. **The market.** Search trade. Zero listings is real evidence — but distinguish "nobody has one" from
    "my stat id or wording was wrong", and say which you can't rule out.
 
+⚠ **Name-miss ≠ nonexistence.** Before ruling a community-sourced name a synthesis artifact, fuzzy-grep the
+*base* name: AI-synthesized and word-of-mouth sources garble proper nouns routinely. Real case (2026-08-04):
+a survey's "Bladefall of the Tarter" grepped to zero hits and was declared fake — it's **Bladefall of
+Trarthus**, a real transfigured gem the library had already digested. `grep -i "bladefall"` would have shown
+all four variants immediately. Exact-string gates catch fakes; only fuzzy checks distinguish fakes from typos.
+
 Only after all four should a find be presented as **actionable**. State the gate you applied, so a later
 reader knows the difference between *verified obtainable* and *seen in a data file*.
 
