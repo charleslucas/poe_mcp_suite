@@ -29,6 +29,14 @@ and falsifiable.
 - **Survey ledger:** every framework ends with dated survey entries recording queries run, what was found,
   what was refuted, and source quality (a `sources: []` AI answer is synthesis, not retrieval).
 
+## Publication policy
+
+1. **Vetting gate: proven out with actual play.** Vetted/common builds and techs that people can succeed
+   with. Experimental and concept-tier material stays in each contributor's personal stash (private
+   library) until play-proven — then it graduates here with its evidence.
+2. **Class is a view, style is canonical** — [`styles/by-class.md`](styles/by-class.md) indexes builds the
+   way players search (by class/ascendancy) while the style files keep the shared infrastructure unduplicated.
+
 ## Relationship to the maintainer's private library
 
 These frameworks were extracted from a local guide library that also holds **character data and digested

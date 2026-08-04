@@ -23,5 +23,9 @@ unit of reuse (decided with user, 2026-08-04).
   ◐ for 3.29 mechanics). Reddit tutorial threads especially: they're where techs get named, so they feed
   the Aliases field too.
 
-Current entries: [`minion-fire-to-chaos.md`](minion-fire-to-chaos.md) (REALIZED 2026-08-04) ·
-[`minion-concepts.md`](minion-concepts.md) (grab-bag; split into per-tech files as items mature).
+Current entries: [`minion-fire-to-chaos.md`](minion-fire-to-chaos.md) (REALIZED 2026-08-04).
+
+**Vetting gate (public layer): proven out with actual play.** Community-established techs carry the
+community's play-proof; original techs need the maintainer's (equipped, measured, mapped) before they
+publish. Prototype seeds and untested pairings stay in the contributor's personal stash (private
+library) until then — someone should be able to build from anything here and succeed.
