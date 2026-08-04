@@ -56,6 +56,27 @@ Add for farming re-stamps: `currency_overview` (prices stale in hours), current 
 5. **Ledger**: dated survey entry — queries, findings, refutations, contradictions *preserved* (two
    verdicts on one mechanic usually means two investment tiers, not an error).
 
+### Step 3b — YouTube evidence pipeline (applies to ALL frameworks — builds AND farming alike)
+
+Videos are the best verifiable play-evidence (the ladder's "seen to work in the actual game, with data"),
+and the suite already has the tools. For any entry claiming play-proof, or any creator surfaced by survey:
+
+1. **Discover** — surveys return video links directly; standing creator targets live in
+   `reference_data/guide_sources.md` (BawLoch, Redviles, GhazzyTV, Zizaran, …). There is no YouTube-search
+   tool: discovery goes through surveys, the source index, or the user.
+2. **Description first** (`fetch_youtube_description` — cheap): extracts PoB links (pobb.in/pastebin) and
+   guide-site links automatically; title usually carries the patch tag. Often enough to verify + Reference
+   without the transcript. ⓘ yt-dlp stalls transiently — retry later rather than hammering.
+3. **Transcript when depth is needed** (`fetch_youtube_transcript`): chapter markers first for navigation;
+   full transcript ~10-12K tokens, so per `playbooks/README.md` §6 delegate digestion to a sub-agent for
+   long videos rather than loading raw into main context.
+4. **Extract:** (a) *is it actual play* — gameplay narration vs pure theorycraft distinguishes evidence
+   tiers; (b) numbers said aloud (div/hr, DPS) as ◐ until cross-checked; (c) **aliases** — creators name
+   strategies/techs on camera before anyone writes them down; (d) links for the References field.
+5. **Land it:** References entry with creator, patch, URL; ledger line; tier promotion if the evidence bar
+   is met. Per-build deep digestion stays with `guide-analysis.md` — this pipeline is for framework-level
+   rosters and evidence verification, not full build digests.
+
 ## Step 4 — Output shape
 
 The framework file itself is the artifact. Cross-link: styles ↔ concepts (techs referenced, not restated),

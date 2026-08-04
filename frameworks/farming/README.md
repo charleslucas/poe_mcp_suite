@@ -82,5 +82,6 @@ untagatunu compendium spreadsheet also real (post deleted, sheet alive): mine it
 - [ ] ◐ "3.29 removed synthesized implicits from Ritual" and "3.29 essence monsters giga-tanky" — check
   `patch_notes_index.md` / league doc
 - [ ] Allflame league-mechanic profitability (seafloor / Reliquarian / merc farming) — directed survey
+- [ ] **First YouTube evidence digestion: BawLoch's farming video (Q2rdP2IUTyM)** — description+transcript via the Step 3b pipeline; extract strategy, div/hr, patch, aliases → References. (Two yt-dlp stalls on 2026-08-04 — transient, retry.) Redviles' channel queue behind it
 - [ ] Lifeforce + oil + logbook prices via `currency_overview` at session time (prices stale in hours)
 - [ ] After a strategy is picked: `atlas-planning` session to implement it
