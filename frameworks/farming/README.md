@@ -6,7 +6,7 @@
 conventions as [`_styles/`](../styles/minions.md) and [`_concepts/`](../_concepts/README.md):
 **aliases** (community names = survey keys), **✅/◐/⛔ confidence**, **references** (videos, guides, reddit
 tutorials), and a dated **survey ledger**. Strategies are durable across leagues; their **viability is
-league-stamped** — a 3.29 tier means nothing in 3.30 until re-surveyed. Entries ride the same **evidence ladder** as builds (see [`../README.md`](../README.md)), with one caveat: farming proofs also expire when the **mid-league economy** moves, so yield claims carry their survey *date*, not just their patch.
+league-stamped** — a 3.29 tier means nothing in 3.30 until re-surveyed. Entries ride the same **evidence ladder** as builds (see [`../README.md`](../README.md)), with one caveat: farming proofs also expire when the **mid-league economy** moves, so yield claims carry their survey *date*, not just their patch. And viability is **cyclical, not merely decaying**: strategies age out mid-league as the economy saturates, then come back early next league (low-tier Essence in this very roster is stamped “recommended early-week” — a phase-locked strategy). So **re-stamps append to a verdict history instead of overwriting it**: a pattern like “strong weeks 1–3, dead by mid-league, every league” is the roster's most *predictive* content — it says what to run on day one of the next league before any new survey exists.
 
 **Division of labor:** this DB answers *what's worth farming and for whom*. A live
 [`atlas-planning`](../../playbooks/atlas-planning.md) session answers *how to set up your atlas for it*.
@@ -27,6 +27,7 @@ Pick here, implement there.
 | **Payout shape** | steady (lifeforce, essences, oils — bulk-sold) vs jackpot (boss drops, div cards) |
 | **Build requirements** | speed · burst DPS · tankiness — every strategy leans on one |
 | **Sell effort** | raw currency (zero) → bulk commodities (TFT-style selling) → item pricing |
+| **League phase** | early-league window (mats everyone needs week 1) · evergreen · late-league/juiced · **cyclical — returns each league start** |
 
 ## 2. Strategy roster — 3.29 stamps (surveyed 2026-08-04)
 

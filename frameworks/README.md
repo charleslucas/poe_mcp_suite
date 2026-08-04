@@ -49,7 +49,7 @@ The ladder applies **uniformly to builds, techs, and farming strategies** — fo
 recorded sessions with yields (a creator's div/hr video, a session log). ⚠ One asymmetry: **farming
 evidence decays faster** — build proofs die at patches, farming proofs also die when the mid-league economy
 moves (the commodity a strategy sells can halve in price without any patch). Farming re-stamps are
-per-league *at minimum*, and yield claims should carry their survey date, not just their patch.
+per-league *at minimum*, and yield claims should carry their survey date, not just their patch. **Demotion is never deletion**: farming viability cycles with league phase — a strategy that ages out mid-league often returns early next league — so re-stamps append to each entry's verdict history, and that history (phase patterns across leagues) is the framework's most predictive content.
 
 **Class is a view, style is canonical** — [`styles/by-class.md`](styles/by-class.md) indexes builds the way
 players search (by class/ascendancy) while the style files keep shared infrastructure unduplicated.
