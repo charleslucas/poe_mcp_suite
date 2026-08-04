@@ -29,4 +29,4 @@ Current entries: [`minion-fire-to-chaos.md`](minion-fire-to-chaos.md) (REALIZED 
 at **◐ EXPERIMENTAL** once fleshed out and surfaced in a reputable venue (a detailed community post counts
 — and *making* that post is a valid promotion mechanism), and reach **✅ PROVEN** when there's data of it
 working in the actual game: a video of real play, ladder presence, or a measured played character (the
-References field carries the evidence). Raw seeds stay in the contributor's personal stash until then.
+References field carries the evidence). Raw seeds stay in the contributor's personal stash until then. Techs additionally carry an **applicability** note distinct from their evidence tier: a proven mechanism whose enabler is out of scope this patch is dormant, not demoted — [`minion-fire-to-chaos`](minion-fire-to-chaos.md) itself waited a league for its enabling mod to go core.
