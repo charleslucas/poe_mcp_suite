@@ -18,7 +18,20 @@ SUITE = Path(__file__).resolve().parent.parent
 OUT = SUITE / "reference_data" / "currency_wiki.json"
 API = "https://www.poewiki.net/w/api.php"
 UA = "poe-data-mcp/0.3 (+https://github.com/charleslucas/poe-data-mcp) python-urllib"
-CLASSES = ["Currency Item", "Stackable Currency"]
+# Trade-site "General" categories + league consumables (user-driven list 2026-08-05,
+# mapped to poewiki class names via a Cargo group_by sweep of all 80 item classes).
+# Oils / Omens / Tattoos / Ducats / Djinn Coins / Artifacts are INSIDE "Currency Item".
+CLASSES = [
+    "Currency Item", "Map Fragment", "Breachstone", "Divination Card",
+    "Ember of the Allflame", "Wombgift", "Graft", "Chart", "Incubator",
+    "Harvest Seed", "Memory", "Corpse item", "Idol", "Tincture", "Charm",
+    "Relic", "Sanctified Relic", "Resonator", "Expedition Logbook", "Sentinel",
+    "Captured Soul", "Vault Key", "Voidstone", "Watchstone", "Contract",
+    "Blueprint", "Heist Target", "Gold",
+]
+PAUSE_S = 0.5  # politeness: sequential, throttled; poewiki is community-run.
+# Content licence is CC BY-NC-SA — the lake output is LOCAL-ONLY (gitignored) per
+# legal_considerations.md conventions, so nothing fetched here is redistributed.
 
 def cargo(where, offset):
     q = urllib.parse.urlencode({
@@ -34,6 +47,7 @@ rows, seen = [], set()
 for cls in CLASSES:
     offset = 0
     while True:
+        import time; time.sleep(PAUSE_S)
         d = cargo(f'items.class="{cls}"', offset)
         batch = d.get("cargoquery", [])
         for it in batch:

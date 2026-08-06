@@ -813,9 +813,11 @@ Deliberately excluded (no mechanical value or redundant): `ModScalability`, `Que
     from reference_data/atlastree/data.json (GGG export). Distinct from passives.txt (character tree).
     ⚠ Astrolabe CONSUMABLES (the 10 varieties + their Shaped-Region mod pools) are in NO local source —
     not PoB's data, not the atlas export. Like rare-monster mods: wiki/community/user only.
-  - currency.txt: CURRENCY, name, class, description — ALL currency-class items incl. league
-    consumables (Astrolabes!), from the poewiki Cargo cache (scripts/fetch_currency_wiki.py; check
-    its fetched: date — wiki lags new leagues). The ONLY local source for map-device consumables.
+  - currency.txt: CURRENCY, name, class, description — the trade site's whole "General" scope:
+    28 consumable item classes (currency incl. oils/omens/tattoos/ducats, fragments, div cards,
+    Allflame Embers, Wombgifts, Grafts, Charts, corpses, idols, tinctures, heist, voidstones...)
+    from the poewiki Cargo cache (scripts/fetch_currency_wiki.py; check its fetched: date — wiki
+    lags new leagues). The ONLY local source for map-device consumables (Astrolabes live here).
   - clusters.txt: kind, jewel-size, name, tag, enchant text, stats
     CLUSTER-SMALL rows are the "Added Small Passive Skills grant: X" pool, keyed by jewel
     size (Small/Medium/Large) — the exhaustive answer to "what can a cluster small give?".
