@@ -128,6 +128,22 @@ untagatunu compendium spreadsheet also real (post deleted, sheet alive): mine it
   Jungle Valley (boss blocks bad altars) as favored maps, vault's actual name = **Memory Vault**, and
   "don't run Crop Rotation/Cornucopia for highest-tier setups" — matching BawLoch's non-cornucopia framing.
 
+### 2026-08-05 (later still) — the Astrolabe variety list, from the market
+poe.ninja carries a dedicated `Astrolabe` exchange category — names + prices = the variety list plus a
+**revealed-demand ranking** (surveyed 2026-08-05): Lightless 195c > Fruiting 113c > Deceptive 104c >
+Grasping 100c > Chaotic ~88c ~ Nameless ~ Timeless > Fungal ~83c ~ Runic. (9 captured; likely a result cap
+— 10th variety pending user's screen. Mechanic mappings ◐ inferred from names: Fruiting=Harvest ✅,
+Timeless=Legion, Fungal=Blight, Runic=Expedition, Lightless=Delve; rest unconfirmed.)
+- ⚠ **Fruiting doubled since BawLoch's video** (~60c → 113c): now sitting ON his stated break-even
+  ("vaults pay for it unless it's worth more than a divine"). Strategy floor unaffected; astrolabe margin
+  thinned — plausibly creator-pump. **Live demonstration of the survey-date doctrine.**
+- ❓ **Market vs tier list anomaly**: Lightless (Delve) is priciest by 70% while Delve sits B-tier —
+  either an uncatalogued Delve-astrolabe strategy (BawLoch's Delve video is "upcoming"), or scarcity.
+  Open question worth resolving before buying either side of it.
+- ⓘ General lesson banked: **poe.ninja is the live "list of all tradeable currency"** (ninja_lookup /
+  currency_overview — ToS-exempt, 15-min cache); descriptions ("what they do") come from the wiki/poedb
+  or the user's screen — ninja gives names + prices only.
+
 ### Verification queue
 - [ ] ◐ scarab names (Harvest Scarab of Doubling, Influencing/Monstrous Lineage/Mania) — **no scarab data in
   the text lake** (known gap); verify via wiki/trade before buying sets
