@@ -84,10 +84,14 @@ untagatunu compendium spreadsheet also real (post deleted, sheet alive): mine it
 - ✅ **BawLoch is a Maxroll author** (maxroll.gg/@bawloch) and the description carries his **strategy
   spreadsheet incl. the atlas tree**: docs.google.com/spreadsheets/d/1EI9RSn4mVuuNVMURAtTuvZIBnoOcPYAsym4lvZxYlhE
   — yesterday's survey claim of a "BawLoch spreadsheet" was real.
-- ◐ **New 3.29 system vocabulary learned from play narration, NOT yet properly documented**: "fruiting
-  Astrolabe" (map-blob with per-map modifiers + a paying "vault"), "Synthesised Stability" (keystone
-  enabling re-running a targeted map; maps "bisect" the blob), "Risk Scarab", "Regenerator/Originator(?)
-  influence" (auto-sub garble — term unresolved), "T2/T3/T4 plants" tiers. → queue item below.
+- ✅ **Astrolabe core mechanism — user-verified in-game (2026-08-05)**: an Astrolabe is a *mod over a
+  spatial cluster of nearby atlas nodes* (fog/mist visual; members need not be connected). Normally a map
+  consumes its own mod when run; **Synthesised Stability redirects the consumption** — a *different* group
+  member reverts instead — so your best-modded map is re-runnable, one run per remaining modded map in the
+  pool. The keystone converts "N modded maps" into "N runs of your single best-modded map"; the
+  periphery-first phase spends edge maps normally to shape/compact the pool around the chosen center.
+  ◐ Still unresolved: exact "bisection" rule, vault payout mechanics, mod-roll rules, and the
+  "Regenerator/Originator(?) influence" term (auto-sub garble).
 - 📌 Creator hand-off: **Milky** named as the league-mechanic (charts) farming specialist — human-vetted
   pointer, added to guide_sources. BawLoch's own next videos: Delve, Card, Legion, Breach, Abyss farms.
 - 🔧 Pipeline tooling: universal yt-dlp stalls root-caused (v2026.06.09 stale → updated 2026.07.04 + deno
@@ -100,9 +104,8 @@ untagatunu compendium spreadsheet also real (post deleted, sheet alive): mine it
 - [ ] ◐ "3.29 removed synthesized implicits from Ritual" and "3.29 essence monsters giga-tanky" — check
   `patch_notes_index.md` / league doc
 - [ ] Allflame league-mechanic profitability (seafloor / Reliquarian / merc farming) — directed survey
-- [ ] **Document the Astrolabe / Synthesised Stability atlas system properly** — 3.29 endgame system,
-  post-training for all models; currently known only from play narration. Wiki/league-doc pass; resolve
-  the "Regenerator/Originator influence" term
+- [ ] Astrolabe system: core mechanism ✅ user-documented (see ledger); remaining: bisection rule, vault
+  mechanics, mod-roll rules, "Regenerator/Originator influence" term — wiki pass when poewiki catches up
 - [ ] Digest Milky (league-mechanic/charts farming) + Redviles channel; BawLoch's upcoming Delve/Card/
   Legion/Breach/Abyss videos as they land
 - [ ] Lifeforce + oil + logbook prices via `currency_overview` at session time (prices stale in hours)
