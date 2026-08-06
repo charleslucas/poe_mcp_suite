@@ -33,7 +33,7 @@ Pick here, implement there.
 
 | Strategy | Aliases | 3.29 verdict | Needs | Payout |
 |---|---|---|---|---|
-| **8-mod Harvest** | "juiced harvest", "lifeforce farming" | ◐ **community meta king, 15-20+ div/hr**. Corrupted 8-mod Jungle Valley/Mausoleum (bosses block bad altars), 110%+ quant / 40%+ pack, ◐ Harvest Scarab of Doubling; clear map FIRST (stack quant altars), then harvest | strong build for 8-mods; bulk-sell effort | steady (lifeforce) |
+| **8-mod Harvest / Fruiting Astrolabe rushing** | "juiced harvest", "lifeforce farming", "brain off blasting" (the no-reading variant) | ✅ **PROVEN (3.29, BawLoch video digest 2026-08-05)**: 8-mod corrupted maps + **Doubling scarab + 2x Monstrous Lineage + 2x Sacrificial Fragments** (~25c/map, "at minimum triple"); RUSH the harvest (no full-clear) while trimming the fruiting Astrolabe; on the mod combo **"seeds at least T2" + "T2 chance to upgrade T3"** toggle **Synthesised Stability** and re-run the juiced map; escalate to Risk Scarab + pack-size chisels + full-clear for quant altars. **Floor ~4.5k lifeforce/map (50-map sample); >100k lifeforce / ~20 div per 20 maps with NO jackpots; 30k single-map jackpot ~6 div; creator: "60 div in a few hours"** — all creator-stated ◐ numbers, play-evidenced | ⚠ **survivability-gated**: late-chain maps "super rippy — getting killed, not killing" — favors tanky builds | steady + jackpot |
 | **5× Diviner's Delirium** | "div card delirium", "stacked deck farming" | ◐ 24+ div/hr claimed; 5× Diviner's orbs + Beyond + map-mod-effect atlas | **high** — dense juiced T16s; real DPS | steady (stacked decks) |
 | **Altar + Strongbox speed farm** | "altar farming", "box farming" | ◐ budget tier; open layouts (Strand), strongbox duplication nodes, Beyond | speed > tank | steady, modest |
 | **Low-tier Essence** | "essence farming (white maps)" | ◐ recommended early-week budget starter, zero map-mod management. ⚠ See the juiced version below — same mechanic, opposite verdict | almost nothing | steady (essences) |
@@ -77,12 +77,33 @@ BawLoch (farming videos) and Redviles (@Redvilespoe) confirmed real by direct ch
 survey targets / References sources (indexed in `reference_data/guide_sources.md`). The 6-year-old
 untagatunu compendium spreadsheet also real (post deleted, sheet alive): mine it for *structure*, not data.
 
+### 2026-08-05 — FIRST YOUTUBE EVIDENCE DIGESTION (Step 3b pipeline): BawLoch's Harvest video
+- ✅ Full pipeline run: description (links, chapters) → auto-sub transcript (2,507 words) → digest. The
+  8-mod Harvest row is now **play-evidenced** with creator-stated numbers and the actual operating loop.
+- ✅ **Scarab names verified by the creator** (Doubling, Monstrous Lineage) — closing yesterday's ◐.
+- ✅ **BawLoch is a Maxroll author** (maxroll.gg/@bawloch) and the description carries his **strategy
+  spreadsheet incl. the atlas tree**: docs.google.com/spreadsheets/d/1EI9RSn4mVuuNVMURAtTuvZIBnoOcPYAsym4lvZxYlhE
+  — yesterday's survey claim of a "BawLoch spreadsheet" was real.
+- ◐ **New 3.29 system vocabulary learned from play narration, NOT yet properly documented**: "fruiting
+  Astrolabe" (map-blob with per-map modifiers + a paying "vault"), "Synthesised Stability" (keystone
+  enabling re-running a targeted map; maps "bisect" the blob), "Risk Scarab", "Regenerator/Originator(?)
+  influence" (auto-sub garble — term unresolved), "T2/T3/T4 plants" tiers. → queue item below.
+- 📌 Creator hand-off: **Milky** named as the league-mechanic (charts) farming specialist — human-vetted
+  pointer, added to guide_sources. BawLoch's own next videos: Delve, Card, Legion, Breach, Abyss farms.
+- 🔧 Pipeline tooling: universal yt-dlp stalls root-caused (v2026.06.09 stale → updated 2026.07.04 + deno
+  JS runtime installed; CLI now ~3s). ⚠ the MCP youtube tools still stall — long-running server env
+  predates the fix; retest after next MCP restart.
+
 ### Verification queue
 - [ ] ◐ scarab names (Harvest Scarab of Doubling, Influencing/Monstrous Lineage/Mania) — **no scarab data in
   the text lake** (known gap); verify via wiki/trade before buying sets
 - [ ] ◐ "3.29 removed synthesized implicits from Ritual" and "3.29 essence monsters giga-tanky" — check
   `patch_notes_index.md` / league doc
 - [ ] Allflame league-mechanic profitability (seafloor / Reliquarian / merc farming) — directed survey
-- [ ] **First YouTube evidence digestion: BawLoch's farming video (Q2rdP2IUTyM)** — description+transcript via the Step 3b pipeline; extract strategy, div/hr, patch, aliases → References. (Two yt-dlp stalls on 2026-08-04 — transient, retry.) Redviles' channel queue behind it
+- [ ] **Document the Astrolabe / Synthesised Stability atlas system properly** — 3.29 endgame system,
+  post-training for all models; currently known only from play narration. Wiki/league-doc pass; resolve
+  the "Regenerator/Originator influence" term
+- [ ] Digest Milky (league-mechanic/charts farming) + Redviles channel; BawLoch's upcoming Delve/Card/
+  Legion/Breach/Abyss videos as they land
 - [ ] Lifeforce + oil + logbook prices via `currency_overview` at session time (prices stale in hours)
 - [ ] After a strategy is picked: `atlas-planning` session to implement it

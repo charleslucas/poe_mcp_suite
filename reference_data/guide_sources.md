@@ -48,8 +48,9 @@ competitors.
 |---|---|---|
 | **Per-archetype "Compendium" posts** (reddit/gdocs) | The closest cousin to our tech library: deep single-archetype interaction docs (e.g. the 2019 *Summoner's Compendium* — hit in our own surveys) | ✅ genre is real; individual docs decay when the author stops playing; league-stamp everything taken from one |
 | **untagatunu's All-In-One PoE Compendium spreadsheet** | ✅ real (user-verified 2026-08-04): community mechanics compendium, ~6 years old; reddit post deleted, sheet alive: docs.google.com/spreadsheets/d/1gfNMUgdtOLPW9bAjt876F9q78uv_mie-s-ggGQK2seM | **Structure worth mining, data expired** — a live demonstration of why frameworks league-stamp: the sheet died of staleness, not wrongness |
-| **BawLoch** (YouTube) | ✅ real (user-verified): farming strategy videos — youtube.com/watch?v=Q2rdP2IUTyM | Survey target + References source for the farming roster |
+| **BawLoch** (YouTube + Maxroll author) | ✅ digested 2026-08-05: farming strategy videos (Harvest: youtube.com/watch?v=Q2rdP2IUTyM) + maxroll.gg/@bawloch + **strategy spreadsheet w/ atlas trees**: docs.google.com/spreadsheets/d/1EI9RSn4mVuuNVMURAtTuvZIBnoOcPYAsym4lvZxYlhE | First Step-3b digestion; upcoming Delve/Card/Legion/Breach/Abyss videos are standing targets |
 | **Redviles** (YouTube @Redvilespoe) | ✅ real (user-verified): farming strategy channel | Survey target + References source; note the survey spelled it "RedVile's" — mangled-but-real |
+| **Milky** (YouTube) | ◐ league-mechanic (charts) farming specialist — named by BawLoch on camera as "the guy for that stuff" | Creator-vetted pointer (stronger than synthesis); digestion target for Allflame chart farming |
 | **r/PathOfExileBuilds** | Where tech gets surfaced and named ad hoc (already indexed above for builds) | The *venue*, not a catalog — searchable, unstructured |
 | **poewiki per-item pages** | Interaction notes scattered per item; not combo-first | ✅ authoritative for single-item facts |
 | **Maxroll — atlas/farming strategy hub** | Polished per-league farming strategy articles | ◐ verify current-league coverage before citing; strategy names differ from reddit's |
