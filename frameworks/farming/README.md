@@ -84,12 +84,14 @@ untagatunu compendium spreadsheet also real (post deleted, sheet alive): mine it
 - ✅ **BawLoch is a Maxroll author** (maxroll.gg/@bawloch) and the description carries his **strategy
   spreadsheet incl. the atlas tree**: docs.google.com/spreadsheets/d/1EI9RSn4mVuuNVMURAtTuvZIBnoOcPYAsym4lvZxYlhE
   — yesterday's survey claim of a "BawLoch spreadsheet" was real.
-- ✅ **Astrolabe core mechanism — user-verified in-game (2026-08-05)**: an Astrolabe is a *mod over a
-  spatial cluster of nearby atlas nodes* (fog/mist visual; members need not be connected). Normally a map
-  consumes its own mod when run; **Synthesised Stability redirects the consumption** — a *different* group
-  member reverts instead — so your best-modded map is re-runnable, one run per remaining modded map in the
-  pool. The keystone converts "N modded maps" into "N runs of your single best-modded map"; the
-  periphery-first phase spends edge maps normally to shape/compact the pool around the chosen center.
+- ✅ **Astrolabe core mechanism — user-verified in-game, then confirmed against the atlas node (2026-08-05)**:
+  an Astrolabe creates a **Shaped Region** (official term) — a mod over a spatial cluster of nearby atlas
+  nodes (fog visual; members need not be connected). Normally a run **collapses** (official term) the run
+  map's own mod; **Synthesised Stability** (atlas KEYSTONE, node 30545: *"Completing a Map Objective within
+  a Shaped Region instead collapses a different Map within the Shaped Region"*) redirects the collapse —
+  your best-modded map is re-runnable, one run per remaining modded map. "N modded maps → N runs of your
+  best map"; the periphery-first phase spends edge maps normally to compact the region around the center.
+  The keystone is a **lone node** — no supporting cluster; travel to it is generic.
   ◐ Still unresolved: exact "bisection" rule, vault payout mechanics, mod-roll rules, and the
   "Regenerator/Originator(?) influence" term (auto-sub garble).
 - 📌 Creator hand-off: **Milky** named as the league-mechanic (charts) farming specialist — human-vetted
