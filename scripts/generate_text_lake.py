@@ -231,6 +231,26 @@ def gen_atlas():
     return lines
 
 
+# ---------------------------------------------------------------- currency
+# ALL currency-class items + descriptions, from the poewiki Cargo cache written by
+# scripts/fetch_currency_wiki.py (cache-then-generate: network stays out of this
+# generator). This is where the Astrolabes live — they exist in NO offline source
+# (not PoB data, not the atlas export), which made "what do the 10 varieties do?"
+# unanswerable locally until 2026-08-05. If the cache is absent, the file is
+# skipped with a note; wiki data lags new leagues by days-to-weeks.
+
+def gen_currency():
+    import json as _json
+    f = SUITE / "reference_data" / "currency_wiki.json"
+    if not f.exists():
+        return ["CURRENCY	(cache missing)	run scripts/fetch_currency_wiki.py first — wiki-sourced, lags new leagues"]
+    d = _json.loads(f.read_text(encoding="utf-8"))
+    lines = [f"CURRENCY	{it['name']}	{it['class']}	{one_line(it['description']) if it['description'] else '-'}"
+             for it in d.get("items", [])]
+    lines.sort()
+    return lines
+
+
 # ---------------------------------------------------------------- bases
 # Item BASE data: implicits and base-type properties. Data/Bases/*.lua was read ZERO
 # times by this generator until 2026-08-03, so the lake could not answer "what implicit
@@ -691,6 +711,7 @@ def main():
     for fname, gen in [
         ("passives.txt", lambda: gen_passives(tree_version)),
         ("atlas.txt", gen_atlas),
+        ("currency.txt", gen_currency),
         ("clusters.txt", gen_clusters),
         ("bases.txt", gen_bases),
         ("spectres.txt", gen_spectres),
@@ -792,6 +813,9 @@ Deliberately excluded (no mechanical value or redundant): `ModScalability`, `Que
     from reference_data/atlastree/data.json (GGG export). Distinct from passives.txt (character tree).
     ⚠ Astrolabe CONSUMABLES (the 10 varieties + their Shaped-Region mod pools) are in NO local source —
     not PoB's data, not the atlas export. Like rare-monster mods: wiki/community/user only.
+  - currency.txt: CURRENCY, name, class, description — ALL currency-class items incl. league
+    consumables (Astrolabes!), from the poewiki Cargo cache (scripts/fetch_currency_wiki.py; check
+    its fetched: date — wiki lags new leagues). The ONLY local source for map-device consumables.
   - clusters.txt: kind, jewel-size, name, tag, enchant text, stats
     CLUSTER-SMALL rows are the "Added Small Passive Skills grant: X" pool, keyed by jewel
     size (Small/Medium/Large) — the exhaustive answer to "what can a cluster small give?".

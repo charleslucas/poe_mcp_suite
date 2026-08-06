@@ -144,6 +144,20 @@ Timeless=Legion, Fungal=Blight, Runic=Expedition, Lightless=Delve; rest unconfir
   currency_overview — ToS-exempt, 15-min cache); descriptions ("what they do") come from the wiki/poedb
   or the user's screen — ninja gives names + prices only.
 
+### 2026-08-05 (evening) — variety list COMPLETE via poewiki Cargo; two corrections
+Official descriptions resolve everything (now permanently greppable: `text_lake/currency.txt`):
+**Chaotic**=Ultimatum · **Deceptive**=Delirium · **Fruiting**=Harvest · **Fungal**=Blight ·
+**Grasping**=Breach · **Lightless**=**Abyss** · **Nameless**=Ritual · **Prospecting**=Ore Deposits (the
+missing 10th — ninja's result cap confirmed) · **Runic**=Expedition · **Timeless**=Legion · plus
+**Templar Astrolabe** — an 11th, REAL (not an auto-sub garble), description conspicuously generic ("Adds a
+Shaped Region" with no mechanic) — likely special; unresolved what its region contains.
+- ✅ **Price "anomaly" resolved**: Lightless=**Abyss**, not Delve — at 195c it matches S-tier Propagation
+  Abyss perfectly. Market and tier list agree; the anomaly was my mechanic guess.
+- ✅ Three name-inference corrections: Lightless (Delve→Abyss), Grasping (Abyss→Breach), Deceptive
+  (Betrayal→Delirium). Name-inference batting average now on record: **trust descriptions, not naming vibes.**
+- 🔧 New lake source: `currency.txt` (851 currency items + descriptions) via poewiki **Cargo API**
+  (`scripts/fetch_currency_wiki.py`, cache-then-generate). The wiki IS 3.29-populated now.
+
 ### Verification queue
 - [ ] ◐ scarab names (Harvest Scarab of Doubling, Influencing/Monstrous Lineage/Mania) — **no scarab data in
   the text lake** (known gap); verify via wiki/trade before buying sets
