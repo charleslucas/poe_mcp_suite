@@ -301,9 +301,12 @@ def gen_bases():
                         bits.append(f"{label}={fl[k]}")
                 if bits:
                     props.append("FLASK: " + ", ".join(bits))
-            if not props:
-                continue  # plain stat-stick bases add noise, not searchable text
-            lines.append(f"BASE\t{itype}\t{name}\t{sub}\treq{lvl}\t{' | '.join(props)}")
+            # Filter lifted 2026-08-06 (was: skip bases with no implicit/property).
+            # Silence read as nonexistence — "Vaal Regalia" grepped to nothing. Now
+            # every base gets a row; tags make attribute/class sweeps greppable.
+            tags = ",".join(sorted(k for k, v in (base.get("tags") or {}).items()
+                                   if v and k != "default"))
+            lines.append(f"BASE\t{itype}\t{name}\t{sub}\treq{lvl}\t{tags or '-'}\t{' | '.join(props) or '-'}")
     lines.sort()
     return lines
 
@@ -802,11 +805,12 @@ Deliberately excluded (no mechanical value or redundant): `ModScalability`, `Que
     treating a notable as allocatable, verify placement (get_tree_node / poedb).
     CLUSTER NOTE: cluster-jewel NOTABLES are in the tree node list, so they ARE here.
     Cluster SMALL passives are NOT — they live only in ClusterJewels.lua → clusters.txt.
-  - bases.txt: BASE, item type, base name, subType, req level, properties
-    Item-BASE implicits AND base-type properties. The latter exist in NO mod pool — e.g. a
-    Granite Flask's `+1500 to Armour` is `FLASK-BUFF`, not an implicit or explicit. Rows with
-    no implicit/flask text are omitted (plain stat-stick bases are noise). Armour/evasion/ES
-    and weapon numbers are NOT emitted — use pob-mcp item tools for those.
+  - bases.txt: BASE, item type, base name, subType, req level, tags, properties
+    EVERY item base (filter lifted 2026-08-06 — plain bases used to be omitted, so "Vaal
+    Regalia" grepped to nothing and silence read as nonexistence). `tags` (str_armour,
+    dex_int_armour, …) make attribute/class sweeps greppable; properties hold implicits and
+    base-type properties (a Granite Flask's `+1500 to Armour` is `FLASK-BUFF` — it exists in
+    NO mod pool), `-` where none. Armour/ES/weapon numbers are NOT emitted — pob-mcp tools.
   - spectres.txt: SPECTRE, display name, metadata path, stat multipliers, tags, skill list
     The raisable-monster roster. `tags:` is how you actually filter (undead / ranged / caster);
     `skills:` is what it DOES. Numbers are PoB's multipliers, not absolute values.
