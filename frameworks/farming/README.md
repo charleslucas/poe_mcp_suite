@@ -100,6 +100,34 @@ untagatunu compendium spreadsheet also real (post deleted, sheet alive): mine it
   JS runtime installed; CLI now ~3s). ⚠ the MCP youtube tools still stall — long-running server env
   predates the fix; retest after next MCP restart.
 
+### 2026-08-05 (later) — BawLoch's full compendium acquired + astrolabe-choice guidance
+- ⭐ **The description's spreadsheet is a 37-tab strategy compendium with a maintained Tier List** (updated
+  July 22 2026) — the "BawLoch currency farming tier list" from the original survey, fully real. Snapshot:
+  - **S**: Voyage Scarab Farm · Harvest · Eternal Conflict Legion · Legion · Divination Card Farming ·
+    Ethereal Allflame Scarab Farm · Nightmare Boss Rushing · Inscribed Ultimatum · Corrupted Essences ·
+    Destructive Play · Gilded Allflame Rotas · Unstable Breach · Propagation Abyss Farming
+  - **A**: Breach Fortress · Bossing · Beasts · Alva/Settlers Gold · Stacked Decks · Delirium Orbs ·
+    Catalysing Ultimatum · Containment Strongboxes · Kalguuran Maps · Vesseled Ritual · Cornucopia Harvest ·
+    Enchanted Heist
+  - **B**: Mesa Merc Rush · Memory Vault Rush · Generic Maps · Betrayal · Strongbox Pilfering · Settlers
+    Ore · Big Boom Expedition · Delve · Abyss Skitterlock Rush
+  - **C/DEAD**: every Mirage-specific farm (prior league — cross-league decay demonstrated) · **"Old Abyss
+    (which was already dead lol)"** · Beyond/Deli Boss Rush · Rare Monster Scarabs · misc
+  All ◐ single-creator verdicts, but Maxroll-author quality with per-strategy tabs.
+- ⚠ **Loadout flag for the maintainer**: the atlas loadout is "Abyss + Harvest" — BawLoch rates *old* Abyss
+  DEAD but **Propagation Abyss Farming is S-tier**. Check which variant the loadout's Abyss spec matches.
+- ✅ Correction: yesterday's "Kingsmarch Ores" survey claim was flagged as cross-league blending — wrong;
+  **Settlers Ore Farming is a real 3.29 B-tier strategy** (tab exists).
+- **Astrolabe choice (the "which of the 10?" question):** no published variety ranking exists anywhere we
+  reached. Best available guidance: (1) BawLoch on camera — only **Harvest and "Templar"** astrolabes are
+  worth *reading/targeting mods*; the rest give baseline per-map value where choice matters less
+  (⚠ "Templar" may be an auto-sub garble of **"Temple"**/Incursion — unresolved); (2) proxy rule: pick the
+  astrolabe of the highest-tier mechanic you can run — the tier list above is the ranking.
+- Survey depth on the fruiting astrolabe (r/pathofexile + SSF threads, StickyJim's 52K-juice VoD): mod
+  value ranges (T2→T3 10-15%, "contain T3" 20-40%), **Bog** (SW-quadrant vault position, connections) and
+  Jungle Valley (boss blocks bad altars) as favored maps, vault's actual name = **Memory Vault**, and
+  "don't run Crop Rotation/Cornucopia for highest-tier setups" — matching BawLoch's non-cornucopia framing.
+
 ### Verification queue
 - [ ] ◐ scarab names (Harvest Scarab of Doubling, Influencing/Monstrous Lineage/Mania) — **no scarab data in
   the text lake** (known gap); verify via wiki/trade before buying sets
