@@ -600,6 +600,19 @@ def gen_uniques():
             mods = [ln for ln in raw[2:] if not UNIQ_META.match(ln)]
             vnote = f" {{variants: {'; '.join(variants)}}}" if variants else ""
             lines.append(f"{name}\t{base}\t{src}\t" + " | ".join(mods) + vnote)
+    # Wiki supplement (2026-08-05): PoB's DB carries only EQUIPPABLE uniques; unique
+    # maps, Heist contracts, watchstones, memories, relics etc. live nowhere offline.
+    # Append wiki-cached rows for any unique name PoB doesn't have (cache:
+    # scripts/fetch_currency_wiki.py -> reference_data/wiki_uniques.json).
+    import json as _json
+    wf = SUITE / "reference_data" / "wiki_uniques.json"
+    if wf.exists():
+        have = chr(10).join(lines)
+        for it in _json.loads(wf.read_text(encoding="utf-8")).get("items", []):
+            nm = it.get("name", "")
+            if nm and nm not in have:
+                desc = one_line(it.get("description") or "-") or "-"
+                lines.append(chr(9).join([nm, it.get("class", "?"), "poewiki-supplement", desc]))
     lines.sort()
     return lines
 

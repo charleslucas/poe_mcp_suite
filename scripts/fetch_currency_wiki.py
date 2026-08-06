@@ -8,6 +8,7 @@ the rest of reference_data/ (see its README's fetched:/staleness conventions).
 
 Run after league launches / when the wiki catches up; regenerate the lake after.
 """
+import html
 import json
 import datetime
 import urllib.request
@@ -27,7 +28,8 @@ CLASSES = [
     "Harvest Seed", "Memory", "Corpse item", "Idol", "Tincture", "Charm",
     "Relic", "Sanctified Relic", "Resonator", "Expedition Logbook", "Sentinel",
     "Captured Soul", "Vault Key", "Voidstone", "Watchstone", "Contract",
-    "Blueprint", "Heist Target", "Gold",
+    "Blueprint", "Heist Target", "Gold", "Map", "Incursion Item",
+    "Miscellaneous Map Item", "Labyrinth Key",
 ]
 PAUSE_S = 0.5  # politeness: sequential, throttled; poewiki is community-run.
 # Content licence is CC BY-NC-SA — the lake output is LOCAL-ONLY (gitignored) per
@@ -52,14 +54,38 @@ for cls in CLASSES:
         batch = d.get("cargoquery", [])
         for it in batch:
             t = it.get("title", {})
-            key = t.get("name", "")
+            key = html.unescape(html.unescape(t.get("name", "")))
             if key and key not in seen:
                 seen.add(key)
-                rows.append({"name": key, "class": t.get("class", cls),
-                             "description": t.get("description") or ""})
+                rows.append({"name": key,
+                             "class": html.unescape(html.unescape(t.get("class", cls))),
+                             "description": html.unescape(html.unescape(t.get("description") or ""))})
         if len(batch) < 500:
             break
         offset += 500
+
+# ---- uniques supplement: ALL wiki uniques w/ stat text (for names PoB lacks:
+# unique maps, contracts, watchstones, memories, relics...) -> wiki_uniques.json
+urows, offset = [], 0
+while True:
+    import time as _t; _t.sleep(PAUSE_S)
+    d = cargo('items.rarity="Unique"', offset)
+    batch = d.get("cargoquery", [])
+    for it in batch:
+        t = it.get("title", {})
+        urows.append({"name": html.unescape(html.unescape(t.get("name", ""))),
+                      "class": html.unescape(html.unescape(t.get("class", "") or "")),
+                             "description": html.unescape(html.unescape(t.get("description") or ""))})
+    if len(batch) < 500:
+        break
+    offset += 500
+UOUT = SUITE / "reference_data" / "wiki_uniques.json"
+UOUT.write_text(json.dumps({"fetched": datetime.date.today().isoformat(),
+    "note": "all poewiki uniques (name/class/description); supplement for non-equipment "
+            "uniques absent from PoB's DB. Mods would need items.stat_text (heavier).",
+    "count": len(urows), "items": sorted(urows, key=lambda r: r["name"])},
+    indent=1, ensure_ascii=False), encoding="utf-8")
+print(f"{len(urows)} wiki uniques -> {UOUT}")
 
 rows.sort(key=lambda r: r["name"])
 OUT.write_text(json.dumps({
