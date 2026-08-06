@@ -192,6 +192,45 @@ def gen_passives(tree_version):
     return lines
 
 
+# ---------------------------------------------------------------- atlas tree
+# ATLAS passive tree — keystones (Synthesised Stability...), notables, smalls. Absent
+# from the lake until 2026-08-05: gen_passives reads the CHARACTER tree only, and the
+# atlas tree lives in reference_data/atlastree/data.json (GGG's own export, mirrored in
+# the poe-atlastree-export fork) — a source this generator never touched. Found when
+# "Synthesised Stability" — load-bearing for a farming strategy — was ungreppable.
+#
+# NOTE the astrolabe CONSUMABLES themselves (the 10 varieties and their Shaped-Region
+# mod pools) exist in NO local source — not PoB's data, not the atlas export. Like
+# rare-monster mods: wiki/community only. Documented in the MANIFEST.
+
+def gen_atlas():
+    import json as _json
+    f = SUITE / "reference_data" / "atlastree" / "data.json"
+    if not f.exists():
+        return []
+    nodes = _json.loads(f.read_text(encoding="utf-8")).get("nodes", {})
+    agg = {}
+    for key, node in nodes.items():
+        if not isinstance(node, dict) or "name" not in node:
+            continue
+        if node.get("isKeystone"): ntype = "ATLAS-KEYSTONE"
+        elif node.get("isNotable"): ntype = "ATLAS-NOTABLE"
+        elif node.get("isMastery"): ntype = "ATLAS-MASTERY"
+        elif node.get("isWormholeRelated") or node.get("isJewelSocket"): ntype = "ATLAS-SOCKET"
+        else: ntype = "ATLAS-SMALL"
+        stats = [one_line(x) for x in lua_list(node.get("stats", {}))] if not isinstance(node.get("stats"), list) else [one_line(x) for x in node.get("stats", [])]
+        nid = node.get("skill", key)
+        agg.setdefault((ntype, node["name"], " | ".join(stats)), []).append(nid)
+    lines = []
+    for (ntype, name, statstr), ids in agg.items():
+        shown = ",".join(f"#{i}" for i in sorted(ids)[:3])
+        if len(ids) > 3:
+            shown += f" (+{len(ids)-3} more)"
+        lines.append(f"{ntype}	{name}	{shown}	{statstr}")
+    lines.sort()
+    return lines
+
+
 # ---------------------------------------------------------------- bases
 # Item BASE data: implicits and base-type properties. Data/Bases/*.lua was read ZERO
 # times by this generator until 2026-08-03, so the lake could not answer "what implicit
@@ -651,6 +690,7 @@ def main():
     counts = {}
     for fname, gen in [
         ("passives.txt", lambda: gen_passives(tree_version)),
+        ("atlas.txt", gen_atlas),
         ("clusters.txt", gen_clusters),
         ("bases.txt", gen_bases),
         ("spectres.txt", gen_spectres),
@@ -748,6 +788,10 @@ Deliberately excluded (no mechanical value or redundant): `ModScalability`, `Que
     Lab + Instilling enchants across helmet/boots/gloves/body/belt/weapon/flask.
   - pantheon.txt: PANTHEON, MAJOR/MINOR, god key, soul name, granted mods
     Both the base god and its upgrade souls (captured-monster upgrades).
+  - atlas.txt: ATLAS-TYPE, name, #id, stats — the ATLAS passive tree (keystones/notables/smalls),
+    from reference_data/atlastree/data.json (GGG export). Distinct from passives.txt (character tree).
+    ⚠ Astrolabe CONSUMABLES (the 10 varieties + their Shaped-Region mod pools) are in NO local source —
+    not PoB's data, not the atlas export. Like rare-monster mods: wiki/community/user only.
   - clusters.txt: kind, jewel-size, name, tag, enchant text, stats
     CLUSTER-SMALL rows are the "Added Small Passive Skills grant: X" pool, keyed by jewel
     size (Small/Medium/Large) — the exhaustive answer to "what can a cluster small give?".
