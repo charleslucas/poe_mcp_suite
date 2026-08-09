@@ -502,6 +502,55 @@ def gen_pantheon():
 
 _MINION_ASSIGN = re.compile(r'minions\[\s*"([^"]+)"\s*\]\s*=\s*(?=\{)')
 
+# mod()/flag() calls inside a minion entry are the spectre's BENEFITS (player/ally/minion
+# modifiers — e.g. the Guardian Turtle's 5% player phys reduction, the Forest Warrior's
+# ally Onslaught). LuaParser can't parse function-call values, and the old `except:
+# continue` silently dropped every such entry — 69 of 268 spectres, and exactly the ones
+# whose benefits make them worth raising. Strip these lines before parsing, and emit them
+# as a `grants:` column instead.
+_BENEFIT_CALL = re.compile(r'(?:mod|flag)\(\s*"([^"]+)"(?:\s*,\s*"([^"]+)")?(?:\s*,\s*(-?[\d.]+))?')
+
+
+def _extract_balanced(src):
+    """src starts at '{'; return the balanced-brace block (quote-aware)."""
+    depth = 0
+    in_str = None
+    i = 0
+    while i < len(src):
+        c = src[i]
+        if in_str:
+            if c == "\\":
+                i += 2
+                continue
+            if c == in_str:
+                in_str = None
+        elif c in "\"'":
+            in_str = c
+        elif c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return src[: i + 1]
+        i += 1
+    return src
+
+
+def _benefit_desc(line):
+    """Compress one mod()/flag() source line to a greppable descriptor."""
+    parts = []
+    for name, typ, val in _BENEFIT_CALL.findall(line):
+        name = name.replace("Condition:", "")
+        if typ and typ != "LIST":
+            parts.append(f"{name} {typ} {val}".rstrip())
+        else:
+            parts.append(name)
+    desc = ">".join(parts)
+    com = re.search(r"--\s*(.+)$", line)
+    if com:
+        desc += f" [{com.group(1).strip()}]"
+    return desc
+
 
 def gen_spectres():
     f = POB / "Data" / "Spectres.lua"
@@ -511,13 +560,24 @@ def gen_spectres():
     lines = []
     for m in _MINION_ASSIGN.finditer(src):
         meta = m.group(1)
+        block = _extract_balanced(src[m.end():])
+        benefit_lines = [ln for ln in block.splitlines()
+                         if re.search(r"\b(?:mod|flag)\(", ln)]
+        cleaned = "\n".join(ln for ln in block.splitlines()
+                            if not re.search(r"\b(?:mod|flag)\(", ln))
+        mon = None
         try:
-            mon = LuaParser(src[m.end():]).parse()
+            parsed = LuaParser(cleaned).parse()
+            if isinstance(parsed, dict):
+                mon = parsed
         except Exception:
-            continue
-        if not isinstance(mon, dict):
-            continue
+            pass
+        if mon is None:
+            # NEVER silently drop: fall back to regex extraction so the roster stays complete
+            nm = re.search(r'name\s*=\s*"([^"]+)"', block)
+            mon = {"name": nm.group(1) if nm else "?"}
         name = mon.get("name", "?")
+        grants = "; ".join(filter(None, (_benefit_desc(ln) for ln in benefit_lines)))
         tags = ",".join(str(t) for t in lua_list(mon.get("monsterTags", {})))
         skills = ",".join(str(s) for s in lua_list(mon.get("skillList", {})))
         stats = []
@@ -529,6 +589,7 @@ def gen_spectres():
                 stats.append(f"{label}={v}")
         lines.append(
             f"SPECTRE\t{name}\t{meta}\t{', '.join(stats)}\ttags:{tags}\tskills:{skills}"
+            f"\tgrants:{grants or '-'}"
         )
     lines.sort()
     return lines
