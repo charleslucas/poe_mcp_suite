@@ -108,6 +108,31 @@ which lives in its skill list, not its mods; `grants:` catches only its 5% PDR. 
 silently simulates *generic* spectres and misses all of the above. Set them with `set_spectres`
 (fuzzy names, e.g. `["perfect guardian turtle"]`) — pob-mcp, added 2026-08-09.
 
+### 3e-1. ⚠ PoB models the buffs of only ONE spectre — every multi-spectre build is under-modeled
+Root-caused 2026-08-09 in [`CalcPerform.lua:2169`](../../PathOfBuilding/src/Modules/CalcPerform.lua#L2169):
+PoB collects `activeSkill.minion.type` for each **Raise Spectre skill instance**, then applies spectre buffs
+**only for spectres in that list**. One Raise Spectre gem ⇒ one selected minion ⇒ exactly **one** spectre's
+buffs are modeled, no matter how many you have raised. The rest are inert in the calc.
+
+Proof (live build, 3 spectres raised): with the Guardian Turtle selected, armour **3,650** and SRS **51,527**
+each. Reordering so a Perfect Hulking Miscreation is selected: SRS jump to **74,014 (+43.6%)** and armour
+collapses to **889** — the turtle's Determination silently switched off. Adding a spectre in any non-selected
+position changes *nothing at all*, to seven decimal places. **A null result from adding a spectre is
+therefore meaningless** — it usually means "not selected", not "no effect". This mimics a broken tag or a
+dead mod, and it cost a wrong "the MonsterTag condition doesn't work" conclusion before the position test.
+
+**How to measure spectre X's buff:** list X **first** (`set_spectres(["X", ...])`), measure, restore. Compare
+against a run with a *different* spectre first — never against "X absent", or you conflate the buff with the
+selected spectre's own damage. Confirm via `minion_dps_breakdown`: the spectre's own contribution shows as
+its own row (the Miscreation's was 5,846 = 0.27%), so a jump in the **SRS row** is a genuine buff.
+
+**Modeling more than one:** the loop reads one minion *per Raise Spectre instance*, so N Raise Spectre skills
+with N different selected spectres model N sets of buffs. Selection is GUI-only (Skills tab minion dropdown),
+so tools cannot do it — a build carrying spare Raise Spectre gems can exploit this manually.
+
+**In game all raised spectres buff simultaneously** — this is a PoB limitation, not a game rule. So a real
+loadout's true value is the *sum* of its spectres' buffs, which PoB will never display in one number.
+
 ### 3f. Auras & reservation
 Typical: Anger+Generosity, Skitterbots, Purity of Elements, **Envy via United in Dream** (✅ measured ~87%
 of a poison build's damage — dropping it is a build-defining decision, not a tweak). ⚠ Reservation maxes
