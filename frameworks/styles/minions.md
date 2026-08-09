@@ -91,7 +91,29 @@ spectres — tags, skill lists, and a `grants:` column of every player/ally/mini
 buffers (◐ "Perfect Spirit of Fortune" utility) · defensive windows (✅ Guardian Turtle). Meat Shield on
 defensive spectres makes them taunt/body-block.
 
-**Spectres that buff the PLAYER are rare and worth hunting — only 7 of 268 carry a `PlayerModifier`:**
+### ⚠ Finding buff spectres takes THREE sweeps — a mod-only sweep misses most of them
+A spectre can buff you or your minions through any of three channels, and the text lake surfaces them in
+different columns. Sweeping one channel and calling it "the buff spectres" is wrong — it happened here on
+2026-08-09 and hid the entire aura roster:
+
+| Channel | Where it lives | Sweep |
+|---|---|---|
+| Mods | `grants:` | `rg --no-ignore "grants:.*(Player\|Minion\|Ally)Modifier" …/spectres.txt` |
+| **Auras** | `skills:` (a skill flagged `SkillType.Aura`) | `python scripts/spectre_aura_sweep.py` — **20 buyable corpse spectres**, incl. every classic aura |
+| **Charge/buff skills** | `skills:`, not aura-flagged | grep the skill name: `MassFrenzy` (frenzy charges to allies), `MassPower` (power charges) |
+
+The turtle's Determination, the Forest Tiger's Haste, and the Carnage/Host Chieftains' charge grants are all
+invisible to the mod sweep. ⚠ And a fourth channel exists that **no** sweep of PoB can find: game stats PoB
+records only as comments (see the Forest Tiger's frenzy grant below) — for those, community sources are the
+only signal.
+
+**Aura roster (buyable corpses, from the aura sweep):** Determination (Guardian Turtle) · Discipline
+(Judgemental Spirit) · Haste (Forest Tiger) · Pride (Blood Demon) · Hatred (Hydra) · Wrath (Spirit of
+Fortune) · Grace (Primal Thunderbird) · Zealotry (Pain Artist) · Precision (Naval Officer) · Vitality
+(Warlord) · Clarity (Primal Demiurge) · Purity of Fire/Ice/Lightning (Fiery Cannibal / Frozen Cannibal /
+Eldritch Eye) · Smite (Blasphemer). Wild-only: **Malevolence** (Perfect Conjuror of Rot — DoT builds).
+
+**Spectres that buff the player via MODS are rare — only 7 of 268 carry a `PlayerModifier`:**
 Guardian Turtle + Perfect Guardian Turtle (3%/5% phys damage reduction), Perfect Druidic Alchemist (**200%
 increased flask effect** + life-flask charge generation), Perfect Needle Horror (impale effect), Perfect
 Runic Skeleton (5% MORE phys damage), Perfect Slashing Horror (5% phys gained as fire), Perfect Spider
@@ -166,7 +188,10 @@ everything.** Two measured cases, same league, opposite answers:
   your DPS. **Buy the normal tier** (~20c vs Perfect's ~1 div). ⚠ `Imperfect` grants no minion buff at all.
 - **Forest Tiger**: all three tiers are identical in stats *and* mods — but **only `Perfect` carries the
   extra skill `AzmeriTigerHaste`**, "an aura that increases movement speed, attack speed and cast speed of
-  you and your allies". Here the Perfect tier is the *entire* product; the cheap tiers are inert.
+  you and your allies". ⚠ *Not* the whole story: normal **and** Perfect also carry
+  `chance_to_grant_frenzy_charge_to_nearby_allies_on_hit_% = 5` — present in `Spectres.lua` as a **bare
+  comment with no `mod()` call**, i.e. a real game stat PoB **does not model**. So a PoB measurement of
+  either tier is a floor, and only `Imperfect` is genuinely inert.
 
 So the rule is mechanical, not economic: **diff `skills:` AND `grants:` across all three tiers in the lake
 before paying for "Perfect"** — the difference may be a rounding error or the whole reason to buy.
@@ -308,3 +333,34 @@ watch: ◐ Renewal, Feasting Fiends, Vicious Bite, Blessed Rebirth; ✅ Enduring
 - [x] Congregation Support price: ✅ **~9 div minimum on trade** (user-checked 2026-08-04) — Exceptional gems
   are chase-tier, consistent with the Pact gems' class. ✅ Drop source (user, from item info): **Incarnation of Dread or Uber Dread** — the Incarnations are the 3.27 pinnacle bosses (league doc: 'new chase-drop sources'). Drop RATE ◐ unknown. Still open: the sim on the live character's SRS 6L (sim BEFORE grinding)
 - [ ] "Minions as player-buffs" (Primordial Bond golem shell) — write the `_concepts/` entry
+
+### 3e-3. Survey ledger — buff spectres (2026-08-09)
+
+**Query:** "PoE 3.29 best buff spectres for minion builds — which cast auras or buff your other minions"
+(Google AI Mode). Run *after* building the data-derived roster, specifically to find what the data can't say.
+Verdict: **the survey caught two real gaps; the data caught three survey errors.** Neither source was
+sufficient alone — which is the argument for always running both.
+
+**Survey found what data could not:**
+- ✅ **Forest Tiger grants frenzy charges to nearby allies.** Real — `Spectres.lua` carries
+  `chance_to_grant_frenzy_charge_to_nearby_allies_on_hit_% = 5` as a **comment with no `mod()`**, so PoB
+  neither models nor exposes it. Any PoB number for this spectre is a floor. **This is the one channel no
+  local sweep can reach**, and the reason to survey at all.
+- ✅ **Carnage Chieftain** (`MassFrenzy` → frenzy charges) and **Host Chieftain** (`MassPower` → power
+  charges) — real, in the lake, and missed by both the mod sweep *and* the aura sweep because their grants
+  are non-aura skills. Free/wild, so they are the budget answer to charge generation.
+
+**Data refuted the survey:**
+- ⛔ "Forest Tiger casts a Level 20 **Precision** aura" — it casts **Haste**. Precision belongs to the
+  **Naval Officer**. Classic AI blend of two real entries.
+- ⛔ "**Spectral Leader** grants an Action Speed multiplier" — no such spectre in 268 rows. ◐ Possibly a
+  garbled pointer at something real (apply the fuzzy-name rule before declaring it fake), but nothing in the
+  data matches.
+- ⛔ "Perfect Pain Artist grants **Celerity**" — it casts **Zealotry** and grants `AllyModifier` crit
+  multiplier. No "Celerity" exists in the data.
+
+**Confirmed by both:** Guardian Turtle (Determination + PDR), Forest Warrior (Onslaught to allies + cull),
+Spirit of Fortune (Wrath + lucky lightning).
+
+**Method note:** the survey named `sources: []` while citing Reddit and a dated GhazzyTV video inline — see
+`frameworks/README.md`, an empty source array is not evidence of synthesis.
