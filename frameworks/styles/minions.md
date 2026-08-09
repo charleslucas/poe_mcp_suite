@@ -222,6 +222,11 @@ and literally zero for another; there is no general ranking.
 additive with every other increase you own (supports, tree, jewels), so it lands in a large existing pool:
 the measured result was **+43.6%**, not +100%. Judge `MORE` multipliers and flat added damage on different
 terms — and prefer measurement to arithmetic, since minion increase pools are hard to enumerate.
+⚠ **Dilution is not exclusion — say "adds into the same pool", never "doesn't stack".** Separate speed
+buffs (Onslaught, a Haste aura, an action-speed buff) all apply simultaneously; only their *increased*
+components add rather than multiply. Measured proof: a Haste-granting spectre still returned **+11.8%** on a
+build already running Onslaught. Action speed is the exception that genuinely sidesteps the pool — it is a
+separate multiplier, not an increase.
 
 **Enablers can be worth more than damage.** A spectre granting a *capability* can free a support gem, which
 is worth the whole gem's slot. Worked example (◐ untested in game): Perfect Serpent Warrior grants allies
