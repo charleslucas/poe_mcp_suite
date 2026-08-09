@@ -100,9 +100,13 @@ Matriarch (wither effect — ⚠ PoB's own comment says *"Does not work"*). Find
 
 ⚠ **`grants:` alone under-reports — cross-check the `skills:` column for auras.** The Perfect Guardian
 Turtle's biggest gift is *Determination* (✅ measured on a live build: armour 889 → **3,650**, EHP +18.6%),
-which lives in its skill list, not its mods; `grants:` catches only its 5% PDR. Conversely a spectre with
-`grants:-` may still do nothing for you: the Perfect Judgemental Spirit's Discipline is minion-only —
-✅ confirmed in-game 2026-08-09, character-sheet ES matched PoB exactly with it raised.
+which lives in its skill list, not its mods; `grants:` catches only its 5% PDR. The Perfect Judgemental
+Spirit is the same trap in reverse: `grants:-` (no mods at all), yet its *skills* grant flat fire **and
+chaos** damage to `Skeleton`-tagged minions — a large SRS buff, with the chaos feeding poison. It was
+written off as "does nothing" twice before correct modeling exposed it (§3e-1).
+◐ Its Discipline aura is unresolved: correctly modeled, PoB credits the **player** +529 ES, but the owner's
+in-game character sheet read the unbuffed value. In-game beats PoB — assume minion-only until re-checked
+with the spectre alive and adjacent.
 
 ⚠ **PoB never learns your spectres from an import** (the PoE API doesn't report them), so an unset build
 silently simulates *generic* spectres and misses all of the above. Set them with `set_spectres`
@@ -126,12 +130,59 @@ against a run with a *different* spectre first — never against "X absent", or 
 selected spectre's own damage. Confirm via `minion_dps_breakdown`: the spectre's own contribution shows as
 its own row (the Miscreation's was 5,846 = 0.27%), so a jump in the **SRS row** is a genuine buff.
 
-**Modeling more than one:** the loop reads one minion *per Raise Spectre instance*, so N Raise Spectre skills
-with N different selected spectres model N sets of buffs. Selection is GUI-only (Skills tab minion dropdown),
-so tools cannot do it — a build carrying spare Raise Spectre gems can exploit this manually.
+**Modeling more than one — the fix:** the loop reads one minion *per Raise Spectre instance*, so N Raise
+Spectre skills pinned to N different spectres model N sets of buffs. The selection is a **per-gem XML
+attribute** (`skillMinion` / `skillMinionCalcs`), so it is scriptable even though the GUI dropdown is not:
+add an **unassigned**, `includeInFullDPS="false"` group holding one Raise Spectre gem per extra spectre.
+Use `scripts/pob_spectre_modeling_group.py`; full procedure in `playbooks/spectre-analysis.md`.
+⚠ Unassigned matters — weapon-swap groups are inactive while the main weapon set is live, so spare Raise
+Spectre gems parked in a swap slot contribute nothing. ⚠ Every character import calls
+`wipeTable(socketGroupList)` and destroys the group — it is a post-import checklist step.
 
-**In game all raised spectres buff simultaneously** — this is a PoB limitation, not a game rule. So a real
-loadout's true value is the *sum* of its spectres' buffs, which PoB will never display in one number.
+**In game all raised spectres buff simultaneously** — this is a PoB limitation, not a game rule. Measured
+on a live 3-spectre build: **1,531,370 Full DPS modeled the default way, 2,502,251 with all three modeled.
+PoB was understating the character by 63%.**
+
+### 3e-2. How to judge a spectre for a minion build (the reasoning, not the roster)
+
+**The question is never "is this spectre strong?" — it is "does what it grants land on what my build
+scales?"** Four mod destinations, and only two usually matter to a minion build:
+
+| Grant type | Lands on | Worth to a minion build |
+|---|---|---|
+| the spectre's own stats (bare `mod(...)`) | itself | ~nothing — see the buff-bot rule below |
+| `PlayerModifier` | you | usually **worthless**: "5% MORE physical damage" or impale effect buffs *your* hits, and your minions deal the damage. Only defensive/utility ones count (turtle's PDR, flask effect) |
+| `MinionModifier` | your minions | **the jackpot** — but read the tag gate |
+| `AllyModifier` | you **and** your minions (`CalcPerform.lua:2194` inserts into both lists) | jackpot, ungated |
+
+**Buff-bot rule: a spectre's own damage is usually irrelevant, so buy the aura, not the monster.** Measured:
+the Hulking Miscreation contributed **5,846 DPS of its own — 0.27%** of the build's total, while its buff was
+worth **+43.6%**. This inverts the intuition that you want a "strong" spectre. It also means **corpse tier
+often does not matter**: Hulking Miscreation and *Perfect* Hulking Miscreation grant **verbatim identical**
+minion buffs at the same life multiplier — the Perfect tier only improves the spectre's own attack damage
+(5% → 8% per 450 armour), i.e. 0.27% of your DPS. ⚠ But **Imperfect grants no minion buff at all**, so the
+family's cheapest tier is the trap. **Always diff the three tiers in the lake before paying for "Perfect".**
+
+**Tag gates decide everything — check YOUR minions' tags, not the spectre's.** `MonsterTag` conditions are
+matched case-insensitively against the *receiving* minion's `monsterTags` in `Data/Minions.lua`. Worked
+example: the Miscreation's +100% damage / +30% speed is gated to `Construct`; **SRS are tagged `construct`,
+`skeleton` and `undead` simultaneously**, so they take it — as does a Carrion Golem (`construct`) — while
+Raise Zombie (`undead` only) gets nothing. The same tag system is why the Judgemental Spirit's
+`Skeleton`-tagged damage grant lands on SRS. A spectre can therefore be build-defining for one minion type
+and literally zero for another; there is no general ranking.
+
+**"Increased" dilutes; expect far less than the printed number.** +100% *increased* minion damage is
+additive with every other increase you own (supports, tree, jewels), so it lands in a large existing pool:
+the measured result was **+43.6%**, not +100%. Judge `MORE` multipliers and flat added damage on different
+terms — and prefer measurement to arithmetic, since minion increase pools are hard to enumerate.
+
+**Enablers can be worth more than damage.** A spectre granting a *capability* can free a support gem, which
+is worth the whole gem's slot. Worked example (◐ untested in game): Perfect Serpent Warrior grants allies
+`Condition:CanWither`, the same flag "chance to inflict Withered on Hit" sets — potentially freeing a
+Withering Touch support. Simmed on a wither-dependent build: swapping that support for Multistrike was
+**+39%** *if* wither is still sustained, **−25%** if it is not. ⚠ PoB cannot resolve this: its withered-stack
+config is an **enemy-state assertion** applied whether or not any source exists, so it will happily show the
+upside of a swap that silently removes your only wither. Measure both ends before betting.
 
 ### 3f. Auras & reservation
 Typical: Anger+Generosity, Skitterbots, Purity of Elements, **Envy via United in Dream** (✅ measured ~87%
