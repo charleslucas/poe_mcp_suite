@@ -66,7 +66,16 @@ and the suite already has the tools. For any entry claiming play-proof, or any c
    tool: discovery goes through surveys, the source index, or the user.
 2. **Description first** (`fetch_youtube_description` — cheap): extracts PoB links (pobb.in/pastebin) and
    guide-site links automatically; title usually carries the patch tag. Often enough to verify + Reference
-   without the transcript. ⓘ yt-dlp stalls transiently — retry later rather than hammering.
+   without the transcript.
+   ⛔ **The MCP youtube tools do not work in this environment — do NOT retry them** (diagnosed 2026-08-09;
+   the old "stalls transiently, retry later" note was wrong, and cost several retry cycles). The server
+   spawns its `yt-dlp` child successfully but the child sits at **0s CPU** and never executes, until the
+   30s timeout kills it — leaking a frozen process each attempt. Not YouTube, not yt-dlp's version (both
+   interpreters are current), and not console-less spawning (reproduced OK from `pythonw`): it is specific
+   to the harness-launched server process, so no server-side code change fixes it.
+   **Workaround — use Bash directly** (~3s, reliable):
+   `python -m yt_dlp --get-title --get-description --force-ipv4 --no-warnings <url>`, and
+   `--write-auto-sub --skip-download --sub-format vtt -o <scratchpad>/%(id)s` for transcripts.
 3. **Transcript when depth is needed** (`fetch_youtube_transcript`): chapter markers first for navigation;
    full transcript ~10-12K tokens, so per `playbooks/README.md` §6 delegate digestion to a sub-agent for
    long videos rather than loading raw into main context.
