@@ -91,6 +91,20 @@ spectres — tags, skill lists, and a `grants:` column of every player/ally/mini
 buffers (◐ "Perfect Spirit of Fortune" utility) · defensive windows (✅ Guardian Turtle). Meat Shield on
 defensive spectres makes them taunt/body-block.
 
+### ⚠ Obtainability: most spectres CANNOT be bought (2026-08-09)
+Two acquisition classes, and the naming does not tell you which:
+- ✅ **Itemized corpses — tradeable.** Only the **`Monsters/LeagueAzmeri`** family (70 tiered entries:
+  Imperfect / normal / Perfect). Search the trade site by **`base_type`**, not `name`; poe.ninja doesn't
+  list them. These are what "buy a Perfect X" refers to.
+- **Everything else — kill it and raise it yourself.** Free, but it means travelling to an area that spawns
+  the monster and raising it there (Desecrate + Raise Spectre). Not on trade at any price.
+- ⚠ **A "Perfect" prefix does NOT imply tradeable.** `Monsters/FaridunLeague` also carries tiered names
+  (e.g. *Perfect Conjuror of Rot*, the only Malevolence source) and returns **0 trade listings** — ◐ either
+  untradeable or simply unlisted; treat as "acquire in-game" until proven otherwise.
+
+Consequence for planning: a shopping list and a *hunting* list are different documents. The best spectre for
+a build is often free and unbuyable — and, being unmodelled by PoB (below), unsimmable too.
+
 ### ⚠ Finding buff spectres takes THREE sweeps — a mod-only sweep misses most of them
 A spectre can buff you or your minions through any of three channels, and the text lake surfaces them in
 different columns. Sweeping one channel and calling it "the buff spectres" is wrong — it happened here on
@@ -353,9 +367,15 @@ sufficient alone — which is the argument for always running both.
 **Data refuted the survey:**
 - ⛔ "Forest Tiger casts a Level 20 **Precision** aura" — it casts **Haste**. Precision belongs to the
   **Naval Officer**. Classic AI blend of two real entries.
-- ⛔ "**Spectral Leader** grants an Action Speed multiplier" — no such spectre in 268 rows. ◐ Possibly a
-  garbled pointer at something real (apply the fuzzy-name rule before declaring it fake), but nothing in the
-  data matches.
+- ✅ "**Spectral Leader** grants an Action Speed multiplier" — **the survey was right and the data-based
+  refutation was wrong.** It was marked ⛔ on the grounds that no such spectre appears in the 268 rows; the
+  user produced [the poewiki page](https://www.poewiki.net/wiki/Spectral_Leader). It is a real, raisable
+  undead in Sanctuary / Citadel / Fortress / Abomination / Ziggurat maps that **summons Raging Spirits and
+  casts an action-speed buff on nearby allies** (8s duration, 10s cooldown, ~30m radius).
+  **⚠⚠ The lesson is bigger than the entry: PoB's spectre list is a CURATED SUBSET, not the game's roster.**
+  `Spectres.lua` has zero matches for it, and not one of the 268 grants ActionSpeed at all. So "not in the
+  text lake" proves nothing about the game — it proves the spectre is unmodelled, which also means
+  **unsimmable**. Check poewiki (`fetch_wiki_page` / `wiki_cargo_query`) before writing any spectre off.
 - ⛔ "Perfect Pain Artist grants **Celerity**" — it casts **Zealotry** and grants `AllyModifier` crit
   multiplier. No "Celerity" exists in the data.
 

@@ -36,8 +36,26 @@ Cursory when it's one lookup ("what does a Perfect Guardian Turtle grant?" → t
 | Load | Purpose |
 |---|---|
 | `rg --no-ignore "grants:" reference_data/text_lake/spectres.txt` | 268 spectres, tags + skills + granted mods |
+| `python scripts/spectre_aura_sweep.py` | **aura-casters — invisible to a `grants:` sweep** |
 | `PathOfBuilding/src/Data/Spectres.lua` (raw entry) | **conditions the lake's `grants:` column drops** |
 | `PathOfBuilding/src/Data/Minions.lua` | your minions' `monsterTags` — decides which tagged buffs apply |
+| poewiki (`fetch_wiki_page` / `wiki_cargo_query`) | **the only source for spectres PoB does not model** |
+
+⚠⚠ **PoB's 268 spectres are a curated subset, not the game's roster — "not in the lake" proves nothing.**
+Field-hit 2026-08-09: a survey named *Spectral Leader*; it was written off as nonexistent because
+`Spectres.lua` has zero matches. It is real (poewiki), raisable, summons Raging Spirits, and grants an
+**action-speed** buff to allies — a stat *no* modelled spectre grants. Absence from local data means
+**unmodelled and therefore unsimmable**, which is a reason to consult the community and the wiki, never a
+reason to declare something fake. Same doctrine as the garbled-names rule: unverified ≠ nonexistent.
+
+**A spectre's buffs reach you through four channels, and each needs its own sweep:**
+1. **Mods** — `grants:` column (`PlayerModifier` / `MinionModifier` / `AllyModifier`).
+2. **Auras** — a `skills:` entry flagged `SkillType.Aura` (`scripts/spectre_aura_sweep.py`).
+3. **Non-aura buff skills** — e.g. `MassFrenzy` / `MassPower` (charge granters); grep the skill name.
+4. **Stats PoB records but does not implement** — present in `Spectres.lua` as a **bare comment with no
+   `mod()` call** (the Forest Tiger's `chance_to_grant_frenzy_charge_to_nearby_allies_on_hit_%`). Invisible
+   to every sweep *and* to every sim, so any PoB number for such a spectre is a **floor**. Only community
+   sources and the wiki surface these.
 
 ⚠ **The lake's `grants:` column is lossy in both directions.** It flattens away conditions
 (`MonsterTag`, `PerStat`) — making mods look better than they are — and it omits **auras, which live in the
