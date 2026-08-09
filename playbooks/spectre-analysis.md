@@ -67,6 +67,17 @@ import — it belongs in the post-import checklist alongside Full-DPS flags and 
 ⚠ **Metadata ids are not guessable.** "Perfect Hulking Miscreation" is `.../SpecialCorpses/RobotArgusHigh__`
 — trailing double underscore. Always copy the id from the text lake, never construct it.
 
+⚠ **A pin to a spectre that is not in the spectre list is silently reset.** On load/save PoB rewrites
+`skillMinion` to a valid entry (the first spectre) while leaving `skillMinionCalcs` alone — so the gem ends
+up pointing at two different spectres and the one you wanted is simply gone. **Add the spectre to the list
+in the same edit as the pin**, and re-read both attributes afterwards to confirm. Consequence: you cannot
+pre-pin a gem for a spectre you have not raised/bought yet — it will not survive.
+
+⚠ **The modeling group excludes the fake instances' own spectre damage** (that is the point of
+`includeInFullDPS="false"`), so it slightly *understates* a spectre whose value is its own damage rather
+than its buffs. The error is small — a comparable spectre's self-damage measured 0.44% of build total — but
+state it when comparing a damage-spectre against a buff-spectre.
+
 ## Step 4 — Measure
 
 - To value **one** spectre: list it **first**, measure, then compare against a run with a *different*

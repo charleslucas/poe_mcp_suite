@@ -157,11 +157,19 @@ scales?"** Four mod destinations, and only two usually matter to a minion build:
 
 **Buff-bot rule: a spectre's own damage is usually irrelevant, so buy the aura, not the monster.** Measured:
 the Hulking Miscreation contributed **5,846 DPS of its own — 0.27%** of the build's total, while its buff was
-worth **+43.6%**. This inverts the intuition that you want a "strong" spectre. It also means **corpse tier
-often does not matter**: Hulking Miscreation and *Perfect* Hulking Miscreation grant **verbatim identical**
-minion buffs at the same life multiplier — the Perfect tier only improves the spectre's own attack damage
-(5% → 8% per 450 armour), i.e. 0.27% of your DPS. ⚠ But **Imperfect grants no minion buff at all**, so the
-family's cheapest tier is the trap. **Always diff the three tiers in the lake before paying for "Perfect".**
+worth **+43.6%**. This inverts the intuition that you want a "strong" spectre.
+
+**Corpse tier is not a quality axis — diff the three tiers, because the premium can be nothing or
+everything.** Two measured cases, same league, opposite answers:
+- **Hulking Miscreation**: normal and *Perfect* grant **verbatim identical** minion buffs at the same life
+  multiplier; Perfect only improves the spectre's *own* attack damage (5% → 8% per 450 armour) — 0.27% of
+  your DPS. **Buy the normal tier** (~20c vs Perfect's ~1 div). ⚠ `Imperfect` grants no minion buff at all.
+- **Forest Tiger**: all three tiers are identical in stats *and* mods — but **only `Perfect` carries the
+  extra skill `AzmeriTigerHaste`**, "an aura that increases movement speed, attack speed and cast speed of
+  you and your allies". Here the Perfect tier is the *entire* product; the cheap tiers are inert.
+
+So the rule is mechanical, not economic: **diff `skills:` AND `grants:` across all three tiers in the lake
+before paying for "Perfect"** — the difference may be a rounding error or the whole reason to buy.
 
 **Tag gates decide everything — check YOUR minions' tags, not the spectre's.** `MonsterTag` conditions are
 matched case-insensitively against the *receiving* minion's `monsterTags` in `Data/Minions.lua`. Worked
