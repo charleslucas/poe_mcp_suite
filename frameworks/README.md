@@ -27,7 +27,19 @@ and falsifiable.
 - **League stamps:** viability claims carry the patch they were surveyed in and expire at league
   transition — the entry survives, its verdict gets re-surveyed.
 - **Survey ledger:** every framework ends with dated survey entries recording queries run, what was found,
-  what was refuted, and source quality (a `sources: []` AI answer is synthesis, not retrieval).
+  what was refuted, and source quality — but see the `sources: []` caveat below before reading anything
+  into an empty source list.
+
+**⚠ `sources: []` does NOT mean "synthesis, not retrieval"** (corrected 2026-08-09 after it caused a wrong
+call). Google AI Mode renders attribution two ways: clickable citation buttons, which the scraper clicks to
+open the sidebar and capture, and **inline chips** (`Reddit·r/pathofexile +2`, `YouTube · creator`), which
+it does not parse at all. An answer built entirely of chips returns `sources: []` while being fully
+retrieved — verified same-day: a `sources: []` league-mechanic answer was dismissed as confabulated and
+turned out to match the official patch notes exactly, while a query run minutes later returned three real
+citations. Even there, only one bullet of ten carried parsed citations; the rest were chips. So an empty
+list is **no evidence either way**, and a populated one is a floor, never the full provenance. Judge
+sourcing from the answer body (named creators, venues, dates) and verify against game data, not from the
+array's length.
 
 ## Publication policy — the evidence ladder
 

@@ -50,8 +50,10 @@ Add for farming re-stamps: `currency_overview` (prices stale in hours), current 
    - Freshness: claims about "how X works now" beat your training *and* old guides — but verify the load-
      bearing ones (the Dead-Reckoning-obsolete catch came from a survey; the AG-UI claim died against
      patch notes).
-3. **Label** ✅/◐/⛔ — and keep the ⛔ rows with their reasons. Label source quality too: `sources: []`
-   responses are synthesis; r/pathofexile2builds citations are a different game.
+3. **Label** ✅/◐/⛔ — and keep the ⛔ rows with their reasons. Label source quality from the **answer body**
+   (named creators, venues, dates), not from the `sources` array: an empty array is no evidence either way,
+   because the scraper parses only clickable citation buttons and silently drops Google's inline attribution
+   chips (`Reddit·r/… +2`). See `frameworks/README.md` → the `sources: []` caveat.
 4. **Write**: entry into the roster/table with aliases + references (videos, guides, reddit tutorials).
 5. **Ledger**: dated survey entry — queries, findings, refutations, contradictions *preserved* (two
    verdicts on one mechanic usually means two investment tiers, not an error).
@@ -100,7 +102,7 @@ REJECTED keeps its row + cause + date.
 
 ## Step 5 — Pitfalls (all field-hit, 2026-08-04)
 
-- **AI-search garbles proper nouns — in BOTH directions.** Fuzzy-gate names before declaring them fake ("Bladefall of the Tarter" was real gem *of Trarthus*), and treat synthesis tells (`sources: []`, no direct links, odd-looking handles) as **unverified, never probably-fake**: three creator names flagged as likely-invented (untagatunu, BawLoch, Redviles) were all real people with slightly mangled spellings. Synthesis names are mangled pointers — a 30-second reddit/YouTube search resolves them; presumption in either direction does not.
+- **AI-search garbles proper nouns — in BOTH directions.** Fuzzy-gate names before declaring them fake ("Bladefall of the Tarter" was real gem *of Trarthus*), and treat weak-provenance tells (no direct links, odd-looking handles; **not** `sources: []`, which is uninformative — see step 3) as **unverified, never probably-fake**: three creator names flagged as likely-invented (untagatunu, BawLoch, Redviles) were all real people with slightly mangled spellings. The same presumption sank a *whole answer* on 2026-08-09: a correct description of the 3.29 league (bathysphere, the *Sovereign*, diving) was called confabulated because it clashed with training-era "Allflame = Necropolis embers" — **post-cutoff league content is where own-knowledge feels most confident and is most wrong**; read `reference_data/leagues/{league}.md` before contradicting a tool. Synthesis names are mangled pointers — a 30-second reddit/YouTube search resolves them; presumption in either direction does not.
 - **Survey praise omits exclusivity costs** — The Dark Monarch was "mandatory for spectre builds" with no
   mention that every variant forbids all other minions. Pull the full item text before rostering.
 - **Same mechanic, opposite verdicts = investment tiers** — Essence is both a budget starter (unjuiced) and
