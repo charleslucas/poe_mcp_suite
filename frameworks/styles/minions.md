@@ -86,9 +86,27 @@ Minions that die constantly usually have **zero defensive supports** — check b
 Minion Life. ⚠ Minion life/res appear in **no PoB readout** — only in-game observation verifies this.
 
 ### 3e. Spectre toolbox by role
-Grep the full roster: `rg --no-ignore -i "<tag/skill>" reference_data/text_lake/spectres.txt` (199 spectres,
-tags + skill lists). Roles: damage · buffers (◐ "Perfect Spirit of Fortune" utility) · defensive windows
-(✅ Guardian Turtle, in roster). Meat Shield on defensive spectres makes them taunt/body-block.
+Grep the full roster: `rg --no-ignore -i "<tag/skill>" reference_data/text_lake/spectres.txt` (**268**
+spectres — tags, skill lists, and a `grants:` column of every player/ally/minion modifier). Roles: damage ·
+buffers (◐ "Perfect Spirit of Fortune" utility) · defensive windows (✅ Guardian Turtle). Meat Shield on
+defensive spectres makes them taunt/body-block.
+
+**Spectres that buff the PLAYER are rare and worth hunting — only 7 of 268 carry a `PlayerModifier`:**
+Guardian Turtle + Perfect Guardian Turtle (3%/5% phys damage reduction), Perfect Druidic Alchemist (**200%
+increased flask effect** + life-flask charge generation), Perfect Needle Horror (impale effect), Perfect
+Runic Skeleton (5% MORE phys damage), Perfect Slashing Horror (5% phys gained as fire), Perfect Spider
+Matriarch (wither effect — ⚠ PoB's own comment says *"Does not work"*). Find them with
+`rg --no-ignore "grants:.*PlayerModifier" reference_data/text_lake/spectres.txt`.
+
+⚠ **`grants:` alone under-reports — cross-check the `skills:` column for auras.** The Perfect Guardian
+Turtle's biggest gift is *Determination* (✅ measured on a live build: armour 889 → **3,650**, EHP +18.6%),
+which lives in its skill list, not its mods; `grants:` catches only its 5% PDR. Conversely a spectre with
+`grants:-` may still do nothing for you: the Perfect Judgemental Spirit's Discipline is minion-only —
+✅ confirmed in-game 2026-08-09, character-sheet ES matched PoB exactly with it raised.
+
+⚠ **PoB never learns your spectres from an import** (the PoE API doesn't report them), so an unset build
+silently simulates *generic* spectres and misses all of the above. Set them with `set_spectres`
+(fuzzy names, e.g. `["perfect guardian turtle"]`) — pob-mcp, added 2026-08-09.
 
 ### 3f. Auras & reservation
 Typical: Anger+Generosity, Skitterbots, Purity of Elements, **Envy via United in Dream** (✅ measured ~87%
