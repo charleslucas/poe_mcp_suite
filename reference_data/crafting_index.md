@@ -41,6 +41,7 @@ Every row below points at the tool that fetches that data live.
 | **Multimod** | Up to 3 crafted mods | Deterministic | 2 ex + crafts | Only economic with **2+ open affixes** |
 | **Influence / Awakener's** | Unlocks influence mod pools; combines two influences | Random | High | Endgame chase mods |
 | **Corruption (Vaal)** | Random outcome, item becomes unmodifiable | Gamble | Low + risk | Only on items you accept losing. Low-ilvl vaaling raises odds of some outcomes |
+| **⭐ Vestigial uniques** (3.29 Legion) | Transfers a modifier from one unique onto a **different, random unique of the same slot**, arriving as an **enchantment**. Armour only — 5 slots, one Enshrouding Crystal per Legion faction | Input mod fixed; **output unique random** | Mid–high (crystal + a Domain of Timeless Conflict run) | You want one unique's signature mod on a different base. ⚠ Also the basis of the **"brick" exploit**: transfer *can be modified while corrupted*, then deliberately Vaal-brick the unique into a rare that stays craftable — full mechanism + the 4-mirror glove craft in [`leagues/Allflame.md`](leagues/Allflame.md) §Vestigial |
 | **⭐ Allflame crafting** (3.29) | League mechanic; accrues an **`Intangibility: N%`** limiter as an item is modded | ◐ unknown | ◐ | ◐ **Not yet researched** — see `leagues/Allflame.md` §Rule changes #1b + its drill-down ledger row |
 
 ## 3. Question → where the answer lives
