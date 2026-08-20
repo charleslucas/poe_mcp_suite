@@ -179,6 +179,14 @@ Spectre gems parked in a swap slot contribute nothing. ⚠ Every character impor
 on a live 3-spectre build: **1,531,370 Full DPS modeled the default way, 2,502,251 with all three modeled.
 PoB was understating the character by 63%.**
 
+### 3e-1b. Two field-confirmed rules (live build, 2026-08-19)
+- **“more maximum Minions” rounds DOWN**: Congregation Support L2 (~32% more) supporting Raise Spectre on a
+  base cap of 5 → 6.6 → **cap 6**, confirmed by raising the 6th in game. Plan breakpoints accordingly
+  (L1–30% needs base 4 to add a spectre; base 5 needs any level; the jump to ×7 needs ~40% → gem ~L5+).
+- **An unmodeled spectre makes every PoB number a FLOOR, not wrong** — the fix is bookkeeping, not modeling:
+  keep the modeled N-1 correct, record the unmodeled one’s effect qualitatively from the wiki, and label all
+  sims as floors. Live example: Spectral Leader (action-speed buff + own SRS swarm) as a 6th spectre.
+
 ### 3e-2. How to judge a spectre for a minion build (the reasoning, not the roster)
 
 **The question is never "is this spectre strong?" — it is "does what it grants land on what my build
