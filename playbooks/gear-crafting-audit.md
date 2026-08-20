@@ -74,6 +74,12 @@ Sim anything non-trivial before recommending it (`add_item` the modified version
 
 ## Step 5 — Pitfalls
 
+- ⚠ **UNCLASSIFIED mods still occupy affix slots.** analyze_item_mods puts special/influence/unmatched
+  lines under UNCLASSIFIED — they are explicit mods and consume a prefix or suffix like any other. Counting
+  only the classified sections produced “two open prefixes” on a FULL item and an Exalt recommendation the
+  game itself had to refuse (2026-08-19, the fire→chaos conversion gloves). The tool now prints an explicit
+  affix-budget section — read open-slot counts from THERE, and verify with Alt in game before any slam.
+
 - ⚠ **Mod-group collisions kill most "open affix" wins.** A bench craft in the same `group=` as an existing mod
   **cannot be applied**. Real example: a ring with an open prefix, `+60 life` (group `IncreasedLife`) and a junk
   `+3 ES` (group `EnergyShield`) — both the life and ES bench crafts were blocked, leaving only worthless mana.
