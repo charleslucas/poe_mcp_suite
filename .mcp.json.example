@@ -2,7 +2,9 @@
   "mcpServers": {
     "pob": {
       "command": "node",
-      "args": ["/CHANGE_ME/poe_mcp_suite/pob-mcp/build/index.js"],
+      "args": [
+        "/CHANGE_ME/poe_mcp_suite/pob-mcp/build/index.js"
+      ],
       "env": {
         "POB_DIRECTORY": "C:/Users/CHANGE_ME/AppData/Roaming/Path of Building Community/Builds",
         "POB_LUA_ENABLED": "true",
@@ -16,7 +18,9 @@
     },
     "poe-trade-mcp": {
       "command": "python",
-      "args": ["/CHANGE_ME/poe_mcp_suite/poe-trade-mcp/poe_all.py"],
+      "args": [
+        "/CHANGE_ME/poe_mcp_suite/poe-trade-mcp/poe_all.py"
+      ],
       "env": {
         "POE_SESSION_ID": "CHANGE_ME_your_POESESSID_cookie",
         "POE_ACCOUNT_NAME": "CHANGE_ME_YourAccount#1234",
@@ -26,11 +30,22 @@
     },
     "poe-data-mcp": {
       "command": "python",
-      "args": ["/CHANGE_ME/poe_mcp_suite/poe-data-mcp/server.py"]
+      "args": [
+        "/CHANGE_ME/poe_mcp_suite/poe-data-mcp/server.py"
+      ]
     },
     "google-ai-mode": {
       "command": "npx",
-      "args": ["google-ai-mode-mcp@latest"]
+      "args": [
+        "google-ai-mode-mcp@latest"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@0.0.82"
+      ]
     }
   }
 }

@@ -129,6 +129,22 @@ No installation step required — it runs on demand via `npx`. Just add the entr
 
 ---
 
+### playwright (browser rendering — third-party, Microsoft)
+
+Microsoft's `@playwright/mcp` gives the suite a real headless browser: the fallback for pages that block
+plain HTTP (Reddit returns 403s to script traffic; some wiki/promo pages need JS rendering). Registered in
+`.mcp.json` (and `.mcp.json.example`) **pinned to an exact version** — an unpinned `@latest` re-resolves
+against the npm registry on every session start and can blow the 30s MCP connect window (observed 2026-09-22
+as a CONNECT_TIMEOUT). Pre-warm the cache once so first start is instant:
+
+```
+npx -y @playwright/mcp@0.0.82 --version
+```
+
+If you also have the Claude Code **playwright plugin** enabled (`claude-plugins-official`), disable it
+(`/plugin`) to avoid running two browser servers side by side. To bump the pin: update the version in both
+`.mcp.json` and `.mcp.json.example`, pre-warm again, and note it here.
+
 ## Step 5 — Set up PathOfBuilding for TCP mode (recommended)
 
 TCP mode connects Claude to a **running PoB GUI** — no LuaJIT installation needed, and changes appear live in the PoB window.
