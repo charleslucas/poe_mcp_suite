@@ -44,7 +44,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@playwright/mcp@0.0.82"
+        "@playwright/mcp@0.0.83"
       ]
     }
   }

@@ -138,7 +138,7 @@ against the npm registry on every session start and can blow the 30s MCP connect
 as a CONNECT_TIMEOUT). Pre-warm the cache once so first start is instant:
 
 ```
-npx -y @playwright/mcp@0.0.82 --version
+npx -y @playwright/mcp@0.0.83 --version
 ```
 
 If you also have the Claude Code **playwright plugin** enabled (`claude-plugins-official`), disable it

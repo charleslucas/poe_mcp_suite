@@ -9,13 +9,13 @@ cd "$(dirname "$0")/.." 2>/dev/null || exit 0
 # Challenge league (the one POE_LEAGUE tracks) and the next one to launch.
 # STATE 2026-07-25: 3.29 "Allflame" (Curse of the Allflame) is LIVE (launched
 # 2026-07-24); POE_LEAGUE=Allflame; current character leveling in it.
-# ⚠ LEAGUE_END / NEXT_* below are COMMUNITY ESTIMATES — GGG has NOT officially
-# announced the 3.29 end date (as of 2026-07-25). ~18wk → ends ~2026-11-23; 3.30
-# launches ~2026-11-27 (ExileCon 2026-11-07/08). Replace with GGG's real dates
-# once announced (the ~7-day-out warning will fire around the estimate meanwhile).
+# ✅ LEAGUE_END / NEXT_* are GGG's OFFICIAL dates (forum 4010618, 2026-10-12):
+# Allflame ends 2026-11-09 1:00 PM PST; 3.30 launches 2026-11-13 (reveal at
+# ExileCon 2026, November). The earlier community estimate (11-23/11-27) was two
+# weeks late and kept the 7-day warning from opening on time.
 TEMP_LEAGUE="${POE_TEMP_LEAGUE:-Allflame}"
-LEAGUE_END="${POE_LEAGUE_END:-2026-11-23}"
-NEXT_LEAGUE_START="${POE_NEXT_LEAGUE_START:-2026-11-27}"
+LEAGUE_END="${POE_LEAGUE_END:-2026-11-09}"
+NEXT_LEAGUE_START="${POE_NEXT_LEAGUE_START:-2026-11-13}"
 NEXT_LEAGUE_NAME="${POE_NEXT_LEAGUE_NAME:-3.30 (TBA)}"
 # Concurrent EVENT league — ends on its own (earlier) date and POE_LEAGUE never
 # points at it, so it needs its own proximity signal (see check 4b).
