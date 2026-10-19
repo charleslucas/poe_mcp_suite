@@ -62,7 +62,11 @@ def main():
             print("ERROR: %r is not a metadata id — copy it from the text lake" % m)
             return 1
 
-    text = xml_path.read_text(encoding="utf-8")
+    # Byte-exact I/O. PoB writes CRLF and stores text-field newlines as CR CR LF;
+    # universal-newline read_text() treats that as TWO breaks and write_text()
+    # re-emits each as CRLF, so every edit+PoB-save cycle DOUBLED the blank lines in
+    # Notes / CustomModifierBlocks (observed 2026-10-18: Notes reached 270k lines).
+    text = xml_path.read_bytes().decode("utf-8")
 
     if LABEL in text:
         print("modeling group already present — remove it first to rebuild")
@@ -79,10 +83,11 @@ def main():
     ]
     lines += [GEM.format(m=m) for m in spectres]
     lines.append("\t\t\t</Skill>")
-    block = "\n".join(lines) + "\n"
+    eol = "\r\n" if "\r\n" in text else "\n"
+    block = eol.join(lines) + eol
 
     # First SkillSet only — that is the active one.
-    xml_path.write_text(text.replace(marker, block + marker, 1), encoding="utf-8")
+    xml_path.write_bytes(text.replace(marker, block + marker, 1).encode("utf-8"))
     print("inserted modeling group with %d Raise Spectre gem(s):" % len(spectres))
     for m in spectres:
         print("  - %s" % m)
