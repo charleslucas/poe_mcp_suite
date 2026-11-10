@@ -57,8 +57,10 @@ and wrongly.
 | **Haiku 4.5** (`claude-haiku-4-5`) | **≤3.24 (unconfirmed)** | — | ⚠ cutoff not documented — treat conservatively; verify anything 3.25+ |
 | **Fable 5** (`claude-fable-5`) | **3.26** reliable; **3.27** nominal-but-thin | Jan 2026 | Calibrated 2026-07-08 by in-session self-probe (contamination-aware: tested for detail *beyond* the loaded caches, not mere recognition). Deep 3.25–3.26 (produced Faustus currency exchange, merc subdue→recruit — absent from our caches); **zero independent 3.27 detail → verify-first**; blind 3.28+. Only current model with training knowledge of the original **Feb-2025 Legacy of Phrecia event** (Idols; the 19 alt ascendancies, low per-node detail). PoE recency ≈ Opus 4.8 — its edge is reasoning, not fresher game data. **Subscription access ends 2026-07-12** (an earlier "retired 2026-07-07" note here was wrong — user confirmed live access 2026-07-08). |
 
-> **LIVE LEAGUE (as of 2026-07-24):** **3.29 Curse of the Allflame is LIVE** (launched 2026-07-24; POE_LEAGUE
-> flipped to it). 3.28 Mirage ended 2026-07-20 (chars → Standard). Both 3.28 & 3.29 are past EVERY model's
+> **LEAGUE STATE (as of 2026-11-10): between leagues.** 3.29 Curse of the Allflame **ended 2026-11-09**
+> (chars → Standard; POE_LEAGUE = Standard). **3.30 Covens of Umbra launches 2026-11-13** — add its source
+> bookmarks + a 3.30 section here when the full patch notes post (reveal summary: `patch_notes_index.md`).
+> 3.28 Mirage ended 2026-07-20 (chars → Standard). Both 3.28 & 3.29 are past EVERY model's
 > cutoff → always verify / use the 3.29 cache. **3.27** is past every model's *reliable* window (Fable holds it
 > nominally but with thin detail — still verify). **3.26** is within Opus/Fable, past Sonnet 4.6/Haiku. When in
 > doubt, verify.

@@ -7,16 +7,16 @@ cd "$(dirname "$0")/.." 2>/dev/null || exit 0
 
 # ── League anchors — rolled by the league-transition playbook (Step 7.4) ────
 # Challenge league (the one POE_LEAGUE tracks) and the next one to launch.
-# STATE 2026-07-25: 3.29 "Allflame" (Curse of the Allflame) is LIVE (launched
-# 2026-07-24); POE_LEAGUE=Allflame; current character leveling in it.
-# ✅ LEAGUE_END / NEXT_* are GGG's OFFICIAL dates (forum 4010618, 2026-10-12):
-# Allflame ends 2026-11-09 1:00 PM PST; 3.30 launches 2026-11-13 (reveal at
-# ExileCon 2026, November). The earlier community estimate (11-23/11-27) was two
-# weeks late and kept the 7-day warning from opening on time.
-TEMP_LEAGUE="${POE_TEMP_LEAGUE:-Allflame}"
-LEAGUE_END="${POE_LEAGUE_END:-2026-11-09}"
-NEXT_LEAGUE_START="${POE_NEXT_LEAGUE_START:-2026-11-13}"
-NEXT_LEAGUE_NAME="${POE_NEXT_LEAGUE_NAME:-3.30 (TBA)}"
+# STATE 2026-11-10: Allflame ENDED 2026-11-09 1:00 PM PST; POE_LEAGUE=Standard
+# (league-transition run 2026-11-10). 3.30 "Covens of Umbra" launches 2026-11-13.
+# Check 4 is silent while POE_LEAGUE=Standard. When a character is started in
+# Covens: set POE_LEAGUE to its TRADE-API name (verify with get_active_leagues at
+# launch -- it may not be the full "Covens of Umbra" title) and fix TEMP_LEAGUE to
+# match, then set LEAGUE_END once GGG announces it. NEXT_* = the league after.
+TEMP_LEAGUE="${POE_TEMP_LEAGUE:-Covens of Umbra}"
+LEAGUE_END="${POE_LEAGUE_END:-}"
+NEXT_LEAGUE_START="${POE_NEXT_LEAGUE_START:-}"
+NEXT_LEAGUE_NAME="${POE_NEXT_LEAGUE_NAME:-3.31 (TBA)}"
 # Concurrent EVENT league — ends on its own (earlier) date and POE_LEAGUE never
 # points at it, so it needs its own proximity signal (see check 4b).
 # Cleared 2026-07-21: Return of the Ancestors ended 2026-07-16 (char handled); no

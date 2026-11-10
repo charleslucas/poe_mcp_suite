@@ -55,12 +55,14 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 | `disabled-this-league` | Normally core, but off in the current league | Crucible (absent in Mirage) |
 | `nerfed` / `reworked` | Still present but materially changed | Assassin rework (3.27) |
 
-> **Current context anchors (update at each league roll):** **LIVE league = 3.29 Curse of the Allflame**
-> (launched 2026-07-24; POE_LEAGUE flipped to it 2026-07-24). Its mechanics are the live anchor, scoped
-> `challenge-league (3.29)`. ~~3.28 Mirage~~ **ENDED 2026-07-20 3PM PDT** (did NOT go core) — its
+> **Current context anchors (update at each league roll):** ⏸ **BETWEEN LEAGUES (2026-11-10).** ~~3.29 Curse
+> of the Allflame~~ **ENDED 2026-11-09 1PM PST**; POE_LEAGUE flipped to **Standard** 2026-11-10. **3.30 Covens of
+> Umbra launches 2026-11-13.** ⏳ **Re-scoping PENDING the 3.30 patch notes:** the Allflame block below stays
+> `challenge-league (3.29)` until the notes say which pieces go `core` vs `removed` — do NOT apply Allflame
+> mechanics to a Standard character meanwhile unless verified. ~~3.28 Mirage~~ **ENDED 2026-07-20 3PM PDT** (did NOT go core) — its
 > `challenge-league` mechanics `removed` (section below); Mirage characters remain on Standard. ~~event league
 > Return of the Ancestors~~ **ENDED 2026-07-16** — its event-only mechanics `removed` (section below).
-> ⏳ 3.29 **end date pending** (fill from `get_active_leagues` once PoB TCP is up); next league (3.30) unannounced.
+> 3.29 ended 2026-11-09 (official, GGG forum 4010618). 3.30 reveal notes: `patch_notes_index.md` (Covens of Umbra rows).
 
 > **Canonical enumeration sources (two complementary views):**
 > - Mechanic-keyed: [`League_mechanics`](https://www.poewiki.net/wiki/League_mechanics) — **every league
@@ -90,7 +92,7 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 > *only* during Ancestor/Phrecia events — see the `event-only` row below. In normal/core play the standard
 > 19 ascendancies are the only set.
 
-## 3.29 Allflame — LIVE challenge-league mechanics (launched 2026-07-24; scope: `challenge-league (3.29)`)
+## 3.29 Allflame — challenge-league mechanics (launched 2026-07-24; ❌ ENDED 2026-11-09; core/removed re-scope ⏳ pending 3.30 notes)
 These are the **current live-league** mechanics (the anchor above points here). Kept as their own
 league-scoped block rather than merged into core `Active` — they revert to `removed`/`core` at the 3.30 roll.
 Source: patch notes 2026-07-16 → digest + drill-down ledger in `leagues/Allflame.md`.
