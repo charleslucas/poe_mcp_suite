@@ -186,6 +186,11 @@ PoB was understating the character by 63%.**
 - **An unmodeled spectre makes every PoB number a FLOOR, not wrong** — the fix is bookkeeping, not modeling:
   keep the modeled N-1 correct, record the unmodeled one’s effect qualitatively from the wiki, and label all
   sims as floors. Live example: Spectral Leader (action-speed buff + own SRS swarm) as a 6th spectre.
+- **Set the MAIN skill to the minion damage skill after every import** (2026-11-10). Character import selects
+  socket group 1, typically an aura/movement group with no damage. Full DPS ignores the main skill, but every
+  per-candidate scorer (`get_passive_upgrades`, `suggest_masteries`, `get_node_power`, stat weights) reads
+  the main skill only — Full DPS takes minutes per calc — so with group 1 they silently rank on EHP alone.
+  `set_main_skill` on the damage group restores real minion-DPS ranking at ~20 ms per candidate.
 
 ### 3e-2. How to judge a spectre for a minion build (the reasoning, not the roster)
 
