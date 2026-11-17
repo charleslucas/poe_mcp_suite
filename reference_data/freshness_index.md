@@ -1,5 +1,5 @@
 ---
-maintained: 2026-07-16
+maintained: 2026-11-17
 purpose: Model-aware index of PoE mechanics/items/systems that postdate (or are unreliable in) Claude training data, so the running model knows what it must verify rather than answer from memory.
 committed: yes (gitignore exception — this is curated, not regenerable)
 ---
@@ -57,11 +57,14 @@ and wrongly.
 | **Haiku 4.5** (`claude-haiku-4-5`) | **≤3.24 (unconfirmed)** | — | ⚠ cutoff not documented — treat conservatively; verify anything 3.25+ |
 | **Fable 5** (`claude-fable-5`) | **3.26** reliable; **3.27** nominal-but-thin | Jan 2026 | Calibrated 2026-07-08 by in-session self-probe (contamination-aware: tested for detail *beyond* the loaded caches, not mere recognition). Deep 3.25–3.26 (produced Faustus currency exchange, merc subdue→recruit — absent from our caches); **zero independent 3.27 detail → verify-first**; blind 3.28+. Only current model with training knowledge of the original **Feb-2025 Legacy of Phrecia event** (Idols; the 19 alt ascendancies, low per-node detail). PoE recency ≈ Opus 4.8 — its edge is reasoning, not fresher game data. **Subscription access ends 2026-07-12** (an earlier "retired 2026-07-07" note here was wrong — user confirmed live access 2026-07-08). |
 
-> **LEAGUE STATE (as of 2026-11-10): between leagues.** 3.29 Curse of the Allflame **ended 2026-11-09**
-> (chars → Standard; POE_LEAGUE = Standard). **3.30 Covens of Umbra launches 2026-11-13** — add its source
-> bookmarks + a 3.30 section here when the full patch notes post (reveal summary: `patch_notes_index.md`).
-> 3.28 Mirage ended 2026-07-20 (chars → Standard). Both 3.28 & 3.29 are past EVERY model's
-> cutoff → always verify / use the 3.29 cache. **3.27** is past every model's *reliable* window (Fable holds it
+> **Current league is 3.30 Covens of Umbra** (launched **2026-11-13** PST; trade-API name `Covens`; end date
+> not yet announced). ⚠ **The user's main character is in Standard** (POE_LEAGUE = Standard) — Covens
+> `challenge-league` mechanics (Fates / Viscera / Wickerman) don't apply there, but the **3.30 core changes do**
+> (Threads replace scarabs, atlas-tree + loot rework, Mirage cored) — see the 3.30 section below + cache
+> `leagues/covens_3.30.md`. 3.30 is past EVERY model's cutoff → always verify.
+> 3.29 Curse of the Allflame ended 2026-11-09 (chars → Standard; its league mechanic did **not** go core).
+> 3.28 Mirage ended 2026-07-20 (chars → Standard; **Mirage was then cored in 3.30**). 3.28 & 3.29 are past EVERY model's
+> cutoff → always verify / use the caches. **3.27** is past every model's *reliable* window (Fable holds it
 > nominally but with thin detail — still verify). **3.26** is within Opus/Fable, past Sonnet 4.6/Haiku. When in
 > doubt, verify.
 
@@ -86,7 +89,8 @@ notes / balance changes) for each recent league. Fetch via `mcp__poemcp__fetch_w
 
 | Patch | League page | Version (patch notes) |
 |---|---|---|
-| **3.29 Curse of the Allflame** | https://www.poewiki.net/wiki/Curse_of_the_Allflame_league _(pending)_ | **Forum (primary):** https://www.pathofexile.com/forum/view-thread/3985332 · wiki https://www.poewiki.net/wiki/Version_3.29.0 _(pending)_ |
+| **3.30 Covens of Umbra** | https://www.poewiki.net/wiki/Covens_of_Umbra (expansion page; `Covens_of_Umbra_league` doesn't exist yet — 2026-11-17) · mechanic: https://www.poewiki.net/wiki/Wickerman · https://www.poewiki.net/wiki/League_mechanics#Fates_(Covens_of_Umbra) | **Forum (primary):** https://www.pathofexile.com/forum/view-thread/4013680 · wiki https://www.poewiki.net/wiki/Version_3.30.0 |
+| 3.29 Curse of the Allflame | https://www.poewiki.net/wiki/Curse_of_the_Allflame_league _(pending)_ | **Forum (primary):** https://www.pathofexile.com/forum/view-thread/3985332 · wiki https://www.poewiki.net/wiki/Version_3.29.0 _(pending)_ |
 | 3.28 Mirage | https://www.poewiki.net/wiki/Mirage_league | https://www.poewiki.net/wiki/Version_3.28.0 |
 | 3.27 Keepers of the Flame | https://www.poewiki.net/wiki/Keepers_of_the_Flame | https://www.poewiki.net/wiki/Version_3.27.0 |
 | 3.26 Secrets of the Atlas | https://www.poewiki.net/wiki/Secrets_of_the_Atlas | https://www.poewiki.net/wiki/Version_3.26.0 |
@@ -97,7 +101,31 @@ notes / balance changes) for each recent league. Fetch via `mcp__poemcp__fetch_w
 
 ## Index entries
 
-### 3.29 — Curse of the Allflame  (launches 2026-07-24; past ALL models' cutoffs → always verify / use cache)
+### 3.30 — Covens of Umbra  (launched 2026-11-13; past ALL models' cutoffs → always verify / use cache)
+Full cache: [`reference_data/leagues/covens_3.30.md`](leagues/covens_3.30.md) — from the full 3.30.0 notes
+(forum 4013680 / wiki Version_3.30.0) + wiki Wickerman/League_mechanics, fetched 2026-11-17. ⚠ Most rows below
+are **core** changes → they apply to **Standard** characters too; only the first two are league-gated.
+
+| Mechanic / item / system | What it is (one line) | Where / verify via |
+|---|---|---|
+| **League mechanic: Fates** (`challenge-league`) | Kill covenites at cauldrons → pick up to 3 **Fates** for the area boss (harder + richer); repeat copies triple rewards | cache §League mechanic |
+| **Viscera + Wickerman** (`challenge-league`) | Fate-empowered bosses drop **Viscera**; 4 slots (head/torso/upper/lower limb) on a per-character town **Wickerman** grant stats; Grim Fates → pinnacle Viscera; Coven Queen's Crown. **Not "equipped items"** (0b HF4). Minion lines incl. +1–2 max Skeletons/Zombies | cache §League mechanic; wiki Wickerman |
+| **🔴 SCARABS REMOVED → Threads** | 10 Thread types + Frayed Thread, ≤8 per map via map device; the 10 "primary" league mechanics **no longer spawn randomly** in maps. Any scarab-based farming advice is stale | cache §Core #1 |
+| **🔴 Atlas passive tree rebuilt** | Starts at centre, 150 points; 6 keystones removed (Crop Rotation, Endless Tide, Lucid Dreams, Meticulous Appraiser, Refiner's Bargain, Synthesised Stability); Delve/Heist clusters gone | cache §Core #2 — tree data must be re-pulled |
+| **Shaped Regions / Astrolabes reworked** | 10 region types granting free Threads; Astrolabes place a region; 3 astrolabe types removed | cache §Core #3 |
+| **🔴 Loot / item-generation rework** | Rarity selects better drop pools; IIQ largely removed (maps: IIQ → **"Atlas Drops"**); **Item Tiers 2–5** on magic/rare drops; tier-gated bases (Stygian Vise etc.); MTR rework; fewer fractured sources | cache §Core #4 |
+| **🔴 Mirage → CORE** (reverses 3.28 "not core") | Mirages in maps; Black Barya all leagues; Restoration/Desecration coins **deleted**; Knowledge/Power/Skill coins → **Soul Cores**; Heroic Tragedy, Essence of Desolation available in core | cache §Core #5; `mechanics_index.md` |
+| **Atziri relocated to Temple of Atzoatl** | Alluring Abyss, Sacrifice/Mortal fragments, Vaal side areas in maps, Vial drops removed; Royal Visage; **Twice Corrupted** via Altar of Corruption/Lapidary Lens | cache §Core #6 |
+| **Harvest / Beyond / Bestiary / Delirium / Gwennen reworks** | Sacred Flora in-map; Demonic Evocators; yellow beasts uncapturable; Delirium Orbs reforge maps; Gwennen gamble → "Take a Chance" | cache §Core #7 |
+| **Currency changes** | **Orb of Binding unobtainable**; Orb of Chance → far better unique odds, rarer; Sacred more common; new vendor recipes; bench "all sockets White"; new meta-crafts | cache §Core #8 |
+| **Femurs of the Saints reworked** | +2–3 minion gem levels, 80–100% minion dmg + up to 4 rolled per-minion-type mods (spectre/skeleton/zombie/SRS). Old copies: Divine for new base values | cache §Balance |
+| **Golem buff nerfs; Transfusion rework; Bone Helmet minion implicit ↑** | Flame/Lightning/Stone golem buffs ~−20%; Transfusion grants minion charges per 400 life spent | cache §Balance |
+| **Ascendancies (normal leagues)** | Only Reliquarian (roster reshuffled — names ❓), Luminary, Pathfinder, Warden, Trickster changed. **Necromancer unchanged.** ⚠ The Occultist/Elementalist/Hierophant/Gladiator/etc. list in the notes is **Ruthless-only** | cache §Balance |
+| **New gems / uniques / bases** | Arcane Link, Fireball of Radiation; 11 uniques (incl. **Unwilling Embrace** minion ring, Putrid Seed, Mantle of Dreams, Corpse Rose); Mycelium Core jewel; Essence of Trickery | cache §New items (most unique stats ❓) |
+| **Mercenary nerfs** | Less attack dmg/DR late, more life, −30%/−60% res penalty by area level | cache §Balance |
+| **Eldritch "presence" mods on minions fixed** | Were always active on Minions/Mercenaries; now require the unique/pinnacle presence (affects eldritch-geared Animate Guardians) | cache §Watchlist |
+
+### 3.29 — Curse of the Allflame  (launched 2026-07-24; ENDED 2026-11-09; league mechanic did NOT go core — see `mechanics_index.md`)
 Full cache: [`reference_data/leagues/Allflame.md`](leagues/Allflame.md) —
 **pre-launch, from the 2026-07-16 patch notes**; its **drill-down ledger** tracks per-line depth/confidence.
 Videos + community surveys not yet ingested; wiki not yet populated.
@@ -126,6 +154,11 @@ Videos + community surveys not yet ingested; wiki not yet populated.
 ### 3.28 — Mirage league  (past ALL models' cutoffs → always verify / use cache)
 Full cache: [`reference_data/leagues/mirage.md`](leagues/mirage.md).
 
+> ⚠ **SUPERSEDED 2026-11-17: Mirage was made CORE in 3.30.0** ("Mirage as a Core League" section of the notes) —
+> Mirages, Black Barya, Essence of Desolation, Heroic Tragedy, Screams/Maraketh uniques are back in all leagues;
+> Restoration/Desecration coins deleted; Knowledge/Power/Skill coins → Soul Cores. Current scope lives in
+> `mechanics_index.md`; the block below is the historical 3.29-era answer.
+>
 > ### 🔴 END OF LEAGUE — Mirage does **NOT** go core in 3.29 (GGG end-of-league post, read 2026-07-16)
 > **Mirage ends 2026-07-20, 3PM PDT.** This is the authoritative "what goes core" answer the league-transition
 > playbook (Step 7.2) waits for — re-scope `mechanics_index.md` from it. GGG's stated outcomes:

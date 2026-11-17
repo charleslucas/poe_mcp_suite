@@ -1,5 +1,5 @@
 ---
-maintained: 2026-07-16
+maintained: 2026-11-17
 purpose: Mechanic-keyed registry of PoE mechanics/systems — each one's lifecycle (introduced → changed → removed/returned) and, critically, its CURRENT SCOPE, so analyses can filter mechanics to a character's actual context and not bleed league/event data into the wrong build.
 committed: yes (gitignore exception — curated, complements freshness_index.md)
 ---
@@ -55,14 +55,14 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 | `disabled-this-league` | Normally core, but off in the current league | Crucible (absent in Mirage) |
 | `nerfed` / `reworked` | Still present but materially changed | Assassin rework (3.27) |
 
-> **Current context anchors (update at each league roll):** ⏸ **BETWEEN LEAGUES (2026-11-10).** ~~3.29 Curse
-> of the Allflame~~ **ENDED 2026-11-09 1PM PST**; POE_LEAGUE flipped to **Standard** 2026-11-10. **3.30 Covens of
-> Umbra launches 2026-11-13.** ⏳ **Re-scoping PENDING the 3.30 patch notes:** the Allflame block below stays
-> `challenge-league (3.29)` until the notes say which pieces go `core` vs `removed` — do NOT apply Allflame
-> mechanics to a Standard character meanwhile unless verified. ~~3.28 Mirage~~ **ENDED 2026-07-20 3PM PDT** (did NOT go core) — its
-> `challenge-league` mechanics `removed` (section below); Mirage characters remain on Standard. ~~event league
-> Return of the Ancestors~~ **ENDED 2026-07-16** — its event-only mechanics `removed` (section below).
-> 3.29 ended 2026-11-09 (official, GGG forum 4010618). 3.30 reveal notes: `patch_notes_index.md` (Covens of Umbra rows).
+> **Current context anchors (update at each league roll):** current challenge league = **3.30 Covens of Umbra**
+> (`Covens`; launched **2026-11-13** PST; end date not yet announced). **POE_LEAGUE = Standard** (the user's
+> main character is in Standard) → Covens `challenge-league` rows below do **not** apply to it; the 3.30 **core**
+> changes do. ~~3.29 Curse of the Allflame~~ **ENDED 2026-11-09 1PM PST** — league mechanic **did not go core**
+> (wiki League_mechanics); its block below is re-scoped per the 3.30.0 notes (2026-11-17). ~~3.28 Mirage~~ ended
+> 2026-07-20 but was **made core in 3.30.0** — ex-Mirage block re-scoped. ~~event league Return of the
+> Ancestors~~ **ENDED 2026-07-16** — its event-only mechanics `removed`. Sources: 3.30.0 notes (forum 4013680 /
+> wiki Version_3.30.0); cache `leagues/covens_3.30.md`.
 
 > **Canonical enumeration sources (two complementary views):**
 > - Mechanic-keyed: [`League_mechanics`](https://www.poewiki.net/wiki/League_mechanics) — **every league
@@ -92,42 +92,79 @@ and **Mirage** mechanics (Djinn coins, etc.) from being assumed present in **3.2
 > *only* during Ancestor/Phrecia events — see the `event-only` row below. In normal/core play the standard
 > 19 ascendancies are the only set.
 
-## 3.29 Allflame — challenge-league mechanics (launched 2026-07-24; ❌ ENDED 2026-11-09; core/removed re-scope ⏳ pending 3.30 notes)
-These are the **current live-league** mechanics (the anchor above points here). Kept as their own
-league-scoped block rather than merged into core `Active` — they revert to `removed`/`core` at the 3.30 roll.
-Source: patch notes 2026-07-16 → digest + drill-down ledger in `leagues/Allflame.md`.
-
-| Mechanic | Scope (from 7/24) | Current state | Verify / detail |
-|---|---|---|---|
-| **Allflame seafloor Voyages** (Valerie/The Sovereign/Charts/Ducats) | `challenge-league` (3.29) | The 3.29 league mechanic — underwater exploration + item transformation. ⚠ NOT the 3.24 "Allflame Embers" corpse item — name collision | cache §Mechanic |
-| **Gem socket colour system** | `core` **reworked 3.29** 🔴 | Any gem in any socket; +10% quality on match; white default; Chromatics force one non-white. Old recolour/off-colour intuition = stale for ALL characters incl. Standard | cache §Rule changes #1 (verify exact rules) |
-| **Minion attack pausing** | `core` **removed 3.29** (buff) | Non-spectre minions never pause while attacking — big army-DPS gain | cache §Minion balance |
-| **Spectre life** | `nerfed` 3.29 | Capped ~Meatsack level — spectre-tank archetypes hurt | cache §Minion balance |
-| **Abyss** | `core` **reworked 3.29** | Pits pre-opened, fed with slain souls; new Abyss boss + exclusive uniques | cache §Rule changes #4 |
-| **Legion** | `core` **reworked 3.29** | Crystals of Permutation (Domain) + Enshrouding Crystals (maps) — enshrouded-unique transformation | cache §Rule changes #5 |
-| **Talismans** | `core` **reworked 3.29** | Enchantment mods, uncorrupted by default; red-beast/bestiary sourced; uniques via Black Mórrigan | cache §Rule changes #6 |
-| **Mercenaries of Trarthus** | `core` (cored 3.29; was 3.26 league) | Act 3+; wagered duels; not party members; **Luminary** Scion ascendancy hires permanently | cache §Rule changes #7 |
-| **Triad Grip** | `reworked` 3.29 | Conversion keys off **socketed gem colour** (empty→Chaos), not socket colour | cache §Minion balance |
-| **Atlas Anomalies** (NEW endgame system) | `core` (new 3.29) | Manifest on Atlas after Voidstone maps; no map item, no Atlas-tree effect, no fragments, often revisitable, quadrant-tied. Houses Cadiro shop, Mana Forge, Heist/Sacred-Grove/strongbox variants | cache §Content-reveal → Atlas Anomalies (⚠ verify vs notes Endgame section) |
-| **Nameless Seer + Reflecting Mists** | `reworked` 3.29 (relocated) | **No longer spawn in normal maps** — anomaly-only now. Scrying moved off the Seer to a new tradeable **Scrying Orb** | cache §Content-reveal |
-| **Vestige uniques** (Legion) | `core` (new 3.29) | Transform an enshrouded unique → another of the same slot, keeping a "vestigial implicit" (e.g. Shaper's Touch → Maligaro's Virtuosity). ⚠ **"Vestige" is the reveal-VIDEO's term**; the written notes describe the same mechanic as **"Crystals of Permutation"** and never say "Vestige" (confirmed 0 hits, raw-HTML grep 2026-07-17). Mechanic real + dual-sourced; the *name* + the Shaper's→Maligaro's example are video-only | cache §Content-reveal + §Reconciliations #2 (RESOLVED) |
-
-## Ex-Mirage challenge-league mechanics (❌ league ENDED 2026-07-20 — all `removed`, did NOT go core)
-
-> 🔴 **Mirage ended 2026-07-20 3PM PDT and does NOT go core** (GGG end-of-league post, read 2026-07-16 — see
-> freshness_index.md end-of-league entry). Every row below is now `removed`: it does NOT exist for any live
-> character (Standard or 3.29). Do not recommend any of these to a Standard or 3.29 build. (Astrolabes and the
-> Exceptional Support gems were the *exceptions* that went `core` — they're not league-gated, so not listed here.)
-> If GGG revives any of these in a future league, re-scope it then; don't assume "removed forever."
+## 3.30 Covens of Umbra — challenge-league mechanics (launched 2026-11-13; CURRENT league)
+League-gated: these exist **only for characters in the Covens leagues**, not Standard. Re-scope at the 3.31 roll.
+Source: 3.30.0 notes (forum 4013680) + wiki Wickerman / League_mechanics → cache `leagues/covens_3.30.md`.
 
 | Mechanic | Scope | Current state | Verify / detail |
 |---|---|---|---|
-| **Djinn coins** | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | Free random support on a lvl-20 gem (Power/Skill/Knowledge); dual-form unique swap (Restoration/Desecration). Gone with Mirage. | `leagues/mirage.md` (historical); `[[mirage-djinn-coins]]` |
-| **Mirage sub-zones** | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | Free a Djinn → duplicate-mechanic sub-zone for exclusive drops | `leagues/mirage.md` (historical) |
-| **Essence of Desolation** | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | New essence → slot-specific reforge | `leagues/mirage.md` (historical) |
-| **Screams of the Desiccated** (belt) | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | Shrine-buff-while-flask-free belt | `leagues/mirage.md` (historical) |
-| **Volatile Vaal Orb** | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | Reroll unique mod values OR destroy it | `leagues/mirage.md` (historical) |
-| **Heroic Tragedy** (timeless jewel — Kalguur line) | `removed` (was `challenge-league` Mirage; ended 2026-07-20) | Kalguur conversions (not Karui) | `leagues/mirage.md` (historical) |
+| **Fates** (covenite cauldron rites) | `challenge-league` (3.30) | Kill covenites → pick up to 3 Fates for the area boss (difficulty + reward); repeat copies triple rewards (0b HF3). Grim Fates on pinnacle/uber bosses | cache §League mechanic |
+| **Viscera + Wickerman** | `challenge-league` (3.30) | Fate-empowered bosses drop Viscera (lesser/normal/greater; pinnacle; Coven Queen's Crown); 4 slots on a per-character town Wickerman, stats snapshot per instance. **Not equipped items** (0b HF4). Minion lines incl. +1–2 max Skeletons/Zombies, minion double damage, minions gain % of your res | cache §League mechanic; wiki Wickerman |
+| **The Coven Queen** (boss; key: Cursed Poppet) | `challenge-league` (3.30) | League pinnacle; drops Coven Queen's Crown | cache §League mechanic |
+| **Doedre's Tongue drop source** | `challenge-league` (3.30) for new drops | Now drops **only** from Covens encounters (buffed values; existing copies Divine-able) | cache §League mechanic |
+| **11 new uniques / Mycelium Core / Arcane Link / Fireball of Radiation / Essence of Trickery** | `core`? ⚠verify | Notes add them under "New Content" without saying league-exclusive (gems/essence/jewel base read as core; uniques may be league-drop-only until cored) | cache §New items |
+
+## 3.30 core changes (apply to ALL leagues incl. Standard — new 2026-11-13)
+
+| Mechanic | Scope | Current state | Verify / detail |
+|---|---|---|---|
+| **Threads** (replace Scarabs) | `core` (new 3.30) | 10 types + Frayed Thread; ≤8 per map at the device; the 10 primary mechanics now **only** appear via Threads / Shaped Regions | cache §Core #1 |
+| **Atlas passive tree** | `core` **reworked 3.30** | Centre-start, 150 pts, league clusters rebuilt, 6 keystones removed, Phantom Anomalies added | cache §Core #2 |
+| **Shaped Regions / Astrolabes** | `core` **reworked 3.30** | 10 region types granting free Threads; Astrolabes place one; Templar/Fruiting/Deceptive astrolabes removed | cache §Core #3 |
+| **Item generation (Item Tiers, Atlas Drops, rarity pools)** | `core` **reworked 3.30** | Tiered magic/rare drops; IIQ → Atlas Drops on maps; rarity picks better pools; tier-gated bases | cache §Core #4 |
+| **Mirage** | `core` (cored 3.30) | Tertiary mechanic in maps (+ Act 9 desert/oasis); see ex-Mirage block below | cache §Core #5 |
+| **Soul Cores** (Knowledge/Power/Skill + Finesse/Instability/Intellect/Might) | `core` (new 3.30) | Corrupt a lvl-20 gem → imbue a random support (may be a "bad" one); Temple of Atzoatl / Atziri sources | cache §Core #5–6 |
+| **Atziri in the Temple of Atzoatl / Royal Visage / Twice Corrupted** | `core` **reworked 3.30** | Alluring Abyss + Sacrifice/Mortal fragments gone; Altar of Corruption & Lapidary Lens → Twice Corrupted | cache §Core #6 |
+| **Harvest (Sacred Flora)** | `core` **reworked 3.30** | In-map flora, no Sacred Grove subarea | cache §Core #7 |
+| **Beyond (Demonic Evocator, demonic realms)** | `core` **reworked 3.30** | — | cache §Core #7 |
+| **Gwennen "Take a Chance"** | `core` (replaces gambling) | Pay Astragali + Broken Circle Artifacts for one of 3 crafting-option pairs on a rare | cache §Core #7 |
+| **Delirium Orbs reforge maps** | `core` **reworked 3.30** | Delirious % map mod instead of enchant | cache §Core #7 |
+| **Allflame Embers (3.24 item)** | `core` **reworked 3.30** | Map currency enchantments (not fragments); 3 new | cache §Core #8 |
+| **Divine Vessels** | `core` **reworked 3.30** | Currency → "Deified" maps; stack 20 | cache §Core #8 |
+
+## 3.29 Allflame — ex-challenge-league mechanics (❌ ENDED 2026-11-09; re-scoped 2026-11-17 from the 3.30.0 notes)
+The 3.29 **league mechanic did not go core** (wiki [League_mechanics](https://www.poewiki.net/wiki/League_mechanics):
+"Curse of the Allflame did not go core"; no GGG end-of-league post on this was found — 3.29.3d notes only mark the
+end + migration). The 3.29 *core* changes (sockets, minions, Abyss/Legion/Talisman revamps, mercs, anomalies) stay.
+Source of the original rows: patch notes 2026-07-16 → `leagues/Allflame.md`.
+
+| Mechanic | Scope (post-2026-11-09) | Current state | Verify / detail |
+|---|---|---|---|
+| **Allflame seafloor Voyages** (Valerie/The Sovereign/Charts/Bathysphere) | `removed` (was `challenge-league` 3.29) | Wiki: did not go core. 3.30 notes only mention Sovereign hideout decorations. ⚠ NOT the 3.24 "Allflame Embers" item (that one is core and reworked in 3.30) | wiki League_mechanics; `leagues/Allflame.md` (historical) |
+| **Allflame crafting bench / Dead Man's Sulphur / Ducats** | `removed` (league-gated) — **except Merrick's Ducat** | 3.30 notes: Merrick's Ducat now usable on Abyss jewels "without the need for Allflame Crafting" and has a new source (Abyss×Mercenary synergy, per wiki) → Merrick's Ducat `core`; other Ducats / the bench: `removed?` — notes silent, verify in-game | cache §Allflame crafting (historical) |
+| **Gem socket colour system** | `core` **reworked 3.29** 🔴 | Unchanged by 3.30 apart from a new bench option to set all sockets White (Orb of Scouring) | `leagues/Allflame.md` §Gem sockets |
+| **Minion attack pausing** | `core` **removed 3.29** (buff) | Non-spectre minions never pause while attacking — persists | cache §Minion balance |
+| **Spectre life** | `nerfed` 3.29 (core) | Capped ~Meatsack level — persists | cache §Minion balance |
+| **Abyss** | `core` **reworked 3.29 → again 3.30** | Now a Thread/Shaped-Region-only primary mechanic; Alluring Abyss removed from Atlas | covens cache §Core #1 |
+| **Legion** (Enshrouding Crystals / Crystal of Permutation / Vestigial uniques) | `core` | Persists (wiki League_mechanics lists Enshrouding Crystals + Vestigial uniques as Legion rewards); 3.30 adds **Afarud Enshrouding Crystal** (quivers, from Miraged Legion); Thread-only spawning | cache §Vestigial uniques |
+| **Talismans** | `core` (reworked 3.29) | Obtainable from Bestiary (red) beasts — persists | wiki League_mechanics §Talisman |
+| **Mercenaries of Trarthus + Luminary (Scion)** | `core` | Persists; 3.30 merc nerfs (less late dmg/DR, res penalty by area level) + Luminary Golden Glory halved; Mercenaries now a "secondary" mechanic | covens cache §Balance |
+| **Triad Grip** | `reworked` 3.29 (core) | Socketed-gem-colour conversion — persists | cache §Minion balance |
+| **Atlas Anomalies** | `core` (new 3.29) | Persists; 3.30: Templar Vaults are now anomalies; spawn chance lowered by monsters left alive at boss kill; Phantom Anomalies keystone | covens cache §Core |
+| **Nameless Seer + Reflecting Mists** | `reworked` 3.29 (anomaly-only) | Reflecting Mist now storable in the Currency tab (3.30); anomaly-only status otherwise unchanged ⚠verify | — |
+| **Vestige uniques** (= Vestigial uniques, Legion) | `core` (new 3.29) | See Legion row; "Vestige" was the reveal-video term | cache §Reconciliations #2 |
+| **Pact of X Exceptional gems** (Ghorr/Beidat/K'tash/Lycia) + Coursing Currents / Crystalfall supports | `core`? | 3.30 balances Pact of Beidat + fixes Ghorr's Magnificence → gems still exist. Whether new copies still drop outside the league: notes silent — verify in-game | covens cache §Balance |
+| **3.29 Bloodline classes** (Saresh / Velka / Abyssal selection UI) | `core`? ⚠verify | 3.30 fixes the Saresh/Velka/Abyssal Bloodline selection UI → still selectable; which were league-exclusive: notes silent — verify in-game | `leagues/Allflame.md` |
+| **Pearlescent Amulet** (base) | `removed?` | Notes silent — verify in-game | — |
+| **Craicic Chimeral → Croaker rename** | `core` (permanent rename 3.29) | — | freshness 3.29 row |
+
+## Ex-Mirage mechanics (league ended 2026-07-20 → ✅ **MADE CORE in 3.30.0**, re-scoped 2026-11-17)
+
+> The July end-of-league post said Mirage would NOT go core; **3.30.0 reversed that** ("Mirage as a Core League").
+> Mirage is now a *tertiary* core mechanic. Coins of Restoration/Desecration were deleted; the Knowledge/Power/
+> Skill coins were rethemed as Soul Cores. Re-scope history: `challenge-league` (3.28) → `removed` (2026-07-20)
+> → `core` (3.30.0).
+
+| Mechanic | Scope | Current state | Verify / detail |
+|---|---|---|---|
+| **Mirage sub-zones** | `core` (cored 3.30) | Mirages now cover the whole map (tertiary; can be forced by a rare-map suffix); Black Barya in all leagues (area lvl 84); Saresh fight much harder | covens cache §Core #5 |
+| **Djinn coins — Restoration / Desecration** | `removed` (deleted on login, 3.30) | Dual-form unique swap gone; Djinn wish Sigils re-purposed | covens cache §Core #5 |
+| **Djinn coins — Knowledge / Power / Skill** | `core` as **Soul Cores** (3.30) | Same imbue effect, plus a chance of a "bad" support; sourced from the Temple of Atzoatl | covens cache §Core #5–6 |
+| **Essence of Desolation** | `core` (3.30) | On the Currency Exchange + Essence tab | covens cache §Core #5 |
+| **Screams of the Desiccated** (belt) & Maraketh dual-form uniques | `core` (3.30) | Mirage uniques required for Unique Stash completion; Restored Maraketh uniques drop from Astral monsters / Ridan in Mirages. Screams' shrine buffs no longer work on mercs | covens cache §Core #5 |
+| **Volatile Vaal Orb** | `core`? ⚠verify | 3.30 removes the Beyond-in-Mirage source; other sources not stated | covens cache §Core #5 |
+| **Heroic Tragedy** (timeless jewel — Kalguur line) | `core` (3.30, nerfed) | Drops from Olroth + Peaceful Moments / The Eternal War cards; Starlight Swig / Regenerative Runes / Celestial Mathematics nerfed | covens cache §Core #5 |
+| **Transfusion Support** | `core`, **reworked 3.30** | Obtainable again from Exceptional-support div cards; now grants minion charges per 400 life spent | covens cache §Balance |
 
 ## Event-only mechanics (Return of the Ancestors — ❌ ENDED 2026-07-16, all `removed`)
 > 🔴 **The event ended 2026-07-16 3PM PDT.** Every row below is now `removed` — it does NOT exist for any live
@@ -155,6 +192,22 @@ Source: patch notes 2026-07-16 → digest + drill-down ledger in `leagues/Allfla
 | **Crucible** | `disabled-this-league` | absent in 3.28 Mirage | No furnaces/atlas nodes; existing Crucible weapon mods can't be re-applied |
 | **Runegraft of Recompense** | `reworked`→Refraction | 3.27 | Renamed; effect changed to fork/chain/+1 projectile |
 | **Assassin / Raider** | `reworked` / replaced | 3.27 Assassin rework; 3.25 Warden replaced Raider | Old ascendancy intuition stale |
+| **Scarabs** (incl. Veiled Scarabs, Maven's Chisel of Scarabs, Skittering Delirium Orb) | `removed` → Threads | 3.30 | Auto-converted to Threads / Frayed Threads; chisel + orb renamed to Thread versions |
+| **Random spawning of the 10 primary league mechanics in maps** (Abyss, Bestiary, Betrayal, Breach, Blight, Expedition, Incursion, Legion, Ritual, Ultimatum) | `removed` | 3.30 | Only via Threads / Shaped Regions now. Smuggler's Caches + Sulphite only in marked maps |
+| **Atlas keystones** Crop Rotation, Endless Tide, Lucid Dreams, Meticulous Appraiser, Refiner's Bargain, Synthesised Stability; Delve/Heist atlas clusters; Vaal-side-area atlas stats | `removed` | 3.30 | Atlas tree rebuilt |
+| **Templar / Fruiting / Deceptive Astrolabes** | `removed` | 3.30 | Converted to Cryptic Astrolabe |
+| **Alluring Abyss; Sacrifice & Mortal fragments; Vaal side areas in maps; Vial drops** | `removed` | 3.30 | Atziri moved into the Temple of Atzoatl; Mortal → Royal Visage; existing Vials/Sacrifice fragments inert |
+| **Orb of Binding** | `removed` (unobtainable; existing still work) | 3.30 | Bestiary recipe now makes Orbs of Regret |
+| **Gwennen gambling** | `replaced` → Take a Chance | 3.30 | — |
+| **Yellow-beast capture** (Bestiary) | `removed` | 3.30 | Existing yellow beasts deleted; recipes no longer need them; lures useless |
+| **Harvest Sacred Grove subarea** | `reworked` → in-map Sacred Flora | 3.30 | Tutorial quest removed |
+| **Fragmented Delirium Orb** | `removed` | 3.30 | → Threaded Delirium Orbs |
+| **Item Quantity on monster mods / map mods / IIQ corruption implicit** | `removed` / → "Atlas Drops" | 3.30 | Rarity raised to compensate |
+| **Map corruption "reroll to 8-mod rare"** | `replaced` (+2 mods, max 9) | 3.30 | — |
+| **Operative's Strongboxes; Labyrinth identified-items chests** | `removed` | 3.30 | — |
+| **Memory Threads** | `renamed` → Memory Traces | 3.30 | Avoid confusion with the new Threads |
+| **Divination cards disabled** (Her Mask, Last Hope, Sambodhi's Vow, Buried Treasure, Cameria's Cut, Man With Bear, More is Never Enough, The Card Sharp, The Deal, The Rabbit's Foot, The Silly Boy) | `disabled-this-league` | 3.30 | "Temporarily disabled" per notes |
+| **Harbingers** | `removed` | 3.28 | Per wiki League_mechanics |
 
 ---
 

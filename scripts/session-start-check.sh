@@ -7,13 +7,12 @@ cd "$(dirname "$0")/.." 2>/dev/null || exit 0
 
 # ── League anchors — rolled by the league-transition playbook (Step 7.4) ────
 # Challenge league (the one POE_LEAGUE tracks) and the next one to launch.
-# STATE 2026-11-10: Allflame ENDED 2026-11-09 1:00 PM PST; POE_LEAGUE=Standard
-# (league-transition run 2026-11-10). 3.30 "Covens of Umbra" launches 2026-11-13.
-# Check 4 is silent while POE_LEAGUE=Standard. When a character is started in
-# Covens: set POE_LEAGUE to its TRADE-API name (verify with get_active_leagues at
-# launch -- it may not be the full "Covens of Umbra" title) and fix TEMP_LEAGUE to
-# match, then set LEAGUE_END once GGG announces it. NEXT_* = the league after.
-TEMP_LEAGUE="${POE_TEMP_LEAGUE:-Covens of Umbra}"
+# STATE 2026-11-17: 3.30 Covens of Umbra LIVE since 2026-11-13 (trade-API name
+# "Covens", verified via get_active_leagues). POE_LEAGUE=Standard (main character
+# migrated from Allflame) -- check 4 is silent while POE_LEAGUE=Standard. If a
+# Covens character is started: set POE_LEAGUE="Covens". LEAGUE_END and NEXT_* are
+# unannounced as of 2026-11-17 -- fill in when GGG posts them.
+TEMP_LEAGUE="${POE_TEMP_LEAGUE:-Covens}"
 LEAGUE_END="${POE_LEAGUE_END:-}"
 NEXT_LEAGUE_START="${POE_NEXT_LEAGUE_START:-}"
 NEXT_LEAGUE_NAME="${POE_NEXT_LEAGUE_NAME:-3.31 (TBA)}"
