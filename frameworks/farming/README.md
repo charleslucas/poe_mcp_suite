@@ -1,4 +1,4 @@
-> **Canonical home:** `poe_mcp_suite/frameworks/` (public). Instance data is patch-stamped (3.29) — re-verify after any league/patch change. `local library:` references point into the maintainer's private guide library (character data + digested third-party guides, not distributed); treat them as worked-example citations, not links.
+> **Canonical home:** `poe_mcp_suite/frameworks/` (public). Instance data is patch-stamped (3.29, with a 3.30 desk re-stamp in §2b) — re-verify after any league/patch change. `local library:` references point into the maintainer's private guide library (character data + digested third-party guides, not distributed); treat them as worked-example citations, not links.
 
 # Meta-Farming Guides — strategy roster
 
@@ -48,7 +48,42 @@ league's nautical/seafloor mechanic, Reliquarian, and Mercenaries of Trarthus (�
 conversion gear — merc item farming may be quietly profitable given that tech's visibility) are all
 unsurveyed as money-makers. ◐ Queue item.
 
+## 2b. 3.30 re-stamp — desk triage from the patch notes (2026-11-17, league day 4)
+
+**Every 3.29 verdict above has expired.** This is the transition sweep's triage (`playbooks/league-transition.md`
+→ frameworks re-stamp): each entry re-derived from *(the 3.29 evidence) × (what 3.30 changed)* — **no 3.30
+play data or survey yet**. Per convention, all farming entries are at best `experimental` at a league roll
+(fresh economy); `dormant` = an enabler the strategy depends on was removed. Source of every "3.30 changed":
+[`reference_data/leagues/covens_3.30.md`](../../reference_data/leagues/covens_3.30.md) → Core changes.
+
+**The 3.30 shape change that hits everything:** scarabs are gone (→ **Threads**, up to 8 per map), the ten
+"primary" mechanics (Abyss, Bestiary, Betrayal, Blight, Breach, Expedition, Incursion, Legion, Ritual,
+Ultimatum) **no longer spawn randomly in maps** — only via Threads or Shaped Regions; the atlas tree was
+rebuilt (150 points, six keystones removed); item quantity is largely gone from map mods (→ "Atlas Drops");
+monster rarity now selects better drop pools. "Juicing" means something different in 3.30.
+
+| Strategy | 3.30 status | Why |
+|---|---|---|
+| 8-mod Harvest / Fruiting Astrolabe rushing | ⛔ **dormant (as written)** | Its enablers are removed: **Fruiting Astrolabe removed**, **Synthesised Stability removed**, scarabs (Doubling, Monstrous Lineage) removed, Sacrificial Fragments removed, Harvest reworked (Sacred Flora in-map, no Grove), IIQ map juice gone. Harvest itself survives — a Thread/Shaped-Region Harvest farm is a *new* strategy to survey, not this one. |
+| 5× Diviner's Delirium | experimental | **Delirium Orbs reworked** (now reforge maps, "Delirious %"); Beyond reworked; IIQ gone. Mechanism of the 3.29 farm no longer exists as such. |
+| Altar + Strongbox speed farm | experimental | Altar/strongbox mechanics not named in the notes, but quant removal + rarity drop-pool rework change the payout math. |
+| Low-tier Essence | experimental — **predicted early-league OK** | Phase-locked "recommended early-week" in 3.29; essence mechanic untouched (new Essence of Trickery). The cyclical pattern predicts it works again now. |
+| Juiced Essence | experimental | Its juice was scarabs → gone. The tankiness verdict (essence monsters) is unverified for 3.30. |
+| Blight | experimental | Now **Thread-only** (no random spawns); towers/oils unchanged as far as the notes say. Fit for tanky builds should carry over; access cost is new. |
+| Expedition | experimental | **Thread-only**. Same fit logic as Blight. |
+| Ritual | experimental | **Thread-only**. |
+| Pinnacle boss farming | experimental | **Atziri moved into the Temple of Atzoatl** (Sacrifice/Mortal fragments removed; Uber Atziri via Cradle-of-Creation temples); Covens' Grim Fates add pinnacle Viscera (league-only); quant changes. |
+| Allflame league mechanics (seafloor/Voyages, charts) | ⛔ **dead** | Did not go core (mechanics_index). Mercenaries **are** core (nerfed); Reliquarian core (roster reshuffled). |
+| BawLoch 3.29 tier list (§ledger 2026-08-05) | historical | Voyage / Ethereal Allflame scarab farms dead; scarab-based setups throughout. ⚠ It rated Mirage-specific farms C/DEAD as a *prior-league* mechanic — **Mirage went core in 3.30**, so that cross-league decay may reverse. |
+
+**Next step (not done):** community survey of what's actually working in 3.30 — Thread-based farms, Covens
+Fates, and Mirage-in-maps — once there's a week of play data. Prices via `currency_overview` at session time.
+
 ## 3. Build-fit: our Block SRS Necromancer (L91, 57.8k EHP, ~0.7-1M DPS, moderate speed)
+
+> ⓘ 3.30: the character lives in Standard. The fit *logic* below (tanky → Blight/Expedition/Ritual) should
+> carry over, but those mechanics now need Threads, and the worked example's atlas loadout predates the
+> 3.30 atlas-tree rebuild — **re-plan via an `atlas-planning` session** before using it.
 
 | Fit | Strategies |
 |---|---|
@@ -158,7 +193,18 @@ Shaped Region" with no mechanic) — likely special; unresolved what its region 
 - 🔧 New lake source: `currency.txt` (851 currency items + descriptions) via poewiki **Cargo API**
   (`scripts/fetch_currency_wiki.py`, cache-then-generate). The wiki IS 3.29-populated now.
 
+### 2026-11-17 — 3.30 league roll: desk triage (no survey)
+- All 3.29 verdicts expired; §2b re-stamps each entry from the 3.30 notes. One ⛔ dormant (8-mod Harvest /
+  Fruiting Astrolabe — enablers removed), Allflame mechanics dead, everything else experimental.
+- Queue items closed by the patch, not by verification: scarab-name checks (scarabs removed), Allflame
+  league-mechanic profitability (league over, mechanic not cored), astrolabe bisection/vault rules (Fruiting,
+  Templar, Deceptive astrolabes removed; Astrolabes now place a Shaped Region — new system).
+- New questions: what Thread juicing looks like; whether Mirage-in-maps is a money-maker now that it's core.
+
 ### Verification queue
+- [ ] **3.30 survey** (week 1–2): Thread-based farms, Covens Fates, Mirage-in-maps, early Essence — re-prove §2b
+- [ ] **3.30 atlas plan** for the maintainer: the Abyss + Harvest loadout predates the atlas-tree rebuild
+- (3.29 items below are kept for history; the scarab, Allflame and astrolabe ones were closed by 3.30 — see ledger)
 - [ ] ◐ scarab names (Harvest Scarab of Doubling, Influencing/Monstrous Lineage/Mania) — **no scarab data in
   the text lake** (known gap); verify via wiki/trade before buying sets
 - [ ] ◐ "3.29 removed synthesized implicits from Ritual" and "3.29 essence monsters giga-tanky" — check

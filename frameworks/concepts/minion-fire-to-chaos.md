@@ -74,6 +74,12 @@ not a standard craftable). Best modern form = Poison SRS, not skeletons. **Next 
 merc Infamous mod at 3.29 launch; if present, it's a legit chaos-SRS variant. Otherwise it's Phrecia/merc-event
 -locked.
 
+**3.30 re-stamp (2026-11-17, desk triage):** carried. The enabler is still in PoB 2.68.1's 3.30 data as
+`MercenaryModMinionFireConvertToChaos` (prefix, "Infamous": *Minions convert 100% of Fire Damage to Chaos
+Damage*, `Data/ModMercenary.lua`), and Mercenaries remain core in 3.30 (nerfed in combat, not removed). The
+notes don't touch SRS or Necromancer. ⚠ The text lake does **not** index `ModMercenary.lua`, so a lake grep
+for this mod finds nothing — grep the PoB data file directly until the lake covers it.
+
 ## Lake-tooling payoff (why this concept mattered beyond the build)
 
 This investigation drove the **mods.txt** addition to the text lake (2026-07-19): the fire→chaos enabler and

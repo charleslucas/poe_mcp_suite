@@ -1,4 +1,4 @@
-> **Canonical home:** `poe_mcp_suite/frameworks/` (public). Instance data is patch-stamped (3.29) — re-verify after any league/patch change. `local library:` references point into the maintainer's private guide library (character data + digested third-party guides, not distributed); treat them as worked-example citations, not links.
+> **Canonical home:** `poe_mcp_suite/frameworks/` (public). Instance data is patch-stamped (3.29, with a 3.30 desk re-stamp under §2) — re-verify after any league/patch change. `local library:` references point into the maintainer's private guide library (character data + digested third-party guides, not distributed); treat them as worked-example citations, not links.
 
 # Style Template: MINIONS
 
@@ -59,6 +59,34 @@ Pick one from each row; the combination largely determines the archetype.
 | **Zoomancer** | "zoo build", "minion army", "walking simulator" | ◐ "Zoo" = **many minion types at once** (70+ active) + zooming mobility. Dominant 3.29 variant: **Chaos Poison Zoomancer** on The Covenant + Ghastly Eyes — the same core our live character runs. Components: Carrion Golem *of the Hordes* (more phys per nearby non-golem — wants a crowd), zombies, Vaal Skeletons on demand, buff spectres (charge-generators), AG with ◐ Asenath's Gentle Touch (curse-explode clear). Creators: GhazzyTV (poe-vault), HelmBreaker (pobarchives) |
 
 | **Golem armies** (Elementalist) | "Golemancer", "golem-stacker" | ◐ Pure minion golems: B-tier chill mapping. The S-tier form is **golems as a BUFF SHELL** — 10+ auto-reviving golems (Liege of the Primordial) scaling the *player's* damage/defence via stacked **Primordial Bond** clusters (◐ ~10% dmg per golem) under Phys-DoT/ignite self-cast builds. Count via Anima Stone, Primordial Chain, Dark Monarch (exclusivity acceptable in a golem-only shell). ⓘ "Minions as player-buffs" is a **tech** — candidate `_concepts/` entry |
+
+### 3.30 re-stamp — desk triage from the patch notes (2026-11-17, league day 4)
+The verdicts above are 3.29 stamps and expired at the league roll. Triage per `playbooks/league-transition.md`:
+**carried** = the notes are silent on its enablers and they still exist in PoB 2.68.1's 3.30 data (all
+existence-checked in the text lake 2026-11-17) — the old evidence transfers provisionally; **experimental** = 3.30
+touched a mechanic it depends on. No 3.30 play data or survey yet. Source: `reference_data/leagues/covens_3.30.md`.
+
+- **Necromancer is unchanged in 3.30** (Ruthless-only changes don't apply), and there are no SRS, spectre,
+  zombie, skeleton or Holy Relic skill changes in the notes.
+- **Carried:** Poison SRS · Block SRS (live character, Standard) · pRAW (Bladefall of Trarthus exists) · Holy Relic
+  (the Gladiator variant's changes are Ruthless-only) · Turtle spectres (Guardian Turtle still in the spectre
+  roster) · SRS/Absolution leveling · Popcorn SRS · Soulwrest · Spectre army (Congregation exists) · Dominating
+  Blow · Herald of Agony crawler · Arakaali's Fang · Skeleton mages · Zoomancer.
+- **Experimental:** **Golem armies** — 3.30 nerfed Flame/Lightning/Stone Golem buffs ~20% (the buff-shell form
+  depends on them) · **Luminary merc summoner** — Golden Glory halved, Mercenaries nerfed (less attack damage
+  and DR at high level, −30%/−60% res penalty by area level) · **Chains of Command / any Animate Guardian in
+  eldritch gear** — 3.30 fixed a bug that kept "while a Unique/Pinnacle is in your Presence" mods always on for
+  minions, so AG's eldritch presence bonuses now need a unique/pinnacle nearby · **Zoomancer** builds using
+  **Transfusion** — reworked (charges per 400 life spent instead of souls; no longer supports instant spells).
+- **New 3.30 options worth evaluating** (none surveyed yet):
+  - **Unwilling Embrace** (ring) — minions deal 20–35% increased damage, minion ele res, minions gain your spell
+    suppression (they lose armour and ES).
+  - **Femurs of the Saints** rework — +2–3 minion gems, 80–100% minion damage, up to 4 rolled mods keyed to
+    minion type (per spectre / skeleton / zombie / Raging Spirit). Old copies need a Divine.
+  - **Bone Helmet** atlas implicit buffed to 20–30% minion damage.
+  - **Reliquarian: United in Dream** — Level 25 Envy + minions have 60% chance to poison on hit.
+  - **Covens league only:** Viscera with **+1 max Spectres** (Nightmarish Wings of Catarina), +1–2 max
+    Skeletons / Raised Zombies, minion double damage, minions gain a share of your resistances.
 
 ---
 
@@ -386,7 +414,18 @@ watch: ◐ Renewal, Feasting Fiends, Vicious Bite, Blessed Rebirth; ✅ Enduring
   scale the player). One garbled league name in the response ("Curse of the Old Flame") — standard synthesis
   noise, ignored.
 
+### 2026-11-17 — 3.30 league roll: desk triage (no survey)
+- Re-stamped §2 from the 3.30 notes (see "3.30 re-stamp" under the roster): 14 archetypes carried, 4
+  experimental (golem buff nerf, Luminary/merc nerfs, AG eldritch-presence bug fix, Transfusion rework).
+- Existence gate: every enabler named in §2 (Guardian Turtle, Congregation, Bladefall of Trarthus, Primordial
+  Bond, Liege of the Primordial, The Covenant, Infernal Legion, Soulwrest, Arakaali's Fang, The Squire,
+  Asenath's Gentle Touch, Summon Skeletons of Mages, Darkness Enthroned, …) found in the 3_30 text lake.
+- New-option list (Unwilling Embrace, Femurs rework, Bone Helmet buff, Reliquarian United in Dream, Covens
+  Viscera) recorded; none surveyed.
+
 ### Verification queue
+- [ ] **3.30 survey** (week 1–2): which minion archetypes the community is actually starting; re-prove the
+  "carried" verdicts; evaluate Unwilling Embrace / Femurs / United in Dream in PoB on a minion build
 - [ ] Gladiator Holy Relic variant — digest a guide (`guide-analysis`) before crediting
 - [ ] Popcorn SRS + Soulwrest + Chains of Command — candidate `guide-analysis` targets to fill roster gaps
 - [x] Congregation Support price: ✅ **~9 div minimum on trade** (user-checked 2026-08-04) — Exceptional gems
