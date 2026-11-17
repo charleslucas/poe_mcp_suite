@@ -10,7 +10,7 @@ cd "$(dirname "$0")/.." 2>/dev/null || exit 0
 # STATE 2026-11-17: 3.30 Covens of Umbra LIVE since 2026-11-13 (trade-API name
 # "Covens", verified via get_active_leagues). POE_LEAGUE=Covens (set 2026-11-17;
 # Allflame characters live in Standard). Check 4 stays silent until LEAGUE_END is
-# set -- fill it (and NEXT_*) when GGG announces them; dates# unannounced as of 2026-11-17.
+# set -- fill it (and NEXT_*) when GGG announces them (unannounced as of 2026-11-17).
 TEMP_LEAGUE="${POE_TEMP_LEAGUE:-Covens}"
 LEAGUE_END="${POE_LEAGUE_END:-}"
 NEXT_LEAGUE_START="${POE_NEXT_LEAGUE_START:-}"
