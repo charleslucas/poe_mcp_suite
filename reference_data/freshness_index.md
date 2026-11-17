@@ -58,7 +58,7 @@ and wrongly.
 | **Fable 5** (`claude-fable-5`) | **3.26** reliable; **3.27** nominal-but-thin | Jan 2026 | Calibrated 2026-07-08 by in-session self-probe (contamination-aware: tested for detail *beyond* the loaded caches, not mere recognition). Deep 3.25–3.26 (produced Faustus currency exchange, merc subdue→recruit — absent from our caches); **zero independent 3.27 detail → verify-first**; blind 3.28+. Only current model with training knowledge of the original **Feb-2025 Legacy of Phrecia event** (Idols; the 19 alt ascendancies, low per-node detail). PoE recency ≈ Opus 4.8 — its edge is reasoning, not fresher game data. **Subscription access ends 2026-07-12** (an earlier "retired 2026-07-07" note here was wrong — user confirmed live access 2026-07-08). |
 
 > **Current league is 3.30 Covens of Umbra** (launched **2026-11-13** PST; trade-API name `Covens`; end date
-> not yet announced). ⚠ **The user's main character is in Standard** (POE_LEAGUE = Standard) — Covens
+> not yet announced). POE_LEAGUE = `Covens` (set 2026-11-17); ⚠ **the Allflame characters (Wednesday, Agnes) live in Standard** — Covens
 > `challenge-league` mechanics (Fates / Viscera / Wickerman) don't apply there, but the **3.30 core changes do**
 > (Threads replace scarabs, atlas-tree + loot rework, Mirage cored) — see the 3.30 section below + cache
 > `leagues/covens_3.30.md`. 3.30 is past EVERY model's cutoff → always verify.
