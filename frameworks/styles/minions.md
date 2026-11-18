@@ -94,7 +94,9 @@ touched a mechanic it depends on. No 3.30 play data or survey yet. Source: `refe
 
 ### 3a. Minion gem levels (✅ the cheapest damage in the game)
 Stack `+N to Level of (all) Minion Skill Gems`: wand/sceptre, helmet (+2 tier exists on rares), shield
-(+1), Necromancer's **Unnatural Strength** (+2). ✅ Worked example: Raise Spectre 21 gem read 26 effective
+(+1). ⛔ **Correction (2026-11-17):** Necromancer's **Unnatural Strength** is NOT +2 minion gem levels — in
+every tree from 3_25 through 3_30 it reads *"Minions have Unholy Might"* (100% phys→chaos, wither on hit). The
+earlier "+2" here was an old-patch memory that no tree we have supports. ✅ Worked example: Raise Spectre 21 gem read 26 effective
 (3-spectre breakpoint at gem 25; spectre counts live in the gem's level table, `get_gem_detail`).
 
 ### 3b. Darkness Enthroned + Ghastly Eyes (✅)
@@ -388,9 +390,11 @@ watch: ◐ Renewal, Feasting Fiends, Vicious Bite, Blessed Rebirth; ✅ Enduring
   ("bladefall") before ruling a name a synthesis artifact.** AI-synthesized sources garble proper nouns
   routinely; the first verdict here was a false ⛔.
 - **Known-wrong claims caught**: "United in Dream grants Unholy Might" (✅ our owned copy granted **Envy**
-  L25 + 60% poison chance + minion chaos res); "SRS last ~30 seconds" (base is 5s); "Unnatural Strength =
-  100% phys-to-chaos conversion" (it's +2 minion gem levels) — cross-version/synthesis blending, standard
-  for this source.
+  L25 + 60% poison chance + minion chaos res); "SRS last ~30 seconds" (base is 5s); ~~"Unnatural Strength =
+  100% phys-to-chaos conversion" (it's +2 minion gem levels)~~ — ⛔ **this "catch" was itself wrong**
+  (2026-11-17): the survey was RIGHT. Unnatural Strength = *Minions have Unholy Might* (phys→chaos) in every
+  tree 3_25–3_30; the "+2 gem levels" rebuttal came from memory and was never checked against tree data.
+  Lesson: verify the rebuttal, not just the claim. The other two catches stand.
 - One query-2 source was **r/pathofexile2builds (PoE2)** and another was a 2019 compendium — leveling-staple
   claims are old-but-stable items, kept at ◐.
 
