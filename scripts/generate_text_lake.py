@@ -723,6 +723,9 @@ MOD_FILES = [
     "BeastCraft",      # beastcrafting (Aspect suffixes etc.) — core; Bestiary reworked 3.29
     "ModNecropolis",   # Necropolis (3.24) — verify scope before recommending
     "ModJewelCharm",   # charms — verify scope before recommending
+    # Added 2026-11-18. Infamous mercenary-warrant mods, e.g. "Minions convert 100% of
+    # Fire Damage to Chaos Damage" — a lake sweep for that mod found nothing before this.
+    "ModMercenary",
 ]
 
 
@@ -839,13 +842,13 @@ conclusion on these topics as unreliable): `Data/Bases/*.lua` → **bases.txt**;
 **spectres.txt**; `Enchantment*.lua` → **enchants.txt**; `Pantheons.lua` → **pantheon.txt**;
 `Essence.lua` → **essences.txt**; `ModMap.lua` → **mapmods.txt**; `ClusterJewels.lua` →
 **clusters.txt**; `ModFlask`, `ModJewelCluster`, `ModGraft`, `BeastCraft`, `ModNecropolis`,
-`ModJewelCharm` → folded into **mods.txt**.
+`ModJewelCharm` → folded into **mods.txt**. `ModMercenary` joined them 2026-11-18.
 
 **Scope handling for league pools:** mods.txt's first column is the SOURCE, which doubles as the
 scope marker. ⚠ It is the file name with the `Mod` prefix STRIPPED — grep `^Necropolis`, not
 `^ModNecropolis`. Current values: Explicit, Eldritch, Synthesis, Scourge, JewelCluster, Jewel,
 Foulborn, JewelAbyss, Master, Corrupted, Veiled, Graft, Delve, JewelCharm, Flask, Necropolis,
-Tincture, BeastCraft. A `Necropolis` or `Scourge` row is self-labelling as league content. Dead
+Tincture, BeastCraft, Mercenary. A `Necropolis` or `Scourge` row is self-labelling as league content. Dead
 leagues are therefore *included and labelled* rather than suppressed, so a sweep still surfaces them
 (useful history / Standard characters) while making their provenance obvious. **Always scope-check a
 league-pool hit against `reference_data/mechanics_index.md` before recommending it.** The two pools

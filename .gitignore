@@ -57,3 +57,7 @@ data-extraction-cache/
 *.bundle.bin
 *.datc64
 poe-schema.json
+
+# Local tool output
+__pycache__/
+.playwright-mcp/
