@@ -108,9 +108,9 @@ are **core** changes → they apply to **Standard** characters too; only the fir
 
 | Mechanic / item / system | What it is (one line) | Where / verify via |
 |---|---|---|
-| **League mechanic: Fates** (`challenge-league`) | Kill covenites at cauldrons → pick up to 3 **Fates** for the area boss (harder + richer); repeat copies triple rewards | cache §League mechanic |
+| **League mechanic: Fates** (`challenge-league`) | Kill covenites at cauldrons → pick up to 3 **Fates** for the area boss (harder + richer); repeat copies triple rewards. 0c (11-18): empowerment damage reduced, matching-Viscera drops guaranteed for Savage/Pestilent/Sadist bosses | cache §League mechanic |
 | **Viscera + Wickerman** (`challenge-league`) | Fate-empowered bosses drop **Viscera**; 4 slots (head/torso/upper/lower limb) on a per-character town **Wickerman** grant stats; Grim Fates → pinnacle Viscera; Coven Queen's Crown. **Not "equipped items"** (0b HF4). Minion lines incl. +1–2 max Skeletons/Zombies | cache §League mechanic; wiki Wickerman |
-| **🔴 SCARABS REMOVED → Threads** | 10 Thread types + Frayed Thread, ≤8 per map via map device; the 10 "primary" league mechanics **no longer spawn randomly** in maps. Any scarab-based farming advice is stale | cache §Core #1 |
+| **🔴 SCARABS REMOVED → Threads** | 10 Thread types + Frayed Thread, ≤8 per map via map device (0c: bonus stats at 3/6/8 Threads, more guaranteed mods); the 10 "primary" league mechanics **no longer spawn randomly** in maps. Any scarab-based farming advice is stale | cache §Core #1 |
 | **🔴 Atlas passive tree rebuilt** | Starts at centre, 150 points; 6 keystones removed (Crop Rotation, Endless Tide, Lucid Dreams, Meticulous Appraiser, Refiner's Bargain, Synthesised Stability); Delve/Heist clusters gone | cache §Core #2 — tree data must be re-pulled |
 | **Shaped Regions / Astrolabes reworked** | 10 region types granting free Threads; Astrolabes place a region; 3 astrolabe types removed | cache §Core #3 |
 | **🔴 Loot / item-generation rework** | Rarity selects better drop pools; IIQ largely removed (maps: IIQ → **"Atlas Drops"**); **Item Tiers 2–5** on magic/rare drops; tier-gated bases (Stygian Vise etc.); MTR rework; fewer fractured sources | cache §Core #4 |

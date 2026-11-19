@@ -98,8 +98,8 @@ Source: 3.30.0 notes (forum 4013680) + wiki Wickerman / League_mechanics → cac
 
 | Mechanic | Scope | Current state | Verify / detail |
 |---|---|---|---|
-| **Fates** (covenite cauldron rites) | `challenge-league` (3.30) | Kill covenites → pick up to 3 Fates for the area boss (difficulty + reward); repeat copies triple rewards (0b HF3). Grim Fates on pinnacle/uber bosses | cache §League mechanic |
-| **Viscera + Wickerman** | `challenge-league` (3.30) | Fate-empowered bosses drop Viscera (lesser/normal/greater; pinnacle; Coven Queen's Crown); 4 slots on a per-character town Wickerman, stats snapshot per instance. **Not equipped items** (0b HF4). Minion lines incl. +1–2 max Skeletons/Zombies, minion double damage, minions gain % of your res | cache §League mechanic; wiki Wickerman |
+| **Fates** (covenite cauldron rites) | `challenge-league` (3.30) | Kill covenites → pick up to 3 Fates for the area boss (difficulty + reward); repeat copies triple rewards (0b HF3). Grim Fates on pinnacle/uber bosses. 0c: empowerment damage reduced; Savage/Pestilent/Sadist extra bosses always drop their Viscera; new high-tier chase rewards | cache §League mechanic |
+| **Viscera + Wickerman** | `challenge-league` (3.30) | Fate-empowered bosses drop Viscera (lesser/normal/greater; pinnacle; Coven Queen's Crown); 4 slots on a per-character town Wickerman, stats snapshot per instance. **Not equipped items** (0b HF4). Stash-tab affinity + vendor recipe (0c). Minion lines incl. +1–2 max Skeletons/Zombies, minion double damage, minions gain % of your res | cache §League mechanic; wiki Wickerman |
 | **The Coven Queen** (boss; key: Cursed Poppet) | `challenge-league` (3.30) | League pinnacle; drops Coven Queen's Crown | cache §League mechanic |
 | **Doedre's Tongue drop source** | `challenge-league` (3.30) for new drops | Now drops **only** from Covens encounters (buffed values; existing copies Divine-able) | cache §League mechanic |
 | **11 new uniques / Mycelium Core / Arcane Link / Fireball of Radiation / Essence of Trickery** | `core`? ⚠verify | Notes add them under "New Content" without saying league-exclusive (gems/essence/jewel base read as core; uniques may be league-drop-only until cored) | cache §New items |
@@ -108,7 +108,7 @@ Source: 3.30.0 notes (forum 4013680) + wiki Wickerman / League_mechanics → cac
 
 | Mechanic | Scope | Current state | Verify / detail |
 |---|---|---|---|
-| **Threads** (replace Scarabs) | `core` (new 3.30) | 10 types + Frayed Thread; ≤8 per map at the device; the 10 primary mechanics now **only** appear via Threads / Shaped Regions | cache §Core #1 |
+| **Threads** (replace Scarabs) | `core` (new 3.30) | 10 types + Frayed Thread; ≤8 per map at the device; the 10 primary mechanics now **only** appear via Threads / Shaped Regions. 0c: per-league bonus stat at 3/6/8 Threads; guaranteed Thread mods 1/2/3 at 1–3/4–7/8+ Threads; Thread vendor recipe | cache §Core #1 |
 | **Atlas passive tree** | `core` **reworked 3.30** | Centre-start, 150 pts, league clusters rebuilt, 6 keystones removed, Phantom Anomalies added | cache §Core #2 |
 | **Shaped Regions / Astrolabes** | `core` **reworked 3.30** | 10 region types granting free Threads; Astrolabes place one; Templar/Fruiting/Deceptive astrolabes removed | cache §Core #3 |
 | **Item generation (Item Tiers, Atlas Drops, rarity pools)** | `core` **reworked 3.30** | Tiered magic/rare drops; IIQ → Atlas Drops on maps; rarity picks better pools; tier-gated bases | cache §Core #4 |
