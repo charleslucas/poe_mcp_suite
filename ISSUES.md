@@ -108,6 +108,23 @@ GGG has shut down the legacy `character-window/get-stash-items` endpoint for sta
 
 ---
 
+## Resolved — PoB loadouts / mixed set state (2026-11-19)
+
+PoB has no loadout object: `buildMode:SyncLoadouts()` (`Modules/Build.lua`) builds the dropdown from tree
+specs, item sets, skill sets and config sets that share a title (a family with one set is a wildcard;
+`{id}` in a title links sets by id). Switching only the tree and gear (`select_spec` + `select_item_set`)
+left another loadout's gems and config active, and PoB happily computed plausible stats for the mix
+(reported by a community fork: Chaos −52 with capped elemental resists).
+
+**Fixed** by `list_loadouts` / `select_loadout` plus `list/select_skill_set` and `list/select_config_set`
+(adopted from that fork, with review fixes): selection goes through the listed loadout rows, set matching
+is exact like PoB's, incomplete loadouts are refused unless `allowPartial`, and colour codes are stripped.
+Also fixed: `select_spec` now calls `SetActiveSpec`, so each spec's own jewels are socketed (it used to keep
+the previous spec's jewels). Tests: `PathOfBuilding/src/API/tests/loadouts_test.lua`,
+`pob-mcp/tests/unit/loadoutHandlers.test.ts`; live-tested on the `_loadout-test` builds.
+
+---
+
 ## Open — data persistence
 
 ### Hand-curated knowledge in gitignored caches doesn't survive a fresh clone

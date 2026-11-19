@@ -125,12 +125,15 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 | `search_cluster_jewels` | pob |
 | `analyze_build_cluster_jewels` | pob |
 
-## 👁 Specs & Item Sets
+## 👁 Specs, Item Sets & Loadouts
 
 | Tool | Server |
 |------|--------|
 | `list_specs` / `select_spec` / `create_spec` / `delete_spec` / `rename_spec` | pob |
 | `list_item_sets` / `select_item_set` / `create_item_set` | pob |
+| `list_skill_sets` / `select_skill_set` | pob |
+| `list_config_sets` / `select_config_set` | pob |
+| `list_loadouts` / `select_loadout` | pob |
 
 ## ⚔️ Gems & Skill Links
 
@@ -175,7 +178,7 @@ Live data downloaded from craftofexile.com and cached locally. Tools return curr
 | `update_craftofexile_cache` | poe-data-mcp |
 | `search_craft_mods` | poe-data-mcp |
 | `get_craft_base_items` | poe-data-mcp |
-| `get_craft_tiers` | poe-data-mcp |
+| `get_craft_tiers` (Share column = tier's chance among same-affix base mods at an item level) | poe-data-mcp |
 | `get_fossil_info` | poe-data-mcp |
 | `get_essence_mods` | poe-data-mcp |
 
@@ -206,10 +209,11 @@ Live data downloaded from craftofexile.com and cached locally. Tools return curr
 | `find_arbitrage` / `calculate_trading_profit` | pob |
 | `ninja_lookup` | poe |
 | `currency_overview` | poe-data-mcp |
+| `search_items` / `get_price` / `get_price_history` / `get_risers` / `get_fallers` / `get_movers` / `snapshot_status` — local price history; collect snapshots with `poe-trade-mcp/trend_watcher.py` | poe |
 
 ## 📜 Stash & Character API
 
-> ⚠️ **`list_tabs`, `get_tab`, `scan_stash_tabs`, `find_items` are currently blocked** — GGG disabled the legacy character-window stash endpoint. `score_rare` and `price_tab` (cache-read-only) still work. See [`playbooks/stash-scanning.md`](playbooks/stash-scanning.md) for alternatives including WealthyExile.
+> ⚠️ **`list_tabs`, `get_tab`, `scan_stash_tabs`, `find_items` use an undocumented endpoint** that works again as of 2026-11-18 but may be withdrawn. They take an optional `league` (default `POE_LEAGUE`). See [`playbooks/stash-scanning.md`](playbooks/stash-scanning.md) for 403/404 meanings and alternatives.
 
 | Tool | Server |
 |------|--------|

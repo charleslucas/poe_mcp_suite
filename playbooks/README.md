@@ -151,6 +151,13 @@ When sources conflict:
 For **prices/economy** specifically, this list doesn't apply: poe.ninja and the trade API are the only
 acceptable sources; training data is never usable for prices at any confidence.
 
+**"Live PoB TCP" means a consistent loadout, not merely a loaded file.** PoB derives loadouts from
+matching titles across the tree spec, item set, skill set and config set. A mixed selection still
+renders a full, plausible stat block (a real case: Chaos −52 alongside 75/75/75 elemental resists).
+On any build with more than one set in a family, call `list_loadouts` before trusting a PoB number and
+switch with `select_loadout` (it refuses incomplete loadouts unless `allowPartial` is passed). See
+[`ISSUES.md`](../ISSUES.md) → "Resolved — PoB loadouts".
+
 ---
 
 ## 6. Sub-agents
