@@ -80,7 +80,7 @@ If 1.2 shows ⚠ but the user hasn't decided to migrate yet (e.g., they're still
 
 ## Step 2 — Update env var
 
-Edit `.mcp.json` and replace `POE_LEAGUE` with the parent league name. Use the value from `get_active_leagues` rather than guessing — GGG's naming for HC/SSF variants has shifted across patches.
+Edit `.mcp.json` and replace `POE_LEAGUE` with the parent league name, in **every** server that sets it (`poe-trade-mcp`, `pob`, `poe-data-mcp`). Use the value from `get_active_leagues` rather than guessing — GGG's naming for HC/SSF variants has shifted across patches.
 
 ```jsonc
 "env": {

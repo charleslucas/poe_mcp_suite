@@ -365,6 +365,8 @@ Same JSON block in:
 | `POE_TRADE_ENABLED` | Trade tools | `"true"` to enable trade/price tools |
 | `POE_SESSION_ID` | Private profiles | Your `POESESSID` cookie — **treat like a password, never commit** |
 | `POE_ACCOUNT_NAME` | No | Default PoE account name with discriminator (e.g. `Account#1234`) |
+| `POE_CONTACT_EMAIL` | Recommended | Real contact address; goes into the `User-Agent` as GGG's API policy requires. Without it the client still runs but cannot be reached before a throttle/block. |
+| `POE_MIN_REQUEST_INTERVAL` | No | Raises the minimum seconds between PoE API calls (default `1.5`, cannot go below `1.0`). Raise it if you ever see `429`s. |
 
 ---
 

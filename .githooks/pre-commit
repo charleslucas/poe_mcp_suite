@@ -1,0 +1,72 @@
+#!/usr/bin/env sh
+# pre-commit credential guard for poe_mcp_suite
+#
+# This repo is PUBLIC and is a fork. A committed POESESSID is not an API-key
+# leak — it is a live session cookie and therefore full account access.
+#
+# Blocks two things:
+#   1. Staging credential files at all (config.json, .env*, .mcp.json, keys).
+#   2. Staging any file whose contents contain a live-looking POESESSID.
+#
+# Placeholders (`CHANGE_ME...`, `your-...`, `${VAR}`, empty) are allowed.
+#
+# Enable per clone with:  git config core.hooksPath .githooks
+# Emergency bypass:       git commit --no-verify
+#
+# See legal_considerations.md -> "GGG Terms of Service".
+set -u
+
+staged=$(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null) || exit 0
+[ -z "$staged" ] && exit 0
+
+fail=0
+
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+
+  # Template files keep legitimate placeholder env names — exempt from the
+  # filename blocklist, but still content-scanned below.
+  is_template=0
+  case "$f" in
+    *.example|*.sample|*.template|*.dist) is_template=1 ;;
+  esac
+
+  # 1. Credential files: never commit, regardless of content.
+  if [ "$is_template" -eq 0 ]; then
+    case "$f" in
+      config.json|*/config.json|\
+      .env|*/.env|.env.*|*/.env.*|\
+      .mcp.json|*/.mcp.json|\
+      *.pem|*.key|*.p12|*.pfx|*.jks|\
+      *secrets*.json|*credentials*.json)
+        echo "pre-commit: REFUSED — '$f' is a credential file; keep it local." >&2
+        fail=1
+        continue
+        ;;
+    esac
+  fi
+
+  # 2. Live POESESSID in the staged content (read from the index, not the work tree).
+  hits=$(git show ":$f" 2>/dev/null | grep -niE \
+    'POESESSID=[A-Za-z0-9]{16,}|poesessid[^A-Za-z0-9]{0,4}[:=][^A-Za-z0-9]{0,4}[A-Za-z0-9]{16,}|POE_SESSION_ID[^A-Za-z0-9]{0,4}[A-Za-z0-9]{20,}' \
+    2>/dev/null | head -n 3)
+
+  if [ -n "$hits" ]; then
+    echo "pre-commit: REFUSED — '$f' contains what looks like a live POESESSID:" >&2
+    echo "$hits" | sed 's/^/            /' >&2
+    fail=1
+  fi
+done <<EOF
+$staged
+EOF
+
+if [ "$fail" -ne 0 ]; then
+  echo "" >&2
+  echo "pre-commit: aborted. The POESESSID cookie grants full access to the account," >&2
+  echo "            and this repository is public. Remove the value, keep it in" >&2
+  echo "            .mcp.json / poe-trade-mcp/config.json (both gitignored), then retry." >&2
+  echo "            (Emergency bypass, if you are certain: git commit --no-verify)" >&2
+  exit 1
+fi
+
+exit 0

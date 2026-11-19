@@ -12,7 +12,7 @@ This document captures the reasoning behind how `poe_mcp_suite` uses Path of Exi
 
 > **This section covers a separate concern from copyright.** The sections below address *data redistribution* — what we publish. This section covers *API automation* — what we request at runtime. They are independent issues with independent risk profiles.
 
-> **This analysis is current as of 2026-05-31. If GGG publishes clearer API policies, or if community understanding shifts, update this section and revise tool behavior accordingly. Primary sources are linked below.**
+> **This analysis is current as of 2026-11-18**, based on a direct read of <https://www.pathofexile.com/developer/docs> (Overview, Authorization and API Reference). If GGG publishes clearer API policies, or if community understanding shifts, update this section and revise tool behavior accordingly. Primary sources are linked below.
 
 ### Primary sources
 
@@ -28,38 +28,62 @@ This document captures the reasoning behind how `poe_mcp_suite` uses Path of Exi
 
 > **7f.** "Use any data gathering and extraction tools or software to extract information from the Website or utilize framing techniques to enclose any of the contents of the Website."
 
+The developer docs add a third, more specific hook — **section 7i**, cited for reverse-engineering endpoints:
+
+> "We can only support resources defined in our API Reference or listed in our Data Exports. Requests for access to any other internal website APIs or in-game resources will be denied. It is against our Terms of Use (section 7i) to reverse-engineer endpoints outside of this documentation."
+> — *Available Resources*, developer docs
+
 **Section 22 — Website APIs** (important counterbalance to Section 7):
 
 > "You must comply with Grinding Gear Games' technical documentation and policies (as published and as updated on the Website from time to time or as otherwise notified to you by Grinding Gear Games) regarding use of the Website APIs ('API Policies'). Without limiting the foregoing, you must comply with the Website API call limits set out in the API Policies or as otherwise notified to you..."
 
 Section 22 is significant: it **explicitly contemplates third-party API usage** as permissible, subject to compliance with GGG's published API Policies and rate limits. The prohibition in Section 7c on "automated software" must be read in light of Section 22 — the two together suggest that *compliant* automated API access is allowed, while *non-compliant* (ignoring rate limits, no User-Agent, scraping outside the API) is not.
 
-### Understanding the two-tier API access model
+### What the developer docs actually say
 
-GGG's developer docs describe two distinct situations, and understanding which applies to us resolves most of the ambiguity:
+Read directly from the published docs, not inferred:
 
-**Tier 1 — Formal OAuth registration (for public-facing applications):**
-GGG requires OAuth registration when building a **public or widely-available application** — a character designer website, a stash indexer used by many players, a market tool with its own user base. These make high aggregate API call volumes on behalf of many users. GGG wants to review and approve the workflow before the load hits their servers. The registration process (application name, scopes with justification, redirect URIs, etc.) is their quality gate.
+**Only documented resources are supported.** "Requests for access to any other internal website APIs or in-game resources will be denied. It is against our Terms of Use (section 7i) to reverse-engineer endpoints outside of this documentation."
 
-**Tier 2 — Personal/individual use without registration:**
-For a **personal tool** used by one person in their own sessions, formal OAuth registration is not required. Non-OAuth direct API access is the appropriate path, provided you follow the API guidelines: correct User-Agent header, rate limit compliance, and the non-affiliation notice.
+**There is no "personal use" exemption.** The docs describe exactly one sanctioned access model: register an application, use OAuth 2.1, request documented scopes, and follow the guidelines. Nothing in them grants an unregistered cookie-based path. An earlier revision of this document inferred a "personal tools need no registration" reading — **that inference is not supported by the published docs and has been removed.**
 
-**This suite is a personal tool.** It is used by one user in their own Claude Code sessions. No registration is required. Our `poe_auth` / OAuth infrastructure is the right path *if this suite ever becomes a public service* — it's already in place for that transition.
+**Registration is currently closed:**
+
+> "We are currently unable to process new applications."
+> — *Getting Started*, developer docs
+
+So the OAuth migration described below is correct in principle but **blocked at the gate** until GGG reopens registration. Until then this suite runs on undocumented endpoints, by explicit acknowledgement.
+
+### Client type — public (desktop application)
+
+Per the *Client Types* section:
+
+- A **public client** (an app running on the user's desktop, unable to keep a secret) **must** use the Authorization Code grant **with PKCE**, and **must** use a local redirect URI (the docs' example: `http://127.0.0.1:8080/callback`).
+- Public clients **cannot** use any `service:*` scopes.
+- Public clients get **10-hour access tokens** and **7-day refresh tokens**.
+- Public clients **share a rate-limit pool with every other public client**.
+- The authorization page shows the user a warning that the request's authenticity is unverifiable.
+
+Scopes this suite needs are all public-client eligible: `account:characters` (characters + equipment + inventory + passives), `account:stashes`, `account:profile`.
 
 ### What the developer docs require (and our compliance status)
 
 | Requirement | Status |
 |---|---|
-| User-Agent: `OAuth {clientId}/{version} (contact: {contact})` | ✅ `poe_trade.py`: `"OAuth BoschAIMaster/1.0 (contact: buildtool@localhost)"` |
-| Parse `X-Rate-Limit-*` response headers and comply | ✅ pob-mcp uses Bottleneck; poe-trade-mcp now uses header-driven `_observed_min_interval` |
+| User-Agent in the documented format | ✅ `OAuth {$clientId}/{version} (contact: {$contact})` when `POE_CLIENT_ID` is set. Without a registered client it falls back to an honest `poe-trade-mcp/{version} (account: …; contact: …)` — the `OAuth` prefix is only emitted when a client_id actually exists. Both paths warn on stderr when `POE_CONTACT_EMAIL` is missing. The old hardcoded `contact: buildtool@localhost` was a placeholder and did not satisfy this. |
+| Use only documented endpoints | ⚠️ **Partial.** `api.pathofexile.com` calls are documented (`/character/*`, `/stash/*`). `character-window/*` and `api/trade/*` are **not** in the API Reference — see the two subsections below. |
+| Parse `X-Rate-Limit-*` response headers and comply | ✅ pob-mcp uses Bottleneck; poe-trade-mcp uses header-driven `_observed_min_interval` |
 | Non-affiliation notice in a visible location | ✅ Added to all four READMEs (2026-05-31) and to trade tool outputs |
-| Reasonable attempts to avoid 4xx errors | ✅ Retry logic + rate limiting in both servers |
+| Reasonable attempts to avoid 4xx errors | ✅ Retry logic + rate limiting in both servers (4xx responses count toward the docs' "invalid requests threshold") |
+| Keep credentials out of code and out of the repo | ✅ No keys in source; `.mcp.json` / `config.json` gitignored; `.githooks/pre-commit` blocks staged credentials |
 
 ### Community precedent — ExileExchange
 
 GGG allows **ExileExchange** (Ctrl+D in PoB — opens the trade site in a browser). A GGG developer (Novynn) confirmed this is fine because it "emulates the trade website." ExileExchange makes a single POST to the trade search API to get a `searchId`, then opens the browser URL — it does **not** programmatically fetch listings.
 
 > **Caveat:** This is an inference from the ExileExchange precedent, not an explicit GGG statement that "URL-only = always OK." Novynn said ExileExchange is allowed because it emulates the trade website; we interpret the URL-only pattern as what makes it acceptable. If GGG clarifies otherwise, we will update tool behavior.
+>
+> **Note:** the trade API (`www.pathofexile.com/api/trade/*`) is **not** listed in the developer docs' API Reference, which only covers `api.pathofexile.com`. It is therefore undocumented by the letter of the "Available Resources" rule, and works on the ExileExchange precedent alone. This is the weakest link in the suite's posture after `character-window/*`, and it is why the trade tools never fetch listings in bulk.
 
 ### What this suite does — current posture
 
@@ -82,9 +106,10 @@ GGG allows **ExileExchange** (Ctrl+D in PoB — opens the trade site in a browse
 ### Risk and posture
 
 - Claude warns the user and requires explicit confirmation before calling any trade API tool (see `CLAUDE.md`). Warning is once per session.
-- All GGG API calls send the required User-Agent header.
-- Rate limiting: pob-mcp uses Bottleneck (≤4/sec, 300s cache); poe-trade-mcp uses header-driven adaptive interval (floor 1.5s) + `Retry-After` on 429.
+- All GGG API calls send a User-Agent carrying the PoE account name and a real contact address. **This repository is public**, so `.githooks/pre-commit` refuses to commit credential files or any content containing a live-looking `POESESSID` (placeholders pass). Enable with `git config core.hooksPath .githooks`.
+- Rate limiting: pob-mcp uses Bottleneck (≤4/sec, 300s cache); poe-trade-mcp uses header-driven adaptive interval (floor 1.5s) + `Retry-After` on 429. `POE_MIN_REQUEST_INTERVAL` can raise the floor (never below 1.0s). Each server runs in its own process, so the floors are per-process — don't run several PoE MCP servers against one account in parallel expecting a shared budget.
 - Non-affiliation notice: in all four READMEs and in trade tool outputs.
+- **Legacy endpoints.** `poe_lib.py` reaches `www.pathofexile.com/character-window/*` (`get-items`, `get-passive-skills`, `get-stash-items`). The developer docs are explicit about this class of endpoint: *"Requests for access to any other internal website APIs … will be denied. It is against our Terms of Use (section 7i) to reverse-engineer endpoints outside of this documentation."* So this is not merely "higher risk" — it sits outside the documented surface by the docs' own wording. `poe_lib._get()` also sends `Referer`/`Origin` matching the site because those endpoints are the ones the site itself calls. Migrating to `GET /character/<name>` (`account:characters`) removes both the endpoint and those headers; it is blocked only by registration being closed.
 - If GGG ever objects, we stop immediately. Contact: **zerosquaredio@gmail.com**.
 
 ---

@@ -32,7 +32,10 @@
       "command": "python",
       "args": [
         "/CHANGE_ME/poe_mcp_suite/poe-data-mcp/server.py"
-      ]
+      ],
+      "env": {
+        "POE_LEAGUE": "CHANGE_ME_current_league"
+      }
     },
     "google-ai-mode": {
       "command": "npx",

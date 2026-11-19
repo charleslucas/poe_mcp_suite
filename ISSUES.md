@@ -76,9 +76,18 @@ See `INSTALL.md` → "Step 6 (optional)" for the full intended setup guide.
 
 ---
 
-## Open — stash API access
+## Resolved — stash API access
 
-### Stash scanning blocked: GGG disabled legacy character-window stash endpoint
+### Legacy stash endpoint responds again (verified 2026-11-18)
+
+`list_tabs` returned 80 Standard tabs and 25 Covens tabs with a fresh `POESESSID`. Stash tools now take an optional
+`league`; a league with no character on the account returns 404. A `403 {"code":6}` from `character-window/*` usually
+means a dead cookie: check `https://www.pathofexile.com/my-account` with it (200 = alive, 401 = dead). The endpoint is
+undocumented (ToS 7i caveat in `legal_considerations.md`) and may be withdrawn again.
+
+The original report follows for history.
+
+### (2026-06) Stash scanning blocked: GGG disabled legacy character-window stash endpoint
 
 `list_tabs`, `get_tab`, and `scan_stash_tabs` use `poe_lib.py`'s two-path design:
 1. **OAuth** (if `client_id` + tokens): hits `api.pathofexile.com/stash/{league}` — requires developer app registration

@@ -6,55 +6,37 @@ Read `playbooks/README.md` first (cursory/detailed gate, pre-flight, context man
 
 ---
 
-## ⚠️ Current status: stash tab access is BLOCKED
+## Current status: stash access works (undocumented endpoint)
 
-**The bulk stash scanning tools (`list_tabs`, `get_tab`, `scan_stash_tabs`, `price_tab`) do not currently work.**
+**Verified 2026-11-18:** `list_tabs` returned 80 Standard tabs and 25 Covens tabs through the POESESSID path
+(`character-window/get-stash-items`). It had returned HTTP 403 from 2026-06 onward; whether GGG re-enabled it or
+the earlier failure was a dead cookie is unknown.
 
-GGG disabled the legacy `character-window/get-stash-items` endpoint that the POESESSID fallback relies on. It returns HTTP 403 Forbidden (error code 6) despite a valid session. The character equipment endpoint (`get-items`) still works with the same session, but stash is now restricted to OAuth only.
+**Caveat:** `character-window/*` is not in GGG's API Reference, and the developer docs say reverse-engineering
+endpoints outside the documentation is against Terms of Use section 7i (see `legal_considerations.md`). It can be
+withdrawn without notice, so keep usage human-scale and don't build anything that assumes it is permanent.
 
-See `ISSUES.md` → "Stash API access" for the full technical detail and repro.
+**League:** every stash tool takes an optional `league` (default `POE_LEAGUE`). A league where the account has no
+character has no stash and returns **404** — pass `league="Standard"` for Standard tabs.
 
-**The three paths forward:**
+**If it fails:**
+- **403 (code 6)** usually means the `POESESSID` is dead. A cookie ends when you log out of the website. Get a
+  fresh one (see `INSTALL.md`) and update **every** server in `.mcp.json` that sets `POE_SESSION_ID`, then reload.
+- **404 (code 1)** means no stash or character for that league/name. Check the `league` and `character_name` arguments.
 
-### Path 1 — `score_rare` (works today, no setup required)
-
-Ctrl+C an item in-game and pass the clipboard text to `score_rare`. Returns a price estimate, tier breakdown, and which mods are good vs. junk. Works for any rare item, entirely local (no API calls). Use this for individual items you're unsure about.
-
-```
-score_rare(item_text="<paste Ctrl+C text here>")
-```
-
-Limitations: one item at a time, rares only (named items via `ninja_lookup` instead).
-
-### Path 2 — OAuth developer registration (not recommended for personal use)
-
-The full bulk scanning tools would work with an OAuth developer app registered at `pathofexile.com/developer`. However:
-- The registration process is designed for **public-facing applications** (websites, tools used by multiple players authenticating their own accounts) — not personal tools
-- It requires justifying each OAuth scope, a redirect URI, review by GGG, and ongoing maintenance
-- GGG can revoke access if they decide your use case doesn't qualify
-
-If you eventually build a public-facing tool from this suite, OAuth registration is the right path. For personal use, the overhead is disproportionate.
-
-Setup steps if you choose this path:
-1. Register at https://www.pathofexile.com/developer — set redirect URI to `http://localhost:7878/callback`
-2. Add `POE_CLIENT_ID` to `.mcp.json` in the `poe` server env block
-3. Run `poe_auth` — opens a browser, you authorize, tokens saved automatically
-
-### Path 2b — WealthyExile (recommended for bulk stash pricing today)
-
-**[WealthyExile](https://www.wealthyexile.com)** is a free community tool that uses GGG's official OAuth gateway (the same approved path) to price your stash tabs. It handles the developer registration on its own behalf as a public app — you just log in with your PoE account. It's the practical solution for bulk stash scanning without needing your own developer registration.
-
-Use WealthyExile when you want the full "scan entire tab and show me what's worth selling" experience. Use `score_rare` when you want to quickly evaluate a single item without leaving Claude.
-
-### Path 3 — Wait and see
-
-GGG's API policies evolve. It's possible a future version of the API allows personal stash access via POESESSID or a simpler auth mechanism. The code already handles both OAuth and POESESSID paths — if the endpoint becomes accessible again, it will work without code changes.
+**Alternatives that need no stash access:**
+- `score_rare(item_text=...)` — Ctrl+C one item in-game; local scoring, no API call. Rares only; use `ninja_lookup`
+  for named items.
+- **[WealthyExile](https://www.wealthyexile.com)** — a community tool on GGG's official OAuth gateway that prices
+  whole stash tabs.
+- **Your own OAuth app** (`poe_auth`, documented `api.pathofexile.com/stash` endpoint) is the sanctioned route, but GGG's
+  developer docs currently say new application registration is closed. If it reopens: register a public client,
+  redirect URI `http://127.0.0.1:7878/callback`, add `POE_CLIENT_ID` to `.mcp.json`, run `poe_auth`. The tools then
+  prefer OAuth automatically.
 
 ---
 
-## What the full workflow would do (for reference)
-
-Once stash access is restored, the intended workflow:
+## Workflow
 
 ### Stage 0 — Pre-flight
 ```
@@ -100,7 +82,7 @@ For high-value finds, update `character_data/<Account>/<League>/<Character>/jour
 
 ---
 
-## Workaround workflow (works today)
+## Single-item workflow (no stash access needed)
 
 For evaluating individual items from your stash without bulk scanning:
 

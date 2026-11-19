@@ -30,8 +30,11 @@ for path in $paths; do
   fi
 
   # Refresh remote-tracking refs so the contains-check reflects the real remote.
-  # Non-fatal on failure (offline): fall back to cached remote refs.
-  git -C "$path" fetch -q origin 2>/dev/null \
+  # Fetch every branch into origin/* explicitly: submodules are frequently cloned
+  # with a single-branch refspec (e.g. +refs/heads/dev:refs/remotes/origin/dev),
+  # which hides the recorded pointer from the reachability check and produces a
+  # false failure. Non-fatal on failure (offline): fall back to cached refs.
+  git -C "$path" fetch -q origin '+refs/heads/*:refs/remotes/origin/*' 2>/dev/null \
     || echo "pre-push: WARNING: fetch failed for '$path'; checking against cached remote refs" >&2
 
   if ! git -C "$path" branch -r --contains "$sha" 2>/dev/null | grep -q .; then

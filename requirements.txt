@@ -9,7 +9,9 @@
 # Node.js (for pob-mcp) is installed separately — see CLAUDE.md.
 
 # ── poe-mcp-server ────────────────────────────────────────────────────────────
-mcp
+# Pin <2: these servers use mcp 1.x APIs (FastMCP, Server.list_tools). mcp 2.x
+# renamed them and breaks poe-trade-mcp / poe-data-mcp on a fresh install.
+mcp<2
 anyio
 
 # ── POEMCP ───────────────────────────────────────────────────────────────────
