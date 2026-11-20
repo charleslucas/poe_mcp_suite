@@ -46,6 +46,18 @@ even without skill/rule auto-loading. Key ideas:
 
 ## Non-negotiables
 
+- **Never add a mod or stat "just in case".** Gear advice and item templates
+  carry exactly what the build demands and nothing else: attributes only when
+  PoB's requirement panel shows the character is short, resistances only in the
+  elements that are actually below cap, suffixes that answer a reported gap.
+  An empty suffix stays empty. Every invented filler mod (unneeded attribute,
+  redundant resistance, "nice to have" regen) makes the item worse and, when it
+  later reaches the build, hides the real cost behind noise.
+- **Read numbers from PoB, do not recompute them.** Attribute requirements
+  (`Str/Dex/Int Required`), resistances (`Current output value`), and gaps
+  (build issues) are already calculated by the tool. Quote them; do not sum
+  sources by hand — hand arithmetic over breakdown output has produced wrong
+  requirements (a gem level read out of context) and wrong resistance bases.
 - **Legal boundaries** — before extracting, modifying, or redistributing any
   Path of Exile game data, read
   [`legal_considerations.md`](legal_considerations.md). Stay inside the
@@ -53,6 +65,21 @@ even without skill/rule auto-loading. Key ideas:
 - **GGG trade API** — the official trade API carries Terms-of-Service risk.
   Brief the user and get explicit consent before using trade tools (see
   `legal_considerations.md` → "GGG Terms of Service").
+- **Trade links cost nothing; trade searches do.** A trade search URL is just
+  `gzip(query)` → base64url of the bare query object (Path of Building does this
+  locally in `TradeQuery.lua:1142`). `generate_trade_url` builds one with **zero
+  API requests** (`use_api: true` opts into a server-issued id instead). Reserve
+  `search_trade_items` / `search_trade_listings` for when a count or real prices
+  are unavoidable, never loop them over mod variations, and check
+  `trade_rate_limit` first. The limit is per IP and shared across every tool: a
+  single careless burst blocks all searches for a minute or more.
+- **Never retype a payload by hand.** "The search is no longer valid" has three
+  known causes: a payload wrapped as `{ query, sort }` (the URL carries the bare
+  query only), a query with no filters at all, and — most often in practice — a
+  *corrupted copy* of a valid URL (one dropped `a`, one `HAoOx` → `HgQOx`, and the
+  base64 decodes to garbage). Write links to a file and verify each with
+  `decode_trade_url` (or `zlib.gunzipSync` of the base64url payload) before
+  handing them over.
 - **Secrets** — `.mcp.json` and `POE_SESSION_ID` are sensitive (session cookie /
   account access). Never log or commit them.
 

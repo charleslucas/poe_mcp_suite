@@ -258,6 +258,20 @@ a nerf-detection signal for the build that needed it.
 - **Removing a dex source can fail gems AND other gear simultaneously.** A single ring with +53 Dex removed can cause 2+ skill gems and a piece of equipment to go red at the same time. Always check total attribute totals before and after, not just the item being swapped.
 - **Body armour "reduced attribute requirements" is item-specific, not global.** `32% reduced Attribute Requirements` on Sacred Chainmail lowers only that armour's requirements. It does not help meet requirements for rings or gems.
 - **Gem attribute requirements scale with gem level.** A level 20 Precision, Frostblink, or Multistrike can require 90–130 Dex. Check gem-level requirements, not base requirements.
+- **Read the requirement from PoB's Attributes panel, not from gem data.** Grepping gem data without keeping the level label produced "Faster Attacks needs 156 Dex" while the panel said `Dex. Required: 111`. The panel already accounts for gem level, per-item reduced requirements, and the whole tree.
+
+### Item templates: every mod must answer a demand
+- **No filler mods, ever.** Attributes only when the PoB requirement panel shows a shortfall, resistances only for elements below cap, a suffix only when PoB reports the gap it closes. Invented "nice to have" stats (Dex on boots, +30 Strength as a buffer, 10% spell suppression on a build that will never cap it) make the template look finished and are the first thing the user rejects.
+- **An empty suffix is a legitimate answer.** If nothing is demanded, leave the slot empty rather than filling it.
+- **Excess resistance is a swap target, not headroom.** When one element sits far over cap (+77 cold), the right move is to harvest-swap that suffix into the element that *is* short, then choose the remaining items around that swap. Adding more resistance to new gear while the surplus sits idle is the mistake this replaces.
+- **The user's pasted item is the source of truth for its rolls.** Never re-derive a unique's values from memory or from a planning sheet; paste what the item actually says.
+
+### Measuring on a live build
+- **PoB already computed it — quote, don't recompute.** Hand-summing breakdown rows double-counted Light of Meaning (every passive in radius prints its own line) and produced a chaos base of 56 instead of 11. Use `Current output value`, the requirement panel, and build issues as printed.
+- **Confirm what is loaded before each measurement.** The user may be editing the same build in the GUI: slots empty out, foreign items appear between two calls. Re-check the active loadout and the equipped slots; if they don't match the set being reasoned about, reload and measure again.
+- **Never swap equipped items to "see what happens".** A live build is the user's working state, not a sandbox. Ask before replacing anything; if a swap is needed for a measurement, restore the exact previous items afterwards and say that you did.
+- **An old import set is not the current character.** Belt, rings and boots drift first — an Empyrean Leash where the character now wears Mageblood is proof the set is stale. Confirm against the character API or ask before copying gear out of an old set.
+- **A loadout is four families.** Item set + tree spec + skill set + config set sharing one title. Creating only an item set leaves the other three from whichever loadout was active and silently measures a mixed state — create the loadout.
 
 ### Flask constraints
 - **Screams of the Desiccated grants Diamond Shrine buff only while NO flasks are active.** Any flask with a duration effect (Quicksilver, Granite, Basalt, "during effect" suffixes) disables the buff for its entire run time. Only Seething (instant recovery) life and mana flasks are compatible — they consume instantly with no lingering effect.

@@ -23,6 +23,12 @@ Call `craftofexile_cache_status()`. If any files are listed as MISSING, call `up
 - Narrow with `item_class` param if the user specifies a slot (e.g. "helmet", "ring", "bow").
 - For base-specific lookup, use `get_craft_base_items(query)` to confirm the exact base name first.
 
+**Eldritch implicits (Searing Exarch / Eater of Worlds):**
+- Use `search_eldritch_implicits` (pob-mcp) — it reads PoB's `Data/ModEldritch.lua`, so the pool is patch-current and carries exact spawn weights. Pass `base_name` or `item_type` to fix the slot, plus `stat_contains` to narrow.
+- Craft of Exile and `search_craft_mods` do **not** index this pool; an empty result there says nothing about eldritch options.
+- Slot rule the tool enforces: body armour, boots, gloves, helmets, and only the unique amulet The Eternal Struggle. Weight-0 tiers are hidden — the data lists six tiers per family, but the game cannot roll all of them (e.g. Pinnacle-presence variants start at tier 3).
+- `include_conditional=true` also returns the "While a Unique Enemy / Pinnacle Atlas Boss is in your Presence" variants, which are separate mods rather than better tiers.
+
 **Tier ranges and spawn weights:**
 - Use `get_craft_tiers(base_type, query)` to get every tier's min iLvl, value range, and spawn weight for a mod on a specific item class (e.g. `get_craft_tiers("staff", "increased physical damage")`).
 - Weight numbers are relative pool weights — higher = more common. Divide a tier's weight by the sum of all tier weights for that mod to get its raw probability share.

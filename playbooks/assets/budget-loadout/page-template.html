@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>{{TITLE}}</title>
+<style>
+ :root{--bg:#0f1115;--card:#171a21;--line:#262b36;--txt:#e6e8ee;--dim:#9aa3b2;--acc:#7cc4ff;--ok:#5fd18c}
+ *{box-sizing:border-box}
+ body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.55 "Segoe UI",system-ui,sans-serif}
+ .wrap{max-width:1060px;margin:0 auto;padding:28px 20px 60px}
+ h1{font-size:26px;margin:0 0 4px} h2{font-size:18px;margin:34px 0 12px;color:var(--acc)}
+ .sub{color:var(--dim);margin-bottom:24px}
+ .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+ .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+ .stat b{display:block;font-size:19px} .stat span{color:var(--dim);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+ table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+ th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}
+ th{color:var(--dim);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+ tr:last-child td{border-bottom:none}
+ td.p{white-space:nowrap;font-variant-numeric:tabular-nums}
+ a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+ ol,ul{margin:0;padding-left:22px} li{margin:6px 0}
+ .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+ .total{font-size:18px;margin-top:12px}
+ code{background:#0b0d11;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:13px}
+ .foot{color:var(--dim);font-size:12px;margin-top:34px}
+</style></head><body><div class="wrap">
+
+<h1>{{TITLE}}</h1>
+<div class="sub">{{SUBTITLE}}</div>
+
+<div class="grid">{{STATS}}</div>
+
+<h2>1. Buy (in order)</h2>
+<table>
+<tr><th>Slot</th><th>Item</th><th>Why</th><th>Price</th><th>Link</th></tr>
+{{ROWS}}
+{{EXTRAS}}
+</table>
+<div class="card total">{{TOTAL}}</div>
+
+<h2>2. Steps</h2>
+<div class="card"><ol>{{STEPS}}</ol></div>
+
+<h2>3. Don't</h2>
+<div class="card"><ul>{{NEVER}}</ul></div>
+
+<h2>4. Upgrades after the build</h2>
+<table>
+<tr><th>What</th><th>Price</th><th>Gain</th></tr>
+{{UPGRADES}}
+</table>
+
+<h2>5. Checks</h2>
+<div class="card"><ul>{{CHECKS}}</ul></div>
+
+<div class="foot">{{GENERATED}} · links verified by decoding · not affiliated with GGG</div>
+
+</div></body></html>

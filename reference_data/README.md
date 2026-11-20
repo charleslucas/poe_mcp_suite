@@ -131,6 +131,14 @@ When researching PoE data, prefer sources in this order:
 
 ## How to Regenerate Eldritch Reference Files
 
+**Prefer the tool; use these files only for offline/grep work.**
+`search_eldritch_implicits` (pob-mcp) reads PoB's `Data/ModEldritch.lua`
+directly — patch-current, exact spawn weights, slot legality enforced, no
+scraping. Its output was cross-checked against both poewiki list pages when it
+was written (every wiki (mod, slot) pair present, weights identical), so a
+markdown copy is redundant for answering questions. Keep/regenerate the files
+below only when you need a grep-able corpus.
+
 If the Eldritch files don't exist or look stale (different league than current):
 
 ```bash

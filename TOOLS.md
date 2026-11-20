@@ -27,6 +27,7 @@ Loading, saving, snapshotting, and exporting Path of Building build files.
 | `get_build_stats` | pob |
 | `get_build_notes` / `set_build_notes` | pob |
 | `get_build_issues` | pob |
+| `get_pob_warnings` — the exact lines behind PoB's "N Warnings" bar (unmet attribute requirements, unreserved mana, point overruns); `get_build_issues` does not cover these | pob |
 | `export_build` / `export_build_summary` | pob |
 | `save_tree` | pob |
 | `snapshot_build` / `list_snapshots` / `restore_snapshot` | pob |
@@ -134,6 +135,7 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 | `list_skill_sets` / `select_skill_set` | pob |
 | `list_config_sets` / `select_config_set` | pob |
 | `list_loadouts` / `select_loadout` | pob |
+| `create_loadout` / `copy_loadout` — create all four sets under one title (a single-set family is shared, not duplicated) | pob |
 
 ## ⚔️ Gems & Skill Links
 
@@ -164,6 +166,7 @@ Comprehensive coverage of how socketed jewels affect the tree. All new this iter
 | `analyze_item_mods` | pob ⭐ new |
 | `search_master_crafts` | pob ⭐ new |
 | `get_essence_detail` | pob ⭐ new |
+| `search_eldritch_implicits` | pob |
 | `calculate_mod_odds` | pob ⭐ new |
 | `search_item` / `get_item_detail` | poe-data-mcp |
 | `search_mods` | poe-data-mcp |
@@ -188,11 +191,14 @@ Live data downloaded from craftofexile.com and cached locally. Tools return curr
 
 | Tool | Server |
 |------|--------|
+| `generate_trade_url` / `generate_trade_urls` / `decode_trade_url` — build trade links **offline** (gzip+base64url, as PoB's "Buy similar"), derive filters from an equipped item, verify by decoding; `use_api: true` opts into one trade API request per link | pob |
+| `search_trade_listings` (bounded listing fetch, max 10) / `trade_rate_limit` (local rate-limit state) | pob |
 | `search_trade_items` | pob |
 | `find_weighted_trade_items` | pob |
 | `compare_trade_items` | pob |
 | `get_item_price` | pob |
 | `get_leagues` | pob |
+| `compare_items` — equip each pasted candidate in a slot, read DPS/EHP/warnings, then restore the original and delete the test items | pob |
 | `get_active_leagues` | pob ⭐ new |
 | `search_stats` | pob |
 | `search_trade` / `search_by_item_mods` | poe |

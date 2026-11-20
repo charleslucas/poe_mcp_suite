@@ -33,9 +33,9 @@ If you're unsure whether a particular extraction or redistribution falls inside 
 
 **GGG trade API — one-time informed consent:** Before calling trade API tools, check memory for `trade_api_tos_acknowledged`. If absent, pause, explain the ToS risk (details in [`legal_considerations.md`](legal_considerations.md) → "GGG Terms of Service"), and save the memory once acknowledged.
 
-Tools requiring this check: `mcp__pob__search_trade_items`, `find_weighted_trade_items`, `compare_trade_items`, `get_item_price`; `mcp__poe-trade-mcp__search_trade`, `search_by_item_mods`, `fetch_listing`.
+Tools requiring this check: `mcp__pob__search_trade_items`, `find_weighted_trade_items`, `compare_trade_items`, `get_item_price`, `search_trade_listings`, and `generate_trade_url` / `generate_trade_urls` **only with `use_api: true`**; `mcp__poe-trade-mcp__search_trade`, `search_by_item_mods`, `fetch_listing`.
 
-Tools exempt (no GGG trade API): `price_item/items/tab`, `scan_stash_tabs` (poe.ninja only); all other `mcp__pob__` tools (local PoB only); `ninja_lookup`, `currency_overview` (poe.ninja); `list_tabs`, `get_tab`, `get_character` (GGG OAuth gateway).
+Tools exempt (no GGG trade API): `price_item/items/tab`, `scan_stash_tabs` (poe.ninja only); all other `mcp__pob__` tools (local PoB only — including `generate_trade_url(s)` / `decode_trade_url` in their default local mode, which build the link offline, and `trade_rate_limit`, which reads local state); `ninja_lookup`, `currency_overview` (poe.ninja); `list_tabs`, `get_tab`, `get_character` (GGG OAuth gateway).
 
 ---
 

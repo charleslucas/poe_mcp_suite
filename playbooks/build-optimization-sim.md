@@ -217,6 +217,15 @@ These produce 0 DPS change even when the real-world effect is real. Note them ra
 
 **Rule of thumb:** if leveling a gem 1→20 produces exactly 0 change, check whether its primary effect requires a runtime state or PoB Config toggle. Verify in actual play before concluding it's worthless. **Note: there is no player-accessible training dummy in PoE** — GGG has intentionally not added one (a dev-only version exists in the game code). For real-world DPS verification, compare hit numbers on a map boss or tankier rare between before/after states.
 
+## Measuring on a live build (state discipline)
+
+Every sim in this playbook reads the build the user has open. That state is shared with them and moves under you.
+
+- **Confirm the active loadout and equipped slots before each measurement.** Slots can empty out or a foreign item can appear between two calls when the user is editing the same build. If the slots don't match the set you are reasoning about, reload and measure again; do not report a number taken from a mixed state.
+- **Quote PoB's values, don't recompute them.** `Current output value`, the Attributes/Requirement panel, and build issues are already computed — hand-summing breakdown rows has produced both a wrong attribute requirement and a wrong resistance base.
+- **Restore what you changed.** Test items stay in the item list but must end unequipped, and any slot you touched is put back exactly; say so in the output. Never swap equipped gear speculatively on a build the user is playing.
+- **A loadout is four families** (tree spec + item set + skill set + config set with one title). Creating only an item set measures a mixed state.
+
 ---
 
 ## Playbook wishlist / gaps
